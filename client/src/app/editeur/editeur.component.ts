@@ -26,24 +26,24 @@ export class EditeurComponent implements AfterViewInit {
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
-  
+
 
 
   constructor() { }
 
-  
+
 
   ngAfterViewInit() {
     this.createScene();
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.camera.lookAt(this.scene.position);
-    this.createDot();
     this.animate();
+    this.canvas.addEventListener('click', (event) => this.onClick(event), false);
 
   }
 
   createScene() {
-    this.camera = new THREE.PerspectiveCamera(70,window.innerWidth/ window.innerHeight,0.1,1000 );  
+    this.camera = new THREE.PerspectiveCamera(70,window.innerWidth/ window.innerHeight,0.1,1000 );
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
   }
@@ -53,13 +53,27 @@ export class EditeurComponent implements AfterViewInit {
     requestAnimationFrame(() => this.animate());
     this.renderer.render(this.scene, this.camera);
   }
-  createDot() {
-    var geometry = new THREE.Geometry();
-    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
-    var material = new THREE.PointsMaterial({ size :1,color: 0x0000ff });
-    var dot = new THREE.Points(geometry, material);
+  createDot(position) {
+    let geometry = new THREE.Geometry();
+    geometry.vertices.push(position);
+    let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
+    let dot = new THREE.Points(geometry, material);
     this.scene.add( dot );
     this.camera.position.z = 100;
-   
+
+  }
+  convertToCanvasPosition(event){
+    let vector = new THREE.Vector3((event.clientX / window.innerWidth)*2-1,-(event.clientY / window.innerHeight)*2+1 , 0.5);
+    vector.unproject(this.camera);
+    let dir = vector.sub(this.camera.position);
+    let distance = - this.camera.position.z / dir.z;
+    return this.camera.position.clone().add(dir.multiplyScalar(distance));
+  }
+  onClick(event) {
+
+    let position = this.convertToCanvasPosition(event);
+    console.log(position);
+    this.createDot(position);
+
   }
 }
