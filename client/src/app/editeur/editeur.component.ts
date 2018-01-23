@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 
 
@@ -54,11 +54,12 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.render(this.scene, this.camera);
   }
   createDot() {
-    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    var cube = new THREE.Mesh( geometry, material );
-    this.scene.add( cube );
-    this.camera.position.z = 5;
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+    var material = new THREE.PointsMaterial({ size :1,color: 0x0000ff });
+    var dot = new THREE.Points(geometry, material);
+    this.scene.add( dot );
+    this.camera.position.z = 100;
    
   }
 }
