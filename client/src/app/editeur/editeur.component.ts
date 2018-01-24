@@ -53,7 +53,7 @@ export class EditeurComponent implements AfterViewInit {
     requestAnimationFrame(() => this.animate());
     this.renderer.render(this.scene, this.camera);
   }
-  createDot(position) {
+  createDot(position : any) {
     let geometry = new THREE.Geometry();
     geometry.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
@@ -62,14 +62,14 @@ export class EditeurComponent implements AfterViewInit {
     this.camera.position.z = 100;
 
   }
-  convertToCanvasPosition(event){
+  convertToCanvasPosition(event: any){
     let vector = new THREE.Vector3((event.clientX / window.innerWidth)*2-1,-(event.clientY / window.innerHeight)*2+1 , 0.5);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
   }
-  onClick(event) {
+  onClick(event: any) {
 
     let position = this.convertToCanvasPosition(event);
     console.log(position);
