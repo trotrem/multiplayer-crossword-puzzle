@@ -43,7 +43,7 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   createScene() {
-    this.camera = new THREE.PerspectiveCamera(70,window.innerWidth/ window.innerHeight,0.1,1000 );
+    this.camera  = new THREE.PerspectiveCamera() );
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
   }
@@ -68,12 +68,13 @@ export class EditeurComponent implements AfterViewInit {
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
+    console.log()
   }
-  onClick(event: any) {
+  onClick(event:any) {
 
     let position = this.convertToCanvasPosition(event);
     console.log(position);
     this.createDot(position);
-
+   console.log(this.camera.position);
   }
 }
