@@ -20,7 +20,7 @@ export class EditeurComponent implements AfterViewInit {
 
   private renderer: THREE.Renderer;
 
-  private arrayPoints :Vector3[];
+  private arrayPoints :THREE.Vector3[];
 
 
 
@@ -48,11 +48,11 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   createScene() {
-    this.camera  = new THREE.PerspectiveCamera() );
+    this.camera  = new THREE.PerspectiveCamera();
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.arrayPoints = new Array();
-    this.geometry = new THREE.Geometry();
+
   }
 
 
@@ -88,8 +88,8 @@ export class EditeurComponent implements AfterViewInit {
   }
   createLine(){
     let geometryLine= new THREE.Geometry;
-    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1];
-    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-2];
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-2]);
     let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0x88d8b0}));
     this.scene.add(line);
 
