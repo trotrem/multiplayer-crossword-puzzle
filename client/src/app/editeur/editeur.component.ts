@@ -17,6 +17,12 @@ export class EditeurComponent implements AfterViewInit {
 
   private renderer: THREE.Renderer;
 
+  private arrayPoints :THREE.Vector3[];
+
+
+
+
+
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
@@ -27,16 +33,16 @@ export class EditeurComponent implements AfterViewInit {
     this.createScene();
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.animate();
-    this.canvas.addEventListener('click', (event) => this.onClick(event), false);
-
+    this.canvas.addEventListener('click', (event) => this.onClick(event));
   }
 
   createScene() {
-    this.camera = new THREE.PerspectiveCamera(70,window.innerWidth/ window.innerHeight,0.1,1000 );
+    this.camera  = new THREE.PerspectiveCamera();
+    this.camera.position.set(0, 0, 100);
     this.camera.lookAt(new THREE.Vector3(0,0,0));
-    this.camera.position.set(0,0,100);
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.arrayPoints = new Array();
   }
 
   animate() {
@@ -44,15 +50,15 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.render(this.scene, this.camera);
   }
 
-  createDot(position) {
-    let geometry = new THREE.Geometry();
-    geometry.vertices.push(position);
-    let material = new THREE.PointsMaterial({ color: 0x88d8b0 });
-    let dot = new THREE.Points(geometry, material);
+  createDot(position : any) {
+    let geometryPoint = new THREE.Geometry();
+    geometryPoint.vertices.push(position);
+    let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
+    let dot = new THREE.Points(geometryPoint, material);
     this.scene.add( dot );
   }
 
-  convertToCanvasPosition(event){
+  convertToCanvasPosition(event: any){
     let vector = new THREE.Vector3((event.clientX / window.innerWidth)*2-1,-(event.clientY / window.innerHeight)*2+1 , 0.5);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
@@ -60,9 +66,20 @@ export class EditeurComponent implements AfterViewInit {
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
   }
 
-  onClick(event) {
+  onClick(event:any) {
     let position = this.convertToCanvasPosition(event);
     console.log(position);
     this.createDot(position);
+    this.arrayPoints.push(position);
+    if(this.arrayPoints.length>1)
+      this.createLine();
+  }
+  
+  createLine(){
+    let geometryLine= new THREE.Geometry;
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-2]);
+    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0x88d8b0}));
+    this.scene.add(line);
   }
 }
