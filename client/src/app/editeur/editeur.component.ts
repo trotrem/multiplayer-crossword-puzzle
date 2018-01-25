@@ -20,6 +20,9 @@ export class EditeurComponent implements AfterViewInit {
 
   private renderer: THREE.Renderer;
 
+  private arrayPoints :Vector3[];
+
+
 
 
 
@@ -38,7 +41,9 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.camera.lookAt(this.scene.position);
     this.animate();
-    this.canvas.addEventListener('click', (event) => this.onClick(event), false);
+    this.canvas.addEventListener('click', (event) => this.onClick(event));
+
+
 
   }
 
@@ -46,6 +51,8 @@ export class EditeurComponent implements AfterViewInit {
     this.camera  = new THREE.PerspectiveCamera() );
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.arrayPoints = new Array();
+    this.geometry = new THREE.Geometry();
   }
 
 
@@ -54,10 +61,10 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.render(this.scene, this.camera);
   }
   createDot(position : any) {
-    let geometry = new THREE.Geometry();
-    geometry.vertices.push(position);
+   let geometryPoint = new THREE.Geometry();
+    geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
-    let dot = new THREE.Points(geometry, material);
+    let dot = new THREE.Points(geometryPoint, material);
     this.scene.add( dot );
     this.camera.position.z = 100;
 
@@ -68,13 +75,25 @@ export class EditeurComponent implements AfterViewInit {
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
-    console.log()
+
   }
   onClick(event:any) {
 
     let position = this.convertToCanvasPosition(event);
     console.log(position);
     this.createDot(position);
-   console.log(this.camera.position);
+    this.arrayPoints.push(position);
+    if(this.arrayPoints.length>1)
+      this.createLine();
+  }
+  createLine(){
+    let geometryLine= new THREE.Geometry;
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1];
+    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-2];
+    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0x88d8b0}));
+    this.scene.add(line);
+
+
+
   }
 }
