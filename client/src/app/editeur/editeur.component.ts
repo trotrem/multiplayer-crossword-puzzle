@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 
 @Component({
   selector: 'app-editeur',
@@ -58,8 +59,10 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
-  convertToCanvasPosition(event: any){
-    let vector = new THREE.Vector3((event.clientX / window.innerWidth)*2-1,-(event.clientY / window.innerHeight)*2+1 , 0.5);
+  convertToWorldPosition(event: any){
+    let rect = this.canvas.getBoundingClientRect();
+    let canvasPos = new Vector3(event.clientX - rect.left, event.clientY - rect.top);
+    let vector = new THREE.Vector3((canvasPos.x / window.innerWidth)*2-1,-(canvasPos.y / window.innerHeight)*2+1 , 0.5);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
@@ -67,7 +70,7 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   onClick(event:any) {
-    let position = this.convertToCanvasPosition(event);
+    let position = this.convertToWorldPosition(event);
     console.log(position);
     this.createDot(position);
     this.arrayPoints.push(position);
