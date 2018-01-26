@@ -62,16 +62,16 @@ export class EditeurComponent implements AfterViewInit {
   convertToWorldPosition(event: any){
     let rect = this.canvas.getBoundingClientRect();
     let canvasPos = new Vector3(event.clientX - rect.left, event.clientY - rect.top);
-    let vector = new THREE.Vector3((canvasPos.x / window.innerWidth)*2-1,-(canvasPos.y / window.innerHeight)*2+1 , 0.5);
+    let vector = new THREE.Vector3((canvasPos.x / this.canvas.width)*2-1,-(canvasPos.y / this.canvas.height)*2+1 , 0);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
-    return this.camera.position.clone().add(dir.multiplyScalar(distance));
+    console.log(this.camera.position.clone().add(dir.multiplyScalar(distance)));
+    return this.camera.position.clone().add(dir);
   }
 
   onClick(event:any) {
     let position = this.convertToWorldPosition(event);
-    console.log(position);
     this.createDot(position);
     this.arrayPoints.push(position);
     if(this.arrayPoints.length>1)
