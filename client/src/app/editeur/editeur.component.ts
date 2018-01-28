@@ -30,7 +30,11 @@ export class EditeurComponent implements AfterViewInit {
     this.createScene();
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.animate();
-    this.canvas.addEventListener('click', (event) => this.onClick(event));
+    this.canvas.addEventListener('click', (event) => this.onLeftClick(event));
+    this.canvas.addEventListener('contextmenu', function(e) {  
+      e.preventDefault();  
+      this.onRightClick();
+  }.bind(this))  
   }
 
   createScene() {
@@ -72,13 +76,6 @@ export class EditeurComponent implements AfterViewInit {
     let distance = - this.camera.position.z / dir.z;
     console.log(this.camera.position.clone().add(dir.multiplyScalar(distance)));
     return this.camera.position.clone().add(dir);
-  }
-
-  onClick(event:any) {
-    if(event.which === 1)
-      this.onLeftClick(event);
-    if(event.which === 3)
-      this.onRightClick();
   }
 
   onLeftClick(event:any) {
