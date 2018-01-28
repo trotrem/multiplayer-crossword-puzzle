@@ -55,15 +55,33 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.render(this.scene, this.camera);
   }
 
-  createPoint(position : any) {
-    let geometryPoint = new THREE.Geometry();
-    geometryPoint.vertices.push(position);
-    let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
-    let dot = new THREE.Points(geometryPoint, material);
-    this.scene.add( dot );
+  onLeftClick(event:any) {
+    if(this.isClosed) {
+      return
+    }
+
+    let position = this.getPlacementPosition(event);
+    
+    this.createPoint(position);
+
+    if(this.arrayPoints.length > 0) {
+      this.createLine(position);
+    }
+
+    this.arrayPoints.push(position);
   }
 
-  createFirstDotContour(position : any) {
+  onRightClick() {
+    this.isClosed = false;
+    let nbChildren = this.scene.children.length;
+    if(this.arrayPoints.length > 0) {
+      this.arrayPoints.pop();
+      this.scene.remove(this.scene.children[nbChildren - 1]);
+      this.scene.remove(this.scene.children[nbChildren - 2]);
+    }
+  }
+
+  createFirstPointContour(position : any) {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :2,color: 0xFAA61A });
@@ -91,36 +109,18 @@ export class EditeurComponent implements AfterViewInit {
     return position;
   }
 
-  onLeftClick(event:any) {
-    if(this.isClosed) {
-      return
-    }
-
-    let position = this.getPlacementPosition(event);
-    
+  createPoint(position : any) {
     if(this.arrayPoints.length === 0) {
-      this.createFirstDotContour(position);
+      this.createFirstPointContour(position);
     }
 
-    this.createPoint(position);
-
-    if(this.arrayPoints.length > 0) {
-      this.createLine(position);
-    }
-
-    this.arrayPoints.push(position);
+    let geometryPoint = new THREE.Geometry();
+    geometryPoint.vertices.push(position);
+    let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
+    let dot = new THREE.Points(geometryPoint, material);
+    this.scene.add( dot );
   }
 
-  onRightClick() {
-    this.isClosed = false;
-    let nbChildren = this.scene.children.length;
-    if(this.arrayPoints.length > 0) {
-      this.arrayPoints.pop();
-      this.scene.remove(this.scene.children[nbChildren - 1]);
-      this.scene.remove(this.scene.children[nbChildren - 2]);
-    }
-  }
-  
   createLine(position:any){
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
