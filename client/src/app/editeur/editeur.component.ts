@@ -20,6 +20,8 @@ export class EditeurComponent implements AfterViewInit {
 
   private arrayPoints :THREE.Vector3[];
 
+  private isClosed : boolean;
+
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
@@ -28,13 +30,15 @@ export class EditeurComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.createScene();
-    this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.animate();
+
+    this.arrayPoints = new Array();
+
     this.canvas.addEventListener('click', (event) => this.onLeftClick(event));
     this.canvas.addEventListener('contextmenu', function(e) {  
       e.preventDefault();  
       this.onRightClick();
-  }.bind(this))  
+    }.bind(this));
   }
 
   createScene() {
@@ -43,7 +47,7 @@ export class EditeurComponent implements AfterViewInit {
     this.camera.lookAt(new THREE.Vector3(0,0,0));
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-    this.arrayPoints = new Array();
+    this.renderer.setSize( window.innerWidth, window.innerHeight );
   }
 
   animate() {
@@ -51,7 +55,7 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.render(this.scene, this.camera);
   }
 
-  createDot(position : any) {
+  createPoint(position : any) {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
@@ -74,21 +78,41 @@ export class EditeurComponent implements AfterViewInit {
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
     let distance = - this.camera.position.z / dir.z;
-    console.log(this.camera.position.clone().add(dir.multiplyScalar(distance)));
-    return this.camera.position.clone().add(dir);
+    return this.camera.position.clone().add(dir.multiplyScalar(distance));
+  }
+
+  getPlacementPosition(event:any) {
+    let position = this.convertToWorldPosition(event);
+    if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < 1)
+    {
+      position = this.arrayPoints[0];
+      this.isClosed = true;
+    }
+    return position;
   }
 
   onLeftClick(event:any) {
-    let position = this.convertToWorldPosition(event);
-    this.arrayPoints.push(position);
-    if(this.arrayPoints.length === 1)
+    if(this.isClosed) {
+      return
+    }
+
+    let position = this.getPlacementPosition(event);
+    
+    if(this.arrayPoints.length === 0) {
       this.createFirstDotContour(position);
-    this.createDot(position);
-    if(this.arrayPoints.length > 1)
-      this.createLine();
+    }
+
+    this.createPoint(position);
+
+    if(this.arrayPoints.length > 0) {
+      this.createLine(position);
+    }
+
+    this.arrayPoints.push(position);
   }
 
   onRightClick() {
+    this.isClosed = false;
     let nbChildren = this.scene.children.length;
     if(this.arrayPoints.length > 0) {
       this.arrayPoints.pop();
@@ -97,10 +121,10 @@ export class EditeurComponent implements AfterViewInit {
     }
   }
   
-  createLine(){
+  createLine(position:any){
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
-    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-2]);
+    geometryLine.vertices.push(position);
     let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0x88d8b0}));
     this.scene.add(line);
   }
