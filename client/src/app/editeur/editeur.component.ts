@@ -20,10 +20,6 @@ export class EditeurComponent implements AfterViewInit {
 
   private arrayPoints :THREE.Vector3[];
 
-
-
-
-
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
@@ -59,6 +55,14 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
+  createFirstDotContour(position : any) {
+    let geometryPoint = new THREE.Geometry();
+    geometryPoint.vertices.push(position);
+    let material = new THREE.PointsMaterial({ size :2,color: 0xFAA61A });
+    let dot = new THREE.Points(geometryPoint, material);
+    this.scene.add( dot );
+  }
+
   convertToWorldPosition(event: any){
     let rect = this.canvas.getBoundingClientRect();
     let canvasPos = new Vector3(event.clientX - rect.left, event.clientY - rect.top);
@@ -79,22 +83,20 @@ export class EditeurComponent implements AfterViewInit {
 
   onLeftClick(event:any) {
     let position = this.convertToWorldPosition(event);
-    this.createDot(position);
     this.arrayPoints.push(position);
+    if(this.arrayPoints.length === 1)
+      this.createFirstDotContour(position);
+    this.createDot(position);
     if(this.arrayPoints.length > 1)
       this.createLine();
   }
 
   onRightClick() {
     let nbChildren = this.scene.children.length;
-    if(this.arrayPoints.length > 1) {
+    if(this.arrayPoints.length > 0) {
       this.arrayPoints.pop();
       this.scene.remove(this.scene.children[nbChildren - 1]);
       this.scene.remove(this.scene.children[nbChildren - 2]);
-    }
-    else if(this.arrayPoints.length === 1){
-      this.arrayPoints.pop();
-      this.scene.remove(this.scene.children[0]);
     }
   }
   
