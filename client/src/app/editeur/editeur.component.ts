@@ -132,7 +132,7 @@ export class EditeurComponent implements AfterViewInit {
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
     geometryLine.vertices.push(position);
-    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0x88d8b0}));
+    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0xff00a7}));
     this.scene.add(line);
   }
 }
