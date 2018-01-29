@@ -35,13 +35,13 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints = new Array();
 
     this.canvas.addEventListener('click', (event) => this.onLeftClick(event));
-    this.canvas.addEventListener('contextmenu', function(e) {  
-      e.preventDefault();  
+    this.canvas.addEventListener('contextmenu', function(e:any) {
+      e.preventDefault();
       this.onRightClick();
     }.bind(this));
   }
 
-  createScene() {
+  public createScene(): void {
     this.camera  = new THREE.PerspectiveCamera();
     this.camera.position.set(0, 0, 100);
     this.camera.lookAt(new THREE.Vector3(0,0,0));
@@ -50,18 +50,19 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer.setSize( window.innerWidth, window.innerHeight );
   }
 
-  animate() {
+  public animate():void {
     requestAnimationFrame(() => this.animate());
     this.renderer.render(this.scene, this.camera);
   }
 
-  onLeftClick(event:any) {
+  public onLeftClick(event:any): void {
+
     if(this.isClosed) {
-      return
+      return null;
     }
 
     let position = this.getPlacementPosition(event);
-    
+
     this.createPoint(position);
 
     if(this.arrayPoints.length > 0) {
@@ -71,7 +72,8 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints.push(position);
   }
 
-  onRightClick() {
+  public onRightClick(): void {
+
     this.isClosed = false;
     let nbChildren = this.scene.children.length;
     if(this.arrayPoints.length > 0) {
@@ -81,7 +83,8 @@ export class EditeurComponent implements AfterViewInit {
     }
   }
 
-  createFirstPointContour(position : any) {
+  private createFirstPointContour(position : THREE.Vector3): void {
+
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :2,color: 0xFAA61A });
@@ -89,9 +92,10 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
-  convertToWorldPosition(event: any){
+ private convertToWorldPosition(event: THREE.Vector3): THREE.Vector3 {
+
     let rect = this.canvas.getBoundingClientRect();
-    let canvasPos = new Vector3(event.clientX - rect.left, event.clientY - rect.top);
+    let canvasPos = new Vector3(event.x - rect.left, event.y - rect.top);
     let vector = new THREE.Vector3((canvasPos.x / this.canvas.width)*2-1,-(canvasPos.y / this.canvas.height)*2+1 , 0);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
@@ -99,7 +103,8 @@ export class EditeurComponent implements AfterViewInit {
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
   }
 
-  getPlacementPosition(event:any) {
+  private getPlacementPosition(event:THREE.Vector3): THREE.Vector3 {
+
     let position = this.convertToWorldPosition(event);
     if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < 1)
     {
@@ -109,7 +114,8 @@ export class EditeurComponent implements AfterViewInit {
     return position;
   }
 
-  createPoint(position : any) {
+  public createPoint(position : THREE.Vector3): void {
+
     if(this.arrayPoints.length === 0) {
       this.createFirstPointContour(position);
     }
@@ -121,7 +127,8 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
-  createLine(position:any){
+  public createLine(position:THREE.Vector3): void {
+
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
     geometryLine.vertices.push(position);
