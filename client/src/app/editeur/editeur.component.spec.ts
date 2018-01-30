@@ -5,8 +5,7 @@ import { EditeurComponent } from './editeur.component';
 describe('EditeurComponent', () => {
   let component: EditeurComponent;
   let fixture: ComponentFixture<EditeurComponent>;
-  let position : THREE.Vector3;
-  position = new THREE.Vector3(0,0,0);
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,15 +20,22 @@ describe('EditeurComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create a point', () => {
+
+    let position = new THREE.Vector3(-23,-2,0);
+    component.createPoint(position);
     expect(component).toBeTruthy();
   });
-  it('should create a point',function (){
-    let position : THREE.Vector3;
-    position = new THREE.Vector3(1,2,0);
+  it('should create a segement',()=> {
 
-    component.createPoint(position);
+    let position1 = new THREE.Vector3(-23,-2,0);
+    let position2 = new THREE.Vector3(-3,2,0);
+    component.createLine(position1,position2);
     expect(component).toBeDefined();
   )};
+  
+
+
+
 
 });
