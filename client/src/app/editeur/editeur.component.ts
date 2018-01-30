@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 
-const MAX_SELECTION_DISTANCE: number = 1;
+const MAX_SELECTION_DISTANCE: number = 2;
 
 @Component({
   selector: 'app-editeur',
@@ -47,12 +47,10 @@ export class EditeurComponent implements AfterViewInit {
       event.preventDefault();  
       this.onRightClick();
     });
-    this.canvas.addEventListener('dragstart', (event:any) => { 
-      console.log("hey");
+    this.canvas.addEventListener('dragstart', (event:any) => {
       this.dragIndex = this.getDraggedPointIndex(event);
     });
     this.canvas.addEventListener('dragend', (event:any) => {
-      console.log(this.dragIndex);
       event.preventDefault();
       this.arrayPoints[this.dragIndex] = this.convertToWorldPosition(event);
       this.dragIndex = -1;
@@ -109,17 +107,10 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints.forEach((point, i) => {
       if(position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
         index = i
+        return
       };
     });
     return index;
-  }
-
-  private createFirstPointContour(position : THREE.Vector3): void {
-    let geometryPoint = new THREE.Geometry();
-    geometryPoint.vertices.push(position);
-    let material = new THREE.PointsMaterial({ size :2,color: 0xFAA61A });
-    let dot = new THREE.Points(geometryPoint, material);
-    this.scene.add( dot );
   }
 
  private convertToWorldPosition(event: THREE.Vector3): THREE.Vector3 {
@@ -142,10 +133,18 @@ export class EditeurComponent implements AfterViewInit {
     return position;
   }
 
+  private createFirstPointContour(position : THREE.Vector3): void {
+    let geometryPoint = new THREE.Geometry();
+    geometryPoint.vertices.push(position);
+    let material = new THREE.PointsMaterial({ size :5,color: 0xFAA61A });
+    let dot = new THREE.Points(geometryPoint, material);
+    this.scene.add( dot );
+  }
+
   public createPoint(position : THREE.Vector3): void {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
-    let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
+    let material = new THREE.PointsMaterial({ size :3,color: 0x88d8b0 });
     let dot = new THREE.Points(geometryPoint, material);
     this.scene.add( dot );
   }
@@ -154,7 +153,7 @@ export class EditeurComponent implements AfterViewInit {
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
-    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0xff00a7}));
+    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({'linewidth': 6, color:0xff00a7}));
     this.scene.add(line);
   }
 
