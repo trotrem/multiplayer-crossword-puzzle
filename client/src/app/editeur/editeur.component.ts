@@ -48,12 +48,15 @@ export class EditeurComponent implements AfterViewInit {
       this.onRightClick();
     });
     this.canvas.addEventListener('dragstart', (event:any) => { 
-      event.preventDefault();
+      console.log("hey");
       this.dragIndex = this.getDraggedPointIndex(event);
     });
-    this.canvas.addEventListener('mouseup', (event:any) => {
+    this.canvas.addEventListener('dragend', (event:any) => {
+      console.log(this.dragIndex);
       event.preventDefault();
+      this.arrayPoints[this.dragIndex] = this.convertToWorldPosition(event);
       this.dragIndex = -1;
+      this.redraw();
     });
   }
 
@@ -72,24 +75,25 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public onLeftClick(event:any): void {
-
     if(this.isClosed) {
       return null;
     }
 
     let position = this.getPlacementPosition(event);
 
+    if(this.arrayPoints.length === 0) {
+      this.createFirstPointContour(position);
+    }
     this.createPoint(position);
 
     if(this.arrayPoints.length > 0) {
-      this.createLine(position);
+      this.createLine(position, this.arrayPoints[this.arrayPoints.length-1]);
     }
 
     this.arrayPoints.push(position);
   }
 
   public onRightClick(): void {
-
     this.isClosed = false;
     let nbChildren = this.scene.children.length;
     if(this.arrayPoints.length > 0) {
@@ -129,7 +133,6 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   private getPlacementPosition(event:THREE.Vector3): THREE.Vector3 {
-
     let position = this.convertToWorldPosition(event);
     if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION_DISTANCE)
     {
@@ -140,11 +143,6 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public createPoint(position : THREE.Vector3): void {
-
-    if(this.arrayPoints.length === 0) {
-      this.createFirstPointContour(position);
-    }
-
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :1,color: 0x88d8b0 });
@@ -152,12 +150,30 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
-  public createLine(position:THREE.Vector3): void {
-
+  public createLine(position:THREE.Vector3, last:THREE.Vector3): void {
     let geometryLine= new THREE.Geometry;
-    geometryLine.vertices.push(this.arrayPoints[this.arrayPoints.length-1]);
+    geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
     let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({color:0xff00a7}));
     this.scene.add(line);
+  }
+
+  private redraw(): void {
+    if(!this.arrayPoints) {
+      return
+    }
+
+    while(this.scene.children.length > 0){ 
+      this.scene.remove(this.scene.children[0]); 
+    }
+    
+    this.createFirstPointContour(this.arrayPoints[0]);
+    this.createPoint(this.arrayPoints[0]);
+    let last = this.arrayPoints[0];
+    for(let position of this.arrayPoints.slice(1)) {
+      this.createLine(position, last);
+      this.createPoint(position);
+      last = position;
+    }
   }
 }
