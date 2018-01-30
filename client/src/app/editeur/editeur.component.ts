@@ -1,12 +1,14 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
-import { Vector3 } from 'three';
+
+const MAX_SELECTION_DISTANCE: number = 1;
 
 @Component({
   selector: 'app-editeur',
   templateUrl: './editeur.component.html',
   styleUrls: ['./editeur.component.css']
 })
+
 export class EditeurComponent implements AfterViewInit {
 
   @ViewChild('canvas')
@@ -18,9 +20,11 @@ export class EditeurComponent implements AfterViewInit {
 
   private renderer: THREE.Renderer;
 
-  private arrayPoints :THREE.Vector3[];
+  private arrayPoints: THREE.Vector3[];
 
-  private isClosed : boolean;
+  private isClosed: boolean;
+
+  private dragIndex: number;
 
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
@@ -31,14 +35,26 @@ export class EditeurComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.createScene();
     this.animate();
+    this.subscribeEvents();
 
+    this.dragIndex = -1;
     this.arrayPoints = new Array();
+  }
 
+  subscribeEvents() {
     this.canvas.addEventListener('click', (event) => this.onLeftClick(event));
-    this.canvas.addEventListener('contextmenu', function(e) {  
-      e.preventDefault();  
+    this.canvas.addEventListener('contextmenu', function(event:any) {  
+      event.preventDefault();  
       this.onRightClick();
     }.bind(this));
+    this.canvas.addEventListener('dragstart', (event) => { 
+      event.preventDefault();
+      this.dragIndex = this.getDraggedPointIndex(event);
+    });
+    this.canvas.addEventListener('mouseup', (event) => {
+      event.preventDefault();
+      this.dragIndex = -1;
+    });
   }
 
   createScene() {
@@ -81,6 +97,17 @@ export class EditeurComponent implements AfterViewInit {
     }
   }
 
+  getDraggedPointIndex(event:any) {
+    let position = this.convertToWorldPosition(event);
+    let index = -1;
+    this.arrayPoints.forEach((point, i) => {
+      if(position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
+        index = i
+      };
+    });
+    return index;
+  }
+
   createFirstPointContour(position : any) {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
@@ -91,7 +118,7 @@ export class EditeurComponent implements AfterViewInit {
 
   convertToWorldPosition(event: any){
     let rect = this.canvas.getBoundingClientRect();
-    let canvasPos = new Vector3(event.clientX - rect.left, event.clientY - rect.top);
+    let canvasPos = new THREE.Vector3(event.clientX - rect.left, event.clientY - rect.top);
     let vector = new THREE.Vector3((canvasPos.x / this.canvas.width)*2-1,-(canvasPos.y / this.canvas.height)*2+1 , 0);
     vector.unproject(this.camera);
     let dir = vector.sub(this.camera.position);
@@ -101,7 +128,7 @@ export class EditeurComponent implements AfterViewInit {
 
   getPlacementPosition(event:any) {
     let position = this.convertToWorldPosition(event);
-    if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < 1)
+    if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION_DISTANCE)
     {
       position = this.arrayPoints[0];
       this.isClosed = true;
