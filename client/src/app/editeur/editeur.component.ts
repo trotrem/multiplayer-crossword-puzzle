@@ -53,6 +53,9 @@ export class EditeurComponent implements AfterViewInit {
     this.canvas.addEventListener('dragend', (event:any) => {
       event.preventDefault();
       this.arrayPoints[this.dragIndex] = this.convertToWorldPosition(event);
+      if(this.dragIndex === this.arrayPoints.length - 1 && this.isClosed) {
+        this.arrayPoints[0] = this.convertToWorldPosition(event);
+      }
       this.dragIndex = -1;
       this.redraw();
     });
@@ -107,7 +110,6 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints.forEach((point, i) => {
       if(position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
         index = i
-        return
       };
     });
     return index;
