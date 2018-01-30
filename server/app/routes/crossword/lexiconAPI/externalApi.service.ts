@@ -19,6 +19,24 @@ export class ExternalApiService {
         agent : false // crée un nouveau par défaut
         // createConnection : ...
         // timeout : ...
+    };
+
+    // https://basarat.gitbooks.io/typescript/docs/promise.html 
+    requestInfo(requestOptions : http.RequestOptions) : Promise<any> {
+        return new Promise((resolve, reject) => {
+            // ...
+            
+           resolve('')
+            
+           reject()
+
+
+        });
     }
+
+
+   /* public getDefinitions(word : string) : Promise<string[]> {
+        return this
+    }*/
 
 }
