@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
-
+import {Contraintes} from '../contraintes'
 const MAX_SELECTION_DISTANCE: number = 2;
 
 @Component({
@@ -26,6 +26,8 @@ export class EditeurComponent implements AfterViewInit {
 
   private dragIndex: number;
 
+  private contraintes: Contraintes;
+
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
@@ -39,6 +41,7 @@ export class EditeurComponent implements AfterViewInit {
 
     this.dragIndex = -1;
     this.arrayPoints = new Array();
+    this.contraintes = new Contraintes();
   }
 
   subscribeEvents() {
@@ -146,16 +149,21 @@ export class EditeurComponent implements AfterViewInit {
   public createPoint(position : THREE.Vector3): void {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
-    let material = new THREE.PointsMaterial({ size :3,color: 0x88d8b0 });
+    let material = new THREE.PointsMaterial({ size :3,color: 0xff00a7 });
     let dot = new THREE.Points(geometryPoint, material);
     this.scene.add( dot );
   }
 
   public createLine(position:THREE.Vector3, last:THREE.Vector3): void {
+	
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
-    let line = new THREE.Line(geometryLine,new THREE.LineBasicMaterial({'linewidth': 6, color:0xff00a7}));
+    let color;
+    if (this.contraintes.isValid(this.arrayPoints, position, last))
+      color = 0x88d8b0;
+    else color = 0xFF0000; 
+    let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
   }
 
