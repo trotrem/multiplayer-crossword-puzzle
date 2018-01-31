@@ -16,16 +16,16 @@ export class Contraintes {
 		return true;
 	}
 	
-    public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): boolean {
-      let index = arrayPoints.indexOf(position2);
-      if (index == 0)
-        return true
+  public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): boolean {
+    let index = arrayPoints.indexOf(position2);
+    if (index == 0)
+      return true
 
-      let position3 = arrayPoints[index - 1];
-    
-      if (this.moreThan45Degres(position1, position2, position3)){
-        return true;
-      }
-      return false;
+    let position3 = arrayPoints[index - 1];
+  
+    if (this.moreThan45Degres(position1, position2, position3)){
+      return true;
+    }
+    return false;
 	}
 }
