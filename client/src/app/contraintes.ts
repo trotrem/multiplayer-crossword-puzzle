@@ -7,14 +7,13 @@ export class Contraintes {
     console.log(position1);
     console.log(position2);
     console.log(position3);
-    let angle1 = Math.atan2(position1.y - position2.y, position1.x - position2.x);
-    let angle2 = Math.atan2(position2.y - position3.y, position2.x - position3.x);
-    
-    let angle = Math.abs(angle1 - angle2);
-    
+    let AB = Math.sqrt(Math.pow(position2.x-position1.x,2)+ Math.pow(position2.y-position1.y,2));    
+    let BC = Math.sqrt(Math.pow(position2.x-position3.x,2)+ Math.pow(position2.y-position3.y,2)); 
+    let AC = Math.sqrt(Math.pow(position3.x-position1.x,2)+ Math.pow(position3.y-position1.y,2));
+    let angle = Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
+
     angle = 180 * (angle) / Math.PI;
     
-      angle = Math.abs(180 - angle);
 		console.log(angle);
 		if(angle < 45)
 			return false;
