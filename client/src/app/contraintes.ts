@@ -40,7 +40,7 @@ export class Contraintes {
 
         vec.y = ((position2.y - position1.y) * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
           - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x + (position1.x - position2.x) * position1.y)) / det;
-        console.log(vec);
+       // console.log(vec);
    // let vec = new THREE.Vector3(3, 1.5, 0);
         if (this.findIsInLine(position1, position2, vec) && this.findIsInLine(position3, position4, vec)) {
           return true;
@@ -83,23 +83,17 @@ export class Contraintes {
       return false;
     }
     else {
-      index = 0;
       
-     /* while (reponse || index < arrayPoints.length) {
-        reponse = this.segmentsIntersection(position1, position2, arrayPoints[index], arrayPoints[index + 1]);
-        console.log (reponse)
-        index++;
-        
-      }*/
-      for (let i = 0; i < arrayPoints.length; i++) {
+      for (let i = 0; i < arrayPoints.length-1; i++) {
+        //index = arrayPoints.indexOf(arrayPoints[i + 1]);
+        //console.log(arrayPoints[i + 1]);
+
         reponse = this.segmentsIntersection(position1, position2, arrayPoints[i], arrayPoints[i + 1]);
         console.log(reponse);
         if (reponse)
           return false;
       }
-      /*if (reponse) {
-        return false;
-      }*/
+      
     }
     return true;
 	}
