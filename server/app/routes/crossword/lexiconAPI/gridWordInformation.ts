@@ -1,26 +1,33 @@
 
 // Classe contenant les infos d'un mot
-export class gridWordInformation {
+export class GridWordInformation {
     private word: string;
     private defs: string[];
     private frequency: number;
+    private wordInfo: [string, string[], number];
 
     constructor(_word: string, _defs: string[], _frequency: number) {
         this.word = _word;
         this.defs = _defs;
         this.frequency = _frequency;
+
+        this.wordInfo = [_word, _defs, _frequency]
     }
 
     public getWord(): string {
         return this.word;
     }
 
-    public getDefs(): string[] {
+    public getDefinitions(): string[] {
         return this.defs;
     }
 
     public getFrequency(): number {
         return this.frequency;
+    }
+
+    public getInfo(): [string, string[], number] {
+        return this.wordInfo;
     }
 
 

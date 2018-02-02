@@ -3,7 +3,10 @@ import * as requestOption from 'request-promise-native'
 
 export class ExternalApiService {
 
-    public requestResult: JSON;
+    private requestResult: JSON;
+    private definitions: string[];
+    private frequency: number;
+
     public options = {
         method: 'GET',
         uri: 'http://api.datamuse.com/words',
@@ -26,7 +29,6 @@ export class ExternalApiService {
             }*/)
             .catch((err: any) => { console.log('Erreur...') });
     }
-
     
    /* public async getWordsList(word: string) {
         await this.requestWordInfo(word);
@@ -36,26 +38,29 @@ export class ExternalApiService {
     public async getWordDefinitions(word: string) {
         await this.requestWordInfo(word);
         if (!this.requestResult[0].hasOwnProperty('defs')) {
-            console.log('pas de defs');
+            console.log('pas de defs'); // On ajoute pas le mot
         }
         else{
-            console.log('Defs');
+            console.log('possede defs'); // On ajoute le mot
+            this.definitions = this.requestResult[0].defs;
+            for (let i = 0; i < this.definitions.length; i++){
+                console.log(this.definitions[i]);
+            }
         }
-            
-
     }
 
-    /*public async getWordFrequency(word: string) {
+    public async getWordFrequency(word: string) {
         await this.requestWordInfo(word);
         console.log(this.requestResult[0].frequency)
-    }*/
+        
+    }
 }
 
 //let bleh = new ExternalApiService;
 //bleh.requestWordInfo("hall");
 
-let bleh = new ExternalApiService;
-bleh.getWordDefinitions("the");
+/*let bleh = new ExternalApiService;
+bleh.getWordDefinitions("hall");*/
 
 /*bleh.requestWordInfo("the")
     .then((response) => {
