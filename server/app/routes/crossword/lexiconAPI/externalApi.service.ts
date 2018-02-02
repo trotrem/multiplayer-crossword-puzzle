@@ -28,36 +28,38 @@ export class ExternalApiService {
     }
 
     
-    public async getWordsList(word: string) {
+   /* public async getWordsList(word: string) {
         await this.requestWordInfo(word);
-        for (let i =0; i < /*nb element JSON*/; i++)
-    }
+        for (let i =0; i < /*nb element JSON; i++)
+    }*/
 
     public async getWordDefinitions(word: string) {
         await this.requestWordInfo(word);
-        if (/*trouver la fonction qui regarde si jai un tag defs...*/) {
-            console.log('Aucune définition');
+        if (!this.requestResult[0].hasOwnProperty('defs')) {
+            console.log('pas de defs');
         }
-        else
-            console.log(this.requestResult[0].defs);
+        else{
+            console.log('Defs');
+        }
+            
 
     }
 
-    public async getWordFrequency(word: string) {
+    /*public async getWordFrequency(word: string) {
         await this.requestWordInfo(word);
         console.log(this.requestResult[0].frequency)
-    }
+    }*/
 }
 
 //let bleh = new ExternalApiService;
 //bleh.requestWordInfo("hall");
 
 let bleh = new ExternalApiService;
-//bleh.getWordDefinitions("hall");
+bleh.getWordDefinitions("the");
 
-bleh.requestWordInfo("the")
+/*bleh.requestWordInfo("the")
     .then((response) => {
         console.log(bleh.requestResult[0].defs[0]);
-    });
+    });*/
 
 //searchDefs()
