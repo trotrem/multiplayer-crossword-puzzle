@@ -161,17 +161,33 @@ export class EditeurComponent implements AfterViewInit {
     this.scene.add( dot );
   }
 
-  public createLine(position:THREE.Vector3, last:THREE.Vector3): void {
-    let geometryLine= new THREE.Geometry;
+  public createLine(position: THREE.Vector3, last: THREE.Vector3): void {
+    let arrayTmp = new Array();
+    let color;
+    arrayTmp = this.contraintes.isValid(this.arrayPoints, position, last);
+    
+    if (arrayTmp.length == 0)
+      color = 0x88d8b0;
+    else {
+      color = 0xFF0000;//red
+      console.log(arrayTmp);
+      for (let i = 0; i < arrayTmp.length; i += 2) {
+        let index = this.arrayPoints.indexOf(arrayTmp[i]);
+
+        this.scene.remove(this.scene.children[index+1]);
+        let geoLine = new THREE.Geometry;
+        geoLine.vertices.push(arrayTmp[i]);
+        geoLine.vertices.push(arrayTmp[i+1]);
+        let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
+        this.scene.add(line);
+      }
+    }
+    let geometryLine = new THREE.Geometry;
     geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
-    let color;
-    if (this.contraintes.isValid(this.arrayPoints, position, last))
-      color = 0x88d8b0;
-    else 
-      color = 0xFF0000; 
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
+
   }
 
   private redraw(newArray:THREE.Vector3[]): void {
