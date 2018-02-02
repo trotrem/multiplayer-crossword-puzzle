@@ -13,7 +13,7 @@ export class Grid {
     private blackSquares: number[];
     private notBlackSquares: number[] = [1,11,21,31,41,51,61,71,81,91,10,12,13,14,15,16,17,18,
                                         19,8,28,38,48,58,68,78,88,98,80,82,83,84,85,86,87,89];
-    private listOfWordV : Word[];
+    private listOfWord : Word[];
     private listOfWordH : Word[];
 
     constructor() {
@@ -77,7 +77,7 @@ export class Grid {
     }
 
     private createListOfWord() : void{
-
+        
 
     }
     private putWords(): void {
