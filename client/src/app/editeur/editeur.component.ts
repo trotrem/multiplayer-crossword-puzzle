@@ -94,11 +94,18 @@ export class EditeurComponent implements AfterViewInit {
   public onRightClick(): void {
     this.isClosed = false;
     let nbChildren = this.scene.children.length;
-    if(this.arrayPoints.length > 0) {
-      this.arrayPoints.pop();
+    let tempArray = this.arrayPoints;
+    this.arrayPoints = [];
+    tempArray.pop();
+    if (tempArray.length > 0) {
+      
+      this.redraw(tempArray);
+    }
+    else {
       this.scene.remove(this.scene.children[nbChildren - 1]);
       this.scene.remove(this.scene.children[nbChildren - 2]);
     }
+
   }
 
   private onDragEnd(event:any): void {
@@ -158,30 +165,39 @@ export class EditeurComponent implements AfterViewInit {
     geometryPoint.vertices.push(position);
     let material = new THREE.PointsMaterial({ size :3,color: 0xff00a7 });
     let dot = new THREE.Points(geometryPoint, material);
-    this.scene.add( dot );
+    this.scene.add(dot);
+    
   }
 
   public createLine(position: THREE.Vector3, last: THREE.Vector3): void {
     let arrayTmp = new Array();
     let color;
     arrayTmp = this.contraintes.isValid(this.arrayPoints, position, last);
+
+    let arrayIndex = new Array();
     
     if (arrayTmp.length == 0)
       color = 0x88d8b0;
     else {
       color = 0xFF0000;//red
-      console.log(arrayTmp);
+      
       for (let i = 0; i < arrayTmp.length; i += 2) {
         let index = this.arrayPoints.indexOf(arrayTmp[i]);
+        if (index != 0)
+          index *= 2;
+        index += 3;
 
-        this.scene.remove(this.scene.children[index+1]);
         let geoLine = new THREE.Geometry;
         geoLine.vertices.push(arrayTmp[i]);
         geoLine.vertices.push(arrayTmp[i+1]);
         let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
         this.scene.add(line);
       }
+      for (let i = 0; i < arrayIndex.length; i++) {
+        this.scene.remove(this.scene.children[arrayIndex[i]]);
+      }
     }
+    
     let geometryLine = new THREE.Geometry;
     geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
@@ -202,7 +218,7 @@ export class EditeurComponent implements AfterViewInit {
     this.createFirstPointContour(newArray[0]);
     this.createPoint(newArray[0]);
     this.arrayPoints.push(newArray[0]);
-    for(let position of newArray.slice(1)) {
+    for (let position of newArray.slice(1)) {
       this.createLine(position, this.arrayPoints[this.arrayPoints.length-1]);
       this.createPoint(position);
       this.arrayPoints.push(position);

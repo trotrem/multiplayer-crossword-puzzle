@@ -55,6 +55,7 @@ export class Contraintes {
 }
 
   public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): THREE.Vector3[] {
+
     let arrayTmp = new Array();
     let reponse = false;
     let index = arrayPoints.indexOf(position2);
@@ -64,11 +65,10 @@ export class Contraintes {
     let position3 = arrayPoints[index - 1];
 
     if (!this.moreThan45Degres(position1, position2, position3)) {
-      arrayTmp.push(position2);
       arrayTmp.push(position3);
+      arrayTmp.push(position2);
     }
     
-
       for (let i = 0; i < arrayPoints.length - 1; i++) {
         reponse = this.segmentsIntersection(position1, position2, arrayPoints[i], arrayPoints[i + 1]);
 
@@ -78,7 +78,6 @@ export class Contraintes {
         }
       }
    
-   // console.log(arrayTmp.length);
     return arrayTmp;
   }
 }
