@@ -54,13 +54,7 @@ export class EditeurComponent implements AfterViewInit {
       this.dragIndex = this.getDraggedPointIndex(event);
     });
     this.canvas.addEventListener('dragend', (event:any) => {
-      event.preventDefault();
-      this.arrayPoints[this.dragIndex] = this.convertToWorldPosition(event);
-      if(this.dragIndex === this.arrayPoints.length - 1 && this.isClosed) {
-        this.arrayPoints[0] = this.convertToWorldPosition(event);
-      }
-      this.dragIndex = -1;
-      this.redraw();
+      this.onDragEnd(event);
     });
   }
 
@@ -105,6 +99,19 @@ export class EditeurComponent implements AfterViewInit {
       this.scene.remove(this.scene.children[nbChildren - 1]);
       this.scene.remove(this.scene.children[nbChildren - 2]);
     }
+  }
+
+  private onDragEnd(event:any): void {
+    event.preventDefault();
+    let tempArray = this.arrayPoints;
+    this.arrayPoints = [];
+    let position = this.convertToWorldPosition(event)
+    tempArray[this.dragIndex] = position;
+    if(this.dragIndex === tempArray.length - 1 && this.isClosed) {
+      tempArray[0] = position;
+    }
+    this.dragIndex = -1;
+    this.redraw(tempArray);
   }
 
   getDraggedPointIndex(event:any) {
@@ -155,20 +162,20 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public createLine(position:THREE.Vector3, last:THREE.Vector3): void {
-	
     let geometryLine= new THREE.Geometry;
     geometryLine.vertices.push(last);
     geometryLine.vertices.push(position);
     let color;
     if (this.contraintes.isValid(this.arrayPoints, position, last))
       color = 0x88d8b0;
-    else color = 0xFF0000; 
+    else 
+      color = 0xFF0000; 
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
   }
 
-  private redraw(): void {
-    if(!this.arrayPoints) {
+  private redraw(newArray:THREE.Vector3[]): void {
+    if(!newArray) {
       return
     }
 
@@ -176,13 +183,13 @@ export class EditeurComponent implements AfterViewInit {
       this.scene.remove(this.scene.children[0]); 
     }
     
-    this.createFirstPointContour(this.arrayPoints[0]);
-    this.createPoint(this.arrayPoints[0]);
-    let last = this.arrayPoints[0];
-    for(let position of this.arrayPoints.slice(1)) {
-      this.createLine(position, last);
+    this.createFirstPointContour(newArray[0]);
+    this.createPoint(newArray[0]);
+    this.arrayPoints.push(newArray[0]);
+    for(let position of newArray.slice(1)) {
+      this.createLine(position, this.arrayPoints[this.arrayPoints.length-1]);
       this.createPoint(position);
-      last = position;
+      this.arrayPoints.push(position);
     }
   }
 }
