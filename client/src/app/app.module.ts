@@ -11,7 +11,7 @@ import { BasicService } from "./basic.service";
 @NgModule({
     declarations: [
         AppComponent,
-        GameComponent
+        GameComponent,
     ],
     imports: [
         BrowserModule,
