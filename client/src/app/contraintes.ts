@@ -56,24 +56,24 @@ export class Contraintes {
 
     let arrayTmp = new Array();
     let reponse = false;
-    let index = arrayPoints.indexOf(position2);
+    let index = arrayPoints.indexOf(position1);
     if (index == 0)
       return arrayTmp;
 
-    let position3 = arrayPoints[index - 1];
+    let position0 = arrayPoints[index - 1];
 
-    if (!this.moreThan45Degres(position1, position2, position3)) {
-      arrayTmp.push(position3);
-      arrayTmp.push(position2);
+    if (!this.moreThan45Degres(position2, position1, position0)) {
+      arrayTmp.push(position0);
+      arrayTmp.push(position1);
     }
 
-    if (position1.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position1, position2)) {
+    if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
       arrayTmp.push(arrayPoints[1]);
-      arrayTmp.push(position1);
+      arrayTmp.push(position2);
     }
     
     for (let i = 0; i < arrayPoints.length - 1; i++) {
-      reponse = this.segmentsIntersection(position1, position2, arrayPoints[i], arrayPoints[i + 1]);
+      reponse = this.segmentsIntersection(position2, position1, arrayPoints[i], arrayPoints[i + 1]);
 
       if (reponse) {
         arrayTmp.push(arrayPoints[i]);

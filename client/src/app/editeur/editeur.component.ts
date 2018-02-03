@@ -85,7 +85,7 @@ export class EditeurComponent implements AfterViewInit {
     this.createPoint(position);
 
     if(this.arrayPoints.length > 0) {
-      this.createLine(position, this.arrayPoints[this.arrayPoints.length-1]);
+      this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
     }
 
     this.arrayPoints.push(position);
@@ -169,10 +169,10 @@ export class EditeurComponent implements AfterViewInit {
     
   }
 
-  public createLine(position: THREE.Vector3, last: THREE.Vector3): void {
+  public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void {
     let arrayTmp = new Array();
     let color;
-    arrayTmp = this.contraintes.isValid(this.arrayPoints, position, last);
+    arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
 
     let arrayIndex = new Array();
     
@@ -199,8 +199,8 @@ export class EditeurComponent implements AfterViewInit {
     }
     
     let geometryLine = new THREE.Geometry;
-    geometryLine.vertices.push(last);
-    geometryLine.vertices.push(position);
+    geometryLine.vertices.push(lastPos);
+    geometryLine.vertices.push(newPos);
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
 
@@ -219,7 +219,7 @@ export class EditeurComponent implements AfterViewInit {
     this.createPoint(newArray[0]);
     this.arrayPoints.push(newArray[0]);
     for (let position of newArray.slice(1)) {
-      this.createLine(position, this.arrayPoints[this.arrayPoints.length-1]);
+      this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
       this.createPoint(position);
       this.arrayPoints.push(position);
     }
