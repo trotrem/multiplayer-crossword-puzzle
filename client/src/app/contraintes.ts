@@ -56,7 +56,6 @@ export class Contraintes {
   private lessThanLenght(position1: THREE.Vector3, position2: THREE.Vector3): boolean {
 
     let dist = Math.sqrt(Math.pow(position1.x - position2.x, 2) + Math.pow(position1.y - position2.y, 2));
-    console.log(dist);
     if (dist < (2 * MAX_LENGHT)) {
       return true
     }
@@ -71,7 +70,6 @@ export class Contraintes {
 
     if (this.lessThanLenght(position1, position2)) {
       let vec = new THREE.Vector3(0, 0, 0);
-      console.log(vec);
       arrayTmp.push(vec);
     }
 

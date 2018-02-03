@@ -29,23 +29,26 @@ export class EditeurComponent implements AfterViewInit {
 
   private contraintes: Contraintes;
 
+  private departZone: THREE.Line3;
+
   private get canvas() : HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
 
-  constructor() { }
+  constructor() {
+    this.dragIndex = -1;
+    this.arrayPoints = new Array<THREE.Vector3>();
+    this.contraintes = new Contraintes();
+    this.departZone = new THREE.Line3();
+  }
 
   ngAfterViewInit() {
     this.createScene();
     this.animate();
     this.subscribeEvents();
-
-    this.dragIndex = -1;
-    this.arrayPoints = new Array<THREE.Vector3>();
-    this.contraintes = new Contraintes();
   }
 
-  subscribeEvents() {
+ subscribeEvents() {
     this.canvas.addEventListener('click', (event:any) => this.onLeftClick(event));
     this.canvas.addEventListener('contextmenu', (event:any) => {
       event.preventDefault();
@@ -57,6 +60,7 @@ export class EditeurComponent implements AfterViewInit {
     this.canvas.addEventListener('dragend', (event:any) => {
       this.onDragEnd(event);
     });
+    
   }
 
   public createScene(): void {
@@ -77,7 +81,7 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public onLeftClick(event:any): void {
-    if(this.isClosed) {
+    if (this.isClosed) {
       return null;
     }
 
@@ -93,10 +97,12 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     this.arrayPoints.push(position);
+    
   }
 
   public onRightClick(): void {
     this.isClosed = false;
+    this.departZone = new THREE.Line3();
     let nbChildren = this.scene.children.length;
     let tempArray = this.arrayPoints;
     this.arrayPoints = [];
@@ -116,6 +122,7 @@ export class EditeurComponent implements AfterViewInit {
     event.preventDefault();
     let tempArray = this.arrayPoints;
     this.arrayPoints = [];
+    this.departZone = new THREE.Line3();
     let position = this.convertToWorldPosition(event)
     tempArray[this.dragIndex] = position;
     if(this.dragIndex === tempArray.length - 1 && this.isClosed) {
@@ -152,6 +159,7 @@ export class EditeurComponent implements AfterViewInit {
     {
       position = this.arrayPoints[0];
       this.isClosed = true;
+      this.departZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
     }
     return position;
   }
@@ -191,16 +199,12 @@ export class EditeurComponent implements AfterViewInit {
     geometryLine.vertices.push(newPos);
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
-
+    
+    
   }
 
   private redrawConflictingLines(arrayTmp:THREE.Vector3[], color:number) {
     for (let i = 0; i < arrayTmp.length; i += 2) {
-      /*let index = this.arrayPoints.indexOf(arrayTmp[i]);
-      if (index != 0)
-        index *= 2;
-      index += 3;*/
-
       let geoLine = new THREE.Geometry;
       geoLine.vertices.push(arrayTmp[i]);
       geoLine.vertices.push(arrayTmp[i+1]);
@@ -221,10 +225,17 @@ export class EditeurComponent implements AfterViewInit {
     this.createFirstPointContour(newArray[0]);
     this.createPoint(newArray[0]);
     this.arrayPoints.push(newArray[0]);
+ 
     for (let position of newArray.slice(1)) {
       this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
       this.createPoint(position);
       this.arrayPoints.push(position);
     }
+    this.departZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
+    
   }
+
+  /*private getDepartZone(): THREE.Line3 {
+    return this.departZone;
+  }*/
 }
