@@ -39,5 +39,4 @@ describe('EditeurComponent', () => {
     component.createPoint(position);
     expect(component.getScene().children.length).toBe(1);
   });
-
-  
+});

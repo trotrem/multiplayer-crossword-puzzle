@@ -1,20 +1,20 @@
 import * as THREE from 'three';
 const MAX_LENGHT: number = 15;
 const PRECISION = 0.0000001;
-export class Contraintes {
-	
+export class Contraints {
+
 
   constructor() {}
-    
+
 
   private moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
-    let AB = Math.sqrt(Math.pow(position2.x-position1.x,2)+ Math.pow(position2.y-position1.y,2));    
-    let BC = Math.sqrt(Math.pow(position2.x-position3.x,2)+ Math.pow(position2.y-position3.y,2)); 
+    let AB = Math.sqrt(Math.pow(position2.x-position1.x,2)+ Math.pow(position2.y-position1.y,2));
+    let BC = Math.sqrt(Math.pow(position2.x-position3.x,2)+ Math.pow(position2.y-position3.y,2));
     let AC = Math.sqrt(Math.pow(position3.x-position1.x,2)+ Math.pow(position3.y-position1.y,2));
     let angle = Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
 
     angle = 180 * (angle) / Math.PI;
-    
+
 		if(angle < 45)
 			return false;
 		return true;
@@ -33,7 +33,7 @@ export class Contraintes {
 
       intersection.y = ((position2.y - position1.y) * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
         - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x + (position1.x - position2.x) * position1.y)) / det;
-      
+
       if (this.findIsInLine(position1, position2, intersection) && this.findIsInLine(position3, position4, intersection)) {
         return true;
       }
@@ -66,7 +66,7 @@ export class Contraintes {
     let answer = false;
     let index = arrayPoints.indexOf(position1);
     //contraint about the segment must not be less than two time the lenght
-    if (this.lessThanLenght(position1, position2)) { 
+    if (this.lessThanLenght(position1, position2)) {
       let vec = new THREE.Vector3(0, 0, 0);
       arrayTmp.push(vec);
     }
@@ -83,7 +83,7 @@ export class Contraintes {
       arrayTmp.push(position1);
     }
     //contraint about the angle when the track is close
-    if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) { 
+    if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
       if (arrayTmp.length == 1) {
         arrayTmp.pop();
       }
