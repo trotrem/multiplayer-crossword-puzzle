@@ -60,7 +60,6 @@ export class EditeurComponent implements AfterViewInit {
     this.canvas.addEventListener('dragend', (event:any) => {
       this.onDragEnd(event);
     });
-    
   }
 
   public createScene(): void {
@@ -71,6 +70,7 @@ export class EditeurComponent implements AfterViewInit {
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
   }
+
   public getScene(): THREE.Scene{
     return this.scene;
   }
@@ -84,20 +84,15 @@ export class EditeurComponent implements AfterViewInit {
     if (this.isClosed) {
       return null;
     }
-
     let position = this.getPlacementPosition(event);
-
     if(this.arrayPoints.length === 0) {
       this.createFirstPointContour(position);
     }
     this.createPoint(position);
-
     if(this.arrayPoints.length > 0) {
       this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
     }
-
     this.arrayPoints.push(position);
-    
   }
 
   public onRightClick(): void {
@@ -108,14 +103,12 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints = [];
     tempArray.pop();
     if (tempArray.length > 0) {
-
       this.redraw(tempArray);
     }
     else {
       this.scene.remove(this.scene.children[nbChildren - 1]);
       this.scene.remove(this.scene.children[nbChildren - 2]);
     }
-
   }
 
   private onDragEnd(event:any): void {
@@ -132,7 +125,7 @@ export class EditeurComponent implements AfterViewInit {
     this.redraw(tempArray);
   }
 
-  getDraggedPointIndex(event:any) {
+  private getDraggedPointIndex(event:any) {
     let position = this.convertToWorldPosition(event);
     let index = -1;
     this.arrayPoints.forEach((point, i) => {
@@ -185,7 +178,6 @@ export class EditeurComponent implements AfterViewInit {
     let arrayTmp = new Array<THREE.Vector3>();
     let color;
     arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
-
     if (arrayTmp.length == 0)
       color = 0x88d8b0;
     else {
@@ -193,14 +185,11 @@ export class EditeurComponent implements AfterViewInit {
       if (arrayTmp.length > 1)
         this.redrawConflictingLines(arrayTmp, color)
     }
-
     let geometryLine = new THREE.Geometry;
     geometryLine.vertices.push(lastPos);
     geometryLine.vertices.push(newPos);
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
-    
-    
   }
 
   private redrawConflictingLines(arrayTmp:THREE.Vector3[], color:number) {
@@ -217,22 +206,18 @@ export class EditeurComponent implements AfterViewInit {
     if(!newArray) {
       return
     }
-
     while(this.scene.children.length > 0){
       this.scene.remove(this.scene.children[0]);
     }
-
     this.createFirstPointContour(newArray[0]);
     this.createPoint(newArray[0]);
     this.arrayPoints.push(newArray[0]);
- 
     for (let position of newArray.slice(1)) {
       this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
       this.createPoint(position);
       this.arrayPoints.push(position);
     }
     this.departZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
-    
   }
 
   /*private getDepartZone(): THREE.Line3 {
