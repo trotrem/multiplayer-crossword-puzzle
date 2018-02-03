@@ -12,7 +12,7 @@ it('I should complete this test', (done) => {
 it('Query le mot hall', (queried) => {
     let apiService = new ExternalApiService;
     
-    apiService.getWordDefinitions('hall')
+    apiService.requestWordInfo('hall')
         .then( () => {
             console.log(apiService.requestResult[0]);
             queried();

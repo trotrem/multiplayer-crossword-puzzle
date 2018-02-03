@@ -31,6 +31,10 @@ export class GridWordInformation {
         return this.frequency;
     }
 
+    public getIsCommon() : boolean {
+        return this.isCommon;
+    }
+
     public getInfo(): [string, string[], number] {
         return this.wordInfo;
     }
