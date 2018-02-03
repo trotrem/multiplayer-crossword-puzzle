@@ -38,8 +38,6 @@ export class Contraintes {
     }
     
     return false;
-
-
   }
 
   private findIsInLine(position1: THREE.Vector3, position2: THREE.Vector3, vec: THREE.Vector3): boolean {
