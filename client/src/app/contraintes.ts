@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+const MAX_LENGHT: number = 15;
 export class Contraintes {
 	//valid : boolean;
 
@@ -50,12 +51,30 @@ export class Contraintes {
       return false;
     }
     return true;
-}
+  }
+
+  private lessThanLenght(position1: THREE.Vector3, position2: THREE.Vector3): boolean {
+
+    let dist = Math.sqrt(Math.pow(position1.x - position2.x, 2) + Math.pow(position1.y - position2.y, 2));
+    console.log(dist);
+    if (dist < (2 * MAX_LENGHT)) {
+      return true
+    }
+
+    return false;
+  }
 
   public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): THREE.Vector3[] {
 
     let arrayTmp = new Array();
     let reponse = false;
+
+    if (this.lessThanLenght(position1, position2)) {
+      let vec = new THREE.Vector3(0, 0, 0);
+      console.log(vec);
+      arrayTmp.push(vec);
+    }
+
     let index = arrayPoints.indexOf(position1);
     if (index == 0)
       return arrayTmp;
@@ -63,11 +82,17 @@ export class Contraintes {
     let position0 = arrayPoints[index - 1];
 
     if (!this.moreThan45Degres(position2, position1, position0)) {
+      if (arrayTmp.length  == 1) {
+        arrayTmp.pop();
+      }
       arrayTmp.push(position0);
       arrayTmp.push(position1);
     }
 
     if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
+      if (arrayTmp.length == 1) {
+        arrayTmp.pop();
+      }
       arrayTmp.push(arrayPoints[1]);
       arrayTmp.push(position2);
     }
@@ -76,10 +101,14 @@ export class Contraintes {
       reponse = this.segmentsIntersection(position2, position1, arrayPoints[i], arrayPoints[i + 1]);
 
       if (reponse) {
+        if (arrayTmp.length ==1) {
+          arrayTmp.pop();
+        }
         arrayTmp.push(arrayPoints[i]);
         arrayTmp.push(arrayPoints[i + 1]);
       }
     }
+
    
     return arrayTmp;
   }

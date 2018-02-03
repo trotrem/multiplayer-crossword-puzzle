@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 import {Contraintes} from '../contraintes'
-import { Color } from 'three';
+//import { Color } from 'three';
 const MAX_SELECTION_DISTANCE: number = 2;
 
 @Component({
@@ -179,8 +179,8 @@ export class EditeurComponent implements AfterViewInit {
       color = 0x88d8b0;
     else {
       color = 0xFF0000;//red
-      
-      this.redrawConflictingLines(arrayTmp, color)
+      if (arrayTmp.length > 1)
+        this.redrawConflictingLines(arrayTmp, color)
     }
     
     let geometryLine = new THREE.Geometry;
@@ -193,10 +193,10 @@ export class EditeurComponent implements AfterViewInit {
 
   private redrawConflictingLines(arrayTmp:THREE.Vector3[], color:number) {
     for (let i = 0; i < arrayTmp.length; i += 2) {
-      let index = this.arrayPoints.indexOf(arrayTmp[i]);
+      /*let index = this.arrayPoints.indexOf(arrayTmp[i]);
       if (index != 0)
         index *= 2;
-      index += 3;
+      index += 3;*/
 
       let geoLine = new THREE.Geometry;
       geoLine.vertices.push(arrayTmp[i]);
