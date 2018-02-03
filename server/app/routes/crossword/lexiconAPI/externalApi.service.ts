@@ -1,5 +1,5 @@
 import * as requestOption from 'request-promise-native';
-import { GridWordInformation } from './gridWordInformation';
+//import { GridWordInformation } from './gridWordInformation';
 
 export class ExternalApiService {
 
@@ -21,6 +21,13 @@ export class ExternalApiService {
         return requestOption(this.options)
             .then((result: JSON) => {
                 this.requestResult = result;
+
+                for (let index in this.requestResult) {
+                    if (!this.requestResult[index].hasOwnProperty('defs')) {
+                        delete this.requestResult[index];
+                    }
+                }
+
             }, reject => {
                 console.log('Rejected, Error...');
             })
@@ -28,6 +35,10 @@ export class ExternalApiService {
     }
 }
 
-/*let bleh = new ExternalApiService;
-bleh.requestWordInfo("hall");*/
+let bleh = new ExternalApiService;
+bleh.requestWordInfo('t?e')
+    .then(() => {
+        console.log(bleh.requestResult[0]);
+    })
+
 
