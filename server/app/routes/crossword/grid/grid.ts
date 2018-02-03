@@ -3,6 +3,7 @@ import { Word } from "./word";
 import {ExternalApiService} from "../lexiconAPI/externalApi.service"
 import {GridWordInformation} from "../lexiconAPI/gridWordInformation"
 import * as requestOption from 'request-promise-native';
+import index from "caseless";
 
 
 const WIDTH = 10;
@@ -17,12 +18,12 @@ export class Grid {
     private blackSquares: number[];
     private notBlackSquares: number[] = [1,11,21,31,41,51,61,71,81,91,10,12,13,14,15,16,17,18,
                                         19,8,28,38,48,58,68,78,88,98,80,82,83,84,85,86,87,89];
-    private listOfWord : Word[];
+    private listOfWordV : Word[];
     private listOfWordH : Word[];
     private wordT : string;
     private apiService : ExternalApiService;
     constructor() {
-
+        this.apiService = new ExternalApiService;
     }
 
     private generateBlackSquare(): void {
@@ -82,7 +83,40 @@ export class Grid {
     }
 
     private createListOfWord() : void{
-        
+        let compteurLength : number =0;
+        let compteurMot : number = 0;
+        //compteur mot verticale
+        for(let indexJ = 0; indexJ < HEIGHT; indexJ ++){
+            for(let indexI = 0; indexI<WIDTH; indexI++){
+                if(!(this.grid[indexI][indexJ].getIsBlack)){
+                    compteurLength++;
+                }else{
+                    compteurMot++;
+                    this.listOfWordV.push(new Word(compteurLength,compteurMot,null))
+                    compteurLength= 0;
+                }  
+            }
+            compteurMot++ ;
+            this.listOfWordV.push(new Word(compteurLength,compteurMot,null))
+            compteurLength = 0;
+        }
+        compteurMot = 0 ;
+        compteurLength = 0;
+        //compteur mot horizontale
+        for(let indexI = 0; indexI < WIDTH; indexI ++){
+            for(let indexJ = 0; indexJ<HEIGHT; indexJ++){
+                if(!(this.grid[indexI][indexJ].getIsBlack)){
+                    compteurLength++;
+                }else{
+                    compteurMot++;
+                    this.listOfWordV.push(new Word(compteurLength,compteurMot,null))
+                    compteurLength= 0;
+                }  
+            }
+            compteurMot++ ;
+            this.listOfWordV.push(new Word(compteurLength,compteurMot,null))
+            compteurLength = 0;
+        }
 
     }
     private putWords(): void {
@@ -90,11 +124,15 @@ export class Grid {
     }
 
     public testWord() : void {
-        this.apiService.getWordDefinitions("banana")
+        this.apiService.requestWordInfo("banana")
         .then(()=>{
             this.wordT=this.apiService.requestResult[0].word;
-            console.log(this.wordT);
+            console.log(this.apiService.requestResult[0].defs);
         });
+    }
+
+    public getHeight (){
+        return this.grid.length;
     }
 
 }

@@ -8,6 +8,7 @@ it('I should complete this test', (done) => {
     done();
 });
 
-it('Should be 10 witdh and 10 height', (done)=>{
-    
+it('Should be 10 witdh and 10 height', (taille)=>{
+    let grid = new Grid();
+    grid.getHeight();
 });
