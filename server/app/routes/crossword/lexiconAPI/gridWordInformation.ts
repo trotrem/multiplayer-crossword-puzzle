@@ -10,7 +10,6 @@ export class GridWordInformation {
         this.word = _word;
         this.defs = _defs;
         this.frequency = _frequency;
-
         this.wordInfo = [_word, _defs, _frequency]
     }
 
@@ -30,5 +29,10 @@ export class GridWordInformation {
         return this.wordInfo;
     }
 
+    public isCommon(): void {
+        if (  ) {
+
+        }
+    }
 
 }

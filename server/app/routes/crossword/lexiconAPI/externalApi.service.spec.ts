@@ -13,10 +13,9 @@ it('Query le mot hall', (queried) => {
     let apiService = new ExternalApiService;
     
     apiService.getWordDefinitions('hall')
-    .then( () => {
-        expect(apiService).to.be
-        queried();
+        .then( () => {
+            console.log(apiService.requestResult[0]);
+            queried();
     })
 
-    
 });
