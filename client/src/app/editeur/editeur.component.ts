@@ -47,8 +47,8 @@ export class EditeurComponent implements AfterViewInit {
 
   subscribeEvents() {
     this.canvas.addEventListener('click', (event:any) => this.onLeftClick(event));
-    this.canvas.addEventListener('contextmenu', (event:any) => {  
-      event.preventDefault();  
+    this.canvas.addEventListener('contextmenu', (event:any) => {
+      event.preventDefault();
       this.onRightClick();
     });
     this.canvas.addEventListener('dragstart', (event:any) => {
@@ -66,6 +66,9 @@ export class EditeurComponent implements AfterViewInit {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
+  }
+  public getScene(): THREE.Scene{
+    return this.scene;
   }
 
   public animate():void {
@@ -99,7 +102,7 @@ export class EditeurComponent implements AfterViewInit {
     this.arrayPoints = [];
     tempArray.pop();
     if (tempArray.length > 0) {
-      
+
       this.redraw(tempArray);
     }
     else {
@@ -167,14 +170,14 @@ export class EditeurComponent implements AfterViewInit {
     let material = new THREE.PointsMaterial({ size :3,color: 0xff00a7 });
     let dot = new THREE.Points(geometryPoint, material);
     this.scene.add(dot);
-    
+
   }
 
   public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void {
     let arrayTmp = new Array<THREE.Vector3>();
     let color;
     arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
-    
+
     if (arrayTmp.length == 0)
       color = 0x88d8b0;
     else {
@@ -182,7 +185,7 @@ export class EditeurComponent implements AfterViewInit {
       if (arrayTmp.length > 1)
         this.redrawConflictingLines(arrayTmp, color)
     }
-    
+
     let geometryLine = new THREE.Geometry;
     geometryLine.vertices.push(lastPos);
     geometryLine.vertices.push(newPos);
@@ -211,10 +214,10 @@ export class EditeurComponent implements AfterViewInit {
       return
     }
 
-    while(this.scene.children.length > 0){ 
-      this.scene.remove(this.scene.children[0]); 
+    while(this.scene.children.length > 0){
+      this.scene.remove(this.scene.children[0]);
     }
-    
+
     this.createFirstPointContour(newArray[0]);
     this.createPoint(newArray[0]);
     this.arrayPoints.push(newArray[0]);
