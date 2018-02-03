@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 import {Contraintes} from '../contraintes'
+import { Color } from 'three';
 const MAX_SELECTION_DISTANCE: number = 2;
 
 @Component({
@@ -40,7 +41,7 @@ export class EditeurComponent implements AfterViewInit {
     this.subscribeEvents();
 
     this.dragIndex = -1;
-    this.arrayPoints = new Array();
+    this.arrayPoints = new Array<THREE.Vector3>();
     this.contraintes = new Contraintes();
   }
 
@@ -170,32 +171,16 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void {
-    let arrayTmp = new Array();
+    let arrayTmp = new Array<THREE.Vector3>();
     let color;
     arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
-
-    let arrayIndex = new Array();
     
     if (arrayTmp.length == 0)
       color = 0x88d8b0;
     else {
       color = 0xFF0000;//red
       
-      for (let i = 0; i < arrayTmp.length; i += 2) {
-        let index = this.arrayPoints.indexOf(arrayTmp[i]);
-        if (index != 0)
-          index *= 2;
-        index += 3;
-
-        let geoLine = new THREE.Geometry;
-        geoLine.vertices.push(arrayTmp[i]);
-        geoLine.vertices.push(arrayTmp[i+1]);
-        let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
-        this.scene.add(line);
-      }
-      for (let i = 0; i < arrayIndex.length; i++) {
-        this.scene.remove(this.scene.children[arrayIndex[i]]);
-      }
+      this.redrawConflictingLines(arrayTmp, color)
     }
     
     let geometryLine = new THREE.Geometry;
@@ -204,6 +189,21 @@ export class EditeurComponent implements AfterViewInit {
     let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
     this.scene.add(line);
 
+  }
+
+  private redrawConflictingLines(arrayTmp:THREE.Vector3[], color:number) {
+    for (let i = 0; i < arrayTmp.length; i += 2) {
+      let index = this.arrayPoints.indexOf(arrayTmp[i]);
+      if (index != 0)
+        index *= 2;
+      index += 3;
+
+      let geoLine = new THREE.Geometry;
+      geoLine.vertices.push(arrayTmp[i]);
+      geoLine.vertices.push(arrayTmp[i+1]);
+      let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ 'linewidth': 6, 'color': color }));
+      this.scene.add(line);
+    }
   }
 
   private redraw(newArray:THREE.Vector3[]): void {
