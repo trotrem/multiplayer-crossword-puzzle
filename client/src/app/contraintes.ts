@@ -68,15 +68,20 @@ export class Contraintes {
       arrayTmp.push(position3);
       arrayTmp.push(position2);
     }
-    
-      for (let i = 0; i < arrayPoints.length - 1; i++) {
-        reponse = this.segmentsIntersection(position1, position2, arrayPoints[i], arrayPoints[i + 1]);
 
-        if (reponse) {
-          arrayTmp.push(arrayPoints[i]);
-          arrayTmp.push(arrayPoints[i + 1]);
-        }
+    if (position1.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position1, position2)) {
+      arrayTmp.push(arrayPoints[1]);
+      arrayTmp.push(position1);
+    }
+    
+    for (let i = 0; i < arrayPoints.length - 1; i++) {
+      reponse = this.segmentsIntersection(position1, position2, arrayPoints[i], arrayPoints[i + 1]);
+
+      if (reponse) {
+        arrayTmp.push(arrayPoints[i]);
+        arrayTmp.push(arrayPoints[i + 1]);
       }
+    }
    
     return arrayTmp;
   }
