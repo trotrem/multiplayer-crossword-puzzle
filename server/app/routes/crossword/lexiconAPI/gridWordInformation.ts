@@ -4,19 +4,18 @@ export class GridWordInformation {
     private word: string;
     private defs: string[];
     private frequency: number;
-    private isCommon: boolean;
+    private isCommon: boolean = true;
     private wordInfo: [string, string[], number];
 
-    constructor(_word: string, _defs: string[], _frequency: number) {
-        this.word = _word;
-        this.defs = _defs;
-        this.frequency = _frequency;
-        if(this.frequency < 15) {
+    constructor(requestWord: string, requestDefs: string[], requestFrequency: number) {
+        this.word = requestWord;
+        this.defs = requestDefs;
+        this.frequency = requestFrequency;
+        const commonFactor: number = 15;
+        if (this.frequency < commonFactor) {
             this.isCommon = false;
-        }else {
-            this.isCommon = true;
         }
-        this.wordInfo = [_word, _defs, _frequency]
+        this.wordInfo = [word, defs, frequency];
     }
 
     public getWord(): string {
@@ -31,13 +30,12 @@ export class GridWordInformation {
         return this.frequency;
     }
 
-    public getIsCommon() : boolean {
+    public getIsCommon(): boolean {
         return this.isCommon;
     }
 
     public getInfo(): [string, string[], number] {
         return this.wordInfo;
     }
-
 
 }
