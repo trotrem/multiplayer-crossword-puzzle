@@ -1,37 +1,38 @@
-import * as requestOption from 'request-promise-native';
-import { GridWordInformation } from './gridWordInformation';
+import * as requestOption from "request-promise-native";
+import { GridWordInformation } from "./gridWordInformation";
+// import { Options } from "request";
 
 export class ExternalApiService {
 
-    public requestResult: JSON;
-    public wordsWithDefinitions: GridWordInformation[];
-    public test: any;
+    private requestResult: JSON;
+    private wordsWithDefinitions: GridWordInformation[];
 
-    constructor() { 
+    constructor() {
         this.wordsWithDefinitions = new Array<GridWordInformation>();
     }
 
-    public options = {
-        method: 'GET',
-        uri: 'http://api.datamuse.com/words',
+    public options: any = {
+        method: "GET",
+        uri: "http://api.datamuse.com/words",
         json: true,
         qs: {
             sp: "",
-            md: 'df',
+            md: "df",
         },
         simple: true,
     };
 
-    public requestWordInfo(word: string): Promise<any> {
+    public async requestWordInfo(word: string): Promise<any> {
         this.options.qs.sp = word;
+
         return requestOption(this.options)
             .then((result: JSON) => {
                 this.requestResult = result;
-                this.removeWordWithoutDefinitions();
-            }, reject => {
-                console.log('Rejected, Error...');
+                this.removeWordsWithoutDefinitions();
+            },(reject: any) => {
+                // console.log("Rejected, Error...");
             })
-            .catch((err: any) => { console.log('Erreur...') });
+            .catch((err: any) => { console.log("Erreur...") });
     }
 
     public getWordsWithDefinitions(): GridWordInformation[] {
@@ -39,27 +40,15 @@ export class ExternalApiService {
         return this.wordsWithDefinitions;
     }
 
-    private removeWordWithoutDefinitions(): void {
+    private removeWordsWithoutDefinitions(): void {
         for (let index in this.requestResult) {
-            if (this.requestResult[index].hasOwnProperty('defs')) {
-                let tempFrequency : string = this.requestResult[index].tags[0].substring(2);
-                let tempWord = new GridWordInformation(this.requestResult[index].word, this.requestResult[index].defs, parseFloat(tempFrequency))
-                //console.log(tempWord.getDefinitions()[0]);
-                //this.test = tempWord;
+            let wordHasDefinitions: boolean = this.requestResult[index].hasOwnProperty("defs")
+            if (wordHasDefinitions) {
+                let tempFrequency: string = this.requestResult[index].tags[0].substring(2);
+                let tempWord: GridWordInformation = new GridWordInformation
+                    (this.requestResult[index].word, this.requestResult[index].defs, parseFloat(tempFrequency));
                 this.wordsWithDefinitions.push(tempWord);
-                //console.log('test...');
             }
         }
-
     }
 }
-
-let bleh = new ExternalApiService;
-bleh.requestWordInfo('t?e')
-    .then(() => {
-        //console.log(bleh.requestResult[0].tags[0])
-        console.log(bleh.wordsWithDefinitions[0].getFrequency());
-    })
-    .catch((err: any) => { console.log('allo') });
-
-

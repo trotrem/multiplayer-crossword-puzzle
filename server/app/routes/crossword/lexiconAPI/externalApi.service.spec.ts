@@ -14,7 +14,7 @@ it('Query le mot hall', (queried) => {
     
     apiService.requestWordInfo('hall')
         .then( () => {
-            console.log(apiService.requestResult[0]);
+            
             queried();
     })
 
