@@ -40,5 +40,15 @@ describe('EditeurComponent', () => {
     expect(component.getScene().children.length).toBe(1);
   });
 
+  it('should create a segement', () => {
+    let array = new Array<THREE.Vector3>();
+    let position1 = new THREE.Vector3(-23,-2,0);
+    array.push(position1);
+    component.arrayPoints = array;
+    let position2 = new THREE.Vector3(23,-2,0);
+    component.createLine(position1,position2);
+    expect(component.getScene().children.length).toBe(1);
+  });
+
 
 });
