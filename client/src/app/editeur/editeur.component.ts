@@ -177,8 +177,8 @@ export class EditeurComponent implements AfterViewInit {
   public createPoint(position : THREE.Vector3): void {
     let geometryPoint = new THREE.Geometry();
     geometryPoint.vertices.push(position);
-    let material = new THREE.PointsMaterial({ size :3,color: 0xff00a7 });
-    let dot = new THREE.Points(geometryPoint, material);
+    const material:THREE.PointsMaterial = new THREE.PointsMaterial({ size :3,color: 0xFF00A7 });
+    const dot:THREE.Points = new THREE.Points(geometryPoint, material);
     this.scene.add(dot);
 
   }

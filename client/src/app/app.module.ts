@@ -7,7 +7,7 @@ import { GameComponent } from "./game-component/game.component";
 
 import { RenderService } from "./render-service/render.service";
 import { BasicService } from "./basic.service";
-import { EditeurComponent } from './editeur/editeur.component';
+import { EditeurComponent } from "./editeur/editeur.component";
 
 @NgModule({
     declarations: [
