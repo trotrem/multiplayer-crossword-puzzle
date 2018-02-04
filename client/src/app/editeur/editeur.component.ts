@@ -21,7 +21,7 @@ export class EditeurComponent implements AfterViewInit {
 
   private renderer: THREE.Renderer;
 
-  private arrayPoints: THREE.Vector3[];
+  public arrayPoints: THREE.Vector3[];
 
   private isClosed: boolean;
 
@@ -74,6 +74,8 @@ export class EditeurComponent implements AfterViewInit {
   public getScene(): THREE.Scene{
     return this.scene;
   }
+
+
 
   public animate():void {
     requestAnimationFrame(() => this.animate());
@@ -235,7 +237,5 @@ export class EditeurComponent implements AfterViewInit {
 
   }
 
-  /*private getDepartZone(): THREE.Line3 {
-    return this.departZone;
-  }*/
+
 }
