@@ -16,7 +16,7 @@ export class Grid {
     private grid: Square[][];
     private blackSquares: number[];
     private notBlackSquares: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
-                                        19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
+        19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
     private listOfWordV: Word[];
     private listOfWordH: Word[];
     private wordT: string;
@@ -25,17 +25,22 @@ export class Grid {
         this.apiService = new ExternalApiService();
     }
 
-    public getHeight() {
-        return this.grid.length;
+    public getHeight(): number {
+        return HEIGHT;
     }
-    public getGrid(){
+    public getWidth(): number {
+        return WIDTH;
+    }
+    public getGrid(): Square[][] {
         return this.grid;
     }
-    public getSquareIsBlack(i:number,j:number){
-        return this.grid[i][j].getIsBlack();
+    public getSquareIsBlack(i: number, j: number): boolean {
+        let isBlack = this.grid[0][0].getIsBlack();
+        return isBlack;
     }
-    private nbrBlack:number;
-    public getNbrBlack():number{
+
+    private nbrBlack: number;
+    public getNbrBlack(): number {
         return this.nbrBlack;
     }
     private generateBlackSquare(): void {
@@ -94,46 +99,9 @@ export class Grid {
         }
     }
 
-    private createListOfWord(): void {
-        let compteurLength: number = 0;
-        let compteurMot: number = 0;
-        // compteur mot verticale
-        for (let indexJ = 0; indexJ < HEIGHT; indexJ++) {
-            for (let indexI = 0; indexI < WIDTH; indexI++) {
-                if (!(this.grid[indexI][indexJ].getIsBlack)) {
-                    compteurLength++;
-                } else {
-                    compteurMot++;
-                    this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-                    compteurLength = 0;
-                }
-            }
-            compteurMot++;
-            this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-            compteurLength = 0;
-        }
-        compteurMot = 0;
-        compteurLength = 0;
-        //compteur mot horizontale
-        for (let indexI = 0; indexI < WIDTH; indexI++) {
-            for (let indexJ = 0; indexJ < HEIGHT; indexJ++) {
-                if (!(this.grid[indexI][indexJ].getIsBlack)) {
-                    compteurLength++;
-                } else {
-                    compteurMot++;
-                    this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-                    compteurLength = 0;
-                }
-            }
-            compteurMot++;
-            this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-            compteurLength = 0;
-        }
+    /*private putWords(): void {
 
-    }
-    private putWords(): void {
-        
-    }
+    }*/
     /*public testWord():void {
         this.apiService.requestWordInfo("banana")
             .then(() => {

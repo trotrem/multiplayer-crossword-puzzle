@@ -1,26 +1,24 @@
-export class Word{
-    private length :number;
-    private number : number;
-    private text : string;
-    //private constraints ;
-    constructor(length :number, number : number, text: string){
+export class Word {
+    private length: number;
+    private num: number;
+    private text: string;
+
+    constructor(length: number, num: number, text: string) {
         this.length = length;
-        this.number = number;
+        this.num = num;
         this.text = text;
     }
 
-    public getWord (){
+    public getWord(): string {
         return this.text;
     }
-    public getLength(){
+    public getLength(): number {
         return this.length;
     }
-    public getNumber(){
-        return this.getNumber;
+    public getNumber(): number {
+        return this.num;
     }
-    public setWord(word : string){
+    public setWord(word: string): void {
         this.text = word;
     }
-
-
 }
