@@ -1,18 +1,18 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import * as THREE from 'three';
-import {Contraints} from './contraints'
-//import { Color } from 'three';
+import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import * as THREE from "three";
+import {Contraints} from "./contraints";
+
 const MAX_SELECTION_DISTANCE: number = 2;
 
 @Component({
-  selector: 'app-editeur',
-  templateUrl: './editeur.component.html',
-  styleUrls: ['./editeur.component.css']
+  selector: "app-editeur",
+  templateUrl: "./editeur.component.html",
+  styleUrls: ["./editeur.component.css"]
 })
 
 export class EditeurComponent implements AfterViewInit {
 
-  @ViewChild('canvas')
+  @ViewChild("canvas")
   private canvasRef: ElementRef;
 
   private camera: THREE.PerspectiveCamera;
@@ -31,70 +31,69 @@ export class EditeurComponent implements AfterViewInit {
 
   private departZone: THREE.Line3;
 
-  private get canvas() : HTMLCanvasElement {
+  private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
 
-  constructor() {
+  public constructor() {
     this.dragIndex = -1;
     this.arrayPoints = new Array<THREE.Vector3>();
     this.contraintes = new Contraints();
     this.departZone = new THREE.Line3();
   }
 
-  ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.createScene();
     this.animate();
     this.subscribeEvents();
   }
 
- subscribeEvents() {
-    this.canvas.addEventListener('click', (event:any) => this.onLeftClick(event));
-    this.canvas.addEventListener('contextmenu', (event:any) => {
+  private subscribeEvents(): void {
+    this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));
+    this.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
       event.preventDefault();
       this.onRightClick();
     });
-    this.canvas.addEventListener('dragstart', (event:any) => {
+    this.canvas.addEventListener("dragstart", (event: MouseEvent) => {
       this.dragIndex = this.getDraggedPointIndex(event);
     });
-    this.canvas.addEventListener('dragend', (event:any) => {
+    this.canvas.addEventListener("dragend", (event: MouseEvent) => {
       this.onDragEnd(event);
     });
-
   }
 
   public createScene(): void {
     this.camera  = new THREE.PerspectiveCamera();
-    this.camera.position.set(0, 0, 100);
-    this.camera.lookAt(new THREE.Vector3(0,0,0));
+    const CAMERA_DISTANCE: number = 100;
+    this.camera.position.set(0, 0, CAMERA_DISTANCE);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize( window.innerWidth, window.innerHeight );
   }
-  public getScene(): THREE.Scene{
+
+  public getScene(): THREE.Scene {
     return this.scene;
   }
 
-
-
-  public animate():void {
+  public animate(): void {
     requestAnimationFrame(() => this.animate());
     this.renderer.render(this.scene, this.camera);
   }
 
-  public onLeftClick(event:any): void {
+  public onLeftClick(event: MouseEvent): void {
     if (this.isClosed) {
       return null;
     }
 
-    let position = this.getPlacementPosition(event);
+    const position: THREE.Vector3 = this.getPlacementPosition(event);
 
-    if(this.arrayPoints.length === 0) {
+    if (this.arrayPoints.length === 0) {
       this.createFirstPointContour(position);
     }
     this.createPoint(position);
 
-    if(this.arrayPoints.length > 0) {
+    if (this.arrayPoints.length > 0) {
       this.createLine(this.arrayPoints[this.arrayPoints.length-1], position);
     }
 
@@ -120,32 +119,32 @@ export class EditeurComponent implements AfterViewInit {
 
   }
 
-  private onDragEnd(event:any): void {
+  private onDragEnd(event: MouseEvent): void {
     event.preventDefault();
     let tempArray = this.arrayPoints;
     this.arrayPoints = [];
     this.departZone = new THREE.Line3();
     let position = this.convertToWorldPosition(event)
     tempArray[this.dragIndex] = position;
-    if(this.dragIndex === tempArray.length - 1 && this.isClosed) {
+    if (this.dragIndex === tempArray.length - 1 && this.isClosed) {
       tempArray[0] = position;
     }
     this.dragIndex = -1;
     this.redraw(tempArray);
   }
 
-  getDraggedPointIndex(event:any) {
+  getDraggedPointIndex(event: MouseEvent): number {
     let position = this.convertToWorldPosition(event);
     let index = -1;
     this.arrayPoints.forEach((point, i) => {
-      if(position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
+      if (position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
         index = i
       };
     });
     return index;
   }
 
- private convertToWorldPosition(event: THREE.Vector3): THREE.Vector3 {
+  private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
     let rect = this.canvas.getBoundingClientRect();
     let canvasPos = new THREE.Vector3(event.x - rect.left, event.y - rect.top);
     let vector = new THREE.Vector3((canvasPos.x / this.canvas.width)*2-1,-(canvasPos.y / this.canvas.height)*2+1 , 0);
@@ -155,9 +154,9 @@ export class EditeurComponent implements AfterViewInit {
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
   }
 
-  private getPlacementPosition(event:THREE.Vector3): THREE.Vector3 {
+  private getPlacementPosition(event:MouseEvent): THREE.Vector3 {
     let position = this.convertToWorldPosition(event);
-    if(this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION_DISTANCE)
+    if (this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION_DISTANCE)
     {
       position = this.arrayPoints[0];
       this.isClosed = true;
@@ -199,24 +198,24 @@ export class EditeurComponent implements AfterViewInit {
     let geometryLine = new THREE.Geometry;
     geometryLine.vertices.push(lastPos);
     geometryLine.vertices.push(newPos);
-    let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ 'linewidth': 6, color }));
+    let line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
     this.scene.add(line);
 
 
   }
 
-  private redrawConflictingLines(arrayTmp:THREE.Vector3[], color:number) {
+  private redrawConflictingLines(arrayTmp: THREE.Vector3[], color: number): void {
     for (let i = 0; i < arrayTmp.length; i += 2) {
       let geoLine = new THREE.Geometry;
       geoLine.vertices.push(arrayTmp[i]);
       geoLine.vertices.push(arrayTmp[i+1]);
-      let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ 'linewidth': 6, 'color': color }));
+      let line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));
       this.scene.add(line);
     }
   }
 
-  private redraw(newArray:THREE.Vector3[]): void {
-    if(!newArray) {
+  private redraw(newArray: THREE.Vector3[]): void {
+    if (!newArray) {
       return
     }
 
@@ -236,6 +235,4 @@ export class EditeurComponent implements AfterViewInit {
     this.departZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
 
   }
-
-
 }
