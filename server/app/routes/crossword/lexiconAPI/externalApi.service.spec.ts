@@ -11,22 +11,38 @@ const assert = require("assert");
     done();
 });*/
 
-
-it("Query le mot hall, devrait avoir le mot, les definitions, la frequence et s'il est commun ou non", (done: any) => {
+describe("Querry du mot hall", () => {
     let apiService: ExternalApiService = new ExternalApiService;
     let wordRetriever: WordRetriever = new WordRetriever;
     let expectedWord: string = "hall"
-    
-    apiService.requestWordInfo("hall")
-        .then(() => {
-            let result: JSON = apiService.requestResult;
-            let words: GridWordInformation[] = wordRetriever.getWordsWithDefinitions(result);
-            let word: string = words[0].getWord();
-            assert.equal(word, expectedWord);
-            done();
-        })
-        .catch((err: object) => { console.log("ERREUR...") });
-});
+    let expectedSecondDefintion = "n\ta large room for gatherings or entertainment"
+
+    it("Le mot devrait être 'hall'. ", (wordIsValid: any) => {
+        apiService.requestWordInfo("hall")
+            .then(() => {
+                let result: JSON = apiService.requestResult;
+                let words: GridWordInformation[] = wordRetriever.getWordsWithDefinitions(result);
+                let word: string = words[0].getWord();
+                assert.equal(word, expectedWord);
+                wordIsValid();
+            })
+            .catch((err: object) => { console.log("ERREUR...") });
+    });
+
+    it("Query le mot hall, devrait avoir le mot 'hall'. ", (wordIsValid: any) => {
+
+        apiService.requestWordInfo("hall")
+            .then(() => {
+                let result: JSON = apiService.requestResult;
+                let words: GridWordInformation[] = wordRetriever.getWordsWithDefinitions(result);
+                let secondDefinition: string = words[0].getDefinitions()[1];
+                assert.equal(secondDefinition, expectedSecondDefintion);
+                wordIsValid();
+            })
+            .catch((err: object) => { console.log("ERREUR...") });
+    });
+})
+
 
 
 /*let bleh: ExternalApiService = new ExternalApiService;
