@@ -1,9 +1,7 @@
-import index from "caseless";
-import * as requestOption from "request-promise-native";
-import { ExternalApiService } from "../lexiconAPI/externalApi.service";
-import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
+//import * as requestOption from "request-promise-native";
+//import { ExternalApiService } from "../lexiconAPI/externalApi.service";
+//import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
-import { Word } from "./word";
 
 const WIDTH = 10;
 const HEIGHT = 10;
@@ -17,12 +15,10 @@ export class Grid {
     private blackSquares: number[];
     private notBlackSquares: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
         19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
-    private listOfWordV: Word[];
-    private listOfWordH: Word[];
-    private wordT: string;
-    private apiService: ExternalApiService;
+    //private apiService: ExternalApiService;
     constructor() {
-        this.apiService = new ExternalApiService();
+      //  this.apiService = new ExternalApiService();
+        this.makeGrid();
     }
 
     public getHeight(): number {
@@ -90,12 +86,24 @@ export class Grid {
                 this.grid[indexI][indexJ] = new Square(indexI * 10 + indexJ, false, null);
             }
         }
+        this.generateBlackSquare()
         // putting black square in the grid
         for (let index of this.blackSquares) {
             const indexTemp = this.blackSquares[index];
             const indexITemp = indexTemp % 10;
             const indexJTemp = Math.ceil(indexTemp / 10);
             this.grid[indexITemp][indexJTemp].setIsBlack(true);
+        }
+        for (let indexI = 0; indexI < HEIGHT; indexI++) {
+            console.log("|");
+            for (let indexJ = 0; indexJ < WIDTH; indexJ++) {
+                if (this.grid[indexI][indexJ].getIsBlack()) {
+                    console.log("#");
+                } else {
+                    console.log("*");
+                }
+            }
+            console.log("|\r");
         }
     }
 

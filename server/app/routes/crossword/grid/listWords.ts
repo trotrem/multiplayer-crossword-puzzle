@@ -9,6 +9,7 @@ export class ListWord {
     private lengthOfH: number;
     constructor(grid: Grid) {
         this.grid = grid;
+        this.createListOfWord();
     }
     public getListOfWordV(): Word[]{
         return this.listOfWordV;
