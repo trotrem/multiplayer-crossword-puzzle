@@ -47,7 +47,7 @@ export class WordRetriever {
 
 }
 
-let bleh: ExternalApiService = new ExternalApiService;
+/*let bleh: ExternalApiService = new ExternalApiService;
 let words: WordRetriever = new WordRetriever;
 bleh.requestWordInfo("hall")
     .then(() => {
@@ -55,4 +55,4 @@ bleh.requestWordInfo("hall")
         console.log(test[0].getWord());
 
     })
-    .catch((err: any) => { console.log("ERREUR..."); });
+    .catch((err: any) => { console.log("ERREUR..."); });*/

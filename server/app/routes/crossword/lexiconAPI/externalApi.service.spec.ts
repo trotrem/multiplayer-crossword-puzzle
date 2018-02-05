@@ -19,7 +19,7 @@ it("Query le mot hall, devrait avoir le mot, les definitions, la frequence et s'
     
     apiService.requestWordInfo("hall")
         .then(() => {
-            let result: JSON = apiService.getRequestResult();
+            let result: JSON = apiService.requestResult;
             let words: GridWordInformation[] = wordRetriever.getWordsWithDefinitions(result);
             let word: string = words[0].getWord();
             assert.equal(word, expectedWord);
