@@ -102,11 +102,11 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public onRightClick(): void {
+    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
     this.isClosed = false;
     this.departZone = new THREE.Line3();
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const nbChildren = this.scene.children.length;// tslint:disable-line
-    const tempArray = this.arrayPoints;// tslint:disable-line
+    const nbChildren: number = this.scene.children.length;
+    const tempArray: THREE.Vector3[] = this.arrayPoints;
     this.arrayPoints = [];
     tempArray.pop();
     if (tempArray.length > 0) {
@@ -114,18 +114,17 @@ export class EditeurComponent implements AfterViewInit {
     }
     else {
       this.scene.remove(this.scene.children[nbChildren - 1]);
-      this.scene.remove(this.scene.children[nbChildren - 2]);// tslint:disable-line 
+      this.scene.remove(this.scene.children[nbChildren - 2]);// tslint:disable-line
     }
 
   }
 
   private onDragEnd(event: MouseEvent): void {
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
     event.preventDefault();
-    const tempArray = this.arrayPoints; // tslint:disable-line
+    const tempArray: THREE.Vector3[] = this.arrayPoints;
     this.arrayPoints = [];
     this.departZone = new THREE.Line3();
-    const position = this.convertToWorldPosition(event); // tslint:disable-line
+    const position: THREE.Vector3 = this.convertToWorldPosition(event);
     tempArray[this.dragIndex] = position;
     if (this.dragIndex === tempArray.length - 1 && this.isClosed) {
       tempArray[0] = position;
@@ -135,9 +134,8 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   private getDraggedPointIndex(event: MouseEvent): number {
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const position = this.convertToWorldPosition(event); // tslint:disable-line
-    let index = -1;  // tslint:disable-line
+    const position: THREE.Vector3 = this.convertToWorldPosition(event);
+    let index: number = -1;
     this.arrayPoints.forEach((point, i) => {
       if (position.distanceTo(point) < MAX_SELECTION_DISTANCE) {
         index = i;
@@ -148,20 +146,21 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
-     // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const rect = this.canvas.getBoundingClientRect(); // tslint:disable-line
-    const canvasPos = new THREE.Vector3(event.x - rect.left, event.y - rect.top); // tslint:disable-line
-    const vector = new THREE.Vector3((canvasPos.x / this.canvas.width) * 2 - 1, -(canvasPos.y / this.canvas.height) * 2 + 1, 0); // tslint:disable-line
+    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
+    const rect: ClientRect = this.canvas.getBoundingClientRect();
+    const canvasPos: THREE.Vector3 = new THREE.Vector3(event.x - rect.left, event.y - rect.top);
+    const vector: THREE.Vector3 = new THREE.Vector3((canvasPos.x / this.canvas.width) * 2 - 1, // tslint:disable-line
+      -(canvasPos.y / this.canvas.height) * 2 + 1, 0);// tslint:disable-line
     vector.unproject(this.camera);
-    const dir = vector.sub(this.camera.position);// tslint:disable-line
-    const distance = - this.camera.position.z / dir.z;// tslint:disable-line
+    const dir: THREE.Vector3 = vector.sub(this.camera.position);
+    const distance: number = - this.camera.position.z / dir.z;
 
     return this.camera.position.clone().add(dir.multiplyScalar(distance));
   }
 
   private getPlacementPosition(event: MouseEvent): THREE.Vector3 {
-      // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    let position = this.convertToWorldPosition(event);// tslint:disable-line
+    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
+    let position: THREE.Vector3 = this.convertToWorldPosition(event);
     if (this.arrayPoints.length > 2 && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION_DISTANCE) { // tslint:disable-line
       position = this.arrayPoints[0];
       this.isClosed = true;
@@ -172,17 +171,15 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   private createFirstPointContour(position: THREE.Vector3): void {
-      // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const geometryPoint = new THREE.Geometry();// tslint:disable-line
+    const geometryPoint: THREE.Geometry = new THREE.Geometry();
     geometryPoint.vertices.push(position);
-    const material = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });// tslint:disable-line
-    const dot = new THREE.Points(geometryPoint, material);// tslint:disable-line
+    const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });
+    const dot: THREE.Points = new THREE.Points(geometryPoint, material);
     this.scene.add(dot);
   }
 
   public createPoint(position: THREE.Vector3): void {
-     // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const geometryPoint = new THREE.Geometry();// tslint:disable-line
+    const geometryPoint: THREE.Geometry = new THREE.Geometry();
     geometryPoint.vertices.push(position);
     const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
     const dot: THREE.Points = new THREE.Points(geometryPoint, material);
@@ -191,9 +188,9 @@ export class EditeurComponent implements AfterViewInit {
   }
 
   public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void {
-     // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    let arrayTmp = new Array<THREE.Vector3>();// tslint:disable-line
-    let color;// tslint:disable-line
+    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
+    let arrayTmp: THREE.Vector3[] = new Array<THREE.Vector3>();
+    let color: number;
     arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
 
     if (arrayTmp.length === 0) {
@@ -201,26 +198,26 @@ export class EditeurComponent implements AfterViewInit {
     }
     else {
       color = 0xFF0000; // tslint:disable-line 
-      if (arrayTmp.length > 1)  {
+      if (arrayTmp.length > 1) {
         this.redrawConflictingLines(arrayTmp, color);
       }
     }
 
-    const geometryLine = new THREE.Geometry;// tslint:disable-line
+    const geometryLine: THREE.Geometry = new THREE.Geometry;
     geometryLine.vertices.push(lastPos);
     geometryLine.vertices.push(newPos);
-    const line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ "linewidth": 6, color }));// tslint:disable-line
+    const line: THREE.Line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
     this.scene.add(line);
 
   }
 
   private redrawConflictingLines(arrayTmp: THREE.Vector3[], color: number): void {
-     // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
+    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
     for (let i = 0; i < arrayTmp.length; i += 2) {// tslint:disable-line
-      const geoLine = new THREE.Geometry;// tslint:disable-line
+      const geoLine: THREE.Geometry = new THREE.Geometry;
       geoLine.vertices.push(arrayTmp[i]);
       geoLine.vertices.push(arrayTmp[i + 1]);
-      const line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));// tslint:disable-line
+      const line: THREE.Line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));
       this.scene.add(line);
     }
   }
