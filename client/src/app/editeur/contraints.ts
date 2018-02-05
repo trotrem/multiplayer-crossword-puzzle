@@ -1,16 +1,16 @@
 import * as THREE from "three";
 const MAX_LENGTH: number = 15;
 const PRECISION: number = 0.0000001;
+const TWO: number = 2;
 export class Contraints {
 
   public constructor() { }
 
   private moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, 2) + Math.pow(position2.y - position1.y, 2)); // tslint:disable-line
-    const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, 2) + Math.pow(position2.y - position3.y, 2)); // tslint:disable-line
-    const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, 2) + Math.pow(position3.y - position1.y, 2)); // tslint:disable-line
-    let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB)); // tslint:disable-line
+    const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, TWO) + Math.pow(position2.y - position1.y, TWO));
+    const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, TWO) + Math.pow(position2.y - position3.y, TWO));
+    const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, TWO) + Math.pow(position3.y - position1.y, TWO));
+    let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (TWO * BC * AB));
 
     const HALF_CIRCLE_DEGREES: number = 180;
     angle = HALF_CIRCLE_DEGREES * (angle) / Math.PI;
@@ -56,10 +56,9 @@ export class Contraints {
   }
 
   private findIsInLine(position1: THREE.Vector3, position2: THREE.Vector3, intersection: THREE.Vector3): boolean {
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const dist1 = Math.sqrt(Math.pow(intersection.x - position1.x, 2) + Math.pow(intersection.y - position1.y, 2)); // tslint:disable-line
-    const dist2 = Math.sqrt(Math.pow(position2.x - intersection.x, 2) + Math.pow(position2.y - intersection.y, 2)); // tslint:disable-line
-    const distTotal = Math.sqrt(Math.pow(position2.x - position1.x, 2) + Math.pow(position2.y - position1.y, 2)); // tslint:disable-line
+    const dist1: number = Math.sqrt(Math.pow(intersection.x - position1.x, TWO) + Math.pow(intersection.y - position1.y, TWO));
+    const dist2: number = Math.sqrt(Math.pow(position2.x - intersection.x, TWO) + Math.pow(position2.y - intersection.y, TWO));
+    const distTotal: number = Math.sqrt(Math.pow(position2.x - position1.x, TWO) + Math.pow(position2.y - position1.y, TWO));
     if (Math.abs(dist1 + dist2 - distTotal) > PRECISION) {
       return false;
     }
@@ -68,54 +67,48 @@ export class Contraints {
   }
 
   private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): boolean {
-    // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
-    const dist: number = Math.sqrt(Math.pow(position1.x - position2.x, 2) + Math.pow(position1.y - position2.y, 2)); // tslint:disable-line
-    if (dist < (MAX_LENGTH * 2)) { // tslint:disable-line:no-magic-numbers
+    const dist: number = Math.sqrt(Math.pow(position1.x - position2.x, TWO) + Math.pow(position1.y - position2.y, TWO));
+    if (dist < (MAX_LENGTH * TWO)) {
       return true;
     }
 
     return false;
   }
+  private checkArrayLength(array: Array<THREE.Vector3>): Array<THREE.Vector3> {
+    if (array.length === 1) {
+      array.pop();
+    }
+
+    return array;
+  }
 
   public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): THREE.Vector3[] {
-    const arrayTmp: Array<THREE.Vector3> = new Array<THREE.Vector3>();
-    let answer: boolean = false;
+    let arrayTmp: Array<THREE.Vector3> = new Array<THREE.Vector3>();
     const index: number = arrayPoints.indexOf(position1);
     // contraint about the segment must not be less than two time the lenght
     if (this.lessThanLength(position1, position2)) {
-      const vec: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-      arrayTmp.push(vec);
+      arrayTmp.push(new THREE.Vector3(0, 0, 0));
     }
     if (index === 0) {
       return arrayTmp;
     }
-
     const position0: THREE.Vector3 = arrayPoints[index - 1];
-
     // contraint about the angle
     if (!this.moreThan45Degres(position2, position1, position0)) {
-      if (arrayTmp.length === 1) {
-        arrayTmp.pop();
-      }
+      arrayTmp = this.checkArrayLength(arrayTmp);
       arrayTmp.push(position0);
       arrayTmp.push(position1);
     }
     // contraint about the angle when the track is close
     if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
-      if (arrayTmp.length === 1) {
-        arrayTmp.pop();
-      }
+      arrayTmp = this.checkArrayLength(arrayTmp);
       arrayTmp.push(arrayPoints[1]);
       arrayTmp.push(position2);
     }
     // contraint about two segments must not intersect
     for (let i: number = 0; i < arrayPoints.length - 1; i++) {
-      answer = this.twoLinesIntersect(position2, position1, arrayPoints[i], arrayPoints[i + 1]);
-
-      if (answer) {
-        if (arrayTmp.length === 1) {
-          arrayTmp.pop();
-        }
+      if (this.twoLinesIntersect(position2, position1, arrayPoints[i], arrayPoints[i + 1])) {
+        arrayTmp = this.checkArrayLength(arrayTmp);
         arrayTmp.push(arrayPoints[i]);
         arrayTmp.push(arrayPoints[i + 1]);
       }
