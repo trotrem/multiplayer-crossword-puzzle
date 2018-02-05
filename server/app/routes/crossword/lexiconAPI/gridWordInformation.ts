@@ -15,7 +15,7 @@ export class GridWordInformation {
         if (this.frequency < commonFactor) {
             this.isCommon = false;
         }
-        this.wordInfo = [word, defs, frequency];
+        this.wordInfo = [requestWord, requestDefs, requestFrequency];
     }
 
     public getWord(): string {
