@@ -1,6 +1,6 @@
 export class Square {
     private id: number;
-    private isBlack: boolean;
+    public isBlack: boolean;
     private letter: string;
 
     constructor(id: number, isBlack: boolean, letter: string) {

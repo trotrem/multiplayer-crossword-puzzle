@@ -1,8 +1,8 @@
-import {GridSaver} from "./gridSaver"
+import { GridSaver } from "./gridSaver";
 
-export class GridMedium extends GridSaver{
+export class GridMedium extends GridSaver {
 
-    constructor(){
+    constructor() {
         super();
     }
-} 
+}

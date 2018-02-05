@@ -1,23 +1,31 @@
 import { expect } from "chai";
 import { Grid } from "./grid";
 
+const grid: Grid = new Grid();
+grid.makeGrid();
+/*let combineString: string = "";
+for (let indexI = 0; indexI < grid.Height; indexI++) {
+    combineString += "|";
+    for (let indexJ = 0; indexJ < grid.Width; indexJ++) {
+        if (grid.getSquareIsBlack(indexI, indexJ)) {
+            combineString += " # ";
+        } else {
+            combineString += " * ";
+        }
+    }
+    combineString += "|\n";
+}
+console.log(combineString);*/
 
 describe("Grid", () => {
-    let grid: Grid;
-    it("should be instantiable using default constructor", () => {
-        grid = new Grid();
-        expect(grid).exist;
-    });
     it("Should be 10 witdh and 10 height", () => {
-        grid = new Grid();
-        expect(grid.getHeight()).equals(10);
+        expect(grid.Height).equals(10);
     });
     it("Should contains black square", () => {
-        grid = new Grid();
-        let compteurBlack: number;
-        const nbrBlack = grid.getNbrBlack();
-        for (let indexI = 0; indexI < grid.getHeight(); indexI++) {
-            for (let indexJ = 0; indexJ < grid.getHeight(); indexJ++) {
+        let compteurBlack: number = 0;
+        const nbrBlack: number = grid.NbrBlack;
+        for (let indexI: number = 0; indexI < grid.Height; indexI++) {
+            for (let indexJ: number = 0; indexJ < grid.Width; indexJ++) {
                 if (grid.getSquareIsBlack(indexI, indexJ)) {
                     compteurBlack++;
                 }

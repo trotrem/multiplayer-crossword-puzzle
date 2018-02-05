@@ -2,64 +2,63 @@ import { Word } from "./word";
 import { Grid } from "./grid";
 
 export class ListWord {
-    private grid: Grid;
-    private listOfWordV: Word[];
+    private _grid: Grid;
+    private _listOfWordV: Word[];
     private listOfWordH: Word[];
-    private lengthOfV: number;
-    private lengthOfH: number;
+    private _lengthOfV: number;
+    private _lengthOfH: number;
     constructor(grid: Grid) {
-        this.grid = grid;
-        this.createListOfWord();
+        this._grid = grid;
     }
-    public getListOfWordV(): Word[]{
-        return this.listOfWordV;
+    public get ListOfWordV(): Word[] {
+        return this._listOfWordV;
     }
-    public getListOfWordH(): Word[]{
+    public get ListOfWordH(): Word[] {
         return this.listOfWordH;
     }
-    public getLengthOfV(): number{
-        return this.lengthOfV;
+    public get LengthOfV(): number {
+        return this._lengthOfV;
     }
-    public getLengthOfH(): number{
-        return this.lengthOfH;
+    public get LengthOfH(): number {
+        return this._lengthOfH;
     }
-    private createListOfWord(): void {
-        let compteurLength: number = 0;
-        let compteurMot: number = 0;
+    public createListOfWord(): void {
+        let lengthCounter: number = 0;
+        let wordCounter: number = 0;
         // compteur mot verticale
-        for (let indexJ = 0; indexJ < this.grid.getHeight(); indexJ++) {
-            for (let indexI = 0; indexI < this.grid.getWidth(); indexI++) {
-                if (!(this.grid[indexI][indexJ].getIsBlack)) {
-                    compteurLength++;
+        for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
+            for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
+                if (!(this._grid[indexI][indexJ].getIsBlack)) {
+                    lengthCounter++;
                 } else {
-                    compteurMot++;
-                    this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-                    compteurLength = 0;
+                    wordCounter++;
+                    this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+                    lengthCounter = 0;
                 }
             }
-            compteurMot++;
-            this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-            compteurLength = 0;
+            wordCounter++;
+            this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+            lengthCounter = 0;
         }
-        this.lengthOfV = compteurMot;
-        compteurMot = 0;
-        compteurLength = 0;
-        //compteur mot horizontale
-        for (let indexI = 0; indexI < this.grid.getWidth(); indexI++) {
-            for (let indexJ = 0; indexJ < this.grid.getHeight(); indexJ++) {
-                if (!(this.grid[indexI][indexJ].getIsBlack)) {
-                    compteurLength++;
+        this._lengthOfV = wordCounter;
+        wordCounter = 0;
+        lengthCounter = 0;
+        // compteur mot horizontale
+        for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
+            for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
+                if (!(this._grid[indexI][indexJ].getIsBlack)) {
+                    lengthCounter++;
                 } else {
-                    compteurMot++;
-                    this.listOfWordH.push(new Word(compteurLength, compteurMot, null));
-                    compteurLength = 0;
+                    wordCounter++;
+                    this.listOfWordH.push(new Word(lengthCounter, wordCounter, null));
+                    lengthCounter = 0;
                 }
             }
-            compteurMot++;
-            this.listOfWordV.push(new Word(compteurLength, compteurMot, null));
-            compteurLength = 0;
+            wordCounter++;
+            this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+            lengthCounter = 0;
         }
-        this.lengthOfH = compteurMot;
+        this._lengthOfH = wordCounter;
 
     }
 }

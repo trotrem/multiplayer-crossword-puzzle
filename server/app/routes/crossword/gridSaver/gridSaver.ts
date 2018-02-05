@@ -1,13 +1,12 @@
-import {Grid} from "../grid/grid"; 
+import { Grid } from "../grid/grid";
 
+export class GridSaver {
+    private _gridArray: Grid[];
 
-export class GridSaver{
-    private gridArray : Grid[] ; 
-
-    constructor(){
-
+    constructor() {
+        this._gridArray = new Array<Grid>;
     }
-    public addGrid (grid : Grid){
-        this.gridArray.push(grid);
+    public addGrid(grid: Grid): void {
+        this._gridArray.push(grid);
     }
 }

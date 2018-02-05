@@ -1,24 +1,24 @@
 export class Word {
-    private length: number;
-    private num: number;
-    private text: string;
+    private _length: number;
+    private _num: number;
+    private _text: string;
 
     constructor(length: number, num: number, text: string) {
-        this.length = length;
-        this.num = num;
-        this.text = text;
+        this._length = length;
+        this._num = num;
+        this._text = text;
     }
 
-    public getWord(): string {
-        return this.text;
+    public get Word(): string {
+        return this._text;
     }
-    public getLength(): number {
-        return this.length;
+    public get Length(): number {
+        return this._length;
     }
-    public getNumber(): number {
-        return this.num;
+    public get Number(): number {
+        return this._num;
     }
     public setWord(word: string): void {
-        this.text = word;
+        this._text = word;
     }
 }

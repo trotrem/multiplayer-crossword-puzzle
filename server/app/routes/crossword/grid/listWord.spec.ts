@@ -1,34 +1,29 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 import { ListWord } from "./listWords";
-import { Grid } from './grid';
+import { Grid } from "./grid";
+import { Word } from "./word";
 
-const TAILLEMIN = 2;
+const TAILLEMIN: number = 2;
 
 describe("ListOfWord", () => {
     let list: ListWord;
-    let grid = new Grid();
+    const grid: Grid = new Grid();
 
-    it("should be instantiable using default constructor", () => {
-        list = new ListWord(grid);
-        expect(list).exist;
-    });
-
-    it("Should have words with a minimum of two letters", (letter) => {
+    it("Should have words with a minimum of two letters", () => {
         list = new ListWord(grid);
         let isMinimum: boolean = true;
-        let listH = list.getListOfWordH();
-        let listV = list.getListOfWordH();
-        for (let word = 0; word < list.getLengthOfH(); word++) {
-            if (listH[word].getLength() < TAILLEMIN) {
+        const listH: Word[] = list.ListOfWordH;
+        const listV: Word[] = list.ListOfWordH;
+        for (let word: number = 0; word < list.LengthOfH; word++) {
+            if (listH[word].Length < TAILLEMIN) {
                 isMinimum = false;
             }
         }
-        for (let word = 0; word < list.getLengthOfV(); word++) {
-            if (listV[word].getLength() < TAILLEMIN) {
+        for (let word: number = 0; word < list.LengthOfV; word++) {
+            if (listV[word].Length < TAILLEMIN) {
                 isMinimum = false;
             }
         }
         expect(isMinimum);
-        letter();
     });
 });
