@@ -3,14 +3,14 @@ const MAX_LENGTH: number = 15;
 const PRECISION: number = 0.0000001;
 export class Contraints {
 
-  public constructor() {}
+  public constructor() { }
 
-  public moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
+  private moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
     // disabled tslint in the following lines so it wouldn't trigger on the 2s and the disable tslint comments
     const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, 2) + Math.pow(position2.y - position1.y, 2)); // tslint:disable-line
     const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, 2) + Math.pow(position2.y - position3.y, 2)); // tslint:disable-line
     const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, 2) + Math.pow(position3.y - position1.y, 2)); // tslint:disable-line
-    let angle: number = Math.acos((BC * BC + AB * AB - AC * AC)/(2 * BC * AB)); // tslint:disable-line
+    let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB)); // tslint:disable-line
 
     const HALF_CIRCLE_DEGREES: number = 180;
     angle = HALF_CIRCLE_DEGREES * (angle) / Math.PI;
@@ -45,7 +45,7 @@ export class Contraints {
       intersection.y = ((position2.y - position1.y)
         * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
         - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x
-        + (position1.x - position2.x) * position1.y)) / det;
+          + (position1.x - position2.x) * position1.y)) / det;
 
       if (this.findIsInLine(position1, position2, intersection) && this.findIsInLine(position3, position4, intersection)) {
         return true;
@@ -93,8 +93,8 @@ export class Contraints {
     const position0: THREE.Vector3 = arrayPoints[index - 1];
 
     // contraint about the angle
-    if (!this.moreThan45Degres(position2, position1, position0)) { // contraint about the angle
-      if (arrayTmp.length  === 1) {
+    if (!this.moreThan45Degres(position2, position1, position0)) {
+      if (arrayTmp.length === 1) {
         arrayTmp.pop();
       }
       arrayTmp.push(position0);
@@ -108,7 +108,7 @@ export class Contraints {
       arrayTmp.push(arrayPoints[1]);
       arrayTmp.push(position2);
     }
-
+    // contraint about two segments must not intersect
     for (let i: number = 0; i < arrayPoints.length - 1; i++) {
       answer = this.twoLinesIntersect(position2, position1, arrayPoints[i], arrayPoints[i + 1]);
 
