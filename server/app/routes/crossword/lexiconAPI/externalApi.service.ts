@@ -2,12 +2,12 @@ import * as requestOption from "request-promise-native";
 import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
-
 export class ExternalApiService {
 
     public requestResult: JSON;
 
     constructor() {
+        this.requestResult = undefined;
     }
 
     private options: (UriOptions & RequestPromiseOptions) = {

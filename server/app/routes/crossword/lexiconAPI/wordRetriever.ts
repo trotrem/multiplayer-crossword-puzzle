@@ -1,4 +1,3 @@
-import { ExternalApiService } from "./externalApi.service";
 import { GridWordInformation } from "./gridWordInformation";
 
 export class WordRetriever {
@@ -11,6 +10,7 @@ export class WordRetriever {
 
     public getWordsWithDefinitions(words: JSON): GridWordInformation[] {
         this.createWordListWithDefinitions(words);
+
         return this.wordsWithDefinitions;
     }
 
@@ -46,13 +46,3 @@ export class WordRetriever {
     }
 
 }
-
-/*let bleh: ExternalApiService = new ExternalApiService;
-let words: WordRetriever = new WordRetriever;
-bleh.requestWordInfo("hall")
-    .then(() => {
-        let test = words.getWordsWithDefinitions(bleh.requestResult);
-        console.log(test[0].getWord());
-
-    })
-    .catch((err: any) => { console.log("ERREUR..."); });*/
