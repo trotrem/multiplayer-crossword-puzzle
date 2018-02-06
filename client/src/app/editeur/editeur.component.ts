@@ -54,14 +54,10 @@ export class EditeurComponent implements AfterViewInit {
         this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));
         this.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
             event.preventDefault();
-            this.onRightClick();
-        });
-        this.canvas.addEventListener("dragstart", (event: MouseEvent) => {
-            this.dragIndex = this.getDraggedPointIndex(event);
-        });
-        this.canvas.addEventListener("dragend", (event: MouseEvent) => {
-            this.onDragEnd(event);
-        });
+            this.onRightClick();}
+        );
+        this.canvas.addEventListener("dragstart", (event: MouseEvent) => {this.dragIndex = this.getDraggedPointIndex(event);});
+        this.canvas.addEventListener("dragend", (event: MouseEvent) => {this.onDragEnd(event);});
     }
 
     public createScene(): void {
@@ -100,7 +96,6 @@ export class EditeurComponent implements AfterViewInit {
         }
 
         this.arrayPoints.push(position);
-
     }
 
     private onRightClick(): void {
@@ -145,17 +140,17 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
-        const rect: ClientRect = this.canvas.getBoundingClientRect();
-        const canvasPos: THREE.Vector3 = new THREE.Vector3(event.x - rect.left, event.y - rect.top);
-        const vector: THREE.Vector3 = new THREE.Vector3(
-            (canvasPos.x / this.canvas.width) * MAX_SELECTION - 1,
-            -(canvasPos.y / this.canvas.height) * MAX_SELECTION + 1,
+        const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
+        const canvasPosition: THREE.Vector3 = new THREE.Vector3(event.x - canvasRectangle.left, event.y - canvasRectangle.top);
+        const canvasVector: THREE.Vector3 = new THREE.Vector3(
+            (canvasPosition.x / this.canvas.width) * MAX_SELECTION - 1,
+            -(canvasPosition.y / this.canvas.height) * MAX_SELECTION + 1,
             0);
-        vector.unproject(this.camera);
-        const dir: THREE.Vector3 = vector.sub(this.camera.position);
-        const distance: number = - this.camera.position.z / dir.z;
+        canvasVector.unproject(this.camera);
+        const direction: THREE.Vector3 = canvasVector.sub(this.camera.position);
+        const distance: number = - this.camera.position.z / direction.z;
 
-        return this.camera.position.clone().add(dir.multiplyScalar(distance));
+        return this.camera.position.clone().add(direction.multiplyScalar(distance));
     }
 
     private getPlacementPosition(event: MouseEvent): THREE.Vector3 {
@@ -178,46 +173,46 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     public createPoint(position: THREE.Vector3): void { // public for test
-        const geometryPoint: THREE.Geometry = new THREE.Geometry();
-        geometryPoint.vertices.push(position);
+        const pointGeometry: THREE.Geometry = new THREE.Geometry();
+        pointGeometry.vertices.push(position);
         const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
-        const dot: THREE.Points = new THREE.Points(geometryPoint, material);
+        const dot: THREE.Points = new THREE.Points(pointGeometry, material);
         this.scene.add(dot);
     }
 
     public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void { // public for test
-        let arrayTmp: THREE.Vector3[] = new Array<THREE.Vector3>();
+        let contraintesArray: THREE.Vector3[] = new Array<THREE.Vector3>();
         let color: number;
-        arrayTmp = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
+        contraintesArray = this.contraintes.isValid(this.arrayPoints, lastPos, newPos);
 
-        if (arrayTmp.length === 0) {
+        if (contraintesArray.length === 0) {
             color = GREEN_COLOR;
         } else {
             color = RED_COLOR;
-            if (arrayTmp.length > 1) {
-                this.redrawConflictingLines(arrayTmp, color);
+            if (contraintesArray.length > 1) {
+                this.redrawConflictingLines(contraintesArray, color);
             }
         }
 
-        const geometryLine: THREE.Geometry = new THREE.Geometry;
-        geometryLine.vertices.push(lastPos);
-        geometryLine.vertices.push(newPos);
-        const line: THREE.Line = new THREE.Line(geometryLine, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
+        const lineGeometry: THREE.Geometry = new THREE.Geometry;
+        lineGeometry.vertices.push(lastPos);
+        lineGeometry.vertices.push(newPos);
+        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
         this.scene.add(line);
     }
 
-    private redrawConflictingLines(arrayTmp: THREE.Vector3[], color: number): void {
-        for (let i: number = 0; i < arrayTmp.length; i += MAX_SELECTION) {
-            const geoLine: THREE.Geometry = new THREE.Geometry;
-            geoLine.vertices.push(arrayTmp[i]);
-            geoLine.vertices.push(arrayTmp[i + 1]);
-            const line: THREE.Line = new THREE.Line(geoLine, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));
+    private redrawConflictingLines(contraintesArray: THREE.Vector3[], color: number): void {
+        for (let i: number = 0; i < contraintesArray.length; i += MAX_SELECTION) {
+            const lineGeometry: THREE.Geometry = new THREE.Geometry;
+            lineGeometry.vertices.push(contraintesArray[i]);
+            lineGeometry.vertices.push(contraintesArray[i + 1]);
+            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));
             this.scene.add(line);
         }
     }
 
-    private redraw(newArray: THREE.Vector3[]): void {
-        if (!newArray) {
+    private redraw(newArrayPoints: THREE.Vector3[]): void {
+        if (!newArrayPoints) {
             return;
         }
 
@@ -225,11 +220,11 @@ export class EditeurComponent implements AfterViewInit {
             this.scene.remove(this.scene.children[0]);
         }
 
-        this.createFirstPointContour(newArray[0]);
-        this.createPoint(newArray[0]);
-        this.arrayPoints.push(newArray[0]);
+        this.createFirstPointContour(newArrayPoints[0]);
+        this.createPoint(newArrayPoints[0]);
+        this.arrayPoints.push(newArrayPoints[0]);
 
-        for (const position of newArray.slice(1)) {
+        for (const position of newArrayPoints.slice(1)) {
             this.createLine(this.arrayPoints[this.arrayPoints.length - 1], position);
             this.createPoint(position);
             this.arrayPoints.push(position);

@@ -1,7 +1,9 @@
 import * as THREE from "three";
+
 const MAX_LENGTH: number = 15;
 const PRECISION: number = 0.0000001;
 const TWO: number = 2;
+
 export class Contraints {
 
     public constructor() { }
