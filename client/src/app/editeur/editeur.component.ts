@@ -54,10 +54,10 @@ export class EditeurComponent implements AfterViewInit {
         this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));
         this.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
             event.preventDefault();
-            this.onRightClick();}
-        );
-        this.canvas.addEventListener("dragstart", (event: MouseEvent) => {this.dragIndex = this.getDraggedPointIndex(event);});
-        this.canvas.addEventListener("dragend", (event: MouseEvent) => {this.onDragEnd(event);});
+            this.onRightClick();
+        });
+        this.canvas.addEventListener("dragstart", (event: MouseEvent) => { this.dragIndex = this.getDraggedPointIndex(event); });
+        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDragEnd(event); });
     }
 
     public createScene(): void {
