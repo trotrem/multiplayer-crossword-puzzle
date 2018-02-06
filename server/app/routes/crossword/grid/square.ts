@@ -1,30 +1,30 @@
 export class Square {
-    private id: number;
-    public isBlack: boolean;
-    private letter: string;
+    private _id: number;
+    public _isBlack: boolean;
+    private _letter: string;
 
     constructor(id: number, isBlack: boolean, letter: string) {
-        this.id = id;
-        this.isBlack = isBlack;
-        this.letter = letter;
+        this._id = id;
+        this._isBlack = isBlack;
+        this._letter = letter;
     }
 
     public setId(id: number): void {
-        this.id = id;
+        this._id = id;
     }
     public setIsBlack(isBlack: boolean): void {
-        this.isBlack = isBlack;
+        this._isBlack = isBlack;
     }
     public setLetter(letter: string): void {
-        this.letter = letter;
+        this._letter = letter;
     }
     public getId(): number {
-        return this.id;
+        return this._id;
     }
     public getIsBlack(): boolean {
-        return this.isBlack;
+        return this._isBlack;
     }
     public getLetter(): string {
-        return this.letter;
+        return this._letter;
     }
 }

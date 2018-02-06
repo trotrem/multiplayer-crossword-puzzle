@@ -1,7 +1,7 @@
 import { Word } from "./word";
 import { Grid } from "./grid";
 
-export class ListWord {
+export class Words {
     private _grid: Grid;
     private _listOfWordV: Word[];
     private listOfWordH: Word[];

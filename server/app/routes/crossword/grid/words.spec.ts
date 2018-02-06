@@ -1,16 +1,16 @@
 import { expect } from "chai";
-import { ListWord } from "./listWords";
+import { Words } from "./words";
 import { Grid } from "./grid";
 import { Word } from "./word";
 
 const TAILLEMIN: number = 2;
 
-describe("ListOfWord", () => {
-    let list: ListWord;
+describe("ListOfWords", () => {
+    let list: Words;
     const grid: Grid = new Grid();
 
     it("Should have words with a minimum of two letters", () => {
-        list = new ListWord(grid);
+        list = new Words(grid);
         let isMinimum: boolean = true;
         const listH: Word[] = list.ListOfWordH;
         const listV: Word[] = list.ListOfWordH;
