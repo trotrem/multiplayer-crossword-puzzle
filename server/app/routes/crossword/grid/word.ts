@@ -1,11 +1,12 @@
+//classe temporaire qui serait remplacé par gridWordInformation.ts lors de l'ajout de mot dans la grille
 export class Word {
     private _length: number;
-    private _num: number;
+    private _id: number;
     private _text: string;
 
-    constructor(length: number, num: number, text: string) {
+    constructor(length: number, id: number, text: string) {
         this._length = length;
-        this._num = num;
+        this._id = id;
         this._text = text;
     }
 
@@ -16,7 +17,7 @@ export class Word {
         return this._length;
     }
     public get Number(): number {
-        return this._num;
+        return this._id;
     }
     public setWord(word: string): void {
         this._text = word;

@@ -3,12 +3,10 @@ import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
-
-    public requestResult: JSON;
-
-    constructor() {
-        this.requestResult = undefined;
-    }
+    constructor(
+        private _requestResult: JSON = null
+    ) {
+        }
 
     private options: (UriOptions & RequestPromiseOptions) = {
         method: "GET",
@@ -26,14 +24,14 @@ export class ExternalApiService {
 
         return requestOption(this.options)
             .then((result: JSON) => {
-                this.requestResult = result;
+                this._requestResult = result;
 
             })
             .catch((err: object) => { /* Erreur */ });
     }
 
-    public getRequestResult(): JSON {
-        return this.requestResult;
+    public get requestResult(): JSON {
+        return this._requestResult;
     }
 
 }

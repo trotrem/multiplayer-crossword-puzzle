@@ -1,41 +1,25 @@
-
-// Classe contenant les infos d'un mot
 export class GridWordInformation {
-    private word: string;
-    private defs: string[];
-    private frequency: number;
-    private isCommon: boolean = true;
-    private wordInfo: [string, string[], number];
-
-    constructor(requestWord: string, requestDefs: string[], requestFrequency: number) {
-        this.word = requestWord;
-        this.defs = requestDefs;
-        this.frequency = requestFrequency;
+    constructor(
+        private _word: string, private _defs: string[], private _frequency: number, private _isCommon: boolean = true) {
         const commonFactor: number = 15;
-        if (this.frequency < commonFactor) {
-            this.isCommon = false;
+        if (_frequency < commonFactor) {
+            this._isCommon = false;
         }
-        this.wordInfo = [requestWord, requestDefs, requestFrequency];
     }
 
-    public getWord(): string {
-        return this.word;
+    public get word(): string {
+        return this._word;
     }
 
     public getDefinitions(): string[] {
-        return this.defs;
+        return this._defs;
     }
 
-    public getFrequency(): number {
-        return this.frequency;
+    public get frequency(): number {
+        return this._frequency;
     }
 
-    public getIsCommon(): boolean {
-        return this.isCommon;
+    public get isCommon(): boolean {
+        return this._isCommon;
     }
-
-    public getInfo(): [string, string[], number] {
-        return this.wordInfo;
-    }
-
 }
