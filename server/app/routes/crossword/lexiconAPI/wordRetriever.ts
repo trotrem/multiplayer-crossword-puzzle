@@ -29,16 +29,16 @@ export class WordRetriever {
 
     private removeDefinitions(): void {
         for (let indexWord: number = 0; indexWord < this._wordsWithDefinitions.length; indexWord++) {
-            for (let indexDefs: number = 0; indexDefs < this._wordsWithDefinitions[indexWord].getDefinitions().length; indexDefs++) {
-                const isNoun: boolean = this._wordsWithDefinitions[indexWord].getDefinitions()[0].charAt(0) === "n";
-                const isVerb: boolean = this._wordsWithDefinitions[indexWord].getDefinitions()[0].charAt(0) === "v";
+            for (let indexDefs: number = 0; indexDefs < this._wordsWithDefinitions[indexWord].definitions.length; indexDefs++) {
+                const isNoun: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "n";
+                const isVerb: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "v";
                 if (!(isNoun) && !(isVerb)) {
-                    this._wordsWithDefinitions[indexWord].getDefinitions().splice(indexDefs, 1);
+                    this._wordsWithDefinitions[indexWord].definitions.splice(indexDefs, 1);
                     indexDefs--; // next object is at same index as the one removed
                 }
             }
-            if (this._wordsWithDefinitions[indexWord].getDefinitions() === undefined
-                || this._wordsWithDefinitions[indexWord].getDefinitions().length === 0) {
+            if (this._wordsWithDefinitions[indexWord].definitions === undefined
+                || this._wordsWithDefinitions[indexWord].definitions.length === 0) {
                 this._wordsWithDefinitions.splice(indexWord, 1);
                 indexWord--; // next object is at same index as the one removed
             }

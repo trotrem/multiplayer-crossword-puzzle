@@ -28,7 +28,7 @@ describe("Querry of the word 'hall'.", () => {
             .then(() => {
                 result = apiService.requestResult;
                 words = wordRetriever.getWordsWithDefinitions(result);
-                const secondDefinition: string = words[0].getDefinitions()[1];
+                const secondDefinition: string = words[0].definitions[1];
                 const expectedSecondDefintion: string = "n\ta large room for gatherings or entertainment";
                 assert.equal(secondDefinition, expectedSecondDefintion);
                 secondDefsIsValid();
@@ -41,7 +41,7 @@ describe("Querry of the word 'hall'.", () => {
             .then(() => {
                 result = apiService.requestResult;
                 words = wordRetriever.getWordsWithDefinitions(result);
-                const numberOfDefs: number = words[0].getDefinitions().length;
+                const numberOfDefs: number = words[0].definitions.length;
                 const expectedLength: number = 13;
                 assert.equal(numberOfDefs, expectedLength);
                 defsLengthIsValid();

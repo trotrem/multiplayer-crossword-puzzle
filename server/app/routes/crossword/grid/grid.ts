@@ -88,7 +88,7 @@ export class Grid {
     public makeGrid(): void {
         // making an empty grid
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
-            const row: Square[] = new Array<Square>();
+            const row: Square[] = new Array();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
                 row.push(new Square(indexI * HEIGHT + indexJ, false, null));
             }

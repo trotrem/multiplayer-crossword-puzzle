@@ -11,7 +11,7 @@ export class GridWordInformation {
         return this._word;
     }
 
-    public getDefinitions(): string[] {
+    public get definitions(): string[] {
         return this._defs;
     }
 
