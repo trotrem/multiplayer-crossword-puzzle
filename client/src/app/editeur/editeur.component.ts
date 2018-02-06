@@ -23,7 +23,7 @@ export class EditeurComponent implements AfterViewInit {
 
     private renderer: THREE.Renderer;
 
-    public arrayPoints: THREE.Vector3[];
+    public points: THREE.Vector3[];
 
     private isClosed: boolean;
 
@@ -39,7 +39,7 @@ export class EditeurComponent implements AfterViewInit {
 
     public constructor() {
         this.dragIndex = -1;
-        this.arrayPoints = new Array<THREE.Vector3>();
+        this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
     }
@@ -86,27 +86,27 @@ export class EditeurComponent implements AfterViewInit {
 
         const position: THREE.Vector3 = this.getPlacementPosition(event);
 
-        if (this.arrayPoints.length === 0) {
+        if (this.points.length === 0) {
             this.createFirstPointContour(position);
         }
         this.createPoint(position);
 
-        if (this.arrayPoints.length > 0) {
-            this.createLine(this.arrayPoints[this.arrayPoints.length - 1], position);
+        if (this.points.length > 0) {
+            this.createLine(this.points[this.points.length - 1], position);
         }
 
-        this.arrayPoints.push(position);
+        this.points.push(position);
     }
 
     private onRightClick(): void {
         this.isClosed = false;
         this.startingZone = new THREE.Line3();
         const nbChildren: number = this.scene.children.length;
-        const newArray: THREE.Vector3[] = this.arrayPoints;
-        this.arrayPoints = [];
-        newArray.pop();
-        if (newArray.length > 0) {
-            this.redraw(newArray);
+        const newPoints: THREE.Vector3[] = this.points;
+        this.points = [];
+        newPoints.pop();
+        if (newPoints.length > 0) {
+            this.redraw(newPoints);
         } else {
             this.scene.remove(this.scene.children[nbChildren - 1]);
             this.scene.remove(this.scene.children[nbChildren - MAX_SELECTION]);
@@ -115,22 +115,22 @@ export class EditeurComponent implements AfterViewInit {
 
     private onDragEnd(event: MouseEvent): void {
         event.preventDefault();
-        const newArray: THREE.Vector3[] = this.arrayPoints;
-        this.arrayPoints = [];
+        const newPoints: THREE.Vector3[] = this.points;
+        this.points = [];
         this.startingZone = new THREE.Line3();
         const position: THREE.Vector3 = this.convertToWorldPosition(event);
-        newArray[this.dragIndex] = position;
-        if (this.dragIndex === newArray.length - 1 && this.isClosed) {
-            newArray[0] = position;
+        newPoints[this.dragIndex] = position;
+        if (this.dragIndex === newPoints.length - 1 && this.isClosed) {
+            newPoints[0] = position;
         }
         this.dragIndex = -1;
-        this.redraw(newArray);
+        this.redraw(newPoints);
     }
 
     private getDraggedPointIndex(event: MouseEvent): number {
         const position: THREE.Vector3 = this.convertToWorldPosition(event);
         let index: number = -1;
-        this.arrayPoints.forEach((point, i) => {
+        this.points.forEach((point, i) => {
             if (position.distanceTo(point) < MAX_SELECTION) {
                 index = i;
             }
@@ -155,10 +155,10 @@ export class EditeurComponent implements AfterViewInit {
 
     private getPlacementPosition(event: MouseEvent): THREE.Vector3 {
         let position: THREE.Vector3 = this.convertToWorldPosition(event);
-        if (this.arrayPoints.length > MAX_SELECTION && position.distanceTo(this.arrayPoints[0]) < MAX_SELECTION) {
-            position = this.arrayPoints[0];
+        if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
+            position = this.points[0];
             this.isClosed = true;
-            this.startingZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
+            this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
         }
 
         return position;
@@ -183,7 +183,7 @@ export class EditeurComponent implements AfterViewInit {
     public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void { // public for test
         let illegalPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
         let color: number;
-        illegalPoints = this.contraints.isValid(this.arrayPoints, lastPos, newPos);
+        illegalPoints = this.contraints.isValid(this.points, lastPos, newPos);
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
@@ -211,8 +211,8 @@ export class EditeurComponent implements AfterViewInit {
         }
     }
 
-    private redraw(newArrayPoints: THREE.Vector3[]): void {
-        if (!newArrayPoints) {
+    private redraw(newPoints: THREE.Vector3[]): void {
+        if (!newPoints) {
             return;
         }
 
@@ -220,15 +220,15 @@ export class EditeurComponent implements AfterViewInit {
             this.scene.remove(this.scene.children[0]);
         }
 
-        this.createFirstPointContour(newArrayPoints[0]);
-        this.createPoint(newArrayPoints[0]);
-        this.arrayPoints.push(newArrayPoints[0]);
+        this.createFirstPointContour(newPoints[0]);
+        this.createPoint(newPoints[0]);
+        this.points.push(newPoints[0]);
 
-        for (const position of newArrayPoints.slice(1)) {
-            this.createLine(this.arrayPoints[this.arrayPoints.length - 1], position);
+        for (const position of newPoints.slice(1)) {
+            this.createLine(this.points[this.points.length - 1], position);
             this.createPoint(position);
-            this.arrayPoints.push(position);
+            this.points.push(position);
         }
-        this.startingZone = new THREE.Line3(this.arrayPoints[0], this.arrayPoints[1]);
+        this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
     }
 }
