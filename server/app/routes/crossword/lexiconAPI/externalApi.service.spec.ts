@@ -1,8 +1,7 @@
 import { ExternalApiService } from "./externalApi.service";
 import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
-
-const assert = require("assert");
+import * as assert from "assert";
 
 describe("Querry of the word 'hall'.", () => {
     const apiService: ExternalApiService = new ExternalApiService;
@@ -10,7 +9,7 @@ describe("Querry of the word 'hall'.", () => {
     let result: JSON;
     let words: GridWordInformation[];
 
-    it("The word should be : 'hall'. ", (wordIsValid) => {
+    it("The word should be : 'hall'. ", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
             .then(() => {
                 result = apiService.requestResult;
@@ -18,12 +17,12 @@ describe("Querry of the word 'hall'.", () => {
                 const word: string = words[0].word;
                 const expectedWord: string = "hall";
                 assert.equal(word, expectedWord);
-                wordIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("The second definition should be : 'n\ta large room for gatherings or entertainment'. ", (secondDefsIsValid) => {
+    it("The second definition should be : 'n\ta large room for gatherings or entertainment'. ", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
             .then(() => {
                 result = apiService.requestResult;
@@ -31,12 +30,12 @@ describe("Querry of the word 'hall'.", () => {
                 const secondDefinition: string = words[0].definitions[1];
                 const expectedSecondDefintion: string = "n\ta large room for gatherings or entertainment";
                 assert.equal(secondDefinition, expectedSecondDefintion);
-                secondDefsIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("The word 'hall' should possess 13 valid definitions.", (defsLengthIsValid) => {
+    it("The word 'hall' should possess 13 valid definitions.", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
             .then(() => {
                 result = apiService.requestResult;
@@ -44,12 +43,12 @@ describe("Querry of the word 'hall'.", () => {
                 const numberOfDefs: number = words[0].definitions.length;
                 const expectedLength: number = 13;
                 assert.equal(numberOfDefs, expectedLength);
-                defsLengthIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("The frequency of 'hall' should be : '107.184799'. ", (frequencyIsValid) => {
+    it("The frequency of 'hall' should be : '107.184799'. ", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
             .then(() => {
                 result = apiService.requestResult;
@@ -57,12 +56,12 @@ describe("Querry of the word 'hall'.", () => {
                 const frequency: number = words[0].frequency;
                 const expectedFrequency: number = 107.184799;
                 assert.equal(frequency, expectedFrequency);
-                frequencyIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("The word 'hall' should be common. ", (isCommonIsValid) => {
+    it("The word 'hall' should be common. ", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
             .then(() => {
                 result = apiService.requestResult;
@@ -70,7 +69,7 @@ describe("Querry of the word 'hall'.", () => {
                 const isCommon: boolean = words[0].isCommon;
                 const expectedValue: boolean = true;
                 assert.equal(isCommon, expectedValue);
-                isCommonIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
@@ -83,19 +82,19 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
     let result: JSON;
     let words: GridWordInformation[];
 
-    it("The first word Request should be 'the'. ", (firstRequestWordIsValid) => {
+    it("The first word Request should be 'the'. ", (done: MochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
                 const word: string = result[0].word;
                 const expectedRequestedWord: string = "the";
                 assert.equal(word, expectedRequestedWord);
-                firstRequestWordIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("the first valid word should be 'tie'.  ", (firstWordIsValid) => {
+    it("the first valid word should be 'tie'.  ", (done: mochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
@@ -103,12 +102,12 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 const word: string = words[0].word;
                 const expectedWord: string = "tie";
                 assert.equal(word, expectedWord);
-                firstWordIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("Should have conserved only 5 words.", (firstWordIsValid) => {
+    it("Should have conserved only 5 words.", (done: mochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
@@ -116,12 +115,12 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 const numberOfWords: number = words.length;
                 const expectedLength: number = 5;
                 assert.equal(numberOfWords, expectedLength);
-                firstWordIsValid();
+                done();
             })
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("The word 'tee' should be uncommon.", (wordIsUncommmon) => {
+    it("The word 'tee' should be uncommon.", (done: MochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
@@ -130,7 +129,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 const isCommon: boolean = words[teeIndex].isCommon;
                 const expectedValue: boolean = false;
                 assert.equal(isCommon, expectedValue);
-                wordIsUncommmon();
+                done();
             })
             .catch((err: object) => { /* ERROR */ });
     });
