@@ -3,7 +3,6 @@ import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
-
     constructor(
         private _requestResult: JSON = null
     ) {

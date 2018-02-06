@@ -1,8 +1,4 @@
-
-// Classe contenant les infos d'un mot
 export class GridWordInformation {
-    
-
     constructor(
         private _word: string, private _defs: string[], private _frequency: number, private _isCommon: boolean = true) {
         const commonFactor: number = 15;

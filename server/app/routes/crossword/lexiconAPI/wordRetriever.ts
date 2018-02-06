@@ -1,7 +1,6 @@
 import { GridWordInformation } from "./gridWordInformation";
 
 export class WordRetriever {
-
     private _wordsWithDefinitions: GridWordInformation[];
 
     constructor() {
@@ -18,10 +17,10 @@ export class WordRetriever {
     private createWordListWithDefinitions(words: JSON): void {
         for (const index in words) {
             if (words[index].hasOwnProperty("defs")) {
-                const nonNumericalRemoval: number = 2; // Format d'un tag : f:xxxx
-                const tempFrequency: string = words[index].tags[0].substring(nonNumericalRemoval);
-                const tempWord: GridWordInformation = new GridWordInformation
-                    (words[index].word, words[index].defs, parseFloat(tempFrequency));
+                const nonNumericalTag: number = 2; // Tag format : f:xxxx
+                const tempFrequency: string = words[index].tags[0].substring(nonNumericalTag);
+                const tempWord: GridWordInformation = new GridWordInformation(
+                    words[index].word, words[index].defs, parseFloat(tempFrequency));
                 this._wordsWithDefinitions.push(tempWord);
             }
         }
