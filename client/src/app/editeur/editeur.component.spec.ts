@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import * as THREE from "three";
 import { EditeurComponent } from "./editeur.component";
 
-// "magic numers" utilisés pour les tests
+// "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 
 describe("EditeurComponent", () => {
@@ -38,10 +38,10 @@ describe("EditeurComponent", () => {
     });
 
     it("should create a segment", () => {
-        const array: Array<THREE.Vector3> = new Array<THREE.Vector3>();
+        const points: Array<THREE.Vector3> = new Array<THREE.Vector3>();
         const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
-        array.push(position1);
-        component.arrayPoints = array;
+        points.push(position1);
+        component.points = points;
         const position2: THREE.Vector3 = new THREE.Vector3(23, -2, 0);
         component.createLine(position1, position2);
         expect(component.getScene().children.length).toBe(1);
