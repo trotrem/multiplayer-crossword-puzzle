@@ -20,7 +20,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(word, expectedWord);
                 wordIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("The second definition should be : 'n\ta large room for gatherings or entertainment'. ", (secondDefsIsValid) => {
@@ -33,7 +33,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(secondDefinition, expectedSecondDefintion);
                 secondDefsIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("The word 'hall' should possess 13 valid definitions.", (defsLengthIsValid) => {
@@ -46,7 +46,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(numberOfDefs, expectedLength);
                 defsLengthIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("The frequency of 'hall' should be : '107.184799'. ", (frequencyIsValid) => {
@@ -59,7 +59,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(frequency, expectedFrequency);
                 frequencyIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("The word 'hall' should be common. ", (isCommonIsValid) => {
@@ -72,7 +72,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(isCommon, expectedValue);
                 isCommonIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
 });
@@ -92,7 +92,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(word, expectedRequestedWord);
                 firstRequestWordIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("the first valid word should be 'tie'.  ", (firstWordIsValid) => {
@@ -105,7 +105,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(word, expectedWord);
                 firstWordIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("Should have conserved only 5 words.", (firstWordIsValid) => {
@@ -118,7 +118,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(numberOfWords, expectedLength);
                 firstWordIsValid();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR... */ });
     });
 
     it("The word 'tee' should be uncommon.", (wordIsUncommmon) => {
