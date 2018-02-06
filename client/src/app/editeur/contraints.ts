@@ -87,37 +87,37 @@ export class Contraints {
     }
 
     public isValid(arrayPoints: THREE.Vector3[], position1: THREE.Vector3, position2: THREE.Vector3): THREE.Vector3[] {
-        let arrayTmp: Array<THREE.Vector3> = new Array<THREE.Vector3>();
+        let illegalPoints: Array<THREE.Vector3> = new Array<THREE.Vector3>();
         const index: number = arrayPoints.indexOf(position1);
         // contraint about the segment must not be less than two time the lenght
         if (this.lessThanLength(position1, position2)) {
-            arrayTmp.push(new THREE.Vector3(0, 0, 0));
+            illegalPoints.push(new THREE.Vector3(0, 0, 0));
         }
         if (index === 0) {
-            return arrayTmp;
+            return illegalPoints;
         }
         const position0: THREE.Vector3 = arrayPoints[index - 1];
         // contraint about the angle
         if (!this.moreThan45Degres(position2, position1, position0)) {
-            arrayTmp = this.checkArrayLength(arrayTmp);
-            arrayTmp.push(position0);
-            arrayTmp.push(position1);
+            illegalPoints = this.checkArrayLength(illegalPoints);
+            illegalPoints.push(position0);
+            illegalPoints.push(position1);
         }
         // contraint about the angle when the track is close
         if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
-            arrayTmp = this.checkArrayLength(arrayTmp);
-            arrayTmp.push(arrayPoints[1]);
-            arrayTmp.push(position2);
+            illegalPoints = this.checkArrayLength(illegalPoints);
+            illegalPoints.push(arrayPoints[1]);
+            illegalPoints.push(position2);
         }
         // contraint about two segments must not intersect
         for (let i: number = 0; i < arrayPoints.length - 1; i++) {
             if (this.twoLinesIntersect(position2, position1, arrayPoints[i], arrayPoints[i + 1])) {
-                arrayTmp = this.checkArrayLength(arrayTmp);
-                arrayTmp.push(arrayPoints[i]);
-                arrayTmp.push(arrayPoints[i + 1]);
+                illegalPoints = this.checkArrayLength(illegalPoints);
+                illegalPoints.push(arrayPoints[i]);
+                illegalPoints.push(arrayPoints[i + 1]);
             }
         }
 
-        return arrayTmp;
+        return illegalPoints;
     }
 }
