@@ -73,7 +73,7 @@ export class Grid {
             if (temp > HEIGHT - 1) {
                 this._notBlackSquares.push(temp + 10);
             }
-            if (temp < 90) {
+            if (temp < (HEIGHT-1)*HEIGHT) {
                 this._notBlackSquares.push(temp - 10);
             }
             this._notBlackSquares.push(temp - 2);
@@ -90,7 +90,7 @@ export class Grid {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: Square[] = new Array<Square>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
-                row.push(new Square(indexI * 10 + indexJ, false, null));
+                row.push(new Square(indexI * HEIGHT + indexJ, false, null));
             }
             this._grid.push(row);
         }
@@ -98,8 +98,8 @@ export class Grid {
         // putting black square in the grid
         for (let index = 0; index < this._blackSquares.length; index++) {
             const indexTemp: number = this._blackSquares[index];
-            const indexITemp: number = indexTemp % 10;
-            const indexJTemp: number = Math.floor(indexTemp / 10);
+            const indexITemp: number = indexTemp % HEIGHT;
+            const indexJTemp: number = Math.floor(indexTemp / HEIGHT);
             this._grid[indexITemp][indexJTemp].setIsBlack(true);
 
         }
