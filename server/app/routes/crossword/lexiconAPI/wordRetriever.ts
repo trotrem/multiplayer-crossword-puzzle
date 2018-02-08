@@ -1,11 +1,9 @@
 import { GridWordInformation } from "./gridWordInformation";
 
 export class WordRetriever {
-    private _wordsWithDefinitions: GridWordInformation[];
 
-    constructor() {
-        this._wordsWithDefinitions = [];
-    }
+    constructor(
+        private _wordsWithDefinitions: GridWordInformation[] = [] ) {}
 
     public getWordsWithDefinitions(words: JSON): GridWordInformation[] {
         this._wordsWithDefinitions = [];
