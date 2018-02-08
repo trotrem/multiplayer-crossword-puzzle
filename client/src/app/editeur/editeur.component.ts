@@ -57,7 +57,8 @@ export class EditeurComponent implements AfterViewInit {
             this.onRightClick();
         });
         this.canvas.addEventListener("dragstart", (event: MouseEvent) => { this.dragIndex = this.getDraggedPointIndex(event); });
-        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDragEnd(event); });
+        this.canvas.addEventListener("drag", (event: MouseEvent) => { this.onDrag(event, false); });
+        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDrag(event, true); });
     }
 
     public createScene(): void {
@@ -96,6 +97,7 @@ export class EditeurComponent implements AfterViewInit {
         }
 
         this.points.push(position);
+        console.log(this.points);
     }
 
     private onRightClick(): void {
@@ -113,8 +115,8 @@ export class EditeurComponent implements AfterViewInit {
         }
     }
 
-    private onDragEnd(event: MouseEvent): void {
-        event.preventDefault();
+    private onDrag(event: MouseEvent, end: boolean): void {
+
         const newPoints: THREE.Vector3[] = this.points;
         this.points = [];
         this.startingZone = new THREE.Line3();
@@ -123,8 +125,11 @@ export class EditeurComponent implements AfterViewInit {
         if (this.dragIndex === newPoints.length - 1 && this.isClosed) {
             newPoints[0] = position;
         }
-        this.dragIndex = -1;
+
         this.redraw(newPoints);
+        if (end) {
+            this.dragIndex = -1;
+        }
     }
 
     private getDraggedPointIndex(event: MouseEvent): number {
@@ -138,6 +143,7 @@ export class EditeurComponent implements AfterViewInit {
 
         return index;
     }
+
 
     private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
