@@ -44,44 +44,40 @@ export class Grid {
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
+    private findAcceptableBlackSquare(): number{
+        let black: number = this.randomIntFromInterval(MINCASES, MAXCASES);
+        
+        if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) != -1) {
+            return this.randomIntFromInterval(MINCASES, MAXCASES);
+        }
+
+        return black;
+    }
+
     private generateBlackSquare(): void {
         this._blackSquares = new Array<number>();
         this._nbrBlack = this.randomIntFromInterval(MINBLACK, MAXBLACK);
         for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
-            let temp: number = this.randomIntFromInterval(MINCASES, MAXCASES);
-            for (let verif2: number = 0; verif2 < this._notBlackSquares.length; verif2++) {
-                if (temp === this._notBlackSquares[verif2]) {
-                    temp = this.randomIntFromInterval(MINCASES, MAXCASES);
-                    verif2 = 0;
-                } else {
-                    for (let verif1: number = 0; verif1 < this._blackSquares.length; verif1++) {
-                        if (temp === this._blackSquares[verif1]) {
-                            temp = this.randomIntFromInterval(MINCASES, MAXCASES);
-                            verif1 = 0;
-                            verif2 = 0;
-                        }
-                    }
-                }
-            }
+            let currentBlack = this.findAcceptableBlackSquare();
 
-            if (temp % HEIGHT > 0) {
-                this._notBlackSquares.push(temp - 1);
+            if (currentBlack % HEIGHT > 0) {
+                this._notBlackSquares.push(currentBlack - 1);
             }
-            if (temp % HEIGHT < HEIGHT - 1) {
-                this._notBlackSquares.push(temp + 1);
+            if (currentBlack % HEIGHT < HEIGHT - 1) {
+                this._notBlackSquares.push(currentBlack + 1);
             }
-            if (temp > HEIGHT - 1) {
-                this._notBlackSquares.push(temp + 10);
+            if (currentBlack > HEIGHT - 1) {
+                this._notBlackSquares.push(currentBlack + 10);
             }
-            if (temp < (HEIGHT-1)*HEIGHT) {
-                this._notBlackSquares.push(temp - 10);
+            if (currentBlack < (HEIGHT-1)*HEIGHT) {
+                this._notBlackSquares.push(currentBlack - 10);
             }
-            this._notBlackSquares.push(temp - 2);
-            this._notBlackSquares.push(temp + 2);
-            this._notBlackSquares.push(temp - 20);
-            this._notBlackSquares.push(temp + 20);
+            this._notBlackSquares.push(currentBlack - 2);
+            this._notBlackSquares.push(currentBlack + 2);
+            this._notBlackSquares.push(currentBlack - 20);
+            this._notBlackSquares.push(currentBlack + 20);
 
-            this._blackSquares[indexBlack] = temp;
+            this._blackSquares[indexBlack] = currentBlack;
         }
     }
 
