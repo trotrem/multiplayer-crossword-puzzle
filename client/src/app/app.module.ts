@@ -7,15 +7,19 @@ import { RouterModule, Routes } from "@angular/router";
 import { RenderService } from "./render-service/render.service";
 import { BasicService } from "./basic.service";
 import { EditeurComponent } from "./editeur/editeur.component";
+import { AdminComponent } from "./admin/admin.component";
 const appRoutes: Routes = [
   { path: "Editeur", component: EditeurComponent },
+  { path: "Admin", component: AdminComponent },
+
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
         GameComponent,
-        EditeurComponent
+        EditeurComponent,
+        AdminComponent
     ],
     imports: [
         BrowserModule,
