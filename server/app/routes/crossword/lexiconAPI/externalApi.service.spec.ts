@@ -94,7 +94,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("the first valid word should be 'tie'.  ", (done: mochaDone) => {
+    it("the first valid word should be 'tie'.  ", (done: MochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
@@ -107,7 +107,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
             .catch((err: object) => { /* ERROR... */ });
     });
 
-    it("Should have conserved only 5 words.", (done: mochaDone) => {
+    it("Should have conserved only 5 words.", (done: MochaDone) => {
         apiService.requestWordInfo("t?e")
             .then(() => {
                 result = apiService.requestResult;
