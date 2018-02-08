@@ -5,6 +5,7 @@ const PRECISION: number = 0.0000001;
 const TWO: number = 2;
 
 export class Contraints {
+  
 
     public constructor() { }
 
