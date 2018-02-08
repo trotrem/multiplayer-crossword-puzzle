@@ -97,7 +97,6 @@ export class EditeurComponent implements AfterViewInit {
         }
 
         this.points.push(position);
-        console.log(this.points);
     }
 
     private onRightClick(): void {
@@ -143,7 +142,6 @@ export class EditeurComponent implements AfterViewInit {
 
         return index;
     }
-
 
     private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
