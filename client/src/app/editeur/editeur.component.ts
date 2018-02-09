@@ -33,6 +33,8 @@ export class EditeurComponent implements AfterViewInit {
 
     private startingZone: THREE.Line3;
 
+    private trackValid : boolean;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -42,6 +44,7 @@ export class EditeurComponent implements AfterViewInit {
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
+        this.trackValid = false;
     }
 
     public ngAfterViewInit(): void {
@@ -191,11 +194,13 @@ export class EditeurComponent implements AfterViewInit {
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
+            this.trackValid = true;
         } else {
             color = RED_COLOR;
             if (illegalPoints.length > 1) {
                 this.redrawConflictingLines(illegalPoints, color);
             }
+            this.trackValid = false;
         }
 
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
@@ -234,5 +239,10 @@ export class EditeurComponent implements AfterViewInit {
             this.points.push(position);
         }
         this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
+    }
+
+    public notReadyToSave() : boolean{
+        console.log(this.trackValid);
+        return !this.trackValid || !this.isClosed;
     }
 }
