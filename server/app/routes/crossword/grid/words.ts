@@ -1,27 +1,28 @@
 import { Word } from "./word";
 import { Grid } from "./grid";
+import { Direction } from "./word"
 
 export class Words {
     private _grid: Grid;
-    private _listOfWordV: Word[];
-    private listOfWordH: Word[];
-    private _lengthOfV: number;
-    private _lengthOfH: number;
+    private _listOfWord: Word[];
+    //private listOfWordH: Word[];
+    //private _lengthOfV: number;
+    //private _lengthOfH: number;
     constructor(grid: Grid) {
         this._grid = grid;
     }
-    public get ListOfWordV(): Word[] {
-        return this._listOfWordV;
+    public get ListOfWord(): Word[] {
+        return this._listOfWord;
     }
-    public get ListOfWordH(): Word[] {
+    /*public get ListOfWordH(): Word[] {
         return this.listOfWordH;
-    }
-    public get LengthOfV(): number {
+    }*/
+    /*public get LengthOfV(): number {
         return this._lengthOfV;
     }
     public get LengthOfH(): number {
         return this._lengthOfH;
-    }
+    }*/
     public createListOfWord(): void {
         let lengthCounter: number = 0;
         let wordCounter: number = 0;
@@ -32,15 +33,14 @@ export class Words {
                     lengthCounter++;
                 } else {
                     wordCounter++;
-                    this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+                    this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI - lengthCounter, indexJ, Direction.Y));
                     lengthCounter = 0;
                 }
             }
             wordCounter++;
-            this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+            this._listOfWord.push(new Word(lengthCounter, wordCounter, null, this._grid.Height - lengthCounter, indexJ, Direction.Y));
             lengthCounter = 0;
         }
-        this._lengthOfV = wordCounter;
         wordCounter = 0;
         lengthCounter = 0;
         // compteur mot horizontale
@@ -50,15 +50,13 @@ export class Words {
                     lengthCounter++;
                 } else {
                     wordCounter++;
-                    this.listOfWordH.push(new Word(lengthCounter, wordCounter, null));
+                    this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, indexJ - lengthCounter, Direction.X));
                     lengthCounter = 0;
                 }
             }
             wordCounter++;
-            this._listOfWordV.push(new Word(lengthCounter, wordCounter, null));
+            this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, this._grid.Width - lengthCounter, Direction.X));
             lengthCounter = 0;
         }
-        this._lengthOfH = wordCounter;
-
     }
 }

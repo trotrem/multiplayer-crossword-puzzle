@@ -1,16 +1,26 @@
-//classe temporaire qui serait remplacé par gridWordInformation.ts lors de l'ajout de mot dans la grille
+import { GridWordInformation } from "../lexiconAPI/gridWordInformation"
+export enum Direction {
+    Y,
+    X
+}
 export class Word {
     private _length: number;
     private _id: number;
-    private _text: string;
+    private _text: GridWordInformation;
+    private _posX: number;
+    private _posY: number;
+    private _direction: Direction;
 
-    constructor(length: number, id: number, text: string) {
+    constructor(length: number, id: number, text: GridWordInformation, posX: number, posY: number, direction: Direction) {
         this._length = length;
         this._id = id;
         this._text = text;
+        this._posX = posX;
+        this._posY = posY;
+        this._direction = direction;
     }
 
-    public get Word(): string {
+    public get Word(): GridWordInformation {
         return this._text;
     }
     public get Length(): number {
@@ -19,7 +29,16 @@ export class Word {
     public get Number(): number {
         return this._id;
     }
-    public setWord(word: string): void {
+    public setWord(word: GridWordInformation): void {
         this._text = word;
+    }
+    public get PosX(): number {
+        return this._posX;
+    }
+    public get PosY(): number {
+        return this._posY;
+    }
+    public get Direction(): number {
+        return this._direction;
     }
 }
