@@ -3,8 +3,6 @@ import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
-    constructor() {
-    }
 
     private options: (UriOptions & RequestPromiseOptions) = {
         method: "GET",
@@ -20,10 +18,10 @@ export class ExternalApiService {
     public async requestWordInfo(word: string): Promise<JSON> {
         this.options.qs.sp = word;
 
-        return await requestOption(this.options)
-            .catch((err) => {
+        return requestOption(this.options)
+            .catch((err: object) => {
                 console.error(err);
-                //do something
+                // Do something
             });
     }
 }
