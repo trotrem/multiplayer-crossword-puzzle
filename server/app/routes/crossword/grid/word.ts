@@ -1,5 +1,5 @@
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation"
-enum Direction{
+export enum Direction {
     Y,
     X
 }
@@ -9,12 +9,15 @@ export class Word {
     private _text: GridWordInformation;
     private _posX: number;
     private _posY: number;
-    private direction : Direction;
+    private _direction: Direction;
 
-    constructor(length: number, id: number, text: GridWordInformation) {
+    constructor(length: number, id: number, text: GridWordInformation, posX: number, posY: number, direction: Direction) {
         this._length = length;
         this._id = id;
         this._text = text;
+        this._posX = posX;
+        this._posY = posY;
+        this._direction = direction;
     }
 
     public get Word(): GridWordInformation {
@@ -28,5 +31,14 @@ export class Word {
     }
     public setWord(word: GridWordInformation): void {
         this._text = word;
+    }
+    public get PosX(): number {
+        return this._posX;
+    }
+    public get PosY(): number {
+        return this._posY;
+    }
+    public get Direction(): number {
+        return this._direction;
     }
 }
