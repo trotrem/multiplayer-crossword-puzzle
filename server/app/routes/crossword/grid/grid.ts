@@ -11,7 +11,7 @@ const MINCASES: number = 0;
 const MAXCASES: number = 99;
 // Les cases qui ne peuvent pas etre noires forment un carré de 8x8, pour eviter d'avoir un mot d'une lettre
 const NOTBLACKSQUARES: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
-                                    19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
+    19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
 
 export class Grid {
 
@@ -44,13 +44,12 @@ export class Grid {
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
-    private findAcceptableBlackSquare(): number{
+    private findAcceptableBlackSquare(): number {
         let black: number = this.randomIntFromInterval(MINCASES, MAXCASES);
-        
-        if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) != -1) {
-            return this.randomIntFromInterval(MINCASES, MAXCASES);
-        }
 
+        if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) !== -1) {
+            return this.findAcceptableBlackSquare();
+        }
         return black;
     }
 
@@ -60,22 +59,23 @@ export class Grid {
         for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
             let currentBlack = this.findAcceptableBlackSquare();
 
-            if (currentBlack % HEIGHT > 0) {
+            if (currentBlack % WIDTH > 0) {
                 this._notBlackSquares.push(currentBlack - 1);
             }
-            if (currentBlack % HEIGHT < HEIGHT - 1) {
+            if (currentBlack % WIDTH < WIDTH - 1) {
                 this._notBlackSquares.push(currentBlack + 1);
             }
             if (currentBlack > HEIGHT - 1) {
                 this._notBlackSquares.push(currentBlack + 10);
             }
-            if (currentBlack < (HEIGHT-1)*HEIGHT) {
+            if (currentBlack < (HEIGHT - 1) * HEIGHT) {
                 this._notBlackSquares.push(currentBlack - 10);
             }
             this._notBlackSquares.push(currentBlack - 2);
             this._notBlackSquares.push(currentBlack + 2);
             this._notBlackSquares.push(currentBlack - 20);
             this._notBlackSquares.push(currentBlack + 20);
+            
 
             this._blackSquares[indexBlack] = currentBlack;
         }
