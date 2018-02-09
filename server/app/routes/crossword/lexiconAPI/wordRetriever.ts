@@ -1,18 +1,21 @@
 import { GridWordInformation } from "./gridWordInformation";
+import { ExternalApiService } from "./externalApi.service"
 
 export class WordRetriever {
 
     constructor(
         private _wordsWithDefinitions: GridWordInformation[] = [] ) {}
 
-    public getWordsWithDefinitions(words: JSON): GridWordInformation[] {
+    public async getWordsWithDefinitions(word: string): Promise<GridWordInformation[]> {
         this._wordsWithDefinitions = [];
-        this.createWordListWithDefinitions(words);
+        let temp: GridWordInformation[] = await this.createWordListWithDefinitions(word);
 
-        return this._wordsWithDefinitions;
+        return temp;
     }
 
-    private createWordListWithDefinitions(words: JSON): void {
+    private async createWordListWithDefinitions(word: string): Promise<GridWordInformation[]> {
+        const apiService: ExternalApiService = new ExternalApiService;
+        let words: JSON = await apiService.requestWordInfo(word)
         for (const index in words) {
             if (words[index].hasOwnProperty("defs")) {
                 const nonNumericalTag: number = 2; // Tag format : f:xxxx
@@ -23,6 +26,7 @@ export class WordRetriever {
             }
         }
         this.removeDefinitions();
+        return this._wordsWithDefinitions;
     }
 
     private removeDefinitions(): void {
@@ -42,5 +46,7 @@ export class WordRetriever {
             }
         }
     }
+
+    
 
 }

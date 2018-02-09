@@ -3,10 +3,8 @@ import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
-    constructor(
-        private _requestResult: JSON = null
-    ) {
-        }
+    constructor() {
+    }
 
     private options: (UriOptions & RequestPromiseOptions) = {
         method: "GET",
@@ -19,7 +17,17 @@ export class ExternalApiService {
         simple: true,
     };
 
-    public async requestWordInfo(word: string): Promise<void> {
+    public async requestWordInfo(word: string): Promise<JSON> {
+        this.options.qs.sp = word;
+
+        return await requestOption(this.options)
+            .catch((err) => {
+                console.error(err);
+                //do something
+            });
+    }
+
+    /*public async requestWordInfo(word: string): Promise<void> {
         this.options.qs.sp = word;
 
         return requestOption(this.options)
@@ -30,12 +38,12 @@ export class ExternalApiService {
             .catch((err: object) => {
                 console.error(err);
                 // Do something
-                /* Erreur */ });
-    }
+                /* Erreur  });
+    }*/
 
-    public get requestResult(): JSON {
+    /*public get requestResult(): JSON {
         return this._requestResult;
-    }
+    }*/
 
 }
 

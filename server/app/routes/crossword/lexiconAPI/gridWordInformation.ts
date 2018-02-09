@@ -1,3 +1,4 @@
+
 export class GridWordInformation {
     private _isCommon: boolean = true;
 
