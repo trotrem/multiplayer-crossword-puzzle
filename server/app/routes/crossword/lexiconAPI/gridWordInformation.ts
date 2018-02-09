@@ -25,4 +25,8 @@ export class GridWordInformation {
     public get isCommon(): boolean {
         return this._isCommon;
     }
+
+    public setWord(newWord:string){
+        this._word= newWord
+    }
 }

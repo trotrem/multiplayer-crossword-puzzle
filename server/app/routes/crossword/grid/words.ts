@@ -1,6 +1,7 @@
 import { Word } from "./word";
 import { Grid } from "./grid";
 import { Direction } from "./word"
+import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 
 export class Words {
     private _grid: Grid;
@@ -26,6 +27,9 @@ export class Words {
     public createListOfWord(): void {
         let lengthCounter: number = 0;
         let wordCounter: number = 0;
+        //test
+        let wordSetter: string = null;
+        let gridWordSetter: GridWordInformation;
         // compteur mot verticale
         for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
             for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
@@ -33,8 +37,11 @@ export class Words {
                     lengthCounter++;
                 } else {
                     wordCounter++;
-                    this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI - lengthCounter, indexJ, Direction.Y));
+                    //test
+                    gridWordSetter = new GridWordInformation(wordSetter,null,0);
+                    this._listOfWord.push(new Word(lengthCounter, wordCounter, gridWordSetter, indexI - lengthCounter, indexJ, Direction.Y));
                     lengthCounter = 0;
+                    wordSetter = null;
                 }
             }
             wordCounter++;
@@ -48,6 +55,7 @@ export class Words {
             for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
                 if (!(this._grid[indexI][indexJ].getIsBlack)) {
                     lengthCounter++;
+                    wordSetter += this._grid.Grid[indexI][indexJ].getLetter();
                 } else {
                     wordCounter++;
                     this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, indexJ - lengthCounter, Direction.X));
@@ -57,6 +65,27 @@ export class Words {
             wordCounter++;
             this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, this._grid.Width - lengthCounter, Direction.X));
             lengthCounter = 0;
+        }
+        this.fillWord();
+    }
+    private fillWord(): void {
+        for (let word of this._listOfWord) {
+            let wordFilled: string;
+            for (let letter = 0; letter < word.Length; letter++) {
+                wordFilled += "?";
+            }
+            word.Word.setWord(wordFilled);
+        }
+    }
+
+    //idée ** 
+    private fillGrid(): void {
+        for (let squareI = 0; squareI < this._grid.Height; squareI++) {
+            for (let squareJ = 0; squareJ < this._grid.Height; squareJ++) {
+                if (!(this._grid.Grid[squareI][squareJ]._isBlack)) {
+                    this._grid.Grid[squareI][squareJ].setLetter("?");
+                }
+            }
         }
     }
 }
