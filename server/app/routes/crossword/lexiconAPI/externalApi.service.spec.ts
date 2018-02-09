@@ -23,7 +23,6 @@ describe("Querry of the word 'hall'.", () => {
         assert.equal(secondDefinition, expectedSecondDefintion);
     });
 
-
     it("The word 'hall' should possess 13 valid definitions.", async () => {
         words = await wordRetriever.getWordsWithDefinitions("hall");
         const numberOfDefs: number = words[0].definitions.length;
