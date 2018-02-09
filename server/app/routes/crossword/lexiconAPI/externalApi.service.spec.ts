@@ -3,11 +3,12 @@ import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 
+const apiService: ExternalApiService = new ExternalApiService;
+const wordRetriever: WordRetriever = new WordRetriever;
+let result: JSON;
+let words: GridWordInformation[];
+
 describe("Querry of the word 'hall'.", () => {
-    const apiService: ExternalApiService = new ExternalApiService;
-    const wordRetriever: WordRetriever = new WordRetriever;
-    let result: JSON;
-    let words: GridWordInformation[];
 
     it("The word should be : 'hall'. ", (done: MochaDone) => {
         apiService.requestWordInfo("hall")
@@ -77,10 +78,6 @@ describe("Querry of the word 'hall'.", () => {
 });
 
 describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing with 'e').", () => {
-    const apiService: ExternalApiService = new ExternalApiService;
-    const wordRetriever: WordRetriever = new WordRetriever;
-    let result: JSON;
-    let words: GridWordInformation[];
 
     it("The first word Request should be 'the'. ", (done: MochaDone) => {
         apiService.requestWordInfo("t?e")
