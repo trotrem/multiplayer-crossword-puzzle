@@ -241,8 +241,7 @@ export class EditeurComponent implements AfterViewInit {
         this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
     }
 
-    public notReadyToSave() : boolean{
-        console.log(this.trackValid);
+    public notReadyToSave(): boolean {
         return !this.trackValid || !this.isClosed;
     }
 }
