@@ -12,7 +12,7 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 const appRoutes: Routes = [
   { path: "editeur", component: EditeurComponent },
   { path: "admin", component: AdminComponent },
-  { path: "", component: AppComponent},
+  { path: "", redirectTo: "/editeur", pathMatch: "full"},
   { path: "**", component: PageNotFoundComponent }
 
 ];
