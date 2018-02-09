@@ -37,18 +37,18 @@ export class Contraints {
         }
 
         const det: number = (position2.y - position1.y) * (position3.x - position4.x)
-        - (position4.y - position3.y) * (position1.x - position2.x);
+            - (position4.y - position3.y) * (position1.x - position2.x);
 
         if (det !== 0) {
             intersection.x = (((position3.x - position4.x)
-            * ((position2.y - position1.y) * position1.x + (position1.x - position2.x) * position1.y))
-            - ((position1.x - position2.x) * ((position4.y - position3.y) * position3.x
-            + (position3.x - position4.x) * position3.y))) / det;
+                * ((position2.y - position1.y) * position1.x + (position1.x - position2.x) * position1.y))
+                - ((position1.x - position2.x) * ((position4.y - position3.y) * position3.x
+                    + (position3.x - position4.x) * position3.y))) / det;
 
             intersection.y = ((position2.y - position1.y)
-            * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
-            - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x
-            + (position1.x - position2.x) * position1.y)) / det;
+                * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
+                - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x
+                    + (position1.x - position2.x) * position1.y)) / det;
 
             if (this.findIsInLine(position1, position2, intersection) && this.findIsInLine(position3, position4, intersection)) {
                 return true;
