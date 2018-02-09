@@ -8,9 +8,12 @@ import { RenderService } from "./render-service/render.service";
 import { BasicService } from "./basic.service";
 import { EditeurComponent } from "./editeur/editeur.component";
 import { AdminComponent } from "./admin/admin.component";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 const appRoutes: Routes = [
-  { path: "Editeur", component: EditeurComponent },
-  { path: "Admin", component: AdminComponent },
+  { path: "editeur", component: EditeurComponent },
+  { path: "admin", component: AdminComponent },
+  { path: "", component: AppComponent},
+  { path: "**", component: PageNotFoundComponent }
 
 ];
 
@@ -19,7 +22,8 @@ const appRoutes: Routes = [
         AppComponent,
         GameComponent,
         EditeurComponent,
-        AdminComponent
+        AdminComponent,
+        PageNotFoundComponent
     ],
     imports: [
         BrowserModule,
