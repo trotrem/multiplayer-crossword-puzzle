@@ -3,8 +3,7 @@ import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 
-//const apiService: ExternalApiService = new ExternalApiService;
-const wordRetriever: WordRetriever = new WordRetriever;
+const wordRetriever: WordRetriever = WordRetriever.instance;
 //let result: string;
 let words: GridWordInformation[];
 describe("Querry of the word 'hall'.", () => {

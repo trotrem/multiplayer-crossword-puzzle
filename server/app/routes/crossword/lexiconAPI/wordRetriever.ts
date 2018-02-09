@@ -3,7 +3,9 @@ import { ExternalApiService } from "./externalApi.service"
 
 export class WordRetriever {
 
-    constructor(
+    private static _instance: WordRetriever;
+
+    private constructor(
         private _wordsWithDefinitions: GridWordInformation[] = [] ) {}
 
     public async getWordsWithDefinitions(word: string): Promise<GridWordInformation[]> {
@@ -11,6 +13,10 @@ export class WordRetriever {
         let temp: GridWordInformation[] = await this.createWordListWithDefinitions(word);
 
         return temp;
+    }
+
+    public static get instance(): WordRetriever {
+        return ((this._instance) || (this._instance = new this()));
     }
 
     private async createWordListWithDefinitions(word: string): Promise<GridWordInformation[]> {
