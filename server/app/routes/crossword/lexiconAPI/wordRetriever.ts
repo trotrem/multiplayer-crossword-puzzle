@@ -27,7 +27,7 @@ export class WordRetriever {
                 const nonNumericalTag: number = 2; // Tag format : f:xxxx
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
-                    words[index].word, words[index].defs, tempFrequency, words[index].word.length);
+                    words[index].word, words[index].defs, tempFrequency);
                 this._wordsWithDefinitions.push(tempWord);
             }
         }

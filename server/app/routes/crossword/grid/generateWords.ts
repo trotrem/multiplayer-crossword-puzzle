@@ -1,6 +1,7 @@
 import { Words } from "./words";
 import { Grid } from "./grid";
 import { Word } from "./word";
+import { WordRetriever } from "../lexiconAPI/wordRetriever";
 
 export class GenerateWords {
 
@@ -13,11 +14,22 @@ export class GenerateWords {
         if (length1 < length2) { return -1; }
         return 0;
     });
+    private wordRetriever: WordRetriever = WordRetriever.instance;
+
     constructor() {
 
     }
-    sortList(): void {
-
+    
+    // alterner quand la longueur est pareille?
+    addWord(grid: Grid, newWord:Word, index:number): boolean {
+        // add newWord to grid
+        // if done -> DONE return true
+        // let prochainsPossibles = ...
+        // if reject return false
+        // foreach prochain{
+        //  addWord(grid, LeMot)
+        // }
+        
     }
 
 
