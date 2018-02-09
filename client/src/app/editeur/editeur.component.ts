@@ -33,6 +33,8 @@ export class EditeurComponent implements AfterViewInit {
 
     private startingZone: THREE.Line3;
 
+    private trackValid : boolean;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -42,6 +44,7 @@ export class EditeurComponent implements AfterViewInit {
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
+        this.trackValid = false;
     }
 
     public ngAfterViewInit(): void {
@@ -57,7 +60,8 @@ export class EditeurComponent implements AfterViewInit {
             this.onRightClick();
         });
         this.canvas.addEventListener("dragstart", (event: MouseEvent) => { this.dragIndex = this.getDraggedPointIndex(event); });
-        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDragEnd(event); });
+        this.canvas.addEventListener("drag", (event: MouseEvent) => { this.onDrag(event, false); });
+        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDrag(event, true); });
     }
 
     public createScene(): void {
@@ -113,8 +117,8 @@ export class EditeurComponent implements AfterViewInit {
         }
     }
 
-    private onDragEnd(event: MouseEvent): void {
-        event.preventDefault();
+    private onDrag(event: MouseEvent, end: boolean): void {
+
         const newPoints: THREE.Vector3[] = this.points;
         this.points = [];
         this.startingZone = new THREE.Line3();
@@ -123,8 +127,11 @@ export class EditeurComponent implements AfterViewInit {
         if (this.dragIndex === newPoints.length - 1 && this.isClosed) {
             newPoints[0] = position;
         }
-        this.dragIndex = -1;
+
         this.redraw(newPoints);
+        if (end) {
+            this.dragIndex = -1;
+        }
     }
 
     private getDraggedPointIndex(event: MouseEvent): number {
@@ -187,11 +194,13 @@ export class EditeurComponent implements AfterViewInit {
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
+            this.trackValid = true;
         } else {
             color = RED_COLOR;
             if (illegalPoints.length > 1) {
                 this.redrawConflictingLines(illegalPoints, color);
             }
+            this.trackValid = false;
         }
 
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
@@ -230,5 +239,10 @@ export class EditeurComponent implements AfterViewInit {
             this.points.push(position);
         }
         this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
+    }
+
+    public notReadyToSave() : boolean{
+        console.log(this.trackValid);
+        return !this.trackValid || !this.isClosed;
     }
 }
