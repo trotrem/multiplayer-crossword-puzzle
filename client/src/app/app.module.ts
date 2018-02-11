@@ -9,11 +9,13 @@ import { BasicService } from "./basic.service";
 import { EditeurComponent } from "./racing/editeur/editeur.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { CrosswordViewComponent } from './crossword/crossword-view/crossword-view.component';
 const appRoutes: Routes = [
-  { path: "editeur", component: EditeurComponent },
-  { path: "admin", component: AdminComponent },
-  { path: "", redirectTo: "/editeur", pathMatch: "full"},
-  { path: "**", component: PageNotFoundComponent }
+    { path: "crossword", component: CrosswordViewComponent },
+    { path: "editeur", component: EditeurComponent },
+    { path: "admin", component: AdminComponent },
+    { path: "", redirectTo: "/editeur", pathMatch: "full"},
+    { path: "**", component: PageNotFoundComponent }
 
 ];
 
@@ -23,7 +25,8 @@ const appRoutes: Routes = [
         GameComponent,
         EditeurComponent,
         AdminComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        CrosswordViewComponent
     ],
     imports: [
         BrowserModule,
