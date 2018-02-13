@@ -1,8 +1,8 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import * as THREE from "three";
 import { Contraints } from "./contraints";
-import { track } from "./track";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Track } from "./track";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
@@ -37,7 +37,6 @@ export class EditeurComponent implements AfterViewInit {
 
     private trackValid: boolean;
 
-
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -48,7 +47,7 @@ export class EditeurComponent implements AfterViewInit {
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
         this.trackValid = false;
-        
+
     }
 
     public ngAfterViewInit(): void {
@@ -250,18 +249,18 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     public savetrack(): void {
-        console.log("saveTracks est call");
-        let objet = new track("bla1", "", this.startingZone, this.points);
-        const headers = new HttpHeaders()
-          .set('Authorization', 'my-auth-token')
-          .set('Content-Type', 'application/json');
+        // console.log("saveTracks est call");
+        const track: Track = new Track("piste1", "", this.startingZone, this.points);
+        const headers: HttpHeaders = new HttpHeaders()
+            .set("Authorization", "my-auth-token")
+            .set("Content-Type", "application/json");
 
-    this.http.post("http://localhost:3000/track", JSON.stringify(objet), {
-      headers: headers
-    })
-    .subscribe(data => {
-      console.log(data);
-    });
-  }
-    
+        this.http.post("http://localhost:3000/track", JSON.stringify(track), {
+            headers: headers
+        })
+            .subscribe((data) => {
+                // console.log(data);
+            });
+    }
+
 }
