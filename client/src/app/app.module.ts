@@ -2,20 +2,18 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
-import { GameComponent } from "./racing/game-component/game.component";
+import { GameComponent } from "./game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
-import { RenderService } from "./racing/render-service/render.service";
+import { RenderService } from "./render-service/render.service";
 import { BasicService } from "./basic.service";
-import { EditeurComponent } from "./racing/editeur/editeur.component";
-import { AdminComponent } from "./racing/admin/admin.component";
+import { EditeurComponent } from "./editeur/editeur.component";
+import { AdminComponent } from "./admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { CrosswordViewComponent } from './crossword/crossword-view/crossword-view.component';
 const appRoutes: Routes = [
-    { path: "crossword", component: CrosswordViewComponent },
-    { path: "editeur", component: EditeurComponent },
-    { path: "admin", component: AdminComponent },
-    { path: "", redirectTo: "/editeur", pathMatch: "full"},
-    { path: "**", component: PageNotFoundComponent }
+  { path: "editeur", component: EditeurComponent },
+  { path: "admin", component: AdminComponent },
+  { path: "", redirectTo: "/editeur", pathMatch: "full"},
+  { path: "**", component: PageNotFoundComponent }
 
 ];
 
@@ -25,8 +23,7 @@ const appRoutes: Routes = [
         GameComponent,
         EditeurComponent,
         AdminComponent,
-        PageNotFoundComponent,
-        CrosswordViewComponent
+        PageNotFoundComponent
     ],
     imports: [
         BrowserModule,
