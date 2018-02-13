@@ -10,11 +10,13 @@ import { EditeurComponent } from "./racing/editeur/editeur.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { CrosswordViewComponent } from './crossword/crossword-view/crossword-view.component';
+import { RacingGameComponent } from './racing/racing-game/racing-game.component';
 const appRoutes: Routes = [
     { path: "crossword", component: CrosswordViewComponent },
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
-    { path: "", redirectTo: "/editeur", pathMatch: "full"},
+    { path: "racing", component: RacingGameComponent },
+    { path: "", children:[]},
     { path: "**", component: PageNotFoundComponent }
 
 ];
@@ -26,7 +28,8 @@ const appRoutes: Routes = [
         EditeurComponent,
         AdminComponent,
         PageNotFoundComponent,
-        CrosswordViewComponent
+        CrosswordViewComponent,
+        RacingGameComponent
     ],
     imports: [
         BrowserModule,
