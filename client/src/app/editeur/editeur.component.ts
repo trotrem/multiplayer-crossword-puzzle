@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import * as THREE from "three";
 import { Contraints } from "./contraints";
+import { track } from "./track";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
@@ -33,18 +35,20 @@ export class EditeurComponent implements AfterViewInit {
 
     private startingZone: THREE.Line3;
 
-    private trackValid : boolean;
+    private trackValid: boolean;
+
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor() {
+    public constructor(private http: HttpClient) {
         this.dragIndex = -1;
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
         this.trackValid = false;
+        
     }
 
     public ngAfterViewInit(): void {
@@ -244,4 +248,20 @@ export class EditeurComponent implements AfterViewInit {
     public notReadyToSave(): boolean {
         return !this.trackValid || !this.isClosed;
     }
+
+    public savetrack(): void {
+        console.log("saveTracks est call");
+        let objet = new track("bla1", "", this.startingZone, this.points);
+        const headers = new HttpHeaders()
+          .set('Authorization', 'my-auth-token')
+          .set('Content-Type', 'application/json');
+
+    this.http.post("http://localhost:3000/track", JSON.stringify(objet), {
+      headers: headers
+    })
+    .subscribe(data => {
+      console.log(data);
+    });
+  }
+    
 }
