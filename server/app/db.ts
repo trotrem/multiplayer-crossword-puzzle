@@ -10,5 +10,5 @@ let tracksSchema = new mongoose.Schema({
 });
 
 export let tracks = mongoose.model("Tracks", tracksSchema);
-(<any>mongoose.Promise) = global.Promise;
+mongoose.Promise= global.Promise;
 mongoose.connect("mongodb://read_bool:projet22018@ds035290.mlab.com:35290/projet2_07").catch((err:any) => {console.log(err)})
