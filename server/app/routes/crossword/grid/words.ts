@@ -11,6 +11,7 @@ export class Words {
     //private _lengthOfH: number;
     constructor(grid: Grid) {
         this._grid = grid;
+        this._listOfWord = new Array<Word>();
     }
     public get ListOfWord(): Word[] {
         return this._listOfWord;
@@ -28,24 +29,28 @@ export class Words {
         let lengthCounter: number = 0;
         let wordCounter: number = 0;
         //test
-        let wordSetter: string = null;
-        let gridWordSetter: GridWordInformation;
+        //let wordSetter: string = null;
+        //let gridWordSetter: GridWordInformation;
         // compteur mot verticale
         for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
             for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
-                if (!(this._grid[indexI][indexJ].getIsBlack)) {
+                if (!(this._grid.Grid[indexI][indexJ].getIsBlack())) {
                     lengthCounter++;
                 } else {
                     wordCounter++;
                     //test
-                    gridWordSetter = new GridWordInformation(wordSetter,null,0);
-                    this._listOfWord.push(new Word(lengthCounter, wordCounter, gridWordSetter, indexI - lengthCounter, indexJ, Direction.Y));
+                    //gridWordSetter = new GridWordInformation(wordSetter,null,0);
+                    if (lengthCounter !== 0) {
+                        this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI - lengthCounter, indexJ, Direction.Y));
+                    }
                     lengthCounter = 0;
-                    wordSetter = null;
+                    //wordSetter = null;
                 }
             }
             wordCounter++;
-            this._listOfWord.push(new Word(lengthCounter, wordCounter, null, this._grid.Height - lengthCounter, indexJ, Direction.Y));
+            if (lengthCounter !== 0) {
+                this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), this._grid.Height - lengthCounter, indexJ, Direction.Y));
+            }
             lengthCounter = 0;
         }
         wordCounter = 0;
@@ -53,30 +58,43 @@ export class Words {
         // compteur mot horizontale
         for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
             for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
-                if (!(this._grid[indexI][indexJ].getIsBlack)) {
+                if (!(this._grid.Grid[indexI][indexJ].getIsBlack())) {
                     lengthCounter++;
-                    wordSetter += this._grid.Grid[indexI][indexJ].getLetter();
+                    //wordSetter += this._grid.Grid[indexI][indexJ].getLetter();
                 } else {
                     wordCounter++;
-                    this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, indexJ - lengthCounter, Direction.X));
+                    console.log(lengthCounter);
+                    if (lengthCounter !== 0) {
+                        this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI, indexJ - lengthCounter, Direction.X));
+                    }
                     lengthCounter = 0;
                 }
             }
             wordCounter++;
-            this._listOfWord.push(new Word(lengthCounter, wordCounter, null, indexI, this._grid.Width - lengthCounter, Direction.X));
+            if (lengthCounter !== 0) {
+                this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI, this._grid.Width - lengthCounter, Direction.X));
+            }
             lengthCounter = 0;
         }
         this.fillWord();
+        this.fillGrid();
     }
+
     private fillWord(): void {
-        for (let word of this._listOfWord) {
-            let wordFilled: string;
+        let word: Word;
+        console.log("taille" + this._listOfWord.length);
+        for (let i = 0; i < this._listOfWord.length; i++) {
+            word = this._listOfWord[i];
+            let wordFilled: string = "";
             for (let letter = 0; letter < word.Length; letter++) {
                 wordFilled += "?";
+                // console.log("AjoutLettre : "+wordFilled);
             }
-            word.Word.setWord(wordFilled);
+            console.log("AjoutWord : " + wordFilled);
+            word.GridWord.setWord(wordFilled);
         }
     }
+
 
     //idée ** 
     private fillGrid(): void {

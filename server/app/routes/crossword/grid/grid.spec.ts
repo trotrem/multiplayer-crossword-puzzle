@@ -1,21 +1,21 @@
 import { expect } from "chai";
 import { Grid } from "./grid";
 
-const grid: Grid = new Grid();
+let grid: Grid = new Grid();
 grid.makeGrid();
-let combineString: string = "";
+/*let combineString: string = "";
 for (let indexI = 0; indexI < grid.Height; indexI++) {
     combineString += "|";
     for (let indexJ = 0; indexJ < grid.Width; indexJ++) {
         if (grid.getSquareIsBlack(indexI, indexJ)) {
             combineString += " # ";
         } else {
-            combineString += " * ";
+            combineString += grid.Grid[indexI][indexJ].getLetter();
         }
     }
     combineString += "|\n";
 }
-console.log(combineString);
+console.log(combineString);*/
 
 describe("Grid", () => {
     it("Should be 10 witdh and 10 height", () => {
