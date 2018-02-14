@@ -19,6 +19,7 @@ export class CrosswordGridComponent implements OnInit {
         this.cells[i].push("(" + i + ", " + j + ")");
       }
     }
+    this.cells[3][4] = "-";
   }
 
   public ngOnInit(): void {
