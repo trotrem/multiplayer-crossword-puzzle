@@ -1,10 +1,20 @@
-<div style="display:grid;grid-template-rows: repeat(10, 52px);grid-template-columns: 1fr">
-  <div style="display:grid;grid-template-rows: 1fr; grid-template-columns: repeat(10, 52px);" *ngFor="let row of cells">
+<h1>Mot croisé!</h1>
+<h2>Nombre de joueurs:</h2>
+<div style="display:grid;grid-template-rows: repeat(10, 50px);grid-template-columns: 1fr">
+  <div style="display:grid;grid-template-rows: 1fr; grid-template-columns: repeat(10, 50px);" *ngFor="let row of cells">
         <ng-container  *ngFor="let cell of row" >
             <div *ngIf="cell !== '-';else elseBlock" style="width:50px;height:50px;border:1px solid #000;">{{cell}}</div>
             <ng-template #elseBlock>
               <div style="width:50px;height:50px;border:1px solid #000;background-color:black"></div>
             </ng-template>
         </ng-container>
+  </div>
+</div>
+<div style="display:grid;grid-template-rows: 1fr;grid-template-columns: 800px 800px">
+  <div>
+      <h2>horizontal</h2>
+  </div>
+  <div>
+      <h2>vertical</h2>
   </div>
 </div>
