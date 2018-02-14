@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
-const GRID_LENGTH: number = 100;
+const GRID_WIDTH: number = 10;
+const GRID_HEIGHT: number = 10;
 
 @Component({
   selector: "app-crossword-grid",
@@ -8,12 +9,15 @@ const GRID_LENGTH: number = 100;
   styleUrls: ["./crossword-grid.component.css"]
 })
 export class CrosswordGridComponent implements OnInit {
-  public cells: string[];
+  public cells: string[][];
 
   public constructor() {
-    this.cells = new Array<string>();
-    for (let i: number = 0; i < GRID_LENGTH; i++) {
-      this.cells.push(i.toString());
+    this.cells = new Array<Array<string>>();
+    for (let i: number = 0; i < GRID_WIDTH; i++) {
+      this.cells[i] = new Array<string>();
+      for (let j: number = 0; j < GRID_HEIGHT; j++) {
+        this.cells[i].push("(" + i + ", " + j + ")");
+      }
     }
   }
 
