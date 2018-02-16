@@ -2,7 +2,7 @@
 <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <input name ="name" ngModel required #name="ngModel">
     <input name ="description" ngModel required #description="ngModel">
-    <button [disabled]= "notReadyToSubmit()" (click)="onSubmit(f)">Submit</button>
+    <button [disabled]= "notReadyToSubmit()" >Submit</button>
 </form>
 <button [disabled]= "notReadyToSave()" (click)="savetrack()">Save Track</button>
 <canvas #canvas draggable="true" > </canvas>

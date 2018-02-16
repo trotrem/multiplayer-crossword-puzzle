@@ -270,12 +270,16 @@ export class EditeurComponent implements AfterViewInit {
             headers: headers
         })
             .subscribe((data) => {
-                // console.log(data);
+                //console.log(data);
             });
     }
+    
     public onSubmit(f: NgForm): void {
-        console.log(f.controls["name"]);
-         //console.log(f.controls["description"]);
+        // console.log(f.value.description);
+        this.track.setDescription(f.value.description);
+        this.track.setName(f.value.name);
+        console.log(this.track);
+        //console.log(f.controls["description"]);
         this.submitValid = true;
     }
 
