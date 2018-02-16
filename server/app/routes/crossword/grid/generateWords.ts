@@ -46,26 +46,10 @@ export class GenerateWords {
         words = await wordRetreive(this._wordsListSorted[0].GridWord.word);
         for (let i = 0; i < words.length; i++) {
             workingWord.setWord(words[i]);
-            if (this.addWord(workingWord, 0))
+            if (await this.addWord(workingWord, 0))
                 return this._grid;
         }
         return null;
-        /*return await wordRetreive(this._wordsListSorted[0].GridWord.word)
-            .then(
-            ((found) => {
-                words = found;
-                console.log("oui");
-                for (let i = 0; i < words.length; i++) {
-                    workingWord.setWord(words[i]);
-                    this.addWord(workingWord, 0);
-                }
-                return this._grid;
-            }),
-            ((reject) => {
-                //aucun mot trouvé ?
-                console.log("non");
-                return null;
-            }));*/
     }
 
 
@@ -97,35 +81,12 @@ export class GenerateWords {
             }
             if (!inGrid) {
                 console.log(wordNext.GridWord.word);
-                if (this.addWord(wordNext, index + 1)) {
+                if (await this.addWord(wordNext, index + 1)) {
                     return true;
                 }
             }
         }
         return false;
-        /*return await wordRetreive(wordNext.GridWord.word)
-            .then(
-            ( (found) => {
-                console.log("found add");
-                words = found;
-                for (let i = 0; i < words.length; i++) {
-                    wordNext.setWord(words[i]);
-                    this.addWord(wordNext, index + 1);
-                }
-                return true;
-            }),
-            ( (reject) => {
-                //aucun mot trouvé ?
-                console.log("not found add");
-                return false;
-            }));*/
-        //add si return fonction
-        // if done -> DONE return true
-        // let prochainsPossibles = ...
-        // if reject return false
-        // foreach prochain{
-        //  addWord(grid, LeMot)
-        // }
     }
 
     //ajoute le mot dans la grille
@@ -159,3 +120,6 @@ export class GenerateWords {
         }
     }
 }
+
+let test: GenerateWords = new GenerateWords;
+test.generateGrid();

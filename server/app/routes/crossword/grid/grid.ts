@@ -2,7 +2,7 @@
 // import { ExternalApiService } from "../lexiconAPI/externalApi.service";
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
-import { GenerateWords } from "./generateWords";
+//import { GenerateWords } from "./generateWords";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;

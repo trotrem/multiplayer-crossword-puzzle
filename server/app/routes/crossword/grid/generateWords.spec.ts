@@ -35,5 +35,5 @@ describe("Full grid", () => {
         }
         console.log(combineString);
         expect(true);
-    });
+    }).timeout(60000);
 });
