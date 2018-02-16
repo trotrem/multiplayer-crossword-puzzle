@@ -6,11 +6,11 @@ export class Track {
     private startingZone: THREE.Line3;
     private points: THREE.Vector3[];
 
-    public constructor(name: string, description: string, startingZone: THREE.Line3, points: Array<THREE.Vector3>) {
-        this.name = name;
-        this.description = description;
-        this.startingZone = startingZone;
-        this.points = points;
+    public constructor() {
+        this.name = "";
+        this.description = "";
+        this.startingZone = new THREE.Line3;
+        this.points = new Array<THREE.Vector3> ();
     }
 
     public getName(): string {

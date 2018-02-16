@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { Contraints } from "./contraints";
 import { Track } from "./track";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import {NgForm} from "@angular/forms";
 
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
@@ -37,6 +38,10 @@ export class EditeurComponent implements AfterViewInit {
 
     private trackValid: boolean;
 
+    private track: Track;
+
+    private submitValid: boolean;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -47,7 +52,8 @@ export class EditeurComponent implements AfterViewInit {
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
         this.trackValid = false;
-
+        this.track = new Track();
+        this.submitValid = false;
     }
 
     public ngAfterViewInit(): void {
@@ -244,23 +250,32 @@ export class EditeurComponent implements AfterViewInit {
         this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
     }
 
-    public notReadyToSave(): boolean {
+    public notReadyToSubmit(): boolean {
         return !this.trackValid || !this.isClosed;
+    }
+    public notReadyToSave(): boolean {
+        return this.notReadyToSubmit() || !this.submitValid ;
     }
 
     public savetrack(): void {
         // console.log("saveTracks est call");
-        const track: Track = new Track("piste1", "", this.startingZone, this.points);
+        this.track.setPoints(this.points);
+        this.track.setStartingZone(this.startingZone);
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.post("http://localhost:3000/track", JSON.stringify(track), {
+        this.http.post("http://localhost:3000/track", JSON.stringify(this.track), {
             headers: headers
         })
             .subscribe((data) => {
                 // console.log(data);
             });
+    }
+    public onSubmit(f: NgForm): void {
+        console.log(f.controls["name"]);
+         //console.log(f.controls["description"]);
+        this.submitValid = true;
     }
 
 }

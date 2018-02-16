@@ -9,6 +9,7 @@ import { BasicService } from "./basic.service";
 import { EditeurComponent } from "./editeur/editeur.component";
 import { AdminComponent } from "./admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 const appRoutes: Routes = [
   { path: "editeur", component: EditeurComponent },
   { path: "admin", component: AdminComponent },
@@ -28,6 +29,8 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
         RouterModule.forRoot(
             appRoutes
           )
