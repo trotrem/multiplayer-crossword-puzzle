@@ -51,7 +51,7 @@ export class EditeurComponent implements AfterViewInit {
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
         this.startingZone = new THREE.Line3();
-        this.trackValid = false;
+        this.trackValid = true;
         this.track = new Track();
         this.submitValid = false;
     }
@@ -203,7 +203,7 @@ export class EditeurComponent implements AfterViewInit {
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
-            this.trackValid = true;
+            //this.trackValid = true;
         } else {
             color = RED_COLOR;
             if (illegalPoints.length > 1) {
@@ -230,6 +230,7 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     private redraw(newPoints: THREE.Vector3[]): void {
+        this.trackValid = true;
         if (!newPoints) {
             return;
         }
@@ -251,7 +252,7 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     public notReadyToSubmit(): boolean {
-        return !this.trackValid || !this.isClosed;
+        return !this.isClosed || !this.trackValid;
     }
     public notReadyToSave(): boolean {
         return this.notReadyToSubmit() || !this.submitValid ;
