@@ -18,8 +18,14 @@ export class Routes {
         router.get("/", (req: Request, res: Response, next: NextFunction) => this.index.helloWorld(req, res, next));
         router.post("/track", (req: Request, res: Response, next: NextFunction) => {
             const myData: Document = new tracks(req.body);
-            // console.log(req.body);
-
+            tracks.remove({ name: req.body.name }, function(err) {
+                if (!err) {
+                        console.log("delete");
+                }
+                else {
+                        console.log("erreur dans delete");
+                }
+            });
             myData.save()
                 .then((item: Document) => {
                     res.send("Name saved to database");
