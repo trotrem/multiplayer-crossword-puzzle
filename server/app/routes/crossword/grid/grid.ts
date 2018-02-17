@@ -33,12 +33,12 @@ export class Grid {
     public get Grid(): Square[][] {
         return this._grid;
     }
-    public get BlackSquares(): Point[] {
-        const blacks: Array<Point> = new Array<Point>();
-        this._grid.forEach((row, i) => {
-            row.forEach((cell, j) => {
+    public get BlackSquares() {
+        const blacks: any[] = [];
+        this._grid.forEach((row, x) => {
+            row.forEach((cell, y) => {
                 if (cell.getIsBlack()) {
-                    blacks.push({i, j});
+                    blacks.push({x, y});
                 }
             });
         });

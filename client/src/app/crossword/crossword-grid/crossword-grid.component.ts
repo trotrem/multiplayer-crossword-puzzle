@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { GridData } from "../../../../../common/communication/message"
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -29,7 +31,7 @@ export class CrosswordGridComponent implements OnInit {
     return this.words.filter((word) => word.direction === "v");
   }
 
-  public constructor() {
+  public constructor(private http: HttpClient) {
     this.cells = new Array<Array<string>>();
     for (let i: number = 0; i < GRID_WIDTH; i++) {
       this.cells[i] = new Array<string>();
@@ -42,8 +44,19 @@ export class CrosswordGridComponent implements OnInit {
     this.words.push({direction: "h", x: 2, y: 0, length: 4, definition: "word1"});
     this.words.push({direction: "v", x: 4, y: 2, length: 6, definition: "word2"});
     this.words.push({direction: "v", x: 2, y: 0, length: 4, definition: "word3"});
+    this.fetchGrid();
   }
 
   public ngOnInit(): void {
+  }
+
+  public fetchGrid() {
+    this.http.get("http://localhost:3000/crossword-grid")
+    .subscribe((data) => {
+      console.log(data);
+        (data as GridData).blackCells.forEach((cell) => {
+          this.cells[cell.x][cell.y] = "-";
+        });
+    });
   }
 }

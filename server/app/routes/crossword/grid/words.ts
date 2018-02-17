@@ -79,7 +79,7 @@ export class Words {
     }
 
     //idée ** 
-    private fillGrid(): void {
+    /* private fillGrid(): void {
         for (let squareI = 0; squareI < this._grid.Height; squareI++) {
             for (let squareJ = 0; squareJ < this._grid.Height; squareJ++) {
                 if (!(this._grid.Grid[squareI][squareJ]._isBlack)) {
@@ -87,5 +87,5 @@ export class Words {
                 }
             }
         }
-    }
+    } */
 }
