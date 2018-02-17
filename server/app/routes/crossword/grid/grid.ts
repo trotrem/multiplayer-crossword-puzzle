@@ -3,15 +3,15 @@
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
 
-const WIDTH: number = 10;
-const HEIGHT: number = 10;
-const MINBLACK: number = 11;
-const MAXBLACK: number = 15;
-const MINCASES: number = 0;
-const MAXCASES: number = 99;
+const WIDTH = 10;
+const HEIGHT = 10;
+const MINBLACK = 11;
+const MAXBLACK = 15;
+const MINCASES = 0;
+const MAXCASES = 99;
 // Les cases qui ne peuvent pas etre noires forment un carré de 8x8, pour eviter d'avoir un mot d'une lettre
 const NOTBLACKSQUARES: number[] = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
-    19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
+                                   19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];
 
 export class Grid {
 
@@ -33,10 +33,20 @@ export class Grid {
     public get Grid(): Square[][] {
         return this._grid;
     }
-    public getSquareIsBlack(i: number, j: number): boolean {
-        const isBlack: boolean = this._grid[i][j].getIsBlack();
+    public get BlackSquares(): Point[] {
+        const blacks: Array<Point> = new Array<Point>();
+        this._grid.forEach((row, i) => {
+            row.forEach((cell, j) => {
+                if (cell.getIsBlack()) {
+                    blacks.push({i, j});
+                }
+            });
+        });
 
-        return isBlack;
+        return blacks;
+    }
+    public getSquareIsBlack(i: number, j: number): boolean {
+        return this._grid[i][j].getIsBlack();
     }
     public get NbrBlack(): number {
         return this._nbrBlack;
@@ -45,7 +55,7 @@ export class Grid {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     private findAcceptableBlackSquare(): number {
-        let black: number = this.randomIntFromInterval(MINCASES, MAXCASES);
+        const black: number = this.randomIntFromInterval(MINCASES, MAXCASES);
 
         if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) !== -1) {
             return this.findAcceptableBlackSquare();
@@ -56,8 +66,8 @@ export class Grid {
     private generateBlackSquare(): void {
         this._blackSquares = new Array<number>();
         this._nbrBlack = this.randomIntFromInterval(MINBLACK, MAXBLACK);
-        for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
-            let currentBlack = this.findAcceptableBlackSquare();
+        for (let indexBlack = 0; indexBlack < this._nbrBlack; indexBlack++) {
+            const currentBlack = this.findAcceptableBlackSquare();
 
             if (currentBlack % WIDTH > 0) {
                 this._notBlackSquares.push(currentBlack - 1);
@@ -75,7 +85,6 @@ export class Grid {
             this._notBlackSquares.push(currentBlack + 2);
             this._notBlackSquares.push(currentBlack - 20);
             this._notBlackSquares.push(currentBlack + 20);
-            
 
             this._blackSquares[indexBlack] = currentBlack;
         }
@@ -83,9 +92,9 @@ export class Grid {
 
     public makeGrid(): void {
         // making an empty grid
-        for (let indexI: number = 0; indexI < WIDTH; indexI++) {
+        for (let indexI = 0; indexI < WIDTH; indexI++) {
             const row: Square[] = new Array();
-            for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
+            for (let indexJ = 0; indexJ < HEIGHT; indexJ++) {
                 row.push(new Square(indexI * HEIGHT + indexJ, false, null));
             }
             this._grid.push(row);
