@@ -203,7 +203,6 @@ export class EditeurComponent implements AfterViewInit {
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
-            //this.trackValid = true;
         } else {
             color = RED_COLOR;
             if (illegalPoints.length > 1) {
@@ -262,6 +261,7 @@ export class EditeurComponent implements AfterViewInit {
         // console.log("saveTracks est call");
         this.track.setPoints(this.points);
         this.track.setStartingZone(this.startingZone);
+        console.log(this.track);
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
@@ -275,11 +275,8 @@ export class EditeurComponent implements AfterViewInit {
     }
     
     public onSubmit(f: NgForm): void {
-        // console.log(f.value.description);
         this.track.setDescription(f.value.description);
         this.track.setName(f.value.name);
-        console.log(this.track);
-        //console.log(f.controls["description"]);
         this.submitValid = true;
     }
 
