@@ -1,4 +1,4 @@
-import { ExternalApiService } from "./externalApi.service";
+/*import { ExternalApiService } from "./externalApi.service";
 import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
@@ -19,7 +19,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(word, expectedWord);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });/
     });
 
     it("The second definition should be : 'n\ta large room for gatherings or entertainment'. ", (done: MochaDone) => {
@@ -32,7 +32,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(secondDefinition, expectedSecondDefintion);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
     it("The word 'hall' should possess 13 valid definitions.", (done: MochaDone) => {
@@ -45,7 +45,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(numberOfDefs, expectedLength);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
     it("The frequency of 'hall' should be : '107.184799'. ", (done: MochaDone) => {
@@ -58,7 +58,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(frequency, expectedFrequency);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
     it("The word 'hall' should be common. ", (done: MochaDone) => {
@@ -71,7 +71,7 @@ describe("Querry of the word 'hall'.", () => {
                 assert.equal(isCommon, expectedValue);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
 });
@@ -91,7 +91,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(word, expectedRequestedWord);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR... });
     });
 
     it("the first valid word should be 'tie'.  ", (done: mochaDone) => {
@@ -104,7 +104,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(word, expectedWord);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
     it("Should have conserved only 5 words.", (done: mochaDone) => {
@@ -117,7 +117,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(numberOfWords, expectedLength);
                 done();
             })
-            .catch((err: object) => { /* ERROR... */ });
+            .catch((err: object) => { /* ERROR...  });
     });
 
     it("The word 'tee' should be uncommon.", (done: MochaDone) => {
@@ -131,7 +131,7 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
                 assert.equal(isCommon, expectedValue);
                 done();
             })
-            .catch((err: object) => { /* ERROR */ });
+            .catch((err: object) => { /* ERROR  });
     });
 
-});
+});*/

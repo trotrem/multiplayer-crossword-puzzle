@@ -2,9 +2,9 @@ import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import * as THREE from "three";
 import { Contraints } from "./contraints";
 import { Track } from "./track";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import {NgForm} from "@angular/forms";
-
+import { HttpClient } from "@angular/common/http";
+import { NgForm } from "@angular/forms";
+import { TrackServices } from "./track-services";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -42,11 +42,13 @@ export class EditeurComponent implements AfterViewInit {
 
     private submitValid: boolean;
 
+    private trackService: TrackServices;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor(private http: HttpClient) {
+    public constructor(http: HttpClient) {
         this.dragIndex = -1;
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
@@ -54,6 +56,7 @@ export class EditeurComponent implements AfterViewInit {
         this.trackValid = true;
         this.track = new Track();
         this.submitValid = false;
+        this.trackService = new TrackServices(http);
     }
 
     public ngAfterViewInit(): void {
@@ -258,22 +261,10 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     public savetrack(): void {
-        // console.log("saveTracks est call");
         this.track.setPoints(this.points);
         this.track.setStartingZone(this.startingZone);
-        console.log(this.track);
-        const headers: HttpHeaders = new HttpHeaders()
-            .set("Authorization", "my-auth-token")
-            .set("Content-Type", "application/json");
-
-        this.http.post("http://localhost:3000/track", JSON.stringify(this.track), {
-            headers: headers
-        })
-            .subscribe((data) => {
-                //console.log(data);
-            });
+        this.trackService.saveTrackService(this.track);
     }
-    
     public onSubmit(f: NgForm): void {
         this.track.setDescription(f.value.description);
         this.track.setName(f.value.name);
