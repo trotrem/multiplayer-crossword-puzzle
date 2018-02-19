@@ -33,7 +33,7 @@ export class EditeurComponent implements AfterViewInit {
 
     private startingZone: THREE.Line3;
 
-    private trackValid : boolean;
+    private trackValid: boolean;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
@@ -242,8 +242,6 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     public notReadyToSave(): boolean {
-        console.log(this.trackValid);
-
         return !this.trackValid || !this.isClosed;
     }
 }

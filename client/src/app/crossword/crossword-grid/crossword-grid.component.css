@@ -30,3 +30,10 @@
     grid-template-columns: 800px 800px;
 }
 
+.definition {
+    cursor: pointer;
+}
+
+.definition-selected {
+    cursor: default;
+}
