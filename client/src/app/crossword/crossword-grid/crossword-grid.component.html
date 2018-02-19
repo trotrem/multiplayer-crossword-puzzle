@@ -13,8 +13,10 @@
 <div style="display:grid;grid-template-rows: 1fr;grid-template-columns: 800px 800px">
   <div>
       <h2>horizontal</h2>
+      <p  *ngFor="let word of horizontalWords; let i = index">{{i+1}}. {{word.definition}}</p>
   </div>
   <div>
       <h2>vertical</h2>
+      <p  *ngFor="let word of verticalWords; let i = index">{{i+1}}. {{word.definition}}</p>
   </div>
 </div>
