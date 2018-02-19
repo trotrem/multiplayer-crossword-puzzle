@@ -1,16 +1,16 @@
 <h1>Mot croisé!</h1>
 <h2>Nombre de joueurs: {{nbPlayers}}</h2>
-<div style="display:grid;grid-template-rows: repeat(10, 50px);grid-template-columns: 1fr">
-  <div style="display:grid;grid-template-rows: 1fr; grid-template-columns: repeat(10, 50px);" *ngFor="let row of cells">
+<div class="crossword-grid">
+  <div class="crossword-row" *ngFor="let row of cells">
         <ng-container  *ngFor="let cell of row" >
-            <div *ngIf="cell.content !== '-';else elseBlock" style="width:50px;height:50px;border:1px solid #000;">{{cell.content}}</div>
+            <div *ngIf="cell.content !== '-';else elseBlock" class="cell">{{cell.content}}</div>
             <ng-template #elseBlock>
-              <div style="width:50px;height:50px;border:1px solid #000;background-color:black"></div>
+              <div class="black"></div>
             </ng-template>
         </ng-container>
   </div>
 </div>
-<div style="display:grid;grid-template-rows: 1fr;grid-template-columns: 800px 800px">
+<div class="definition-columns">
   <div>
       <h2>horizontal</h2>
       <p  *ngFor="let word of horizontalWords; let i = index">{{i+1}}. {{word.definition}}</p>
