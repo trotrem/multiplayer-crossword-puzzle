@@ -13,13 +13,18 @@ interface WordDescription {
   definition: string;
 }
 
+interface Cell {
+  content: string;
+  selected: boolean;
+}
+
 @Component({
   selector: "app-crossword-grid",
   templateUrl: "./crossword-grid.component.html",
   styleUrls: ["./crossword-grid.component.css"]
 })
 export class CrosswordGridComponent implements OnInit {
-  public cells: string[][];
+  public cells: Cell[][];
   @Input() public nbPlayers: number;
   private words: WordDescription[];
 
@@ -32,14 +37,14 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public constructor(private http: HttpClient) {
-    this.cells = new Array<Array<string>>();
+    this.cells = new Array<Array<Cell>>();
     for (let i: number = 0; i < GRID_WIDTH; i++) {
-      this.cells[i] = new Array<string>();
+      this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_HEIGHT; j++) {
-        this.cells[i].push("(" + i + ", " + j + ")");
+        this.cells[i].push({content:"(" + i + ", " + j + ")", selected:false});
       }
     }
-    this.cells[3][4] = "-";
+    this.cells[3][4].content = "-";
     this.words = new Array<WordDescription>();
     this.words.push({direction: "h", x: 2, y: 0, length: 4, definition: "word1"});
     this.words.push({direction: "v", x: 4, y: 2, length: 6, definition: "word2"});
@@ -55,7 +60,7 @@ export class CrosswordGridComponent implements OnInit {
     .subscribe((data) => {
       console.log(data);
         (data as GridData).blackCells.forEach((cell) => {
-          this.cells[cell.x][cell.y] = "-";
+          this.cells[cell.x][cell.y].content = "-";
         });
     });
   }

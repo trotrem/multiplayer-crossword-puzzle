@@ -3,7 +3,7 @@
 <div style="display:grid;grid-template-rows: repeat(10, 50px);grid-template-columns: 1fr">
   <div style="display:grid;grid-template-rows: 1fr; grid-template-columns: repeat(10, 50px);" *ngFor="let row of cells">
         <ng-container  *ngFor="let cell of row" >
-            <div *ngIf="cell !== '-';else elseBlock" style="width:50px;height:50px;border:1px solid #000;">{{cell}}</div>
+            <div *ngIf="cell.content !== '-';else elseBlock" style="width:50px;height:50px;border:1px solid #000;">{{cell.content}}</div>
             <ng-template #elseBlock>
               <div style="width:50px;height:50px;border:1px solid #000;background-color:black"></div>
             </ng-template>
