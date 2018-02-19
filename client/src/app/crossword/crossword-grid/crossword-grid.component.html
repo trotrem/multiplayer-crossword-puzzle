@@ -2,21 +2,18 @@
 <h2>Nombre de joueurs: {{nbPlayers}}</h2>
 <div class="crossword-grid">
   <div class="crossword-row" *ngFor="let row of cells">
-        <ng-container  *ngFor="let cell of row" >
-            <div *ngIf="cell.content !== '-';else elseBlock" class="cell">{{cell.content}}</div>
-            <ng-template #elseBlock>
-              <div class="black"></div>
-            </ng-template>
-        </ng-container>
+    <div *ngFor="let cell of row" [ngClass]="{'selected': cell.selected == true, 'cell': cell.selected == false, 'black': cell.content == '-'}">
+      {{cell.content}}
+    </div>
   </div>
 </div>
 <div class="definition-columns">
   <div>
-      <h2>horizontal</h2>
-      <p  *ngFor="let word of horizontalWords; let i = index">{{i+1}}. {{word.definition}}</p>
+    <h2>horizontal</h2>
+    <p *ngFor="let word of horizontalWords; let i = index">{{i+1}}. {{word.definition}}</p>
   </div>
   <div>
-      <h2>vertical</h2>
-      <p  *ngFor="let word of verticalWords; let i = index">{{i+1}}. {{word.definition}}</p>
+    <h2>vertical</h2>
+    <p *ngFor="let word of verticalWords; let i = index">{{i+1}}. {{word.definition}}</p>
   </div>
 </div>

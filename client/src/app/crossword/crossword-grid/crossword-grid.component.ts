@@ -44,7 +44,6 @@ export class CrosswordGridComponent implements OnInit {
         this.cells[i].push({content:"(" + i + ", " + j + ")", selected:false});
       }
     }
-    this.cells[3][4].content = "-";
     this.words = new Array<WordDescription>();
     this.words.push({direction: "h", x: 2, y: 0, length: 4, definition: "word1"});
     this.words.push({direction: "v", x: 4, y: 2, length: 6, definition: "word2"});
