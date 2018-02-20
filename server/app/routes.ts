@@ -3,37 +3,24 @@ import { Router, Request, Response, NextFunction } from "express";
 
 import Types from "./types";
 import { Index } from "./routes/index";
-import { tracks } from "./db";
-import { Document } from "mongoose";
-const BAD_REQUEST_ERROR: number = 400;
+import {Racing} from "./routes/racing";
 @injectable()
 export class Routes {
-    public constructor(@inject(Types.Index) private index: Index) {
 
+    private racing: Racing;
+    public constructor(@inject(Types.Index) private index: Index) {
+        this.racing = new Racing;
     }
 
     public get routes(): Router {
         const router: Router = Router();
 
         router.get("/", (req: Request, res: Response, next: NextFunction) => this.index.helloWorld(req, res, next));
-        router.post("/track", (req: Request, res: Response, next: NextFunction) => {
-            const myData: Document = new tracks(req.body);
-            tracks.remove({ name: req.body.name }, function(err) {
-                if (!err) {
-                        console.log("delete");
-                }
-                else {
-                        console.log("erreur dans delete");
-                }
-            });
-            myData.save()
-                .then((item: Document) => {
-                    res.send("Name saved to database");
-                })
-                .catch((err: Error) => {
-                    res.status(BAD_REQUEST_ERROR).send("Unable to save to database");
-                });
-        });
+        router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req,res,next));
+
+       // router.get("/admin", (req:Request,res:Response, nest: NextFunction) => {
+
+       // });
 
         return router;
     }
