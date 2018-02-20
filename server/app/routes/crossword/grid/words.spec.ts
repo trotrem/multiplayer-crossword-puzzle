@@ -1,30 +1,42 @@
-/* import { expect } from "chai";
-import { Words } from "./words";
+import { expect } from "chai";
+import { WordsInventory } from "./wordsInventory";
 import { Grid } from "./grid";
 import { Word } from "./word";
 
 const TAILLEMIN: number = 2;
 
 describe("ListOfWords", () => {
-    let list: Words;
+    let list: WordsInventory;
     const grid: Grid = new Grid();
-
-    it("Should have words with a minimum of two letters", () => {
-        list = new Words(grid);
-        let isMinimum: boolean = true;
-        const listH: Word[] = list.ListOfWordH;
-        const listV: Word[] = list.ListOfWordH;
-        for (let word: number = 0; word < list.LengthOfH; word++) {
-            if (listH[word].Length < TAILLEMIN) {
-                isMinimum = false;
+    grid.makeGrid();
+    list = new WordsInventory(grid);
+    list.createListOfWord();
+    /*let combineString: string = "";
+    for (let indexI = 0; indexI < grid.Height; indexI++) {
+        combineString += "|";
+        for (let indexJ = 0; indexJ < grid.Width; indexJ++) {
+            if (grid.getSquareIsBlack(indexI, indexJ)) {
+                combineString += " # ";
+            } else {
+                combineString += " ? ";
             }
         }
-        for (let word: number = 0; word < list.LengthOfV; word++) {
-            if (listV[word].Length < TAILLEMIN) {
+        combineString += "|\n";
+    }
+    console.log(combineString);
+    console.log("Liste :");
+    for(let i = 0; i< list.ListOfWord.length; i++){
+        console.log(list.ListOfWord[i].Length);
+        console.log(list.ListOfWord[i].GridWord.word);
+    }*/
+    it("Should have words with a minimum of two letters", () => {
+        let isMinimum: boolean = true;
+        const listH: Word[] = list.ListOfWord;
+        for (let word: number = 0; word < list.ListOfWord.length; word++) {
+            if (listH[word].Length < TAILLEMIN) {
                 isMinimum = false;
             }
         }
         expect(isMinimum);
     });
 });
- */

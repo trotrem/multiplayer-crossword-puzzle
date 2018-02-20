@@ -20,7 +20,7 @@ export class Word {
         this._direction = direction;
     }
 
-    public get Word(): GridWordInformation {
+    public get GridWord(): GridWordInformation {
         return this._text;
     }
     public get Length(): number {
