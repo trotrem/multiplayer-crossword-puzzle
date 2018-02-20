@@ -9,7 +9,5 @@
     <span class="badge">{{track.name}}</span>
   </li>
 </ul>
-
-<button [disabled]="notReadyToModify()" (click)="editTrack()">edit Track</button>
-
-<button [disabled]="notReadyToModify()" (click)="deleteTrack()">delete Track</button>
+<button [disabled]="notReadyToModify()" (click)="editTrack(track)">edit Track</button>
+<button [disabled]="notReadyToModify()" (click)="deleteTrack(track)">delete Track</button>

@@ -17,10 +17,13 @@ export class AdminComponent implements OnInit {
 
   private selectedTrack: Track;
 
+  private isSelected: boolean;
+
   public constructor(private http: HttpClient) {
     this.adminServices = new AdminServices(this.http);
     this.tracks = new Array<Track>();
     this.selectedTrack = new Track();
+    this.isSelected = false;
   }
 
   public ngOnInit(): void {
@@ -32,23 +35,20 @@ export class AdminComponent implements OnInit {
       .subscribe((res: Array<Track>) => this.tracks = res);
   }
 
-  private onSelect(track : Track){
+  private onSelect(track: Track) {
     this.selectedTrack = track;
+    this.isSelected = true;
   }
 
-  private editTrack(): void{
-
+  private editTrack(): void {
   }
 
-  private deleteTrack(): void{
-
+  private deleteTrack(): void {
   }
 
-  private notReadyToModify(): boolean{
-    return 
+  
+  private notReadyToModify(): boolean {
+    return !this.isSelected;
   }
-
-
-
 
 }
