@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-//import { Message } from "../../../common/communication/message";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { tracks } from "./../db";
@@ -13,12 +12,12 @@ module Route {
 
         public savetrack(req: Request, res: Response, next: NextFunction): void{
             const myData: Document = new tracks(req.body);
-            tracks.remove({ name: req.body.name }, function(err) {
+            // tslint:disable-next-line:only-arrow-functions
+            tracks.remove({ name: req.body.name }, function(err: Error): void {
                 if (!err) {
-                        console.log("delete");
-                }
-                else {
-                        console.log("erreur dans delete");
+                        console.warn("delete");
+                } else {
+                        console.error("erreur dans delete");
                 }
             });
             myData.save()
@@ -27,7 +26,7 @@ module Route {
                 })
                 .catch((err: Error) => {
                     res.status(BAD_REQUEST_ERROR).send("Unable to save to database");
-                });     
+                });
         }
     }
 }

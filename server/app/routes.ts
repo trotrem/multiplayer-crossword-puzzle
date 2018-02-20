@@ -16,7 +16,7 @@ export class Routes {
         const router: Router = Router();
 
         router.get("/", (req: Request, res: Response, next: NextFunction) => this.index.helloWorld(req, res, next));
-        router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req,res,next));
+        router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req, res, next));
 
        // router.get("/admin", (req:Request,res:Response, nest: NextFunction) => {
 
