@@ -21,7 +21,7 @@ export class WordRetriever {
 
         const easyWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
         easyWordList.forEach((element: GridWordInformation) => {
-            element.definitions.splice(0);
+            element.definitions = element.definitions.splice(0);
         });
 
         return easyWordList;
@@ -30,18 +30,32 @@ export class WordRetriever {
     public async getMediumWordList(word: string): Promise<GridWordInformation[]> {
         const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
 
-        const easyWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
-        easyWordList.forEach((element: GridWordInformation) => {
-            element.definitions.splice(0);
+        const mediumWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
+        mediumWordList.forEach((element: GridWordInformation) => {
+            if(element.definitions.length > 1)
+                element.definitions = element.definitions.splice(1);
+            else
+                element.definitions = element.definitions.splice(0);
         });
 
-        return easyWordList;
+        return mediumWordList;
+    }
+
+    public async getHardWordList(word: string): Promise<GridWordInformation[]> {
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => !(wordInfo.isCommon);
+
+        const hardWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
+        hardWordList.forEach((element: GridWordInformation) => {
+            element.definitions = element.definitions.splice(0);
+        });
+
+        return hardWordList;
     }
 
     private async createWordListWithDefinitions(word: string,
         filter: (word: GridWordInformation) => boolean): Promise<GridWordInformation[]> {
         let wordswithDefinitions: GridWordInformation[] = [];
-        const apiService: ExternalApiService = ExternalApiService.instance;
+        const apiService: ExternalApiService = new ExternalApiService;
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
             if (words[index].hasOwnProperty("defs")) {
@@ -49,7 +63,7 @@ export class WordRetriever {
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
                     words[index].word, words[index].defs, tempFrequency);
-                    wordswithDefinitions.push(tempWord);
+                wordswithDefinitions.push(tempWord);
             }
         }
         this.removeDefinitions(wordswithDefinitions);
@@ -66,7 +80,7 @@ export class WordRetriever {
                 const isNoun: boolean = wordswithDefinitions[indexWord].definitions[0].charAt(0) === "n";
                 const isVerb: boolean = wordswithDefinitions[indexWord].definitions[0].charAt(0) === "v";
                 const hasWordInDefinition: boolean =
-                wordswithDefinitions[indexWord].definitions[indexDefs].indexOf(wordswithDefinitions[indexWord].word) >= 0;
+                    wordswithDefinitions[indexWord].definitions[indexDefs].indexOf(wordswithDefinitions[indexWord].word) >= 0;
                 if ((!(isNoun) && !(isVerb)) || (hasWordInDefinition)) {
                     wordswithDefinitions[indexWord].definitions.splice(indexDefs, 1);
                     indexDefs--; // next object is at same index as the one removed
@@ -74,7 +88,7 @@ export class WordRetriever {
             }
             if (wordswithDefinitions[indexWord].definitions === undefined
                 || wordswithDefinitions[indexWord].definitions.length === 0) {
-                    wordswithDefinitions.splice(indexWord, 1);
+                wordswithDefinitions.splice(indexWord, 1);
                 indexWord--; // next object is at same index as the one removed
             }
         }

@@ -4,14 +4,6 @@ import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
 
-    private static _instance: ExternalApiService;
-
-    private constructor() { }
-
-    public static get instance(): ExternalApiService {
-        return ((this._instance) || (this._instance = new this()));
-    }
-
     private options: (UriOptions & RequestPromiseOptions) = {
         method: "GET",
         uri: "http://api.datamuse.com/words",

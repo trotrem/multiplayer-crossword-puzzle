@@ -14,8 +14,16 @@ export class GridWordInformation {
         return this._word;
     }
 
+    public setWord(newWord: string): void {
+        this._word = newWord;
+    }
+
     public get definitions(): string[] {
         return this._defs;
+    }
+
+    public set definitions(newDefs: string[]) {
+        this._defs = newDefs;
     }
 
     public get frequency(): number {
@@ -26,7 +34,5 @@ export class GridWordInformation {
         return this._isCommon;
     }
 
-    public setWord(newWord: string): void {
-        this._word = newWord;
-    }
+    
 }
