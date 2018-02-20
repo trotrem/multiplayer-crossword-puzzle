@@ -2,7 +2,6 @@
 // import { ExternalApiService } from "../lexiconAPI/externalApi.service";
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
-//import { GenerateWords } from "./generateWords";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
@@ -19,7 +18,7 @@ export class Grid {
 
     private _grid: Square[][];
     private _blackSquares: number[];
-    private _notBlackSquares: number[]; //= NOTBLACKSQUARES;
+    private _notBlackSquares: number[];
     private _nbrBlack: number;
 
     constructor() {
@@ -36,9 +35,8 @@ export class Grid {
         return this._grid;
     }
     public getSquareIsBlack(i: number, j: number): boolean {
-        const isBlack: boolean = this._grid[i][j].getIsBlack();
 
-        return isBlack;
+        return this._grid[i][j].getIsBlack();
     }
     public get NbrBlack(): number {
         return this._nbrBlack;
@@ -47,11 +45,12 @@ export class Grid {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     private findAcceptableBlackSquare(): number {
-        let black: number = this.randomIntFromInterval(MINCELLS, MAXCELLS);
+        const black: number = this.randomIntFromInterval(MINCELLS, MAXCELLS);
 
         if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) !== -1) {
             return this.findAcceptableBlackSquare();
         }
+
         return black;
     }
 
@@ -60,9 +59,9 @@ export class Grid {
         this._notBlackSquares = new Array<number>();
         this._nbrBlack = this.randomIntFromInterval(MINBLACK, MAXBLACK);
         for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
-            let currentBlack = this.findAcceptableBlackSquare();
+            const currentBlack: number = this.findAcceptableBlackSquare();
             this.notBlackSquares(currentBlack);
-            /*if (currentBlack % WIDTH > 0) {
+            /* if (currentBlack % WIDTH > 0) {
                 this._notBlackSquares.push(currentBlack - 1);
             }
             if (currentBlack % WIDTH < WIDTH - 1) {
@@ -118,6 +117,5 @@ export class Grid {
             this._grid[indexITemp][indexJTemp].setIsBlack(true);
 
         }
-        //this._grid = new GenerateWords(this._grid);
     }
 }

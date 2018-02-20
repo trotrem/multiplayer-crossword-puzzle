@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Grid } from "./grid";
 
-let grid: Grid = new Grid();
+const grid: Grid = new Grid();
 grid.makeGrid();
 /*let combineString: string = "";
 for (let indexI = 0; indexI < grid.Height; indexI++) {
