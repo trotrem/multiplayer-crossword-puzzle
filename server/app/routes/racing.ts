@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { injectable, } from "inversify";
 import { tracks } from "./../db";
 import { Document } from "mongoose";
+//import {Track} from "./../../../common/communication/track"
 const BAD_REQUEST_ERROR: number = 400;
 
 module Route {
@@ -10,14 +11,14 @@ module Route {
     @injectable()
     export class Racing {
 
-        public savetrack(req: Request, res: Response, next: NextFunction): void{
+        public savetrack(req: Request, res: Response, next: NextFunction): void {
             const myData: Document = new tracks(req.body);
             // tslint:disable-next-line:only-arrow-functions
-            tracks.remove({ name: req.body.name }, function(err: Error): void {
+            tracks.remove({ name: req.body.name }, function (err: Error): void {
                 if (!err) {
-                        console.warn("delete");
+                    console.warn("delete");
                 } else {
-                        console.error("erreur dans delete");
+                    console.error("erreur dans delete");
                 }
             });
             myData.save()
@@ -27,6 +28,18 @@ module Route {
                 .catch((err: Error) => {
                     res.status(BAD_REQUEST_ERROR).send("Unable to save to database");
                 });
+        }
+
+        public getAlltracks(req: Request, res: Response, next: NextFunction): void {
+            tracks.find({}, function (err, allTracks) {
+                if (!err) {
+                    console.log("find all");
+                    res.send(allTracks);
+                } else {
+                    console.log("erreur dans find all");
+
+                }
+            });
         }
     }
 }

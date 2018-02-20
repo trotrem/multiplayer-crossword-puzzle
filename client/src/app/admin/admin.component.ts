@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import * as THREE from "three";
+import { HttpClient } from "@angular/common/http";
+import { AdminServices } from "./admin.services";
+//import { Response } from "@angular/http";
+import { Track } from "../editeur/track";
+
 
 @Component({
   selector: "app-admin",
@@ -7,13 +11,25 @@ import * as THREE from "three";
   styleUrls: ["./admin.component.css"]
 })
 export class AdminComponent implements OnInit {
-  private tracks: THREE.Line3[] ;
-  public constructor( ) { this.tracks = new Array();
+  private adminServices: AdminServices;
+
+  private tracks: Track[];
+
+  public constructor(private http: HttpClient) {
+    this.adminServices = new AdminServices(this.http);
   }
 
   public ngOnInit(): void {
     this.getTracks();
   }
-  private getTracks(): THREE.Line3[] {return this.tracks;
- }
+
+  private getTracks(): void {
+    this.adminServices.getTracksService()
+      .subscribe((res: Array<Track>) => this.tracks = res);
+  }
+
+
+
+
+
 }

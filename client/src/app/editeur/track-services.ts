@@ -9,14 +9,14 @@ export class TrackServices {
     public constructor(private http: HttpClient) {
     }
     public saveTrackService(track: Track): void {
-       const headers: HttpHeaders = new HttpHeaders()
+        const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-       this.http.post("http://localhost:3000/track", JSON.stringify(track), {
-                headers: headers
-            })
-                .subscribe((data: Response) => {
-                });
-}
+        this.http.post("http://localhost:3000/track", JSON.stringify(track), {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
+    }
 }

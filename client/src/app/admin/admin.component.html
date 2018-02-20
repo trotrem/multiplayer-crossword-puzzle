@@ -1,3 +1,9 @@
 <p>
   admin works!
 </p>
+
+<ul class="tracks">
+  <li *ngFor="let track of tracks">
+    <span class="badge">{{track.name}}</span>
+  </li>
+</ul>
