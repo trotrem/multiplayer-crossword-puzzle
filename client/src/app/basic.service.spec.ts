@@ -4,7 +4,7 @@ import { AppModule } from "./app.module";
 
 import { BasicService } from "./basic.service";
 
-describe("BasicService", () => {
+/*describe("BasicService", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -16,4 +16,4 @@ describe("BasicService", () => {
     it("should be created", inject([BasicService], (service: BasicService) => {
         expect(service).toBeTruthy();
     }));
-});
+});*/

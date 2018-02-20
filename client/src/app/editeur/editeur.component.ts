@@ -41,6 +41,7 @@ export class EditeurComponent implements AfterViewInit {
     private track: Track;
 
     private submitValid: boolean;
+    // private http: HttpClient
 
     private trackService: TrackServices;
 
@@ -48,7 +49,7 @@ export class EditeurComponent implements AfterViewInit {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor(http: HttpClient) {
+    public constructor(private http: HttpClient) {
         this.dragIndex = -1;
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
@@ -56,7 +57,8 @@ export class EditeurComponent implements AfterViewInit {
         this.trackValid = true;
         this.track = new Track();
         this.submitValid = false;
-        this.trackService = new TrackServices(http);
+
+        this.trackService = new TrackServices(this.http);
     }
 
     public ngAfterViewInit(): void {

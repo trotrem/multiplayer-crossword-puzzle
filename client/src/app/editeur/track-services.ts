@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
 import { Track } from "./track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class TrackServices {
