@@ -29,8 +29,7 @@ export class CrosswordGridComponent implements OnInit {
 
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
-  // tslint:disable-next-line: no-unused-expression
-  private onBackgroundClick(): void {
+  private onBackgroundClick(): void {  // tslint:disable-line
     this.setSelectedWord(null, false);
   }
 
@@ -60,7 +59,7 @@ export class CrosswordGridComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  // TODO: REMOVE FUNCTION
+  // TODO: REMOVE FUNCTION (FAKE WORDS)
   private bullshitSetup(): void {
     this.words.push({direction: "h", cells: this.cells[1].slice(0, 6), definition: "word1"});
     this.words.push({direction: "v", cells: this.cells[2].slice(5, 9), definition: "word2"});
