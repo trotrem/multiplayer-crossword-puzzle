@@ -3,7 +3,7 @@
   <h2>Nombre de joueurs: {{nbPlayers}}</h2>
   <div class="crossword-grid" >
     <div class="crossword-row" *ngFor="let row of cells">
-      <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)" [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.content === '-'}">
+      <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)" [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true}">
         {{cell.content}}
       </div>
     </div>

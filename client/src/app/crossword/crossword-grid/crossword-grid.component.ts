@@ -12,6 +12,7 @@ interface WordDescription {
 }
 
 interface Cell {
+  isBlack: boolean;
   content: string;
   selected: boolean;
 }
@@ -43,10 +44,10 @@ export class CrosswordGridComponent implements OnInit {
 
   public constructor(private http: HttpClient) {
     this.cells = new Array<Array<Cell>>();
-    for (let i: number = 0; i < GRID_WIDTH; i++) {
+    for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
-      for (let j: number = 0; j < GRID_HEIGHT; j++) {
-        this.cells[i].push({content: "", selected: false});
+      for (let j: number = 0; j < GRID_WIDTH; j++) {
+        this.cells[i].push({content: "", selected: false, isBlack: false});
       }
     }
     this.words = new Array<WordDescription>();
@@ -62,17 +63,20 @@ export class CrosswordGridComponent implements OnInit {
     .subscribe((data) => {
       const gridData: GridData = data as GridData;
       gridData.blackCells.forEach((cell) => {
-          this.cells[cell.x][cell.y].content = "-";
+          this.cells[cell.y][cell.x].isBlack = true;
         });
       gridData.wordInfos.forEach((word) => {
         const cells: Cell[] = new Array<Cell>();
         for (let i = 0; i < word.length; i++) {
+          console.log(word);
           if (word.direction === "h") {
-            cells.push(this.cells[word.x + i][word.y])
+            cells.push(this.cells[word.y][word.x + i])
           }
           else if (word.direction === "v") {
-            cells.push(this.cells[word.x][word.y + i])
+            cells.push(this.cells[word.y + i][word.x])
           }
+          this.cells[word.y][word.x].content= word.y + "," + word.x;
+          console.log("ok");
         }
         this.words.push({direction: word.direction, cells: cells, definition: word.definition});
       })
@@ -81,6 +85,12 @@ export class CrosswordGridComponent implements OnInit {
 
   public onCellClicked(event: MouseEvent, cell: Cell): void {
     event.stopPropagation();
+    for (const word of this.words) {
+      if (word.cells[0] === cell) {
+        this.setSelectedWord(word, true);
+        break;
+      }
+    }
     for (const word of this.words) {
       if (word.cells.indexOf(cell) !== -1) {
         this.setSelectedWord(word, true);

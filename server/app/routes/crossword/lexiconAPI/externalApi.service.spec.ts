@@ -4,7 +4,7 @@ import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 import {expect} from "chai";
 
-const wordRetriever: WordRetriever = WordRetriever.instance;
+/*const wordRetriever: WordRetriever = WordRetriever.instance;
 //let result: string;
 let words: GridWordInformation[];
 describe("Querry of the word 'hall'.", () => {
@@ -83,4 +83,4 @@ describe("Querry of the word 'fall'.", () => {
        // const expectedWord: string = "hall";
        // assert.equal(word, expectedWord);
     });
-});
+});*/
