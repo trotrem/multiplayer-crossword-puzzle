@@ -91,6 +91,38 @@ export class CrosswordGridComponent implements OnInit {
     this.setSelectedWord(word, true);
   }
 
+  @HostListener("document:keydown", ["$event"])
+  public onKeyPress(event: KeyboardEvent): void {
+    if (this.selectedWord !== null) {
+      if (event.keyCode >= 65 && event.keyCode <= 90 || event.keyCode >= 97 && event.keyCode <= 122) {
+        this.write(String.fromCharCode(event.keyCode).toUpperCase(), this.selectedWord);
+      }
+      if (event.keyCode === 8  || event.keyCode === 46) {
+        this.erase(this.selectedWord);
+      }
+    }
+  }
+
+  private write(char: string, word: WordDescription): void {
+    for (const pos of word.cells) {
+      if (pos.content === "") {
+        pos.content = char;
+
+        return;
+      }
+    }
+  }
+
+  private erase(word: WordDescription): void {
+    const i: number = word.cells.findIndex((cell) => cell.content === "");
+    if (i > 0) {
+      word.cells[i - 1].content = "";
+
+      return;
+    }
+    word.cells[word.cells.length - 1].content = "";
+  }
+
   private setSelectedWord(word: WordDescription, selected: boolean): void {
     if (this.selectedWord === word) {
       return;
