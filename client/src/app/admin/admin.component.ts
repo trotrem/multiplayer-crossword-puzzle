@@ -15,8 +15,12 @@ export class AdminComponent implements OnInit {
 
   private tracks: Track[];
 
+  private selectedTrack: Track;
+
   public constructor(private http: HttpClient) {
     this.adminServices = new AdminServices(this.http);
+    this.tracks = new Array<Track>();
+    this.selectedTrack = new Track();
   }
 
   public ngOnInit(): void {
@@ -28,6 +32,21 @@ export class AdminComponent implements OnInit {
       .subscribe((res: Array<Track>) => this.tracks = res);
   }
 
+  private onSelect(track : Track){
+    this.selectedTrack = track;
+  }
+
+  private editTrack(): void{
+
+  }
+
+  private deleteTrack(): void{
+
+  }
+
+  private notReadyToModify(): boolean{
+    return 
+  }
 
 
 
