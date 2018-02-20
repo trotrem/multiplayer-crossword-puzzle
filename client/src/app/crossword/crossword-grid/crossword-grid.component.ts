@@ -68,15 +68,13 @@ export class CrosswordGridComponent implements OnInit {
       gridData.wordInfos.forEach((word) => {
         const cells: Cell[] = new Array<Cell>();
         for (let i = 0; i < word.length; i++) {
-          console.log(word);
           if (word.direction === "h") {
             cells.push(this.cells[word.y][word.x + i])
           }
           else if (word.direction === "v") {
             cells.push(this.cells[word.y + i][word.x])
           }
-          this.cells[word.y][word.x].content= word.y + "," + word.x;
-          console.log("ok");
+          this.cells[word.y][word.x].content= word.direction + "," + word.length;
         }
         this.words.push({direction: word.direction, cells: cells, definition: word.definition});
       })
@@ -88,13 +86,13 @@ export class CrosswordGridComponent implements OnInit {
     for (const word of this.words) {
       if (word.cells[0] === cell) {
         this.setSelectedWord(word, true);
-        break;
+        return;
       }
     }
     for (const word of this.words) {
       if (word.cells.indexOf(cell) !== -1) {
         this.setSelectedWord(word, true);
-        break;
+        return;
       }
     }
   }
