@@ -3,7 +3,7 @@ import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 
-const wordRetriever: WordRetriever = WordRetriever.instance;
+/*const wordRetriever: WordRetriever = WordRetriever.instance;
 //let result: string;
 let words: GridWordInformation[];
 describe("Querry of the word 'hall'.", () => {
@@ -68,4 +68,4 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
         const expectedValue: boolean = false;
         assert.equal(isCommon, expectedValue);
     });
-});
+});*/

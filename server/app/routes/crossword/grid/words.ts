@@ -40,7 +40,7 @@ export class Words {
                     wordCounter++;
                     //test
                     //gridWordSetter = new GridWordInformation(wordSetter,null,0);
-                    if (lengthCounter !== 0) {
+                    if (lengthCounter > 1) {
                         this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI - lengthCounter, indexJ, Direction.Y));
                     }
                     lengthCounter = 0;
@@ -48,7 +48,7 @@ export class Words {
                 }
             }
             wordCounter++;
-            if (lengthCounter !== 0) {
+            if (lengthCounter > 1) {
                 this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), this._grid.Height - lengthCounter, indexJ, Direction.Y));
             }
             lengthCounter = 0;
@@ -63,15 +63,15 @@ export class Words {
                     //wordSetter += this._grid.Grid[indexI][indexJ].getLetter();
                 } else {
                     wordCounter++;
-                    console.log(lengthCounter);
-                    if (lengthCounter !== 0) {
+                    //console.log(lengthCounter);
+                    if (lengthCounter > 1) {
                         this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI, indexJ - lengthCounter, Direction.X));
                     }
                     lengthCounter = 0;
                 }
             }
             wordCounter++;
-            if (lengthCounter !== 0) {
+            if (lengthCounter > 1) {
                 this._listOfWord.push(new Word(lengthCounter, wordCounter, new GridWordInformation(null, null, 0), indexI, this._grid.Width - lengthCounter, Direction.X));
             }
             lengthCounter = 0;
@@ -82,7 +82,7 @@ export class Words {
 
     private fillWord(): void {
         let word: Word;
-        console.log("taille" + this._listOfWord.length);
+        //console.log("taille" + this._listOfWord.length);
         for (let i = 0; i < this._listOfWord.length; i++) {
             word = this._listOfWord[i];
             let wordFilled: string = "";
@@ -90,7 +90,7 @@ export class Words {
                 wordFilled += "?";
                 // console.log("AjoutLettre : "+wordFilled);
             }
-            console.log("AjoutWord : " + wordFilled);
+            //console.log("AjoutWord : " + wordFilled);
             word.GridWord.setWord(wordFilled);
         }
     }

@@ -10,7 +10,7 @@ for (let indexI = 0; indexI < grid.Height; indexI++) {
         if (grid.getSquareIsBlack(indexI, indexJ)) {
             combineString += " # ";
         } else {
-            combineString += grid.Grid[indexI][indexJ].getLetter();
+            combineString += " ? ";
         }
     }
     combineString += "|\n";

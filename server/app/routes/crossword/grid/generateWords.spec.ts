@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 
 let fullGrid = new GenerateWords();
-/*fullGrid.generateGrid()
+fullGrid.generateGrid()
 let combineString: string = "";
 for (let indexI = 0; indexI < fullGrid.Grid.Height; indexI++) {
     combineString += "|";
@@ -15,7 +15,7 @@ for (let indexI = 0; indexI < fullGrid.Grid.Height; indexI++) {
     }
     combineString += "|\n";
 }
-console.log(combineString);*/
+console.log(combineString);
 
 describe("Full grid", () => {
 
@@ -26,7 +26,7 @@ describe("Full grid", () => {
             combineString += "|";
             for (let indexJ = 0; indexJ < grid.Width; indexJ++) {
                 if (fullGrid.Grid.getSquareIsBlack(indexI, indexJ)) {
-                    combineString += " # ";
+                    combineString += "#";
                 } else {
                     combineString += grid.Grid[indexI][indexJ].getLetter();
                 }
