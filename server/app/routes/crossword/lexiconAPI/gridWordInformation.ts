@@ -26,7 +26,7 @@ export class GridWordInformation {
         return this._isCommon;
     }
 
-    public setWord(newWord:string){
-        this._word= newWord
+    public setWord(newWord: string): void {
+        this._word = newWord;
     }
 }

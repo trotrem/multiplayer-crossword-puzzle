@@ -3,8 +3,6 @@ import { UriOptions } from "request";
 import { RequestPromiseOptions } from "request-promise";
 
 export class ExternalApiService {
-    constructor() {
-    }
 
     private options: (UriOptions & RequestPromiseOptions) = {
         method: "GET",
@@ -21,9 +19,9 @@ export class ExternalApiService {
         this.options.qs.sp = word;
 
         return await requestOption(this.options)
-            .catch((err) => {
+            .catch((err: Error) => {
                 console.error(err);
-                //do something
+                // do something
             });
     }
 }
