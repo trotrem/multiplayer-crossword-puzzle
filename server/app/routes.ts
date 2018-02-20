@@ -3,7 +3,7 @@ import { Router, Request, Response, NextFunction } from "express";
 
 import Types from "./types";
 import { Index } from "./routes/index";
-import { CrosswordHandler } from "./routes/crossword.handler";
+import { CrosswordHandler } from "./routes/crossword";
 
 @injectable()
 export class Routes {

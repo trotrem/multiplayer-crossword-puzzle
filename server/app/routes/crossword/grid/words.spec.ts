@@ -1,4 +1,4 @@
-/* import { expect } from "chai";
+import { expect } from "chai";
 import { Words } from "./words";
 import { Grid } from "./grid";
 import { Word } from "./word";
@@ -27,4 +27,3 @@ describe("ListOfWords", () => {
         expect(isMinimum);
     });
 });
- */

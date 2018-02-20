@@ -51,27 +51,31 @@ export class CrosswordGridComponent implements OnInit {
     }
     this.words = new Array<WordDescription>();
 
-    this.bullshitSetup();
-
     this.fetchGrid();
   }
 
   public ngOnInit(): void {
   }
 
-  // TODO: REMOVE FUNCTION (FAKE WORDS)
-  private bullshitSetup(): void {
-    this.words.push({direction: "h", cells: this.cells[1].slice(0, 6), definition: "word1"});
-    this.words.push({direction: "v", cells: this.cells[2].slice(5, 9), definition: "word2"});
-    this.words.push({direction: "v", cells: this.cells[3].slice(3, 7), definition: "word3"});
-  }
-
   public fetchGrid(): void {
     this.http.get("http://localhost:3000/crossword-grid")
     .subscribe((data) => {
-      (data as GridData).blackCells.forEach((cell) => {
+      const gridData: GridData = data as GridData;
+      gridData.blackCells.forEach((cell) => {
           this.cells[cell.x][cell.y].content = "-";
         });
+      gridData.wordInfos.forEach((word) => {
+        const cells: Cell[] = new Array<Cell>();
+        for (let i = 0; i < word.length; i++) {
+          if (word.direction === "h") {
+            cells.push(this.cells[word.x + i][word.y])
+          }
+          else if (word.direction === "v") {
+            cells.push(this.cells[word.x][word.y + i])
+          }
+        }
+        this.words.push({direction: word.direction, cells: cells, definition: word.definition});
+      })
     });
   }
 

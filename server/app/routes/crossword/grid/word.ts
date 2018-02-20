@@ -38,7 +38,7 @@ export class Word {
     public get PosY(): number {
         return this._posY;
     }
-    public get Direction(): number {
+    public get Direction(): Direction {
         return this._direction;
     }
 }

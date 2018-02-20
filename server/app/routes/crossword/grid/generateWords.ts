@@ -1,4 +1,4 @@
-import { Words } from "./words";
+/* import { Words } from "./words";
 import { Grid } from "./grid";
 import { Word, Direction } from "./word";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
@@ -97,3 +97,4 @@ export class GenerateWords {
         }
     }
 }
+ */
