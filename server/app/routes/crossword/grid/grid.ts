@@ -2,6 +2,7 @@
 // import { ExternalApiService } from "../lexiconAPI/externalApi.service";
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
+import { Point } from "../../../../../common/communication/message"
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
@@ -34,8 +35,19 @@ export class Grid {
     public get Grid(): Array<Array<Square>> {
         return this._grid;
     }
-    public getSquareIsBlack(i: number, j: number): boolean {
+    public get BlackSquares(): Point[] {
+        const blacks: Point[] = [];
+        this._grid.forEach((row, x) => {
+            row.forEach((cell, y) => {
+                if (cell.getIsBlack()) {
+                    blacks.push({x, y});
+                }
+            })
+        })
 
+        return blacks;
+    }
+    public getSquareIsBlack(i: number, j: number): boolean {
         return this._grid[i][j].getIsBlack();
     }
     public get NbrBlack(): number {
