@@ -41,7 +41,7 @@ export class WordRetriever {
     private async createWordListWithDefinitions(word: string,
         filter: (word: GridWordInformation) => boolean): Promise<GridWordInformation[]> {
         let wordswithDefinitions: GridWordInformation[] = [];
-        const apiService: ExternalApiService = new ExternalApiService;
+        const apiService: ExternalApiService = ExternalApiService.instance;
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
             if (words[index].hasOwnProperty("defs")) {
