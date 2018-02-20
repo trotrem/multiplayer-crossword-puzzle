@@ -1,15 +1,15 @@
 import { expect } from "chai";
-import { Words } from "./words";
+import { WordsInventory } from "./wordsInventory";
 import { Grid } from "./grid";
 import { Word } from "./word";
 
 const TAILLEMIN: number = 2;
 
 describe("ListOfWords", () => {
-    let list: Words;
+    let list: WordsInventory;
     const grid: Grid = new Grid();
     grid.makeGrid();
-    list = new Words(grid);
+    list = new WordsInventory(grid);
     list.createListOfWord();
     /*let combineString: string = "";
     for (let indexI = 0; indexI < grid.Height; indexI++) {

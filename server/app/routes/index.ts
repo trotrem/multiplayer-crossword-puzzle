@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Message } from "../../../common/communication/message";
+import { Message, GridData } from "../../../common/communication/message";
+import { Grid } from "./crossword/grid/grid";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 
@@ -13,6 +14,14 @@ module Route {
             message.title = "Hello";
             message.body = "World";
             res.send(JSON.stringify(message));
+        }
+
+        public getGrid(req: Request, res: Response, next: NextFunction): void {
+            const grid: Grid = new Grid();
+            grid.makeGrid();
+            const gridData: GridData = { blackCells: [] };
+            gridData.blackCells = grid.BlackSquares;
+            res.send(JSON.stringify(gridData));
         }
     }
 }

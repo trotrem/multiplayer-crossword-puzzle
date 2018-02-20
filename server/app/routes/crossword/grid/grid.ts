@@ -58,25 +58,10 @@ export class Grid {
         this._blackSquares = new Array<number>();
         this._notBlackSquares = new Array<number>();
         this._nbrBlack = this.randomIntFromInterval(MINBLACK, MAXBLACK);
+
         for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
             const currentBlack: number = this.findAcceptableBlackSquare();
             this.notBlackSquares(currentBlack);
-            /* if (currentBlack % WIDTH > 0) {
-                this._notBlackSquares.push(currentBlack - 1);
-            }
-            if (currentBlack % WIDTH < WIDTH - 1) {
-                this._notBlackSquares.push(currentBlack + 1);
-            }
-            if (currentBlack > HEIGHT - 1) {
-                this._notBlackSquares.push(currentBlack + 10);
-            }
-            if (currentBlack < (HEIGHT - 1) * HEIGHT) {
-                this._notBlackSquares.push(currentBlack - 10);
-            }
-            this._notBlackSquares.push(currentBlack - 2);
-            this._notBlackSquares.push(currentBlack + 2);
-            this._notBlackSquares.push(currentBlack - 20);
-            this._notBlackSquares.push(currentBlack + 20);*/
             this._blackSquares[indexBlack] = currentBlack;
         }
     }
@@ -98,7 +83,7 @@ export class Grid {
     private makeEmptyGrid(): void {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: Square[] = new Array();
-            for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
+            for (let indexJ = 0; indexJ < HEIGHT; indexJ++) {
                 row.push(new Square(indexI * HEIGHT + indexJ, false, null));
             }
             this._grid.push(row);

@@ -40,7 +40,9 @@ export class WordRetriever {
             for (let indexDefs: number = 0; indexDefs < this._wordsWithDefinitions[indexWord].definitions.length; indexDefs++) {
                 const isNoun: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "n";
                 const isVerb: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "v";
-                if (!(isNoun) && !(isVerb)) {
+                const hasWordInDefinition: boolean = 
+                    this._wordsWithDefinitions[indexWord].definitions[indexDefs].indexOf(this._wordsWithDefinitions[indexWord].word) >= 0;
+                if ((!(isNoun) && !(isVerb)) || (hasWordInDefinition))  {
                     this._wordsWithDefinitions[indexWord].definitions.splice(indexDefs, 1);
                     indexDefs--; // next object is at same index as the one removed
                 }

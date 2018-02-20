@@ -2,6 +2,7 @@
 import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
+import {expect} from "chai";
 
 /*const wordRetriever: WordRetriever = WordRetriever.instance;
 //let result: string;
@@ -67,5 +68,19 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
         const isCommon: boolean = words[teeIndex].isCommon;
         const expectedValue: boolean = false;
         assert.equal(isCommon, expectedValue);
+    });
+});
+
+describe("Querry of the word 'fall'.", () => {
+
+    it("No definition should have 'fall' in it (there are defs with it in the api). ", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("fall")
+        for (let i = 0; i < words[0].definitions.length; i++){
+            words[0].definitions[i]
+            console.log(words[0].definitions[i])
+            expect(words[0].definitions[i]).to.not.contain(words[0]);
+        }
+       // const expectedWord: string = "hall";
+       // assert.equal(word, expectedWord);
     });
 });*/
