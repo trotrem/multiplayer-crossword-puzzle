@@ -1,3 +1,9 @@
+.layout {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 600px 0.5fr 0.5fr;
+}
+
 .crossword-grid {
     display: grid;
     grid-template-rows: repeat(10, 50px);
@@ -26,12 +32,6 @@
 
 .selected {
     outline-width: 4px;
-}
-
-.definition-columns {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 800px 800px;
 }
 
 .definition {

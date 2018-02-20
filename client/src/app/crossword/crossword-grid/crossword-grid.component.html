@@ -1,6 +1,6 @@
-<div style="width:100%;height:100%;" (click)="setSelectedWord(null, true)">
-  <h1>Mot croisé!</h1>
-  <h2>Nombre de joueurs: {{nbPlayers}}</h2>
+<h1>Mot croisé!</h1>
+<h2>Nombre de joueurs: {{nbPlayers}}</h2>
+<div class="layout">
   <div class="crossword-grid" >
     <div class="crossword-row" *ngFor="let row of cells">
       <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)" [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true}">
@@ -8,14 +8,12 @@
       </div>
     </div>
   </div>
-  <div class="definition-columns">
-    <div>
-      <h2>horizontal</h2>
-      <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{word.definition}}</p>
-    </div>
-    <div>
-      <h2>vertical</h2>
-      <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{word.definition}}</p>
-    </div>
+  <div>
+    <h2>horizontal</h2>
+    <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{word.definition}}</p>
+  </div>
+  <div>
+    <h2>vertical</h2>
+    <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{word.definition}}</p>
   </div>
 </div>
