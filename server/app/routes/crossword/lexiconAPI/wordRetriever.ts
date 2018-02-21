@@ -53,13 +53,14 @@ export class WordRetriever {
 
     private async createWordListWithDefinitions(word: string, filter: (word: GridWordInformation) => boolean):
         Promise<GridWordInformation[]> {
-
         let wordsWithDefinitions: GridWordInformation[] = [];
         const apiService: ExternalApiService = new ExternalApiService;
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
-            if (words[index].hasOwnProperty("defs") && (words[index].word.search(/d/) === -1)) {
-                const nonNumericalTag: number = 2 ; // Tag format : f:xxxx
+            if (words[index].hasOwnProperty("defs")
+                && (words[index].word.search(/d/) === -1)
+                && (words[index].word.length === word.length)) {
+                const nonNumericalTag: number = 2; // Tag format : f:xxxx
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
                     words[index].word, words[index].defs, tempFrequency);
@@ -67,6 +68,12 @@ export class WordRetriever {
             }
         }
         wordsWithDefinitions = this.removeDefinitions(wordsWithDefinitions);
+
+        wordsWithDefinitions.forEach((wordInfo: GridWordInformation, index: number) => {
+            if (wordInfo.definitions === undefined || wordInfo.definitions.length === 0) {
+                wordsWithDefinitions.splice(index, 1);
+            }
+        });
 
         return wordsWithDefinitions.filter(filter);
     }
@@ -77,11 +84,6 @@ export class WordRetriever {
                 .filter((def: string) => ((def.charAt(0) === "n") || (def.charAt(0) === "v")));
             wordInfo.definitions = wordInfo.definitions
                 .filter((def: string) => !(def.indexOf(wordInfo.word) >= 0));
-
-            if (wordInfo.definitions === undefined
-                || wordInfo.definitions.length === 0) {
-                wordsWithDefinitions.splice(index, 1);
-            }
         });
 
         return wordsWithDefinitions;
