@@ -1,7 +1,8 @@
-import { Vector3, Matrix4, Object3D, ObjectLoader, Euler, Quaternion } from "three";
+import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
 import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
 import { Wheel } from "./wheel";
+import { CarLoader } from "./car-loader";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -22,6 +23,7 @@ export class Car extends Object3D {
     private readonly rearWheel: Wheel;
     private readonly wheelbase: number;
     private readonly dragCoefficient: number;
+    private carLoader: CarLoader;
 
     private _speed: Vector3;
     private isBraking: boolean;
@@ -83,6 +85,7 @@ export class Car extends Object3D {
         this.wheelbase = wheelbase;
         this.mass = mass;
         this.dragCoefficient = dragCoefficient;
+        this.carLoader = new CarLoader();
 
         this.isBraking = false;
         this.steeringWheelDirection = 0;
@@ -90,18 +93,8 @@ export class Car extends Object3D {
         this._speed = new Vector3(0, 0, 0);
     }
 
-    // TODO: move loading code outside of car class.
-    private async load(): Promise<Object3D> {
-        return new Promise<Object3D>((resolve, reject) => {
-            const loader: ObjectLoader = new ObjectLoader();
-            loader.load("../../assets/camero/camero-2010-low-poly.json", (object) => {
-                resolve(object);
-            });
-        });
-    }
-
     public async init(): Promise<void> {
-        this.mesh = await this.load();
+        this.mesh = await this.carLoader.load();
         this.mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this.mesh);
     }
