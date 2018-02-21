@@ -16,40 +16,47 @@ export class WordsInventory {
     private wordCounter: number = 0;
 
     public createListOfWord(): void {
-        for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
-            for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
-                this.addWords(indexI, indexJ, Direction.Y);
+        // mot verticale
+        for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
+            for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
+                this.addWords(indexI, indexJ, Direction.X, indexI - this.lengthCounter);
             }
             this.wordCounter++;
-            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.Y);
+            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.X);
             this.lengthCounter = 0;
         }
         this.wordCounter = 0;
         this.lengthCounter = 0;
-        for (let indexI: number = 0; indexI < this._grid.Width; indexI++) {
-            for (let indexJ: number = 0; indexJ < this._grid.Height; indexJ++) {
-                this.addWords(indexI, indexJ, Direction.X);
+        // mot horizontale
+        for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
+            for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
+                this.addWords(indexI, indexJ, Direction.Y, indexJ - this.lengthCounter);
             }
             this.wordCounter++;
-            this.pushWord(indexI, this._grid.Width - this.lengthCounter, Direction.X);
+            this.pushWord(indexI, this._grid.Width - this.lengthCounter, Direction.Y);
             this.lengthCounter = 0;
         }
         this.fillWord();
         this.fillGrid();
     }
 
-    private addWords(indexI: number, indexJ: number, direction: Direction): void {
+    private addWords(indexI: number, indexJ: number, direction: Direction, startingPos: number): void {
         if (!(this._grid.Grid[indexI][indexJ].getIsBlack())) {
             this.lengthCounter++;
         } else {
             this.wordCounter++;
-            this.pushWord(indexI, indexJ, direction);
+            if (direction === Direction.X) {
+                this.pushWord(startingPos, indexJ, direction);
+            } else if (direction === Direction.Y) {
+                this.pushWord(indexI, startingPos, direction);
+            }
             this.lengthCounter = 0;
         }
     }
 
     private pushWord(indexI: number, indexJ: number, direction: Direction): void {
         if (this.lengthCounter > 1) {
+            // console.log("new word " + indexI + ", " + indexJ + " Lentgh : " + this.lengthCounter);
             this._listOfWord.push(new Word(
                 this.lengthCounter, this.wordCounter,
                 new GridWordInformation(null, null, 0),
