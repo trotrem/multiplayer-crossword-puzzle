@@ -74,7 +74,6 @@ export class CrosswordGridComponent implements OnInit {
           else if (word.direction === "v") {
             cells.push(this.cells[word.y + i][word.x])
           }
-          this.cells[word.y][word.x].content= word.direction + "," + word.length;
         }
         this.words.push({direction: word.direction, cells: cells, definition: word.definition});
       })
@@ -84,13 +83,13 @@ export class CrosswordGridComponent implements OnInit {
   public onCellClicked(event: MouseEvent, cell: Cell): void {
     event.stopPropagation();
     for (const word of this.words) {
-      if (word.cells[0] === cell) {
+      if (word.cells[0] === cell && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
         return;
       }
     }
     for (const word of this.words) {
-      if (word.cells.indexOf(cell) !== -1) {
+      if (word.cells.indexOf(cell) !== -1 && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
         return;
       }
