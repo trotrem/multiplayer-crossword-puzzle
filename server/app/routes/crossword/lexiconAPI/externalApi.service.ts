@@ -18,7 +18,7 @@ export class ExternalApiService {
     public async requestWordInfo(word: string): Promise<JSON> {
         this.options.qs.sp = word;
 
-        return await requestOption(this.options)
+        return requestOption(this.options)
             .catch((err: Error) => {
                 console.error(err);
                 // do something

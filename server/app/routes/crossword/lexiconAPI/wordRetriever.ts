@@ -18,10 +18,9 @@ export class WordRetriever {
 
     public async getEasyWordList(word: string): Promise<GridWordInformation[]> {
         const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
-
         const easyWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
-        easyWordList.forEach((element: GridWordInformation) => {
-            element.definitions = element.definitions.splice(0);
+        easyWordList.forEach((wordInfo: GridWordInformation) => {
+            wordInfo.definitions = wordInfo.definitions.splice(0, 1);
         });
 
         return easyWordList;
@@ -31,67 +30,62 @@ export class WordRetriever {
         const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
 
         const mediumWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
-        mediumWordList.forEach((element: GridWordInformation) => {
-            if(element.definitions.length > 1)
-                element.definitions = element.definitions.splice(1);
-            else
-                element.definitions = element.definitions.splice(0);
+        mediumWordList.forEach((wordInfo: GridWordInformation) => {
+
+            wordInfo.definitions =
+                (wordInfo.definitions.length > 1) ? (wordInfo.definitions.splice(1, 1)) : wordInfo.definitions.splice(0, 1);
+
         });
 
         return mediumWordList;
     }
 
     public async getHardWordList(word: string): Promise<GridWordInformation[]> {
-        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => !(wordInfo.isCommon);
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => (!(wordInfo.isCommon));
 
         const hardWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
-        hardWordList.forEach((element: GridWordInformation) => {
-            element.definitions = element.definitions.splice(0);
+        hardWordList.forEach((wordInfo: GridWordInformation) => {
+            wordInfo.definitions = wordInfo.definitions.splice(0, 1);
         });
 
         return hardWordList;
     }
 
-    private async createWordListWithDefinitions(word: string,
-        filter: (word: GridWordInformation) => boolean): Promise<GridWordInformation[]> {
-        let wordswithDefinitions: GridWordInformation[] = [];
+    private async createWordListWithDefinitions(word: string, filter: (word: GridWordInformation) => boolean):
+        Promise<GridWordInformation[]> {
+
+        let wordsWithDefinitions: GridWordInformation[] = [];
         const apiService: ExternalApiService = new ExternalApiService;
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
-            if (words[index].hasOwnProperty("defs")) {
-                const nonNumericalTag: number = 2; // Tag format : f:xxxx
+            if (words[index].hasOwnProperty("defs") && (words[index].word.search(/d/) === -1)) {
+                let test: string = words[index].tags[0];
+                const nonNumericalTag: number = 2 ; // Tag format : f:xxxx
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
                     words[index].word, words[index].defs, tempFrequency);
-                wordswithDefinitions.push(tempWord);
+                wordsWithDefinitions.push(tempWord);
             }
         }
-        this.removeDefinitions(wordswithDefinitions);
-        wordswithDefinitions = wordswithDefinitions.filter(filter);
+        wordsWithDefinitions = this.removeDefinitions(wordsWithDefinitions);
 
-        return wordswithDefinitions;
+        return wordsWithDefinitions.filter(filter);
     }
 
+    private removeDefinitions(wordsWithDefinitions: GridWordInformation[]): GridWordInformation[] {
+        wordsWithDefinitions.forEach((wordInfo: GridWordInformation, index: number) => {
+            wordInfo.definitions = wordInfo.definitions
+                .filter((def: string) => ((def.charAt(0) === "n") || (def.charAt(0) === "v")));
+            wordInfo.definitions = wordInfo.definitions
+                .filter((def: string) => !(def.indexOf(wordInfo.word) >= 0));
 
+            if (wordInfo.definitions === undefined
+                || wordInfo.definitions.length === 0) {
+                wordsWithDefinitions.splice(index, 1);
+            }
+        });
 
-    private removeDefinitions(wordswithDefinitions: GridWordInformation[]): void {
-        for (let indexWord: number = 0; indexWord < wordswithDefinitions.length; indexWord++) {
-            for (let indexDefs: number = 0; indexDefs < wordswithDefinitions[indexWord].definitions.length; indexDefs++) {
-                const isNoun: boolean = wordswithDefinitions[indexWord].definitions[0].charAt(0) === "n";
-                const isVerb: boolean = wordswithDefinitions[indexWord].definitions[0].charAt(0) === "v";
-                const hasWordInDefinition: boolean =
-                    wordswithDefinitions[indexWord].definitions[indexDefs].indexOf(wordswithDefinitions[indexWord].word) >= 0;
-                if ((!(isNoun) && !(isVerb)) || (hasWordInDefinition)) {
-                    wordswithDefinitions[indexWord].definitions.splice(indexDefs, 1);
-                    indexDefs--; // next object is at same index as the one removed
-                }
-            }
-            if (wordswithDefinitions[indexWord].definitions === undefined
-                || wordswithDefinitions[indexWord].definitions.length === 0) {
-                wordswithDefinitions.splice(indexWord, 1);
-                indexWord--; // next object is at same index as the one removed
-            }
-        }
+        return wordsWithDefinitions;
     }
 
 }
