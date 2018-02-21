@@ -59,7 +59,6 @@ export class WordRetriever {
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
             if (words[index].hasOwnProperty("defs") && (words[index].word.search(/d/) === -1)) {
-                let test: string = words[index].tags[0];
                 const nonNumericalTag: number = 2 ; // Tag format : f:xxxx
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
