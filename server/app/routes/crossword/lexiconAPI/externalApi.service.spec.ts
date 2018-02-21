@@ -1,8 +1,8 @@
 //import { ExternalApiService } from "./externalApi.service";
-import { GridWordInformation } from "./gridWordInformation";
+/* import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
-import {expect} from "chai";
+import {expect} from "chai"; */
 
 /*const wordRetriever: WordRetriever = WordRetriever.instance;
 //let result: string;
