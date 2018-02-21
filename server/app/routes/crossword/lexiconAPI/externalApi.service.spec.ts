@@ -1,16 +1,16 @@
-//import { ExternalApiService } from "./externalApi.service";
-/* import { GridWordInformation } from "./gridWordInformation";
+
+import { GridWordInformation } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
-import {expect} from "chai"; */
+import { expect } from "chai";
 
-/*const wordRetriever: WordRetriever = WordRetriever.instance;
-//let result: string;
+const wordRetriever: WordRetriever = WordRetriever.instance;
 let words: GridWordInformation[];
+
 describe("Querry of the word 'hall'.", () => {
 
     it("The word should be : 'hall'. ", async () => {
-        words = await wordRetriever.getWordsWithDefinitions("hall")
+        words = await wordRetriever.getWordsWithDefinitions("hall");
         const word: string = words[0].word;
         const expectedWord: string = "hall";
         assert.equal(word, expectedWord);
@@ -74,13 +74,9 @@ describe("Querry of the words 't?e' (3 letters starting with 't' amd finishing w
 describe("Querry of the word 'fall'.", () => {
 
     it("No definition should have 'fall' in it (there are defs with it in the api). ", async () => {
-        words = await wordRetriever.getWordsWithDefinitions("fall")
-        for (let i = 0; i < words[0].definitions.length; i++){
-            words[0].definitions[i]
-            console.log(words[0].definitions[i])
-            expect(words[0].definitions[i]).to.not.contain(words[0]);
-        }
-       // const expectedWord: string = "hall";
-       // assert.equal(word, expectedWord);
+        words = await wordRetriever.getWordsWithDefinitions("fall");
+        words[0].definitions.forEach((defs: string, index: number) => {
+            expect(defs).to.not.contain(words[0]);
+        });
     });
-});*/
+});

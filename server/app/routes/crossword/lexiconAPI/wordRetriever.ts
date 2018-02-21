@@ -1,79 +1,91 @@
 import { GridWordInformation } from "./gridWordInformation";
 import { ExternalApiService } from "./externalApi.service";
 
-enum Difficulty {
-    Easy,
-    Medium,
-    Hard
-}
-
 export class WordRetriever {
 
     private static _instance: WordRetriever;
 
-    private constructor(
-        private _wordsWithDefinitions: GridWordInformation[] = []) { }
-
-    public async getWordsWithDefinitions(word: string): Promise<GridWordInformation[]> {
-        this._wordsWithDefinitions = [];
-
-        return this.createWordListWithDefinitions(word, (wordInfo: GridWordInformation) => true);
-    }
+    private constructor() { }
 
     public static get instance(): WordRetriever {
         return ((this._instance) || (this._instance = new this()));
     }
 
+    public async getWordsWithDefinitions(word: string): Promise<GridWordInformation[]> {
+
+        return this.createWordListWithDefinitions(word, (wordInfo: GridWordInformation) => true);
+    }
+
     public async getEasyWordList(word: string): Promise<GridWordInformation[]> {
         const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
-
         const easyWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
-        easyWordList.forEach((element: GridWordInformation) => {
-            element.definitions.splice(0);
+        easyWordList.forEach((wordInfo: GridWordInformation) => {
+            wordInfo.definitions = wordInfo.definitions.splice(0, 1);
         });
 
         return easyWordList;
     }
 
-    private async createWordListWithDefinitions(word: string,
-        filter: (word: GridWordInformation) => boolean): Promise<GridWordInformation[]> {
+    public async getMediumWordList(word: string): Promise<GridWordInformation[]> {
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
+
+        const mediumWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
+        mediumWordList.forEach((wordInfo: GridWordInformation) => {
+
+            wordInfo.definitions =
+                (wordInfo.definitions.length > 1) ? (wordInfo.definitions.splice(1, 1)) : wordInfo.definitions.splice(0, 1);
+
+        });
+
+        return mediumWordList;
+    }
+
+    public async getHardWordList(word: string): Promise<GridWordInformation[]> {
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => (!(wordInfo.isCommon));
+
+        const hardWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
+        hardWordList.forEach((wordInfo: GridWordInformation) => {
+            wordInfo.definitions = wordInfo.definitions.splice(0, 1);
+        });
+
+        return hardWordList;
+    }
+
+    private async createWordListWithDefinitions(word: string, filter: (word: GridWordInformation) => boolean):
+        Promise<GridWordInformation[]> {
+
+        let wordsWithDefinitions: GridWordInformation[] = [];
         const apiService: ExternalApiService = new ExternalApiService;
         const words: JSON = await apiService.requestWordInfo(word);
         for (const index in words) {
-            if (words[index].hasOwnProperty("defs")) {
-                const nonNumericalTag: number = 2; // Tag format : f:xxxx
+            if (words[index].hasOwnProperty("defs") && (words[index].word.search(/d/) === -1)) {
+                let test: string = words[index].tags[0];
+                const nonNumericalTag: number = 2 ; // Tag format : f:xxxx
                 const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
                 const tempWord: GridWordInformation = new GridWordInformation(
                     words[index].word, words[index].defs, tempFrequency);
-                this._wordsWithDefinitions.push(tempWord);
+                wordsWithDefinitions.push(tempWord);
             }
         }
-        this.removeDefinitions();
-        this._wordsWithDefinitions = this._wordsWithDefinitions.filter(filter);
+        wordsWithDefinitions = this.removeDefinitions(wordsWithDefinitions);
 
-        return this._wordsWithDefinitions;
+        return wordsWithDefinitions.filter(filter);
     }
 
+    private removeDefinitions(wordsWithDefinitions: GridWordInformation[]): GridWordInformation[] {
+        wordsWithDefinitions.forEach((wordInfo: GridWordInformation, index: number) => {
+            wordInfo.definitions = wordInfo.definitions
+                .filter((def: string) => ((def.charAt(0) === "n") || (def.charAt(0) === "v")));
+            wordInfo.definitions = wordInfo.definitions
+                .filter((def: string) => !(def.indexOf(wordInfo.word) >= 0));
 
+            if (wordInfo.definitions === undefined
+                || wordInfo.definitions.length === 0) {
+                wordsWithDefinitions.splice(index, 1);
+            }
+        });
 
-    private removeDefinitions(): void {
-        for (let indexWord: number = 0; indexWord < this._wordsWithDefinitions.length; indexWord++) {
-            for (let indexDefs: number = 0; indexDefs < this._wordsWithDefinitions[indexWord].definitions.length; indexDefs++) {
-                const isNoun: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "n";
-                const isVerb: boolean = this._wordsWithDefinitions[indexWord].definitions[0].charAt(0) === "v";
-                const hasWordInDefinition: boolean =
-                    this._wordsWithDefinitions[indexWord].definitions[indexDefs].indexOf(this._wordsWithDefinitions[indexWord].word) >= 0;
-                if ((!(isNoun) && !(isVerb)) || (hasWordInDefinition)) {
-                    this._wordsWithDefinitions[indexWord].definitions.splice(indexDefs, 1);
-                    indexDefs--; // next object is at same index as the one removed
-                }
-            }
-            if (this._wordsWithDefinitions[indexWord].definitions === undefined
-                || this._wordsWithDefinitions[indexWord].definitions.length === 0) {
-                this._wordsWithDefinitions.splice(indexWord, 1);
-                indexWord--; // next object is at same index as the one removed
-            }
-        }
+        return wordsWithDefinitions;
     }
 
 }
