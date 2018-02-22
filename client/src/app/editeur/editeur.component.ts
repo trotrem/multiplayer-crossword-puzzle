@@ -261,6 +261,7 @@ export class EditeurComponent implements AfterViewInit {
     public notReadyToSave(): boolean {
         return this.notReadyToSubmit() || !this.submitValid ;
     }
+    
 
     public savetrack(): void {
         this.track.setPoints(this.points);
