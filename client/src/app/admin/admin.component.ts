@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { AdminServices } from "./admin.services";
 import { Track } from "../editeur/track";
 
-
 @Component({
   selector: "app-admin",
   templateUrl: "./admin.component.html",
@@ -37,20 +36,20 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  private onSelect(track: Track): void {
+  public onSelect(track: Track): void {
     this.selectedTrack = track;
     this.isSelected = true;
     console.warn(this.selectedTrack);
   }
 
-  private editTrack(): void {
+  public editTrack(): void {
   }
 
-  private deleteTrack(): void {
+  public deleteTrack(): void {
     this.adminServices.deleteTrack(this.selectedTrack);
   }
 
-  private notReadyToModify(): boolean {
+  public notReadyToModify(): boolean {
     return !this.isSelected;
   }
 
