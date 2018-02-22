@@ -11,6 +11,7 @@ import { AdminComponent } from "./admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
+import {APP_BASE_HREF} from "@angular/common";
 import { TrackServices } from "./editeur/track-services";
 const appRoutes: Routes = [
   { path: "editeur", component: EditeurComponent },
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
         TrackServices,
         RenderService,
         BasicService,
+        {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]
 })
