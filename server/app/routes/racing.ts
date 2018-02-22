@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { tracks } from "./../db";
-import { Document } from "mongoose";
+import { Document, Mongoose } from "mongoose";
 const BAD_REQUEST_ERROR: number = 400;
 
 module Route {
@@ -30,6 +30,7 @@ module Route {
         }
 
         public getAlltracks(req: Request, res: Response, next: NextFunction): void {
+            // tslint:disable-next-line:only-arrow-functions
             tracks.find({}, function (err: Error, allTracks: any): void {
                 if (!err) {
                     console.warn("find all");
@@ -37,6 +38,19 @@ module Route {
                 } else {
                     console.error("erreur dans find all");
 
+                }
+            });
+        }
+
+        public deleteTrack(req: Request, res: Response, next: NextFunction): void {
+            console.warn(req.params.name);
+            // tslint:disable-next-line:only-arrow-functions
+            tracks.remove({ name: req.params.name }, function (err: Error): void {
+                if (!err) {
+                    console.warn("delete");
+                    res.send("track delete");
+                } else {
+                    res.status(BAD_REQUEST_ERROR).send("erreur dans delete");
                 }
             });
         }

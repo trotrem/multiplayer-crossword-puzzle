@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { AdminServices } from "./admin.services";
-//import { Response } from "@angular/http";
 import { Track } from "../editeur/track";
 
 
@@ -32,21 +31,25 @@ export class AdminComponent implements OnInit {
 
   private getTracks(): void {
     this.adminServices.getTracksService()
-      .subscribe((res: Array<Track>) => this.tracks = res);
+      .subscribe((res: Array<Track>) => {
+        this.tracks = res;
+        console.warn(this.tracks);
+      });
   }
 
-  private onSelect(track: Track) {
+  private onSelect(track: Track): void {
     this.selectedTrack = track;
     this.isSelected = true;
+    console.warn(this.selectedTrack);
   }
 
   private editTrack(): void {
   }
 
   private deleteTrack(): void {
+    this.adminServices.deleteTrack(this.selectedTrack);
   }
 
-  
   private notReadyToModify(): boolean {
     return !this.isSelected;
   }

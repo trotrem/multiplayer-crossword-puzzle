@@ -21,6 +21,8 @@ export class Routes {
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
 
+        router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
+
         return router;
     }
 }
