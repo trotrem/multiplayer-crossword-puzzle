@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { tracks } from "./../db";
-import { Document, Mongoose } from "mongoose";
+import { Document} from "mongoose";
 const BAD_REQUEST_ERROR: number = 400;
 
 module Route {
@@ -31,7 +31,7 @@ module Route {
 
         public getAlltracks(req: Request, res: Response, next: NextFunction): void {
             // tslint:disable-next-line:only-arrow-functions
-            tracks.find({}, function (err: Error, allTracks: any): void {
+            tracks.find({}, function (err: Error, allTracks: Document[]): void {
                 if (!err) {
                     console.warn("find all");
                     res.send(allTracks);
