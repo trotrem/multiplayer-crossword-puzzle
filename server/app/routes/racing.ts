@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { injectable, } from "inversify";
 import { tracks } from "./../db";
 import { Document } from "mongoose";
-//import {Track} from "./../../../common/communication/track"
 const BAD_REQUEST_ERROR: number = 400;
 
 module Route {
@@ -31,12 +30,12 @@ module Route {
         }
 
         public getAlltracks(req: Request, res: Response, next: NextFunction): void {
-            tracks.find({}, function (err, allTracks) {
+            tracks.find({}, function (err: Error, allTracks: any): void {
                 if (!err) {
-                    console.log("find all");
+                    console.warn("find all");
                     res.send(allTracks);
                 } else {
-                    console.log("erreur dans find all");
+                    console.error("erreur dans find all");
 
                 }
             });
