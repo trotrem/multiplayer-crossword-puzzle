@@ -61,7 +61,6 @@ export class EditeurComponent implements AfterViewInit {
     public ngAfterViewInit(): void {
         this.createScene();
         this.animate();
-        this.subscribeEvents();
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
             this.getTrack(name);
@@ -76,17 +75,6 @@ export class EditeurComponent implements AfterViewInit {
             this.redraw(newPoints);
           });
       }
-
-    private subscribeEvents(): void {
-        this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));
-        this.canvas.addEventListener("contextmenu", (event: MouseEvent) => {
-            event.preventDefault();
-            this.onRightClick();
-        });
-        this.canvas.addEventListener("dragstart", (event: MouseEvent) => { this.dragIndex = this.getDraggedPointIndex(event); });
-        this.canvas.addEventListener("drag", (event: MouseEvent) => { this.onDrag(event, false); });
-        this.canvas.addEventListener("dragend", (event: MouseEvent) => { this.onDrag(event, true); });
-    }
 
     public createScene(): void {
         this.camera = new THREE.PerspectiveCamera();
@@ -126,7 +114,8 @@ export class EditeurComponent implements AfterViewInit {
         this.points.push(position);
     }
 
-    private onRightClick(): void {
+    private onRightClick(event: MouseEvent): void {
+        event.preventDefault();
         this.isClosed = false;
 
         const nbChildren: number = this.scene.children.length;
@@ -158,7 +147,7 @@ export class EditeurComponent implements AfterViewInit {
         }
     }
 
-    private getDraggedPointIndex(event: MouseEvent): number {
+    private getDraggedPointIndex(event: MouseEvent): void {
         const position: THREE.Vector3 = this.convertToWorldPosition(event);
         let index: number = -1;
         this.points.forEach((point, i) => {
@@ -167,7 +156,7 @@ export class EditeurComponent implements AfterViewInit {
             }
         });
 
-        return index;
+        this.dragIndex = index;
     }
 
     private convertToWorldPosition(event: MouseEvent): THREE.Vector3 {
