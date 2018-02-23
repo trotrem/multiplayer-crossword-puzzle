@@ -32,7 +32,7 @@ export class Contraints {
         position4: THREE.Vector3): boolean {
 
         const intersection: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-        if (position1.equals(position3) || position1.equals(position4) || position2.equals(position3) || position2.equals(position4)) {
+        if (position1 === position3 || position1 === position4 || position2 === position3 || position2 === position4) {
             return false;
         }
 
@@ -104,7 +104,7 @@ export class Contraints {
             illegalPoints.push(position1);
         }
         // contraint about the angle when the track is close
-        if (position2.equals(arrayPoints[0]) && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
+        if (position2 === arrayPoints[0] && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
             illegalPoints = this.checkArrayLength(illegalPoints);
             illegalPoints.push(arrayPoints[1]);
             illegalPoints.push(position2);
