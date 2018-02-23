@@ -28,6 +28,9 @@ export class Track {
     public getPoints(): Array<THREE.Vector3> {
         return this.points;
     }
+    public getusesNumber(): number {
+        return this.usesNumber;
+    }
 
     public setName(name: string): void {
         this.name = name;
