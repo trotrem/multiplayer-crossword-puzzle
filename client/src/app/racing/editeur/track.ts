@@ -6,6 +6,7 @@ export class Track {
     private startingZone: THREE.Line3;
     private points: THREE.Vector3[];
     private usesNumber: number;
+    private bestScores: number[];
 
     public constructor() {
 
@@ -14,6 +15,7 @@ export class Track {
         this.startingZone = new THREE.Line3;
         this.points = new Array<THREE.Vector3>();
         this.usesNumber = 0;
+        this.bestScores = new Array<number>();
     }
 
     public getName(): string {
@@ -31,7 +33,12 @@ export class Track {
     public getusesNumber(): number {
         return this.usesNumber;
     }
-
+    public getBestScores(): number[] {
+        return this.bestScores;
+    }
+    public setBestScores(array: number[]): void {
+        this.bestScores = array;
+    }
     public setName(name: string): void {
         this.name = name;
     }
