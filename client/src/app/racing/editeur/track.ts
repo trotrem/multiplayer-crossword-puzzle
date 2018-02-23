@@ -1,10 +1,11 @@
 import * as THREE from "three";
 
 export class Track {
-    public name: string;
-    public description: string;
-    public startingZone: THREE.Line3;
-    public points: THREE.Vector3[];
+    private name: string;
+    private description: string;
+    private startingZone: THREE.Line3;
+    private points: THREE.Vector3[];
+    private usesNumber: number;
 
     public constructor() {
 
@@ -12,6 +13,7 @@ export class Track {
         this.description = "";
         this.startingZone = new THREE.Line3;
         this.points = new Array<THREE.Vector3>();
+        this.usesNumber = 0;
     }
 
     public getName(): string {
@@ -30,6 +32,7 @@ export class Track {
     public setName(name: string): void {
         this.name = name;
     }
+
     public setDescription(description: string): void {
         this.description = description;
     }
@@ -38,5 +41,8 @@ export class Track {
     }
     public setPoints(points: Array<THREE.Vector3>): void {
         this.points = points;
+    }
+    public increaseUsesNumber(): void {
+        this.usesNumber += 1;
     }
 }
