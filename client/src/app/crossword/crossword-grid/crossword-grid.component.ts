@@ -59,7 +59,7 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public fetchGrid(): void {
-    this.http.get("http://localhost:3000/crossword-grid")
+    this.http.get("http://localhost:3000/crossword/grid")
     .subscribe((data) => {
       const gridData: GridData = data as GridData;
       gridData.blackCells.forEach((cell) => {

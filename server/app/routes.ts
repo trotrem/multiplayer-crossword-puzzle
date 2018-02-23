@@ -25,7 +25,11 @@ export class Routes {
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
         
-        router.get("/crossword-grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
+        router.get("/crossword/grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
+
+        router.get("/crossword/words", (req: Request, res: Response, next: NextFunction) => { });
+        
+        router.get("/crossword/validation/word", (req: Request, res: Response, next: NextFunction) => { });        
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 
