@@ -3,6 +3,7 @@ import { Response } from "@angular/http";
 import { Track } from "./track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class TrackServices {
@@ -18,5 +19,9 @@ export class TrackServices {
         })
             .subscribe((data: Response) => {
             });
+    }
+
+    public getTrackService(name: string): Observable<Track[]> {
+        return this.http.get<Track[]>("http://localhost:3000/" + name);
     }
 }

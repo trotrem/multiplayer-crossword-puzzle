@@ -23,6 +23,8 @@ export class Routes {
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 
+        router.get("/:name", (req: Request, res: Response, next: NextFunction) => this.racing.getTrackByName(req, res, next));
+
         return router;
     }
 }

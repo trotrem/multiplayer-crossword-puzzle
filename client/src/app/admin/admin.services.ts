@@ -11,7 +11,6 @@ export class AdminServices {
 
     }
     public getTracksService(): Observable<Track[]> {
-
         return this.http.get<Track[]>("http://localhost:3000/admin");
     }
 

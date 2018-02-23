@@ -14,6 +14,7 @@ import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
 import { TrackServices } from "./editeur/track-services";
 const appRoutes: Routes = [
+  { path: "editeur/:name", component: EditeurComponent },
   { path: "editeur", component: EditeurComponent },
   { path: "admin", component: AdminComponent },
   { path: "", redirectTo: "/editeur", pathMatch: "full"},

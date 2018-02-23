@@ -4,6 +4,9 @@ import { Contraints } from "./contraints";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { TrackSavor } from "./track-savor";
+import { Track } from "./track";
+import { TrackServices } from "./track-services";
+import { ActivatedRoute } from "@angular/router";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -37,16 +40,21 @@ export class EditeurComponent implements AfterViewInit {
 
     private trackSavor: TrackSavor;
 
+    private trackService: TrackServices;
+
+    private track: Track;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor(private http: HttpClient) {
+    public constructor(private http: HttpClient, private route: ActivatedRoute) {
         this.dragIndex = -1;
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
-
+        this.track = new Track();
         this.trackValid = true;
+        this.trackService = new TrackServices(this.http);
         this.trackSavor = new TrackSavor(this.http, this.points);
     }
 
@@ -54,7 +62,20 @@ export class EditeurComponent implements AfterViewInit {
         this.createScene();
         this.animate();
         this.subscribeEvents();
+        const name: string = this.route.snapshot.paramMap.get("name");
+        if (name !== null) {
+            this.getTrack(name);
+        }
     }
+
+    private getTrack(name: string): void {
+        this.trackService.getTrackService(name)
+         .subscribe((res: Track[]) => {
+            this.track = res[0];
+            const newPoints: Array<THREE.Vector3> = this.track.points;
+            this.redraw(newPoints);
+          });
+      }
 
     private subscribeEvents(): void {
         this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));

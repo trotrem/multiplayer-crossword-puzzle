@@ -2,11 +2,11 @@
 <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <div>
         Name:
-        <input name="name" ngModel>
+        <input name="name" [(ngModel)]="track.name" placeholder="name">
     </div>
     <div>
         Description:
-        <input name="description" ngModel>
+        <input name="description" [(ngModel)]="track.description" placeholder="description">
     </div>
     <button [disabled]="notReadyToSubmit()">Submit</button>
 </form>

@@ -43,7 +43,6 @@ module Route {
         }
 
         public deleteTrack(req: Request, res: Response, next: NextFunction): void {
-            console.warn(req.params.name);
             // tslint:disable-next-line:only-arrow-functions
             tracks.remove({ name: req.params.name }, function (err: Error): void {
                 if (!err) {
@@ -51,6 +50,19 @@ module Route {
                     res.send("track delete");
                 } else {
                     res.status(BAD_REQUEST_ERROR).send("erreur dans delete");
+                }
+            });
+        }
+
+        public getTrackByName(req: Request, res: Response, next: NextFunction): void {
+             // tslint:disable-next-line:only-arrow-functions
+            tracks.find({name: req.params.name}, function (err: Error, track: Document): void {
+                if (!err) {
+                    console.warn("find ");
+                    res.send(track);
+                } else {
+                    console.error("erreur dans find ");
+
                 }
             });
         }
