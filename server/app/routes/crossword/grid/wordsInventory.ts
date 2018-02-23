@@ -23,7 +23,7 @@ export class WordsInventory {
                 this.addWords(indexI, indexJ, Direction.Horizontal, indexI - this.lengthCounter);
             }
             this.wordCounter++;
-            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.Vertical);
+            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.Horizontal);
             this.lengthCounter = 0;
         }
         this.wordCounter = 0;
