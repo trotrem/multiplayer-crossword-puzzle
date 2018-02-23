@@ -38,6 +38,7 @@ describe("Test to see if wordRetrieve correctly create object of the word 'hall'
     it("The word 'hall' should be common. ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("hall");
         const isCommon: boolean = words[0].isCommon;
+        // Fonction Chai ne finissant pas avec des parantheses
         expect(isCommon).to.be.true; // tslint:disable-line
     });
 
@@ -62,6 +63,7 @@ describe("test on Querry of the words 't?e' to see if it handles certain excepti
         words = await wordRetriever.getWordsWithDefinitions("t?e");
         const teeIndex: number = 2;
         const isCommon: boolean = words[teeIndex].isCommon;
+        // Fonction Chai ne finissant pas avec des parantheses
         expect(isCommon).to.be.false; // tslint:disable-line
     });
 });
@@ -160,6 +162,7 @@ describe("Querry of 5 letter words to check specific constraint", () => {
 describe("Test on words with non alpha character", () => {
     it("When we query the word 3d, the array should be empty ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("3d");
+        // Fonction Chai ne finissant pas avec des parantheses
         expect(words).to.be.empty; // tslint:disable-line
 
     });
