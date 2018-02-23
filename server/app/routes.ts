@@ -9,11 +9,11 @@ import { Racing } from "./routes/racing";
 @injectable()
 export class Routes {
     private racing: Racing;
-    private crossword: CrosswordHandler;
 
+    private crossword: CrosswordHandler
     public constructor(@inject(Types.Index) private index: Index) {
         this.crossword = new CrosswordHandler();
-        this.racing = new Racing();
+            this.racing = new Racing();
     }
 
     public get routes(): Router {
@@ -24,6 +24,8 @@ export class Routes {
         router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req, res, next));
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
+
+        router.get("/user", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 

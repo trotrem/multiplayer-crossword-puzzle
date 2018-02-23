@@ -1,3 +1,11 @@
-<p>
-  user works!
-</p>
+<h3>
+  Track List:
+</h3>
+<ol class="tracks">
+  <li *ngFor="let track of tracks">
+    <p> track name: </p>
+    <span class="badge">{{track.name}}</span>
+    <p> track description: </p>
+    <span class="badge">{{track.description}}</span>
+  </li>
+</ol>
