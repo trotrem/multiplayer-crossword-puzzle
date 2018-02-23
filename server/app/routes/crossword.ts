@@ -4,7 +4,7 @@ import { Grid } from "./crossword/grid/grid";
 import { WordsInventory } from "./crossword/grid/wordsInventory";
 import "reflect-metadata";
 import { injectable, } from "inversify";
-import { Direction } from "../../../common/communication/message"
+// import { Direction } from "../../../common/communication/message"
 
 module Route {
 

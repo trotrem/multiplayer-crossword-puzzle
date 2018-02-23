@@ -1,6 +1,7 @@
-import { Word, Direction } from "./word";
+import { Word } from "./word";
 import { Grid } from "./grid";
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
+import { Direction } from "../../../../../common/communication/message";
 
 export class WordsInventory {
     private _grid: Grid;
@@ -19,10 +20,10 @@ export class WordsInventory {
         // mot verticale
         for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
             for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
-                this.addWords(indexI, indexJ, Direction.X, indexI - this.lengthCounter);
+                this.addWords(indexI, indexJ, Direction.Horizontal, indexI - this.lengthCounter);
             }
             this.wordCounter++;
-            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.X);
+            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.Vertical);
             this.lengthCounter = 0;
         }
         this.wordCounter = 0;
@@ -30,10 +31,10 @@ export class WordsInventory {
         // mot horizontale
         for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
             for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
-                this.addWords(indexI, indexJ, Direction.Y, indexJ - this.lengthCounter);
+                this.addWords(indexI, indexJ, Direction.Vertical, indexJ - this.lengthCounter);
             }
             this.wordCounter++;
-            this.pushWord(indexI, this._grid.Width - this.lengthCounter, Direction.Y);
+            this.pushWord(indexI, this._grid.Width - this.lengthCounter, Direction.Vertical);
             this.lengthCounter = 0;
         }
         this.fillWord();
@@ -45,9 +46,9 @@ export class WordsInventory {
             this.lengthCounter++;
         } else {
             this.wordCounter++;
-            if (direction === Direction.X) {
+            if (direction === Direction.Horizontal) {
                 this.pushWord(startingPos, indexJ, direction);
-            } else if (direction === Direction.Y) {
+            } else if (direction === Direction.Vertical) {
                 this.pushWord(indexI, startingPos, direction);
             }
             this.lengthCounter = 0;
