@@ -1,7 +1,12 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import * as THREE from "three";
 import { Contraints } from "./contraints";
-
+import { HttpClient } from "@angular/common/http";
+import { NgForm } from "@angular/forms";
+import { TrackSavor } from "./track-savor";
+import { Track } from "./track";
+import { TrackServices } from "./track-services";
+import { ActivatedRoute } from "@angular/router";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -31,27 +36,46 @@ export class EditeurComponent implements AfterViewInit {
 
     private contraints: Contraints;
 
-    private startingZone: THREE.Line3;
-
     private trackValid: boolean;
+
+    private trackSavor: TrackSavor;
+
+    private trackService: TrackServices;
+
+    private track: Track;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor() {
+    public constructor(private http: HttpClient, private route: ActivatedRoute) {
         this.dragIndex = -1;
         this.points = new Array<THREE.Vector3>();
         this.contraints = new Contraints();
-        this.startingZone = new THREE.Line3();
-        this.trackValid = false;
+        this.track = new Track();
+        this.trackValid = true;
+        this.trackService = new TrackServices(this.http);
+        this.trackSavor = new TrackSavor(this.http, this.points);
     }
 
     public ngAfterViewInit(): void {
         this.createScene();
         this.animate();
         this.subscribeEvents();
+        const name: string = this.route.snapshot.paramMap.get("name");
+        if (name !== null) {
+            this.getTrack(name);
+        }
     }
+
+    private getTrack(name: string): void {
+        this.trackService.getTrackService(name)
+         .subscribe((res: Track[]) => {
+            this.track = res[0];
+            const newPoints: Array<THREE.Vector3> = this.track.points;
+            this.redraw(newPoints);
+          });
+      }
 
     private subscribeEvents(): void {
         this.canvas.addEventListener("click", (event: MouseEvent) => this.onLeftClick(event));
@@ -104,7 +128,7 @@ export class EditeurComponent implements AfterViewInit {
 
     private onRightClick(): void {
         this.isClosed = false;
-        this.startingZone = new THREE.Line3();
+
         const nbChildren: number = this.scene.children.length;
         const newPoints: THREE.Vector3[] = this.points;
         this.points = [];
@@ -121,7 +145,7 @@ export class EditeurComponent implements AfterViewInit {
 
         const newPoints: THREE.Vector3[] = this.points;
         this.points = [];
-        this.startingZone = new THREE.Line3();
+
         const position: THREE.Vector3 = this.convertToWorldPosition(event);
         newPoints[this.dragIndex] = position;
         if (this.dragIndex === newPoints.length - 1 && this.isClosed) {
@@ -165,7 +189,7 @@ export class EditeurComponent implements AfterViewInit {
         if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
             position = this.points[0];
             this.isClosed = true;
-            this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
+
         }
 
         return position;
@@ -194,7 +218,6 @@ export class EditeurComponent implements AfterViewInit {
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
-            this.trackValid = true;
         } else {
             color = RED_COLOR;
             if (illegalPoints.length > 1) {
@@ -221,6 +244,7 @@ export class EditeurComponent implements AfterViewInit {
     }
 
     private redraw(newPoints: THREE.Vector3[]): void {
+        this.trackValid = true;
         if (!newPoints) {
             return;
         }
@@ -238,10 +262,20 @@ export class EditeurComponent implements AfterViewInit {
             this.createPoint(position);
             this.points.push(position);
         }
-        this.startingZone = new THREE.Line3(this.points[0], this.points[1]);
+
     }
 
-    public notReadyToSave(): boolean {
-        return !this.trackValid || !this.isClosed;
+    public notReadyToSubmit(): boolean {
+        return !this.isClosed || !this.trackValid;
     }
+    public notReadyToSave(): boolean {
+        return this.notReadyToSubmit() || !this.trackSavor.getSubmitvalue();
+    }
+    public savetrack(): void {
+        this.trackSavor.savetrack();
+    }
+    public onSubmit(f: NgForm): void {
+        this.trackSavor.onSubmit(f);
+    }
+
 }

@@ -6,13 +6,18 @@ import { GameComponent } from "./racing/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
 import { RenderService } from "./racing/render-service/render.service";
 import { BasicService } from "./basic.service";
-import { EditeurComponent } from "./crossword/editeur/editeur.component";
+import { EditeurComponent } from "./racing/editeur/editeur.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { RacingGameComponent } from "./racing/racing-game/racing-game.component";
 import { CrosswordGridComponent } from "./crossword/crossword-grid/crossword-grid.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
+import {APP_BASE_HREF} from "@angular/common";
+import { TrackServices } from "./racing/editeur/track-services";
 
 const appRoutes: Routes = [
+    { path: "editeur/:name", component: EditeurComponent },
     { path: "crossword", component: CrosswordGridComponent },
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
@@ -34,13 +39,18 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         HttpClientModule,
+        FormsModule,
+        HttpModule,
+        ReactiveFormsModule,
         RouterModule.forRoot(
             appRoutes
           )
     ],
     providers: [
+        TrackServices,
         RenderService,
-        BasicService
+        BasicService,
+        {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]
 })

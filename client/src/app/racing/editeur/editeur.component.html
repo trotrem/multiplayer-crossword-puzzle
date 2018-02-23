@@ -1,0 +1,14 @@
+<h2>Track editor</h2>
+<form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <div>
+        Name:
+        <input name="name" [(ngModel)]="track.name" placeholder="name">
+    </div>
+    <div>
+        Description:
+        <input name="description" [(ngModel)]="track.description" placeholder="description">
+    </div>
+    <button [disabled]="notReadyToSubmit()">Submit</button>
+</form>
+<button [disabled]="notReadyToSave()"(click)="savetrack()">Save Track</button>
+<canvas #canvas draggable="true"> </canvas>

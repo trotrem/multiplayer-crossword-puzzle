@@ -13,6 +13,7 @@
     "postinstall": "rimraf false"
   },
   "dependencies": {
+    "@types/mongoose": "^5.0.2",
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.0",
     "cors": "~2.8.1",
@@ -21,6 +22,7 @@
     "express": "^4.15.4",
     "inversify": "^4.3.0",
     "karma": "^2.0.0",
+    "mongoose": "^5.0.6",
     "morgan": "1.7.0",
     "nodemon": "^1.11.0",
     "reflect-metadata": "^0.1.10",
