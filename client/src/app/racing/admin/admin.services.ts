@@ -19,7 +19,7 @@ export class AdminServices {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.delete("http://localhost:3000/" + track.name + "/deleteTrack", {
+        this.http.delete("http://localhost:3000/" + track.getName + "/deleteTrack", {
             headers: headers
         })
             .subscribe((data: Response) => {
