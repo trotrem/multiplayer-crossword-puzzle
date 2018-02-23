@@ -15,12 +15,14 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
 import { TrackServices } from "./racing/editeur/track-services";
+import { UserComponent } from "./racing/user/user.component";
 
 const appRoutes: Routes = [
     { path: "editeur/:name", component: EditeurComponent },
     { path: "crossword", component: CrosswordGridComponent },
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
+    { path: "user", component: UserComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
     { path: "**", component: PageNotFoundComponent }
@@ -35,6 +37,7 @@ const appRoutes: Routes = [
         PageNotFoundComponent,
         RacingGameComponent,
         CrosswordGridComponent,
+        UserComponent,
     ],
     imports: [
         BrowserModule,
