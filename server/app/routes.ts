@@ -24,12 +24,12 @@ export class Routes {
         router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req, res, next));
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
+        
+        router.get("/crossword-grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 
         router.get("/:name", (req: Request, res: Response, next: NextFunction) => this.racing.getTrackByName(req, res, next));
-
-        router.get("/crossword-grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
 
         return router;
     }
