@@ -1,21 +1,17 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { GridData } from "../../../../../common/communication/message";
+import { GridData, Direction } from "../../../../../common/communication/message";
+import { WordDescription } from "../wordDescription";
+import { Cell } from "../cell";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
-
-interface WordDescription {
-  direction: string;
-  cells: Cell[];
-  definition: string;
-}
-
-interface Cell {
-  isBlack: boolean;
-  content: string;
-  selected: boolean;
-}
+const BACKSPACE: number  = 8;
+const DELETE: number = 46;
+const UPPER_A: number = 65;
+const UPPER_Z: number = 90;
+const LOWER_A: number = 97;
+const LOWER_Z: number = 122;
 
 @Component({
   selector: "app-crossword-grid",
@@ -30,16 +26,16 @@ export class CrosswordGridComponent implements OnInit {
 
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
-  private onBackgroundClick(): void {  // tslint:disable-line
+  private onBackgroundClick(): void {  // tslint:disable-line-
     this.setSelectedWord(null, false);
   }
 
   public get horizontalWords(): WordDescription[] {
-    return this.words.filter((word) => word.direction === "h");
+    return this.words.filter((word) => word.direction === Direction.Horizontal);
   }
 
   public get verticalWords(): WordDescription[] {
-    return this.words.filter((word) => word.direction === "v");
+    return this.words.filter((word) => word.direction === Direction.Vertical);
   }
 
   public constructor(private http: HttpClient) {
@@ -67,16 +63,15 @@ export class CrosswordGridComponent implements OnInit {
         });
       gridData.wordInfos.forEach((word) => {
         const cells: Cell[] = new Array<Cell>();
-        for (let i = 0; i < word.length; i++) {
-          if (word.direction === "h") {
-            cells.push(this.cells[word.y][word.x + i])
-          }
-          else if (word.direction === "v") {
-            cells.push(this.cells[word.y + i][word.x])
+        for (let i: number = 0; i < word.length; i++) {
+          if (word.direction === Direction.Horizontal) {
+            cells.push(this.cells[word.y][word.x + i]);
+          } else if (word.direction === Direction.Vertical) {
+            cells.push(this.cells[word.y + i][word.x]);
           }
         }
         this.words.push({direction: word.direction, cells: cells, definition: word.definition});
-      })
+      });
     });
   }
 
@@ -85,12 +80,14 @@ export class CrosswordGridComponent implements OnInit {
     for (const word of this.words) {
       if (word.cells[0] === cell && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
+
         return;
       }
     }
     for (const word of this.words) {
       if (word.cells.indexOf(cell) !== -1 && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
+
         return;
       }
     }
@@ -104,10 +101,13 @@ export class CrosswordGridComponent implements OnInit {
   @HostListener("document:keydown", ["$event"])
   public onKeyPress(event: KeyboardEvent): void {
     if (this.selectedWord !== null) {
-      if (event.keyCode >= 65 && event.keyCode <= 90 || event.keyCode >= 97 && event.keyCode <= 122) {
+      if (event.keyCode >= UPPER_A &&
+          event.keyCode <= UPPER_Z ||
+          event.keyCode >= LOWER_A &&
+          event.keyCode <= LOWER_Z) {
         this.write(String.fromCharCode(event.keyCode).toUpperCase(), this.selectedWord);
       }
-      if (event.keyCode === 8  || event.keyCode === 46) {
+      if (event.keyCode === BACKSPACE  || event.keyCode === DELETE) {
         this.erase(this.selectedWord);
       }
     }
