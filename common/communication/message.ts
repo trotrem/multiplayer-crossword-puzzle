@@ -3,8 +3,13 @@ export interface Point {
     y: number;
 }
 
-interface WordInfo {
-    direction: string;
+export enum Direction {
+    Vertical,
+    Horizontal
+}
+
+export interface WordInfo {
+    direction: Direction;
     x: number;
     y: number;
     length: number;

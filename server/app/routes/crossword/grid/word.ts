@@ -1,8 +1,10 @@
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation"
-export enum Direction {
+import { Direction } from "../../../../../common/communication/message"
+
+/*export enum Direction {
     Y,
     X
-}
+}*/
 export class Word {
     private _length: number;
     private _id: number;
