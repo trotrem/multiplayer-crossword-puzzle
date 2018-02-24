@@ -2,14 +2,17 @@
   Track List:
 </h3>
 <ol class="tracks">
+  <h5>Please select the name of the desired track  </h5>
   <li *ngFor="let track of tracks">
-    <p> track name: </p>
-    <span class="badge">{{track.name}}</span>
-    <p> track description: </p>
-    <span class="badge">{{track.description}}</span>
-    <p> track number of uses: </p>
+    <dt> track name: </dt>
+    <a class="name"
+    [class.selected]="track === selectedTrack"
+    (click)="onSelect(track)">{{track.name}}<br></a>
+    <dt> track description: </dt>
+    <span class="badge">{{track.description}}<br></span>
+    <dt> track number of uses: </dt>
     <span class="badge">{{track.usesNumber}}</span>
-    <p> track best scores: </p>
+    <dt> track best scores: </dt>
     <span class="badge">{{track.bestScores}}</span>
-  </li>
+</li>
 </ol>

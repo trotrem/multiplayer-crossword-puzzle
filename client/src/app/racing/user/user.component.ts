@@ -15,6 +15,10 @@ export class UserComponent implements OnInit {
 
   private tracks: Track[];
 
+  private selectedTrack: Track;
+
+  private isSelected: boolean;
+
   public constructor(private http: HttpClient, private router: Router) {
     this.userServices = new UserServices(this.http);
     this.tracks = new Array<Track>();
@@ -28,6 +32,11 @@ export class UserComponent implements OnInit {
       .subscribe((res: Array<Track>) => {
         this.tracks = res;
       });
+    }
+  public onSelect(track: Track): void {
+    this.selectedTrack = track;
+    this.isSelected = true;
+    console.warn(this.selectedTrack);
     }
 
 }
