@@ -71,7 +71,7 @@ export class EditeurComponent implements AfterViewInit {
         this.trackService.getTrackService(name)
          .subscribe((res: Track[]) => {
             this.track = res[0];
-            const newPoints: Array<THREE.Vector3> = this.track.points;
+            const newPoints: Array<THREE.Vector3> = this.track.getPoints();
             this.redraw(newPoints);
           });
       }
