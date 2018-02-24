@@ -5,8 +5,9 @@ import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { TrackSavor } from "./track-savor";
 import { Track } from "./track";
-import { TrackServices } from "./track-services";
+import { TrackServices } from "./../track.services/track-services";
 import { ActivatedRoute } from "@angular/router";
+import { SceneServices } from "./../scene.services/scene.services";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -21,12 +22,6 @@ export class EditeurComponent implements AfterViewInit {
 
     @ViewChild("canvas")
     private canvasRef: ElementRef;
-
-    private camera: THREE.PerspectiveCamera;
-
-    private scene: THREE.Scene;
-
-    private renderer: THREE.Renderer;
 
     public points: THREE.Vector3[];
 
@@ -44,6 +39,8 @@ export class EditeurComponent implements AfterViewInit {
 
     private track: Track;
 
+    private sceneService: SceneServices;
+
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
@@ -56,43 +53,11 @@ export class EditeurComponent implements AfterViewInit {
         this.trackValid = true;
         this.trackService = new TrackServices(this.http);
         this.trackSavor = new TrackSavor(this.http, this.points);
+        this.sceneService = new SceneServices(this.route);
     }
 
     public ngAfterViewInit(): void {
-        this.createScene();
-        this.animate();
-        const name: string = this.route.snapshot.paramMap.get("name");
-        if (name !== null) {
-            this.getTrack(name);
-        }
-    }
-
-    private getTrack(name: string): void {
-        this.trackService.getTrackService(name)
-         .subscribe((res: Track[]) => {
-            this.track = res[0];
-            const newPoints: Array<THREE.Vector3> = this.track.getPoints();
-            this.redraw(newPoints);
-          });
-      }
-
-    public createScene(): void {
-        this.camera = new THREE.PerspectiveCamera();
-        const CAMERA_DISTANCE: number = 100;
-        this.camera.position.set(0, 0, CAMERA_DISTANCE);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-        this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    public getScene(): THREE.Scene {
-        return this.scene;
-    }
-
-    public animate(): void {
-        requestAnimationFrame(() => this.animate());
-        this.renderer.render(this.scene, this.camera);
+        this.sceneService.initialize(this.canvas);
     }
 
     private onLeftClick(event: MouseEvent): void {
@@ -118,15 +83,15 @@ export class EditeurComponent implements AfterViewInit {
         event.preventDefault();
         this.isClosed = false;
 
-        const nbChildren: number = this.scene.children.length;
+        const nbChildren: number = this.sceneService.scene.children.length;
         const newPoints: THREE.Vector3[] = this.points;
         this.points = [];
         newPoints.pop();
         if (newPoints.length > 0) {
             this.redraw(newPoints);
         } else {
-            this.scene.remove(this.scene.children[nbChildren - 1]);
-            this.scene.remove(this.scene.children[nbChildren - MAX_SELECTION]);
+            this.sceneService.scene.remove(this.sceneService.scene.children[nbChildren - 1]);
+            this.sceneService.scene.remove(this.sceneService.scene.children[nbChildren - MAX_SELECTION]);
         }
     }
 
@@ -166,11 +131,11 @@ export class EditeurComponent implements AfterViewInit {
             (canvasPosition.x / this.canvas.width) * MAX_SELECTION - 1,
             -(canvasPosition.y / this.canvas.height) * MAX_SELECTION + 1,
             0);
-        canvasVector.unproject(this.camera);
-        const direction: THREE.Vector3 = canvasVector.sub(this.camera.position);
-        const distance: number = - this.camera.position.z / direction.z;
+        canvasVector.unproject(this.sceneService.getCamera());
+        const direction: THREE.Vector3 = canvasVector.sub(this.sceneService.getCamera().position);
+        const distance: number = - this.sceneService.getCamera().position.z / direction.z;
 
-        return this.camera.position.clone().add(direction.multiplyScalar(distance));
+        return this.sceneService.getCamera().position.clone().add(direction.multiplyScalar(distance));
     }
 
     private getPlacementPosition(event: MouseEvent): THREE.Vector3 {
@@ -189,7 +154,7 @@ export class EditeurComponent implements AfterViewInit {
         geometryPoint.vertices.push(position);
         const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });
         const point: THREE.Points = new THREE.Points(geometryPoint, material);
-        this.scene.add(point);
+        this.sceneService.scene.add(point);
     }
 
     public createPoint(position: THREE.Vector3): void { // public for test
@@ -197,7 +162,7 @@ export class EditeurComponent implements AfterViewInit {
         pointGeometry.vertices.push(position);
         const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
         const point: THREE.Points = new THREE.Points(pointGeometry, material);
-        this.scene.add(point);
+        this.sceneService.scene.add(point);
     }
 
     public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): void { // public for test
@@ -219,7 +184,7 @@ export class EditeurComponent implements AfterViewInit {
         lineGeometry.vertices.push(lastPos);
         lineGeometry.vertices.push(newPos);
         const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
-        this.scene.add(line);
+        this.sceneService.scene.add(line);
     }
 
     private redrawConflictingLines(illegalPoints: THREE.Vector3[], color: number): void {
@@ -228,7 +193,7 @@ export class EditeurComponent implements AfterViewInit {
             lineGeometry.vertices.push(illegalPoints[i]);
             lineGeometry.vertices.push(illegalPoints[i + 1]);
             const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, "color": color }));
-            this.scene.add(line);
+            this.sceneService.scene.add(line);
         }
     }
 
@@ -238,8 +203,8 @@ export class EditeurComponent implements AfterViewInit {
             return;
         }
 
-        while (this.scene.children.length > 0) {
-            this.scene.remove(this.scene.children[0]);
+        while (this.sceneService.scene.children.length > 0) {
+            this.sceneService.scene.remove(this.sceneService.scene.children[0]);
         }
 
         this.createFirstPointContour(newPoints[0]);

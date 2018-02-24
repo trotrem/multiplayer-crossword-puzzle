@@ -1,9 +1,11 @@
-import { TrackServices } from "./track-services";
+import { TrackServices } from "./../track.services/track-services";
 import { Track } from "./track";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import * as THREE from "three";
-export class TrackSavor  {
+import { ActivatedRoute } from "@angular/router";
+
+export class TrackSavor {
     private track: Track;
     private trackService: TrackServices;
     private submitValid: boolean;
@@ -17,23 +19,23 @@ export class TrackSavor  {
         this.track = track;
     }
     public getTrack(): Track {
-       return  this.track;
+        return this.track;
     }
-    public setStartingZone(zone: THREE.Line3 ): void {
+    public setStartingZone(zone: THREE.Line3): void {
         this.startingZone = zone;
     }
     public getStartingZone(): THREE.Line3 {
-       return  this.startingZone;
+        return this.startingZone;
     }
     public setSubmitvalue(value: boolean): void {
         this.submitValid = value;
     }
     public getSubmitvalue(): boolean {
-       return  this.submitValid;
+        return this.submitValid;
     }
     public savetrack(): void {
         this.track.setPoints(this.points);
-        this.setStartingZone (new THREE.Line3(this.points[0], this.points[1]));
+        this.setStartingZone(new THREE.Line3(this.points[0], this.points[1]));
         this.track.setStartingZone(this.startingZone);
         this.trackService.saveTrackService(this.track);
     }

@@ -1,18 +1,18 @@
 import * as THREE from "three";
 
-const MAX_LENGTH: number = 15;
+const MAX_LENGTH: number = 25;
 const PRECISION: number = 0.0000001;
-const TWO: number = 2;
+const EXPONENT: number = 2;
 
 export class Contraints {
 
     public constructor() { }
 
     private moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
-        const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, TWO) + Math.pow(position2.y - position1.y, TWO));
-        const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, TWO) + Math.pow(position2.y - position3.y, TWO));
-        const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, TWO) + Math.pow(position3.y - position1.y, TWO));
-        let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (TWO * BC * AB));
+        const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, EXPONENT) + Math.pow(position2.y - position1.y, EXPONENT));
+        const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, EXPONENT) + Math.pow(position2.y - position3.y, EXPONENT));
+        const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, EXPONENT) + Math.pow(position3.y - position1.y, EXPONENT));
+        let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (EXPONENT * BC * AB));
 
         const HALF_CIRCLE_DEGREES: number = 180;
         angle = HALF_CIRCLE_DEGREES * (angle) / Math.PI;
@@ -59,9 +59,11 @@ export class Contraints {
     }
 
     private findIsInLine(position1: THREE.Vector3, position2: THREE.Vector3, intersection: THREE.Vector3): boolean {
-        const dist1: number = Math.sqrt(Math.pow(intersection.x - position1.x, TWO) + Math.pow(intersection.y - position1.y, TWO));
-        const dist2: number = Math.sqrt(Math.pow(position2.x - intersection.x, TWO) + Math.pow(position2.y - intersection.y, TWO));
-        const distTotal: number = Math.sqrt(Math.pow(position2.x - position1.x, TWO) + Math.pow(position2.y - position1.y, TWO));
+        const dist1: number = Math.sqrt(Math.pow(intersection.x - position1.x, EXPONENT)
+            + Math.pow(intersection.y - position1.y, EXPONENT));
+        const dist2: number = Math.sqrt(Math.pow(position2.x - intersection.x, EXPONENT)
+            + Math.pow(position2.y - intersection.y, EXPONENT));
+        const distTotal: number = Math.sqrt(Math.pow(position2.x - position1.x, EXPONENT) + Math.pow(position2.y - position1.y, EXPONENT));
         if (Math.abs(dist1 + dist2 - distTotal) > PRECISION) {
             return false;
         }
@@ -70,8 +72,8 @@ export class Contraints {
     }
 
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): boolean {
-        const dist: number = Math.sqrt(Math.pow(position1.x - position2.x, TWO) + Math.pow(position1.y - position2.y, TWO));
-        if (dist < (MAX_LENGTH * TWO)) {
+        const dist: number = Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
+        if (dist < (MAX_LENGTH )) {
             return true;
         }
 

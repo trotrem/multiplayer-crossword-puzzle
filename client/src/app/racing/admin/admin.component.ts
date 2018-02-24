@@ -43,7 +43,7 @@ export class AdminComponent implements OnInit {
   }
 
   public editTrack(): void {
-    this.router.navigateByUrl("/editeur/" + this.selectedTrack.getName);
+    this.router.navigateByUrl("/editeur/" + this.selectedTrack.name);
   }
 
   public deleteTrack(): void {

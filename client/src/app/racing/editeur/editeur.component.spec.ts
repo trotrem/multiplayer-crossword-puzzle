@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, inject } from "@angular/core/testing"
 import * as THREE from "three";
 import { EditeurComponent } from "./editeur.component";
 import { HttpClient , HttpClientModule} from "@angular/common/http";
-import { TrackServices } from "./track-services";
+import { TrackServices } from "./../track.services/track-services";
 import { Track } from "./track";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";

@@ -14,8 +14,9 @@ import { CrosswordGridComponent } from "./crossword/crossword-grid/crossword-gri
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
-import { TrackServices } from "./racing/editeur/track-services";
+import { TrackServices } from "./racing/track.services/track-services";
 import { UserComponent } from "./racing/user/user.component";
+import {SceneServices} from "./racing/scene.services/scene.services";
 
 const appRoutes: Routes = [
     { path: "editeur/:name", component: EditeurComponent },
@@ -50,6 +51,7 @@ const appRoutes: Routes = [
           )
     ],
     providers: [
+        SceneServices,
         TrackServices,
         RenderService,
         BasicService,

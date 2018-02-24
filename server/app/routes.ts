@@ -9,11 +9,11 @@ import { Racing } from "./routes/racing";
 @injectable()
 export class Routes {
     private racing: Racing;
+    private crossword: CrosswordHandler;
 
-    private crossword: CrosswordHandler
     public constructor(@inject(Types.Index) private index: Index) {
         this.crossword = new CrosswordHandler();
-            this.racing = new Racing();
+        this.racing = new Racing();
     }
 
     public get routes(): Router {

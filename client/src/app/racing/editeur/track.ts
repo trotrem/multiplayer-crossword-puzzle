@@ -1,12 +1,12 @@
 import * as THREE from "three";
 
 export class Track {
-    private name: string;
-    private description: string;
-    private startingZone: THREE.Line3;
-    private points: THREE.Vector3[];
-    private usesNumber: number;
-    private bestScores: number[];
+    public name: string;
+    public description: string;
+    public startingZone: THREE.Line3;
+    public points: THREE.Vector3[];
+    public usesNumber: number;
+    public bestScores: number[];
 
     public constructor() {
 
