@@ -104,6 +104,7 @@ export class Contraints {
             illegalPoints.push(position1);
         }
         // contraint about the angle when the track is close
+
         if (position2 === arrayPoints[0] && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
             illegalPoints = this.checkArrayLength(illegalPoints);
             illegalPoints.push(arrayPoints[1]);
