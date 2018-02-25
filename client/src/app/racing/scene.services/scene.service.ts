@@ -1,59 +1,78 @@
 import { Injectable } from "@angular/core";
-import { Track } from "./../editeur/track";
 import * as THREE from "three";
 import { ActivatedRoute } from "@angular/router";
+import { EventHandlerService } from "../eventHandler.services/event-handler.service";
+
+const MAX_SELECTION: number = 2;
+const CLICK: number = 0;
+const CONTEXTMENU: number = 1;
+const DRAGSTART: number = 2;
+const DRAG: number = 3;
+const DRAGEND: number = 4;
 
 @Injectable()
 export class SceneServices {
-    private camera: THREE.PerspectiveCamera;
+  public camera: THREE.PerspectiveCamera;
 
-    public scene: THREE.Scene;
+  public scene: THREE.Scene;
 
-    private renderer: THREE.Renderer;
+  private renderer: THREE.Renderer;
 
-    private canvas: HTMLCanvasElement;
+  public canvas: HTMLCanvasElement;
 
-    public constructor( private route: ActivatedRoute) {
+  private eventHandlerService: EventHandlerService;
+
+  public constructor(private route: ActivatedRoute) {
+
+  }
+  public getCamera(): THREE.PerspectiveCamera {
+    return this.camera;
+  }
+
+  public initialize(canvas: HTMLCanvasElement): void {
+    if (canvas) {
+      this.canvas = canvas;
     }
-    public getCamera(): THREE.PerspectiveCamera {
-        return this.camera;
+    this.createScene();
+    this.animate();
+  }
+
+  public createScene(): void {
+    this.camera = new THREE.PerspectiveCamera();
+    const CAMERA_DISTANCE: number = 100;
+    this.camera.position.set(0, 0, CAMERA_DISTANCE);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.eventHandlerService = new EventHandlerService(this.scene, this.canvas, this.camera);
+  }
+
+  public animate(): void {
+    requestAnimationFrame(() => this.animate());
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  public updateScene(event: MouseEvent, eventNumber: number): void {
+    switch (eventNumber) {
+      case CLICK:
+        this.eventHandlerService.onLeftClick(event);
+        break;
+      case CONTEXTMENU:
+        this.eventHandlerService.onRightClick(event);
+        break;
+      case DRAGSTART:
+        this.eventHandlerService.getDraggedPointIndex(event);
+        break;
+      case DRAG:
+        this.eventHandlerService.onDrag(event, false);
+        break;
+      case DRAGEND:
+        this.eventHandlerService.onDrag(event, true);
+        break;
+      default:
+        break;
     }
-
-    public async initialize(canvas: HTMLCanvasElement): Promise<void> {
-        if (canvas) {
-            this.canvas = canvas;
-        }
-
-        await this.createScene();
-        this.animate();
-        const name: string = this.route.snapshot.paramMap.get("name");
-        if (name !== null) {
-           // this.getTrack(name);
-        }
-    }
-
-    public createScene(): void {
-        this.camera = new THREE.PerspectiveCamera();
-        const CAMERA_DISTANCE: number = 100;
-        this.camera.position.set(0, 0, CAMERA_DISTANCE);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-        this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    public animate(): void {
-        requestAnimationFrame(() => this.animate());
-        this.renderer.render(this.scene, this.camera);
-    }
-
-   /* private getTrack(name: string): void {
-        this.getTrackService(name)
-            .subscribe((res: Track[]) => {
-                this.track = res[0];
-                const newPoints: Array<THREE.Vector3> = this.track.points;
-                this.redraw(newPoints);
-            });
-    }*/
+  }
 
 }
