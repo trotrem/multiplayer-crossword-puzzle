@@ -9,6 +9,7 @@ export enum Direction {
 }
 
 export interface WordInfo {
+    id: number;
     direction: Direction;
     x: number;
     y: number;
@@ -22,6 +23,7 @@ export class Message {
 }
 
 export interface GridData {
+    id: number;
     blackCells: Array<Point>;
     wordInfos: Array<WordInfo>;
 }

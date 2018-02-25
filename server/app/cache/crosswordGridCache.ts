@@ -1,8 +1,9 @@
-import { GridData, WordInfo } from "../../../common/communication/message"
+import { GridData } from "../../../common/communication/message"
 
 
-interface Grid extends GridData {
+interface Grid {
     words: Array<string>;
+    gridData: GridData;
 }
 
 interface GridDictionary {
@@ -26,16 +27,19 @@ export class GridCache {
     public getGridData(id: number): GridData {
         let grid = this._grids[id];
 
-        return { blackCells: grid.blackCells, wordInfos: grid.wordInfos as WordInfo[] };
+        return { id: grid.gridData.id, blackCells: grid.gridData.blackCells, wordInfos: grid.gridData.wordInfos };
     }
 
     public getWords(id: number): string[] {
         return this._grids[id].words.slice();
     }
 
-    public addGrid(grid: Grid): void {
+    public addGrid(grid: Grid): GridData {
         let id = this.gridUniqueKey();
+        grid.gridData.id = id;
         this._grids[id] = grid;
+
+        return grid.gridData;
     }
 
     public removeGrid(id: number): void {

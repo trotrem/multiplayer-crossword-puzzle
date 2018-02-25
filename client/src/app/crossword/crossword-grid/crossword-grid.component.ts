@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { GridData, Direction } from "../../../../../common/communication/message";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
@@ -22,6 +22,7 @@ export class CrosswordGridComponent implements OnInit {
   public cells: Cell[][];
   @Input() public nbPlayers: number;
   private words: WordDescription[];
+  private id: number;
   public selectedWord: WordDescription = null;
 
   @HostListener("document:click")
@@ -58,6 +59,7 @@ export class CrosswordGridComponent implements OnInit {
     this.http.get("http://localhost:3000/crossword/grid")
     .subscribe((data) => {
       const gridData: GridData = data as GridData;
+      this.id = gridData.id;
       gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
@@ -70,7 +72,7 @@ export class CrosswordGridComponent implements OnInit {
             cells.push(this.cells[word.y + i][word.x]);
           }
         }
-        this.words.push({direction: word.direction, cells: cells, definition: word.definition});
+        this.words.push({id: word.id, direction: word.direction, cells: cells, definition: word.definition});
       });
     });
   }
@@ -114,9 +116,12 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private write(char: string, word: WordDescription): void {
-    for (const pos of word.cells) {
-      if (pos.content === "") {
-        pos.content = char;
+    for (let i: number = 0; i < word.cells.length; i++) {
+      if (word.cells[i].content === "") {
+        word.cells[i].content = char;
+        if (i === word.cells.length - 1) {
+          this.validate(word);
+        }
 
         return;
       }
@@ -131,6 +136,16 @@ export class CrosswordGridComponent implements OnInit {
       return;
     }
     word.cells[word.cells.length - 1].content = "";
+  }
+
+  private validate(word: WordDescription): void {
+    const headers: HttpHeaders = new HttpHeaders()
+    .set("Authorization", "my-auth-token")
+    .set("Content-Type", "application/json");
+
+    this.http.post("http://localhost:3000/crossword/validate",
+                   JSON.stringify({ gridId: this.id, wordIndex: word.id, word: word.cells.map((elem) => elem.content).join("") }),
+                   {headers: headers}).subscribe((data) => {});
   }
 
   private setSelectedWord(word: WordDescription, selected: boolean): void {

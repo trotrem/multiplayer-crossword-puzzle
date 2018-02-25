@@ -10,10 +10,10 @@ import { Racing } from "./routes/racing";
 export class Routes {
     private racing: Racing;
 
-    private crossword: CrosswordHandler
+    private crossword: CrosswordHandler;
     public constructor(@inject(Types.Index) private index: Index) {
         this.crossword = new CrosswordHandler();
-            this.racing = new Racing();
+        this.racing = new Racing();
     }
 
     public get routes(): Router {
@@ -24,12 +24,14 @@ export class Routes {
         router.post("/track", (req: Request, res: Response, next: NextFunction) => this.racing.savetrack(req, res, next));
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
-        
-        router.get("/crossword/grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
 
-        router.get("/crossword/words", (req: Request, res: Response, next: NextFunction) => { });
-        
-        router.get("/crossword/validation/word", (req: Request, res: Response, next: NextFunction) => { });        
+        router.get("/crossword/grid", (req: Request, res: Response, next: NextFunction) => this.crossword.getGrid(req, res, next));
+
+        router.get("/crossword/words", (req: Request, res: Response, next: NextFunction) =>
+            this.crossword.getCheatModeWords(req, res, next));
+
+        router.post("/crossword/validate", (req: Request, res: Response, next: NextFunction) =>
+            this.crossword.validateWord(req, res, next));
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 
