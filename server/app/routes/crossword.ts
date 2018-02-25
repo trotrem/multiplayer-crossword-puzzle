@@ -5,6 +5,7 @@ import { WordsInventory } from "./crossword/grid/wordsInventory";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { Direction } from "./crossword/grid/word";
+import { GridCache } from "../cache/crosswordGridCache";
 
 module Route {
 
@@ -21,11 +22,13 @@ module Route {
                 const dir: string = word.Direction.valueOf() === Direction.X.valueOf() ? "h" : "v";
                 gridData.wordInfos.push({ direction: dir, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
             }
+            GridCache.Instance.addGrid({...gridData, words:[]});
             res.send(JSON.stringify(gridData));
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
-            
+            let words: string[] = GridCache.Instance.getWords(req.body.gridId);
+            res.send(words[req.body.wordIndex] === req.body.word);
         }
     }
 }
