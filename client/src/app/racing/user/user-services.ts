@@ -10,6 +10,6 @@ export class UserServices {
 
     }
     public getTracksService(): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/user");
+        return this.http.get<Track[]>("http://localhost:3000/racing/user");
     }
 }

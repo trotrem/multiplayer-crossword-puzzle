@@ -11,7 +11,7 @@ export class AdminServices {
 
     }
     public getTracksService(): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/admin");
+        return this.http.get<Track[]>("http://localhost:3000/racing/admin");
     }
 
     public deleteTrack(track: Track): void {
@@ -19,7 +19,7 @@ export class AdminServices {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.delete("http://localhost:3000/" + track.getName + "/deleteTrack", {
+        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name , {
             headers: headers
         })
             .subscribe((data: Response) => {

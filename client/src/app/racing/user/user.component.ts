@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { UserServices} from "./user-services";
 import {Track } from "./../editeur/track";
-import {Router} from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
@@ -19,7 +18,7 @@ export class UserComponent implements OnInit {
 
   private isSelected: boolean;
 
-  public constructor(private http: HttpClient, private router: Router) {
+  public constructor(private http: HttpClient) {
     this.userServices = new UserServices(this.http);
     this.tracks = new Array<Track>();
   }
