@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { ActivatedRoute } from "@angular/router";
 import { EventHandlerService } from "../eventHandler.services/event-handler.service";
 
 const MAX_SELECTION: number = 2;
@@ -22,7 +21,7 @@ export class SceneServices {
 
   private eventHandlerService: EventHandlerService;
 
-  public constructor(private route: ActivatedRoute) {
+  public constructor() {
 
   }
   public getCamera(): THREE.PerspectiveCamera {
@@ -75,4 +74,19 @@ export class SceneServices {
     }
   }
 
+  public redraw(newPoints: Array<THREE.Vector3>): void {
+    this.eventHandlerService.redrawTrack(newPoints);
+  }
+
+  public getPoints(): Array<THREE.Vector3> {
+    return this.eventHandlerService.getPoints();
+  }
+
+  public getTrackValid(): boolean {
+    return this.eventHandlerService.getTrackValid();
+  }
+
+  public getIsClosed(): boolean {
+    return this.eventHandlerService.getIsClosed();
+  }
 }

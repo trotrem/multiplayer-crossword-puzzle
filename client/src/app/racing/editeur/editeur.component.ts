@@ -1,11 +1,10 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit , ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { TrackSavor } from "./track-savor";
 import { Track } from "./track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./../scene.services/scene.service";
-import { TrackCreator } from "../trackcreator/track-creator";
 import { TrackServices } from "../track.services/track.service";
 
 @Component({
@@ -14,7 +13,7 @@ import { TrackServices } from "../track.services/track.service";
     styleUrls: ["./editeur.component.css"]
 })
 
-export class EditeurComponent implements AfterViewInit {
+export class EditeurComponent implements OnInit  {
 
     @ViewChild("canvas")
 
@@ -26,8 +25,6 @@ export class EditeurComponent implements AfterViewInit {
 
     private sceneService: SceneServices;
 
-    private trackCreator: TrackCreator;
-
     private trackService: TrackServices;
 
     private get canvas(): HTMLCanvasElement {
@@ -36,26 +33,26 @@ export class EditeurComponent implements AfterViewInit {
 
     public constructor(private http: HttpClient, private route: ActivatedRoute) {
         this.track = new Track();
-        this.trackCreator = new TrackCreator();
-        this.trackSavor = new TrackSavor(this.http, this.trackCreator.points);
-        this.sceneService = new SceneServices(this.route);
+        this.sceneService = new SceneServices();
         this.trackService = new TrackServices(this.http);
     }
 
-    public ngAfterViewInit(): void {
+    public ngOnInit (): void {
         this.sceneService.initialize(this.canvas);
         const name: string = this.route.snapshot.paramMap.get("name");
+        this.trackSavor = new TrackSavor(this.http, this.sceneService.getPoints());
         if (name !== null) {
             this.getTrack(name);
         }
 
     }
+
     public updateScene(eventNumber: number, event: MouseEvent): void {
         this.sceneService.updateScene(event, eventNumber);
     }
 
     public notReadyToSubmit(): boolean {
-        return !this.trackCreator.isClosed || !this.trackCreator.trackValid;
+        return !this.sceneService.getIsClosed() || !this.sceneService.getTrackValid();
     }
     public notReadyToSave(): boolean {
         return this.notReadyToSubmit() || !this.trackSavor.getSubmitvalue();
@@ -72,7 +69,7 @@ export class EditeurComponent implements AfterViewInit {
             .subscribe((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
-                // this.redraw(newPoints);
+                this.sceneService.redraw(newPoints);
             });
     }
 

@@ -56,7 +56,7 @@ export class EventHandlerService {
     this.trackCreator.points = [];
     newPoints.pop();
     if (newPoints.length > 0) {
-      this.redrawScene(newPoints);
+      this.redrawTrack(newPoints);
     } else {
       this.scene.remove(this.scene.children[nbChildren - 1]);
       this.scene.remove(this.scene.children[nbChildren - MAX_SELECTION]);
@@ -73,7 +73,7 @@ export class EventHandlerService {
       newPoints[0] = position;
     }
 
-    this.redrawScene(newPoints);
+    this.redrawTrack(newPoints);
     if (end) {
       this.dragIndex = -1;
     }
@@ -91,7 +91,7 @@ export class EventHandlerService {
     this.dragIndex = index;
   }
 
-  public redrawScene(newPoints: THREE.Vector3[]): void {
+  public redrawTrack(newPoints: THREE.Vector3[]): void {
     this.trackCreator.trackValid = true;
     if (!newPoints) {
       return;
@@ -111,5 +111,17 @@ export class EventHandlerService {
       this.addLinesToScene();
     }
 
+  }
+
+  public getPoints(): Array<THREE.Vector3> {
+    return this.trackCreator.points;
+  }
+
+  public getTrackValid(): boolean {
+    return this.trackCreator.trackValid;
+  }
+
+  public getIsClosed(): boolean {
+    return this.trackCreator.isClosed;
   }
 }
