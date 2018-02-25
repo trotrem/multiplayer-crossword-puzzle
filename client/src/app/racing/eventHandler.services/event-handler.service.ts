@@ -36,8 +36,9 @@ export class EventHandlerService {
 
     if (this.trackCreator.points.length > 0) {
       this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
+      this.addLinesToScene();
     }
-    this.addLinesToScene();
+
     this.trackCreator.points.push(position);
   }
 

@@ -20,6 +20,7 @@ export class TrackCreator {
         this.contraints = new Contraints();
         this.points = new Array<THREE.Vector3>();
         this.trackValid = true;
+        this.trackValid = false;
         this.isClosed = false;
     }
 
