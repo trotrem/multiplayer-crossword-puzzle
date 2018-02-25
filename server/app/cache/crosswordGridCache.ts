@@ -29,8 +29,8 @@ export class GridCache {
         return { blackCells: grid.blackCells, wordInfos: grid.wordInfos as WordInfo[] };
     }
 
-    public getWords(id: number): Word[] {
-        return this._grids[id].wordInfos.slice();
+    public getWords(id: number): string[] {
+        return this._grids[id].words.slice();
     }
 
     public addGrid(grid: Grid): void {
