@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { GridData, Direction } from "../../../../../common/communication/message";
+import { GridData, Direction, WordValidationParameters } from "../../../../../common/communication/message";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 
@@ -143,8 +143,12 @@ export class CrosswordGridComponent implements OnInit {
     .set("Authorization", "my-auth-token")
     .set("Content-Type", "application/json");
 
+    const parameters: WordValidationParameters = { gridId: this.id,
+                                                   wordIndex: word.id,
+                                                   word: word.cells.map((elem) => elem.content).join("") };
+
     this.http.post("http://localhost:3000/crossword/validate",
-                   JSON.stringify({ gridId: this.id, wordIndex: word.id, word: word.cells.map((elem) => elem.content).join("") }),
+                   JSON.stringify(parameters),
                    {headers: headers}).subscribe((data) => {});
   }
 

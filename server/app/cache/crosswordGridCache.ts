@@ -1,5 +1,4 @@
-import { GridData } from "../../../common/communication/message"
-
+import { GridData } from "../../../common/communication/message";
 
 interface Grid {
     words: Array<string>;
@@ -16,7 +15,7 @@ export class GridCache {
 
     private _grids: GridDictionary;
 
-    private constructor() { 
+    private constructor() {
         this._grids = {};
     }
 
@@ -25,7 +24,7 @@ export class GridCache {
     }
 
     public getGridData(id: number): GridData {
-        let grid = this._grids[id];
+        const grid: Grid = this._grids[id];
 
         return { id: grid.gridData.id, blackCells: grid.gridData.blackCells, wordInfos: grid.gridData.wordInfos };
     }
@@ -35,7 +34,7 @@ export class GridCache {
     }
 
     public addGrid(grid: Grid): GridData {
-        let id = this.gridUniqueKey();
+        const id: number = this.gridUniqueKey();
         grid.gridData.id = id;
         this._grids[id] = grid;
 
@@ -47,10 +46,10 @@ export class GridCache {
     }
 
     private gridUniqueKey(): number {
-        let key;
-        do{
+        let key: number;
+        do {
             key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-        }while( key in this._grids );
+        }while ( key in this._grids );
 
         return key;
     }

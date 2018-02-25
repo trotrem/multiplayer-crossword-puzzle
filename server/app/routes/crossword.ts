@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { GridData } from "../../../common/communication/message";
 import { Grid } from "./crossword/grid/grid";
+import { Word } from "./crossword/grid/word";
 import { WordsInventory } from "./crossword/grid/wordsInventory";
 import "reflect-metadata";
 import { injectable, } from "inversify";
@@ -17,14 +18,18 @@ module Route {
             words.createListOfWord();
             const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
-            words.ListOfWord.forEach((word, index) =>{
-                gridData.wordInfos.push({ id: index, direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
+            words.ListOfWord.forEach((word: Word, index: number) => {
+                gridData.wordInfos.push({ id: index,
+                                          direction: word.Direction,
+                                          x: word.PosX, y: word.PosY,
+                                          length: word.Length,
+                                          definition: "definition"});
             });
-            res.send(GridCache.Instance.addGrid({gridData, words:["TEST", "TEST", "TEST", "TEST", "TEST"]}));
+            res.send(GridCache.Instance.addGrid({gridData, words: ["TEST", "TEST", "TEST", "TEST", "TEST"]}));
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
-            let words: string[] = GridCache.Instance.getWords(req.body.gridId);
+            const words: string[] = GridCache.Instance.getWords(req.body.gridId);
             res.send(words.length > req.body.wordIndex && JSON.stringify(words[0] === req.body.word));
         }
 

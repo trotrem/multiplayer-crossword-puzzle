@@ -8,6 +8,12 @@ export enum Direction {
     Horizontal
 }
 
+export interface WordValidationParameters {
+    gridId: number;
+    word: string;
+    wordIndex: number;
+}
+
 export interface WordInfo {
     id: number;
     direction: Direction;
