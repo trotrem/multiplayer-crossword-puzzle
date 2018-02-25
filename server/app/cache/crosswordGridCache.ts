@@ -38,12 +38,13 @@ export class GridCache {
         return this._grids[id].words.map((word: CacheWord) => word.word).slice();
     }
 
-    public addGrid(grid: CacheGrid): GridData {
+    public addGrid(gridData: GridData, words: string[]): GridData {
         const id: number = this.gridUniqueKey();
-        grid.gridData.id = id;
-        this._grids[id] = grid;
+        gridData.id = id;
+        // disabled tslint on line because simplified arrow function conflicted with returned object.
+        this._grids[id] = { gridData: gridData, words: words.map((word: string): CacheWord => { return { word: word, validated: false } } ) }; // tslint:disable-line
 
-        return grid.gridData;
+        return gridData;
     }
 
     public removeGrid(id: number): void {

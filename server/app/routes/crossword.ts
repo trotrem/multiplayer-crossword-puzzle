@@ -25,7 +25,7 @@ module Route {
                                           length: word.Length,
                                           definition: "definition"});
             });
-            res.send(GridCache.Instance.addGrid({gridData, words: ["TEST", "TEST", "TEST", "TEST", "TEST"]}));
+            res.send(GridCache.Instance.addGrid(gridData, ["TEST", "TEST", "TEST", "TEST", "TEST"]));
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
