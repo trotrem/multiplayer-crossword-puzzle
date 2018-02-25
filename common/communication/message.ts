@@ -3,7 +3,7 @@ export interface Point {
     y: number;
 }
 
-interface WordInfo {
+export interface WordInfo {
     direction: string;
     x: number;
     y: number;
@@ -16,7 +16,7 @@ export class Message {
     public body: string;
 }
 
-export class GridData {
-    public blackCells: Array<Point>;
-    public wordInfos: Array<WordInfo>;
+export interface GridData {
+    blackCells: Array<Point>;
+    wordInfos: Array<WordInfo>;
 }

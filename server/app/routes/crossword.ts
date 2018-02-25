@@ -23,6 +23,10 @@ module Route {
             }
             res.send(JSON.stringify(gridData));
         }
+
+        public validateWord(req: Request, res: Response, next: NextFunction): void {
+            
+        }
     }
 }
 
