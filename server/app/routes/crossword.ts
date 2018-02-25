@@ -4,7 +4,6 @@ import { Grid } from "./crossword/grid/grid";
 import { WordsInventory } from "./crossword/grid/wordsInventory";
 import "reflect-metadata";
 import { injectable, } from "inversify";
-import { Direction } from "./crossword/grid/word";
 import { GridCache } from "../cache/crosswordGridCache";
 
 module Route {
@@ -19,8 +18,8 @@ module Route {
             const gridData: GridData = { blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
             for (const word of words.ListOfWord) {
-                const dir: string = word.Direction.valueOf() === Direction.X.valueOf() ? "h" : "v";
-                gridData.wordInfos.push({ direction: dir, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
+
+                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
             }
             GridCache.Instance.addGrid({...gridData, words:[]});
             res.send(JSON.stringify(gridData));
