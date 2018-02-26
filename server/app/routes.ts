@@ -30,7 +30,8 @@ export class Routes {
         router.delete("/racing/deleteTrack/:name", (req: Request, res: Response, next: NextFunction) =>
             this.racing.deleteTrack(req, res, next));
 
-        router.get("/racing/:name", (req: Request, res: Response, next: NextFunction) => this.racing.getTrackByName(req, res, next));
+        router.get("/racing/findOne/:name", (req: Request, res: Response, next: NextFunction) =>
+            this.racing.getTrackByName(req, res, next));
 
         router.get("/crossword-grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
 

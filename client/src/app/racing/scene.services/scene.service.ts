@@ -89,4 +89,7 @@ export class SceneServices {
   public getIsClosed(): boolean {
     return this.eventHandlerService.getIsClosed();
   }
+  public setIsClosed(isClosed: boolean): void {
+    this.eventHandlerService.setIsClosed(isClosed);
+  }
 }

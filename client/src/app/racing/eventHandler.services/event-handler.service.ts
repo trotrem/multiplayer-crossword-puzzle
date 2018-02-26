@@ -51,16 +51,13 @@ export class EventHandlerService {
   public onRightClick(event: MouseEvent): void {
     event.preventDefault();
     this.trackCreator.isClosed = false;
-
-    const nbChildren: number = this.scene.children.length;
     const newPoints: THREE.Vector3[] = this.trackCreator.points;
     this.trackCreator.points = [];
     newPoints.pop();
     if (newPoints.length > 0) {
       this.redrawTrack(newPoints);
     } else {
-      this.scene.remove(this.scene.children[nbChildren - 1]);
-      this.scene.remove(this.scene.children[nbChildren - MAX_SELECTION]);
+      this.removeTrack();
     }
   }
 
@@ -97,10 +94,10 @@ export class EventHandlerService {
     if (!newPoints) {
       return;
     }
-
-    while (this.scene.children.length > 0) {
-      this.scene.remove(this.scene.children[0]);
+    if (this.trackCreator.isClosed) {
+      newPoints[newPoints.length - 1] = newPoints[0];
     }
+    this.removeTrack();
     this.scene.add(this.trackCreator.createFirstPointContour(newPoints[0]));
     this.scene.add(this.trackCreator.createPoint(newPoints[0]));
     this.trackCreator.points.push(newPoints[0]);
@@ -114,6 +111,11 @@ export class EventHandlerService {
 
   }
 
+  public removeTrack(): void {
+    while (this.scene.children.length > 0) {
+      this.scene.remove(this.scene.children[0]);
+    }
+  }
   public getPoints(): Array<THREE.Vector3> {
     return this.trackCreator.points;
   }
@@ -124,5 +126,9 @@ export class EventHandlerService {
 
   public getIsClosed(): boolean {
     return this.trackCreator.isClosed;
+  }
+
+  public setIsClosed(isClosed: boolean): void {
+    this.trackCreator.isClosed = isClosed;
   }
 }

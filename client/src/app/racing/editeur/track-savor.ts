@@ -10,10 +10,16 @@ export class TrackSavor {
     private trackService: TrackServices;
     private submitValid: boolean;
     private startingZone: THREE.Line3;
-    public constructor(private http: HttpClient, private points: THREE.Vector3[]) {
+    private points: THREE.Vector3[];
+    public constructor(private http: HttpClient) {
         this.trackService = new TrackServices(this.http);
         this.track = new Track();
         this.submitValid = false;
+        this.points = new Array<THREE.Vector3>();
+    }
+
+    public setPoints(points: Array<THREE.Vector3>): void {
+        this.points = points;
     }
     public setTrack(track: Track): void {
         this.track = track;

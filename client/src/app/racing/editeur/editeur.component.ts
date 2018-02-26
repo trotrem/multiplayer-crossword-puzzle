@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { TrackSavor } from "./track-savor";
@@ -13,7 +13,7 @@ import { TrackServices } from "../track.services/track.service";
     styleUrls: ["./editeur.component.css"]
 })
 
-export class EditeurComponent implements OnInit  {
+export class EditeurComponent implements OnInit {
 
     @ViewChild("canvas")
 
@@ -37,10 +37,10 @@ export class EditeurComponent implements OnInit  {
         this.trackService = new TrackServices(this.http);
     }
 
-    public ngOnInit (): void {
+    public ngOnInit(): void {
         this.sceneService.initialize(this.canvas);
         const name: string = this.route.snapshot.paramMap.get("name");
-        this.trackSavor = new TrackSavor(this.http, this.sceneService.getPoints());
+        this.trackSavor = new TrackSavor(this.http);
         if (name !== null) {
             this.getTrack(name);
         }
@@ -58,6 +58,7 @@ export class EditeurComponent implements OnInit  {
         return this.notReadyToSubmit() || !this.trackSavor.getSubmitvalue();
     }
     public savetrack(): void {
+        this.trackSavor.setPoints(this.sceneService.getPoints());
         this.trackSavor.savetrack();
     }
     public onSubmit(f: NgForm): void {
@@ -69,6 +70,7 @@ export class EditeurComponent implements OnInit  {
             .subscribe((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
+                this.sceneService.setIsClosed(true);
                 this.sceneService.redraw(newPoints);
             });
     }

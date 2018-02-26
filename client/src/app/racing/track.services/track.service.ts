@@ -16,6 +16,11 @@ export class TrackServices {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
+        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name, {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
         this.http.post("http://localhost:3000/racing/track", JSON.stringify(track), {
             headers: headers
         })
@@ -24,6 +29,6 @@ export class TrackServices {
     }
 
     public getTrackService(name: string): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/racing/" + name);
+        return this.http.get<Track[]>("http://localhost:3000/racing/findOne/" + name);
     }
 }

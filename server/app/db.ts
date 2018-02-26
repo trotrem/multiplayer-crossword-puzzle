@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 
 const tracksSchema: mongoose.Schema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
     description: { type: String, default: "This is a track" },
     startingZone: mongoose.Schema.Types.Mixed,
     points: Array(mongoose.Schema.Types.Mixed),
