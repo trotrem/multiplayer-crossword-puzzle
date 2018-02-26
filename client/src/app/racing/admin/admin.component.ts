@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { AdminServices } from "./admin.services";
 import { Track } from "../editeur/track";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-admin",
@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
   styleUrls: ["./admin.component.css"]
 })
 export class AdminComponent implements OnInit {
+
   private adminServices: AdminServices;
 
   private tracks: Track[];
