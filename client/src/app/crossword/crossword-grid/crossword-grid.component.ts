@@ -83,14 +83,14 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public fetchEasyGrid(): void {
-
     this.http.get("http://localhost:3000/crossword-grid/easy")
       .subscribe((data) => {
         const gridData: GridData = data as GridData;
+        this.id = gridData.id;
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
-        gridData.wordInfos.forEach((word) => {
+        gridData.wordInfos.forEach((word, index) => {
           const cells: Cell[] = new Array<Cell>();
           for (let i: number = 0; i < word.length; i++) {
             if (word.direction === Direction.Horizontal) {
@@ -99,20 +99,20 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
         });
       });
   }
 
   public fetchMediumGrid(): void {
-
     this.http.get("http://localhost:3000/crossword-grid/medium")
       .subscribe((data) => {
         const gridData: GridData = data as GridData;
+        this.id = gridData.id;
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
-        gridData.wordInfos.forEach((word) => {
+        gridData.wordInfos.forEach((word, index) => {
           const cells: Cell[] = new Array<Cell>();
           for (let i: number = 0; i < word.length; i++) {
             if (word.direction === Direction.Horizontal) {
@@ -121,20 +121,20 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
         });
       });
   }
 
   public fetchHardGrid(): void {
-
     this.http.get("http://localhost:3000/crossword-grid/hard")
       .subscribe((data) => {
         const gridData: GridData = data as GridData;
+        this.id = gridData.id;
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
-        gridData.wordInfos.forEach((word) => {
+        gridData.wordInfos.forEach((word, index) => {
           const cells: Cell[] = new Array<Cell>();
           for (let i: number = 0; i < word.length; i++) {
             if (word.direction === Direction.Horizontal) {
@@ -143,7 +143,7 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
         });
       });
   }

@@ -47,12 +47,16 @@ module Route {
             grid.makeGrid();
             const words: WordsInventory = new WordsInventory(grid);
             words.createListOfWord();
-            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
-            for (const word of words.ListOfWord) {
-                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
-            }
-            res.send(JSON.stringify(gridData));
+            words.ListOfWord.forEach((word: Word, index: number) => {
+                gridData.wordInfos.push({ id: index,
+                                          direction: word.Direction,
+                                          x: word.PosX, y: word.PosY,
+                                          length: word.Length,
+                                          definition: "definition"});
+            });
+            res.send(GridCache.Instance.addGrid(gridData, ["TEST", "TEST", "TEST", "TEST", "TEST"]));
         }
 
         public getMediumGrid(req: Request, res: Response, next: NextFunction): void {
@@ -60,12 +64,16 @@ module Route {
             grid.makeGrid();
             const words: WordsInventory = new WordsInventory(grid);
             words.createListOfWord();
-            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
-            for (const word of words.ListOfWord) {
-                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
-            }
-            res.send(JSON.stringify(gridData));
+            words.ListOfWord.forEach((word: Word, index: number) => {
+                gridData.wordInfos.push({ id: index,
+                                          direction: word.Direction,
+                                          x: word.PosX, y: word.PosY,
+                                          length: word.Length,
+                                          definition: "definition"});
+            });
+            res.send(GridCache.Instance.addGrid(gridData, ["TEST", "TEST", "TEST", "TEST", "TEST"]));
         }
 
         public getHardGrid(req: Request, res: Response, next: NextFunction): void {
@@ -73,12 +81,16 @@ module Route {
             grid.makeGrid();
             const words: WordsInventory = new WordsInventory(grid);
             words.createListOfWord();
-            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
-            for (const word of words.ListOfWord) {
-                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
-            }
-            res.send(JSON.stringify(gridData));
+            words.ListOfWord.forEach((word: Word, index: number) => {
+                gridData.wordInfos.push({ id: index,
+                                          direction: word.Direction,
+                                          x: word.PosX, y: word.PosY,
+                                          length: word.Length,
+                                          definition: "definition"});
+            });
+            res.send(GridCache.Instance.addGrid(gridData, ["TEST", "TEST", "TEST", "TEST", "TEST"]));
         }
 
     }
