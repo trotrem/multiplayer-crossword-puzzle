@@ -36,10 +36,10 @@ describe("AdminService", () => {
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
       const track: Track = new Track();
       track.name = "Laurence";
-      http.get("http://localhost:3000/racing/deleteTrack/" + track.name).subscribe();
+      http.delete("http://localhost:3000/racing/deleteTrack/" + track.name).subscribe();
       backend.expectOne({
         url: "http://localhost:3000/racing/deleteTrack/" + track.name,
-        method: "GET"
+        method: "DELETE"
       });
     })
   )
