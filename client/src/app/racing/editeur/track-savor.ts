@@ -40,14 +40,14 @@ export class TrackSavor {
         return this.submitValid;
     }
     public savetrack(): void {
-        this.track.setPoints(this.points);
+        this.track.points = this.points;
         this.setStartingZone(new THREE.Line3(this.points[0], this.points[1]));
-        this.track.setStartingZone(this.startingZone);
+        this.track.startingZone = this.startingZone;
         this.trackService.saveTrackService(this.track);
     }
     public onSubmit(f: NgForm): void {
-        this.track.setDescription(f.value.description);
-        this.track.setName(f.value.name);
+        this.track.description = f.value.description;
+        this.track.name = f.value.name;
         this.submitValid = true;
     }
 }
