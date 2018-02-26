@@ -1,5 +1,6 @@
 import * as THREE from "three";
-
+const HALF_CIRCLE_DEGREES: number = 180;
+const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
 const PRECISION: number = 0.0000001;
 const EXPONENT: number = 2;
@@ -8,23 +9,23 @@ export class Contraints {
 
     public constructor() { }
 
-    private moreThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
-        const AB: number = Math.sqrt(Math.pow(position2.x - position1.x, EXPONENT) + Math.pow(position2.y - position1.y, EXPONENT));
-        const BC: number = Math.sqrt(Math.pow(position2.x - position3.x, EXPONENT) + Math.pow(position2.y - position3.y, EXPONENT));
-        const AC: number = Math.sqrt(Math.pow(position3.x - position1.x, EXPONENT) + Math.pow(position3.y - position1.y, EXPONENT));
-        let angle: number = Math.acos((BC * BC + AB * AB - AC * AC) / (EXPONENT * BC * AB));
-
-        const HALF_CIRCLE_DEGREES: number = 180;
-        angle = HALF_CIRCLE_DEGREES * (angle) / Math.PI;
-
-        const ANGLE_TRESHOLD: number = 45;
-        if (angle < ANGLE_TRESHOLD) {
-            return false;
+    private lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): boolean {
+        if ((HALF_CIRCLE_DEGREES * (this.calculAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
+            return true;
         }
 
-        return true;
+        return false;
+    }
+    private calculAngle(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): number {
+        return Math.acos((this.calculDistance(position2, position3) * this.calculDistance(position2, position3)
+            + this.calculDistance(position2, position1) * this.calculDistance(position2, position1)
+            - this.calculDistance(position3, position1) * this.calculDistance(position3, position1)) /
+            (EXPONENT * this.calculDistance(position2, position3) * this.calculDistance(position2, position1)));
     }
 
+    private calculDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
+        return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
+    }
     private twoLinesIntersect(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
@@ -59,12 +60,8 @@ export class Contraints {
     }
 
     private findIsInLine(position1: THREE.Vector3, position2: THREE.Vector3, intersection: THREE.Vector3): boolean {
-        const dist1: number = Math.sqrt(Math.pow(intersection.x - position1.x, EXPONENT)
-            + Math.pow(intersection.y - position1.y, EXPONENT));
-        const dist2: number = Math.sqrt(Math.pow(position2.x - intersection.x, EXPONENT)
-            + Math.pow(position2.y - intersection.y, EXPONENT));
-        const distTotal: number = Math.sqrt(Math.pow(position2.x - position1.x, EXPONENT) + Math.pow(position2.y - position1.y, EXPONENT));
-        if (Math.abs(dist1 + dist2 - distTotal) > PRECISION) {
+        if (Math.abs(this.calculDistance(intersection, position1) + this.calculDistance(position2, intersection)
+            - this.calculDistance(position2, position1)) > PRECISION) {
             return false;
         }
 
@@ -72,8 +69,7 @@ export class Contraints {
     }
 
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): boolean {
-        const dist: number = Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
-        if (dist < (MAX_LENGTH )) {
+        if (this.calculDistance(position1, position2) < (MAX_LENGTH)) {
             return true;
         }
 
@@ -100,14 +96,14 @@ export class Contraints {
         }
         const position0: THREE.Vector3 = arrayPoints[index - 1];
         // contraint about the angle
-        if (!this.moreThan45Degres(position2, position1, position0)) {
+        if (this.lessThan45Degres(position2, position1, position0)) {
             illegalPoints = this.checkArrayLength(illegalPoints);
             illegalPoints.push(position0);
             illegalPoints.push(position1);
         }
         // contraint about the angle when the track is close
 
-        if (position2 === arrayPoints[0] && !this.moreThan45Degres(arrayPoints[1], position2, position1)) {
+        if (position2 === arrayPoints[0] && this.lessThan45Degres(arrayPoints[1], position2, position1)) {
             illegalPoints = this.checkArrayLength(illegalPoints);
             illegalPoints.push(arrayPoints[1]);
             illegalPoints.push(position2);
@@ -123,4 +119,5 @@ export class Contraints {
 
         return illegalPoints;
     }
+
 }
