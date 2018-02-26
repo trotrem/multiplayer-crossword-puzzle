@@ -1,6 +1,5 @@
 import { TestBed, inject } from "@angular/core/testing";
 import { SceneServices } from "./scene.service";
-import * as THREE from "three";
 
 describe("SceneService", () => {
   // tslint:disable-next-line:prefer-const

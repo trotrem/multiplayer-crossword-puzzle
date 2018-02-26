@@ -4,7 +4,6 @@ import { Track } from "./../editeur/track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
-import * as THREE from "three";
 @Injectable()
 export class TrackServices {
 

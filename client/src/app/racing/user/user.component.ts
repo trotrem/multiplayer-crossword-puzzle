@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UserService } from "./user.service";
 import { Track } from "./../editeur/track";
 import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { PrintTrackService } from "./print-track.service";
 
 @Component({
@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
 
   private printTrackService: PrintTrackService;
 
-  public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
+  public constructor(private http: HttpClient, private router: Router) {
     this.userService = new UserService(this.http);
     this.tracks = new Array<Track>();
     this.printTrackService = new PrintTrackService();

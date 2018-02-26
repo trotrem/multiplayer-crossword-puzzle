@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef  } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { Track } from "./../editeur/track";
 import { ActivatedRoute } from "@angular/router";
-import { SceneServices } from "./../scene.services/scene.service";
-import { TrackServices } from "../track.services/track.service";
 import { PrintTrackService } from "./../user/print-track.service";
 import { UserService } from "../user/user.service";
 import { HttpClient } from "@angular/common/http";
@@ -20,8 +17,6 @@ export class RaceComponent implements OnInit {
   private canvasRef: ElementRef;
 
   private track: Track;
-
-  private sceneService: SceneServices;
 
   private printTrackService: PrintTrackService;
 

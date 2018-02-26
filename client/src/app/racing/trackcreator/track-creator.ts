@@ -1,5 +1,3 @@
-import { Injectable } from "@angular/core";
-import { SceneServices } from "../scene.services/scene.service";
 import * as THREE from "three";
 import { TrackValidator } from "./track-validator";
 const MAX_SELECTION: number = 2;
