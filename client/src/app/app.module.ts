@@ -19,6 +19,9 @@ import { TrackServices } from "./racing/editeur/track-services";
 const appRoutes: Routes = [
     { path: "editeur/:name", component: EditeurComponent },
     { path: "crossword", component: CrosswordGridComponent },
+    { path: "crossword/easy", component: CrosswordGridComponent },
+    { path: "crossword/medium", component: CrosswordGridComponent},
+    { path: "crossword/hard", component: CrosswordGridComponent},
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
     { path: "racing", component: RacingGameComponent },

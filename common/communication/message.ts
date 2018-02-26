@@ -14,6 +14,12 @@ export interface WordValidationParameters {
     wordIndex: number;
 }
 
+export enum Difficulty {
+    easy,
+    medium,
+    hard
+}
+
 export interface WordInfo {
     id: number;
     direction: Direction;

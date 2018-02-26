@@ -1,6 +1,9 @@
 import { GridWordInformation } from "./gridWordInformation";
 import { ExternalApiService } from "./externalApi.service";
 
+const OFFSET_FREQUENCY: number = 2; // Tag format : f:xxxx
+const NUMERICAL_VALUES: RegExp = /d/;
+
 export class WordRetriever {
 
     private static _instance: WordRetriever;
@@ -56,26 +59,30 @@ export class WordRetriever {
         let wordsWithDefinitions: GridWordInformation[] = [];
         const apiService: ExternalApiService = new ExternalApiService;
         const words: JSON = await apiService.requestWordInfo(word);
-        for (const index in words) {
-            if (words[index].hasOwnProperty("defs")
-                && (words[index].word.search(/d/) === -1)
-                && (words[index].word.length === word.length)) {
-                const nonNumericalTag: number = 2; // Tag format : f:xxxx
-                const tempFrequency: number = parseFloat(words[index].tags[0].substring(nonNumericalTag));
-                const tempWord: GridWordInformation = new GridWordInformation(
-                    words[index].word, words[index].defs, tempFrequency);
-                wordsWithDefinitions.push(tempWord);
-            }
-        }
+        wordsWithDefinitions = this.filterWords(wordsWithDefinitions, words, word);
         wordsWithDefinitions = this.removeDefinitions(wordsWithDefinitions);
-
-        wordsWithDefinitions.forEach((wordInfo: GridWordInformation, index: number) => {
-            if (wordInfo.definitions === undefined || wordInfo.definitions.length === 0) {
-                wordsWithDefinitions.splice(index, 1);
-            }
-        });
+        wordsWithDefinitions = this.removesWords(wordsWithDefinitions);
 
         return wordsWithDefinitions.filter(filter);
+    }
+
+    private filterWords(wordsWithDefinitions: GridWordInformation[], words: JSON, word: string): GridWordInformation[] {
+        for (const index in words) {
+            if (words[index].hasOwnProperty("defs") &&
+                (words[index].word.search(NUMERICAL_VALUES) === -1) &&
+                (words[index].word.length === word.length)) {
+                this.addWord(wordsWithDefinitions, words, index);
+            }
+        }
+
+        return wordsWithDefinitions;
+    }
+
+    private addWord(wordsWithDefinitions: GridWordInformation[], words: JSON, index: string): void {
+        const tempFrequency: number = parseFloat(words[index].tags[0].substring(OFFSET_FREQUENCY));
+        const tempWord: GridWordInformation = new GridWordInformation(
+            words[index].word, words[index].defs, tempFrequency);
+        wordsWithDefinitions.push(tempWord);
     }
 
     private removeDefinitions(wordsWithDefinitions: GridWordInformation[]): GridWordInformation[] {
@@ -84,6 +91,16 @@ export class WordRetriever {
                 .filter((def: string) => ((def.charAt(0) === "n") || (def.charAt(0) === "v")));
             wordInfo.definitions = wordInfo.definitions
                 .filter((def: string) => !(def.indexOf(wordInfo.word) >= 0));
+        });
+
+        return wordsWithDefinitions;
+    }
+
+    private removesWords(wordsWithDefinitions: GridWordInformation[]): GridWordInformation[] {
+        wordsWithDefinitions.forEach((wordInfo: GridWordInformation, index: number) => {
+            if (wordInfo.definitions === undefined || wordInfo.definitions.length === 0) {
+                wordsWithDefinitions.splice(index, 1);
+            }
         });
 
         return wordsWithDefinitions;

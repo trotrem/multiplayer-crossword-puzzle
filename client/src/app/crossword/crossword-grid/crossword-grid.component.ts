@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { GridData, Direction, WordValidationParameters } from "../../../../../common/communication/message";
+import { GridData, Direction, WordValidationParameters, Difficulty } from "../../../../../common/communication/message";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
-const BACKSPACE: number  = 8;
+const BACKSPACE: number = 8;
 const DELETE: number = 46;
 const UPPER_A: number = 65;
 const UPPER_Z: number = 90;
@@ -23,11 +23,12 @@ export class CrosswordGridComponent implements OnInit {
   @Input() public nbPlayers: number;
   private words: WordDescription[];
   private id: number;
+  private _difficulty: Difficulty = Difficulty.hard;
   public selectedWord: WordDescription = null;
 
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
-  private onBackgroundClick(): void {  // tslint:disable-line-
+  private onBackgroundClick(): void {  // tslint:disable-line
     this.setSelectedWord(null, false);
   }
 
@@ -44,37 +45,100 @@ export class CrosswordGridComponent implements OnInit {
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({content: "", selected: false, isBlack: false});
+        this.cells[i].push({ content: "", selected: false, isBlack: false });
       }
     }
     this.words = new Array<WordDescription>();
-
+    this.setDifficulty();
     this.fetchGrid();
+  }
+
+  private setDifficulty(): void {
+    if (location.pathname === "/crossword/easy") {
+      this._difficulty = Difficulty.easy;
+    } else if (location.pathname === "/crossword/medium") {
+      this._difficulty = Difficulty.medium;
+    }
+
   }
 
   public ngOnInit(): void {
   }
 
   public fetchGrid(): void {
-    this.http.get("http://localhost:3000/crossword/grid")
-    .subscribe((data) => {
-      const gridData: GridData = data as GridData;
-      this.id = gridData.id;
-      gridData.blackCells.forEach((cell) => {
+    if (this._difficulty === Difficulty.easy) {
+      this.fetchEasyGrid();
+    } else if (this._difficulty === Difficulty.medium) {
+      this.fetchMediumGrid();
+    } else {
+      this.fetchHardGrid();
+    }
+  }
+
+  public fetchEasyGrid(): void {
+
+    this.http.get("http://localhost:3000/crossword-grid/easy")
+      .subscribe((data) => {
+        const gridData: GridData = data as GridData;
+        gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
-      gridData.wordInfos.forEach((word) => {
-        const cells: Cell[] = new Array<Cell>();
-        for (let i: number = 0; i < word.length; i++) {
-          if (word.direction === Direction.Horizontal) {
-            cells.push(this.cells[word.y][word.x + i]);
-          } else if (word.direction === Direction.Vertical) {
-            cells.push(this.cells[word.y + i][word.x]);
+        gridData.wordInfos.forEach((word) => {
+          const cells: Cell[] = new Array<Cell>();
+          for (let i: number = 0; i < word.length; i++) {
+            if (word.direction === Direction.Horizontal) {
+              cells.push(this.cells[word.y][word.x + i]);
+            } else if (word.direction === Direction.Vertical) {
+              cells.push(this.cells[word.y + i][word.x]);
+            }
           }
-        }
-        this.words.push({id: word.id, direction: word.direction, cells: cells, definition: word.definition});
+          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+        });
       });
-    });
+  }
+
+  public fetchMediumGrid(): void {
+
+    this.http.get("http://localhost:3000/crossword-grid/medium")
+      .subscribe((data) => {
+        const gridData: GridData = data as GridData;
+        gridData.blackCells.forEach((cell) => {
+          this.cells[cell.y][cell.x].isBlack = true;
+        });
+        gridData.wordInfos.forEach((word) => {
+          const cells: Cell[] = new Array<Cell>();
+          for (let i: number = 0; i < word.length; i++) {
+            if (word.direction === Direction.Horizontal) {
+              cells.push(this.cells[word.y][word.x + i]);
+            } else if (word.direction === Direction.Vertical) {
+              cells.push(this.cells[word.y + i][word.x]);
+            }
+          }
+          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+        });
+      });
+  }
+
+  public fetchHardGrid(): void {
+
+    this.http.get("http://localhost:3000/crossword-grid/hard")
+      .subscribe((data) => {
+        const gridData: GridData = data as GridData;
+        gridData.blackCells.forEach((cell) => {
+          this.cells[cell.y][cell.x].isBlack = true;
+        });
+        gridData.wordInfos.forEach((word) => {
+          const cells: Cell[] = new Array<Cell>();
+          for (let i: number = 0; i < word.length; i++) {
+            if (word.direction === Direction.Horizontal) {
+              cells.push(this.cells[word.y][word.x + i]);
+            } else if (word.direction === Direction.Vertical) {
+              cells.push(this.cells[word.y + i][word.x]);
+            }
+          }
+          this.words.push({ id: this.id, direction: word.direction, cells: cells, definition: word.definition });
+        });
+      });
   }
 
   public onCellClicked(event: MouseEvent, cell: Cell): void {
@@ -104,12 +168,12 @@ export class CrosswordGridComponent implements OnInit {
   public onKeyPress(event: KeyboardEvent): void {
     if (this.selectedWord !== null) {
       if (event.keyCode >= UPPER_A &&
-          event.keyCode <= UPPER_Z ||
-          event.keyCode >= LOWER_A &&
-          event.keyCode <= LOWER_Z) {
+        event.keyCode <= UPPER_Z ||
+        event.keyCode >= LOWER_A &&
+        event.keyCode <= LOWER_Z) {
         this.write(String.fromCharCode(event.keyCode).toUpperCase(), this.selectedWord);
       }
-      if (event.keyCode === BACKSPACE  || event.keyCode === DELETE) {
+      if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
         this.erase(this.selectedWord);
       }
     }

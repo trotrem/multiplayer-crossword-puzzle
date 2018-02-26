@@ -1,5 +1,16 @@
 <h1>Mot croisé!</h1>
 <h2>Nombre de joueurs: {{nbPlayers}}</h2>
+<h2>Difficulté : </h2>
+<nav>
+  <a routerLink="/crossword/easy" routerLinkActive="active"> <p>Easy</p> </a>
+</nav>
+<nav>
+  <a routerLink="/crossword/medium" routerLinkActive="active"> <p>Medium</p> </a>
+</nav>
+<nav>
+  <a routerLink="/crossword/hard" routerLinkActive="active"> <p>Hard</p> </a>
+</nav>
+
 <div class="layout">
   <div class="crossword-grid" >
     <div class="crossword-row" *ngFor="let row of cells">
