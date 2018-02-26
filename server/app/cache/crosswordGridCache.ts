@@ -1,12 +1,17 @@
 import { GridData } from "../../../common/communication/message";
 
-interface Grid {
-    words: Array<string>;
+interface CacheWord {
+    word: string;
+    validated: boolean;
+}
+
+interface CacheGrid {
+    words: Array<CacheWord>;
     gridData: GridData;
 }
 
 interface GridDictionary {
-    [id: number]: Grid;
+    [id: number]: CacheGrid;
 }
 
 export class GridCache {
@@ -24,25 +29,30 @@ export class GridCache {
     }
 
     public getGridData(id: number): GridData {
-        const grid: Grid = this._grids[id];
+        const grid: CacheGrid = this._grids[id];
 
-        return { id: grid.gridData.id, blackCells: grid.gridData.blackCells, wordInfos: grid.gridData.wordInfos };
+        return { id: grid.gridData.id, blackCells: grid.gridData.blackCells.slice(), wordInfos: grid.gridData.wordInfos.slice() };
     }
 
     public getWords(id: number): string[] {
-        return this._grids[id].words.slice();
+        return this._grids[id].words.map((word: CacheWord) => word.word).slice();
     }
 
-    public addGrid(grid: Grid): GridData {
+    public addGrid(gridData: GridData, words: string[]): GridData {
         const id: number = this.gridUniqueKey();
-        grid.gridData.id = id;
-        this._grids[id] = grid;
+        gridData.id = id;
+        // disabled tslint on line because simplified arrow function conflicted with returned object.
+        this._grids[id] = { gridData: gridData, words: words.map((word: string): CacheWord => { return { word: word, validated: false } } ) }; // tslint:disable-line
 
-        return grid.gridData;
+        return gridData;
     }
 
     public removeGrid(id: number): void {
         delete this._grids[id];
+    }
+
+    public validateWord(gridId: number, wordIndex: number): void {
+        this._grids[gridId].words[wordIndex].validated = true;
     }
 
     private gridUniqueKey(): number {

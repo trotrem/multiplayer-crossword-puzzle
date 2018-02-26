@@ -6,4 +6,5 @@ export interface WordDescription {
     direction: Direction;
     cells: Cell[];
     definition: string;
+    word?: string;
 }

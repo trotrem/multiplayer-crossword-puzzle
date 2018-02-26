@@ -25,12 +25,17 @@ module Route {
                                           length: word.Length,
                                           definition: "definition"});
             });
-            res.send(GridCache.Instance.addGrid({gridData, words: ["TEST", "TEST", "TEST", "TEST", "TEST"]}));
+            res.send(GridCache.Instance.addGrid(gridData, ["TEST", "TEST", "TEST", "TEST", "TEST"]));
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
             const words: string[] = GridCache.Instance.getWords(req.body.gridId);
-            res.send(words.length > req.body.wordIndex && JSON.stringify(words[0] === req.body.word));
+            if (words.length > req.body.wordIndex && JSON.stringify(words[0] === req.body.word)) {
+                GridCache.Instance.validateWord(req.body.gridId, req.body.wordIndex);
+                res.send(true);
+            } else {
+                res.send(false);
+            }
         }
 
         public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {

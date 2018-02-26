@@ -13,6 +13,11 @@ const UPPER_Z: number = 90;
 const LOWER_A: number = 97;
 const LOWER_Z: number = 122;
 
+enum TipMode {
+  Definitions,
+  Cheat
+}
+
 @Component({
   selector: "app-crossword-grid",
   templateUrl: "./crossword-grid.component.html",
@@ -25,6 +30,8 @@ export class CrosswordGridComponent implements OnInit {
   private id: number;
   private _difficulty: Difficulty = Difficulty.hard;
   public selectedWord: WordDescription = null;
+  private TipMode: typeof TipMode = TipMode;
+  public tipMode: TipMode = TipMode.Definitions;
 
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
@@ -141,6 +148,13 @@ export class CrosswordGridComponent implements OnInit {
       });
   }
 
+  public toggleTipMode(): void {
+    if (this.horizontalWords[0].word === undefined) {
+      this.fetchCheatModeWords();
+    }
+    this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions;
+  }
+
   public onCellClicked(event: MouseEvent, cell: Cell): void {
     event.stopPropagation();
     for (const word of this.words) {
@@ -214,6 +228,18 @@ export class CrosswordGridComponent implements OnInit {
     this.http.post("http://localhost:3000/crossword/validate",
                    JSON.stringify(parameters),
                    {headers: headers}).subscribe((data) => {});
+  }
+
+  private fetchCheatModeWords(): void {
+    this.http.get("http://localhost:3000/crossword/cheatwords/" + this.id)
+    .subscribe((data) => {
+      const words: string[] = data as string[];
+      let i: number = 0;
+      for (const word of this.horizontalWords.concat(this.verticalWords)) {
+        word.word = words[i];
+        i++;
+      }
+    });
   }
 
   private setSelectedWord(word: WordDescription, selected: boolean): void {
