@@ -17,7 +17,6 @@ import {APP_BASE_HREF} from "@angular/common";
 import { TrackServices } from "./racing/track.services/track.service";
 import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
-import { EventHandlerService } from "./racing/eventHandler.services/event-handler.service";
 import { RaceComponent } from "./racing/race/race.component";
 
 const appRoutes: Routes = [
@@ -60,7 +59,6 @@ const appRoutes: Routes = [
         TrackServices,
         RenderService,
         BasicService,
-        EventHandlerService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]
