@@ -40,6 +40,7 @@ export class TrackCreator {
 
     public getPlacementPosition(event: MouseEvent, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
         let position: THREE.Vector3 = this.convertToWorldPosition(event, canvas, camera);
+
         if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
             position = this.points[0];
             this.isClosed = true;
