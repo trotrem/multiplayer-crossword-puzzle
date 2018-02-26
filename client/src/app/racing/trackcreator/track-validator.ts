@@ -7,10 +7,18 @@ const EXPONENT: number = 2;
 
 export class TrackValidator {
 
-    private points: Array<THREE.Vector3>;
+    private illegalPoints: Array<THREE.Vector3>;
 
     public constructor() {
-        this.points = new Array<THREE.Vector3>();
+        this.illegalPoints = new Array<THREE.Vector3>();
+    }
+
+    public getIllegalPoints(): Array<THREE.Vector3> {
+        return this.illegalPoints;
+    }
+
+    public setIllegalPoints(illegalPoints: Array<THREE.Vector3>): void {
+        this.illegalPoints = illegalPoints;
     }
 
     private lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): void {
@@ -88,7 +96,7 @@ export class TrackValidator {
 
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): void {
         if (this.calculateDistance(position1, position2) < (MAX_LENGTH)) {
-            this.points.push(new THREE.Vector3(0, 0, 0));
+            this.illegalPoints.push(new THREE.Vector3(0, 0, 0));
         }
     }
 
@@ -96,7 +104,7 @@ export class TrackValidator {
         const index: number = arrayPoints.indexOf(position1);
         this.lessThanLength(position1, position2);
         if (index === 0) {
-            return this.points;
+            return this.illegalPoints;
         }
         this.lessThan45Degres(position2, position1, arrayPoints[index - 1]);
 
@@ -107,21 +115,21 @@ export class TrackValidator {
             this.twoLinesIntersect(position2, position1, arrayPoints[i], arrayPoints[i + 1]);
         }
 
-        return this.points;
+        return this.illegalPoints;
     }
 
     private setPoints(position0: THREE.Vector3, position1: THREE.Vector3): void {
-        if (this.points.length === 1) {
-            this.points.pop();
+        if (this.illegalPoints.length === 1) {
+            this.illegalPoints.pop();
         }
-        this.points.push(position0);
-        this.points.push(position1);
+        this.illegalPoints.push(position0);
+        this.illegalPoints.push(position1);
 
     }
 
     public popPoints(): void {
-        while (this.points.length > 0) {
-            this.points.pop();
+        while (this.illegalPoints.length > 0) {
+            this.illegalPoints.pop();
         }
     }
 
