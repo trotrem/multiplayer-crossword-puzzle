@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { UserServices} from "./user-services";
+import { UserService} from "./user.service";
 import {Track } from "./../editeur/track";
 import { HttpClient } from "@angular/common/http";
+import { ActivatedRoute, Router } from "@angular/router";
+import { PrintTrackService } from "./print-track.service";
 
 @Component({
   selector: "app-user",
@@ -10,32 +12,47 @@ import { HttpClient } from "@angular/common/http";
 })
 export class UserComponent implements OnInit {
 
-  private userServices: UserServices;
+  private userService: UserService;
 
   private tracks: Track[];
 
   private selectedTrack: Track;
 
-  private isSelected: boolean;
+  private printTrackService: PrintTrackService;
 
-  public constructor(private http: HttpClient) {
-    this.userServices = new UserServices(this.http);
+  public constructor(private http: HttpClient, private route: ActivatedRoute,  private router: Router) {
+    this.userService = new UserService(this.http);
     this.tracks = new Array<Track>();
+    this.printTrackService = new PrintTrackService();
+    this.tracks = new Array< Track>();
+    this.selectedTrack = new Track();
   }
 
   public ngOnInit(): void {
     this.getTracks();
+    /*const name: string = this.route.snapshot.paramMap.get("name");
+    if (name !== null) {
+      this.getTrack(name);
+  }*/
   }
   private getTracks(): void {
-    this.userServices.getTracksService()
+    this.userService.getTracksService()
       .subscribe((res: Array<Track>) => {
         this.tracks = res;
       });
-    }
-  public onSelect(track: Track): void {
+  }
+
+  /*private getTrack(name: string): void {
+      this.userService.getTrackServiceByName(name)
+          .subscribe((res: Track[]) => {
+              this.selectedTrack = res[0];
+              this.printTrackService.drawTrack(this.selectedTrack.points);
+          });
+  }*/
+
+  public showTrack(track: Track): void {
     this.selectedTrack = track;
-    this.isSelected = true;
-    console.warn(this.selectedTrack);
-    }
+    this.router.navigateByUrl("/race/" + this.selectedTrack.name);
+  }
 
 }

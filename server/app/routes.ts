@@ -32,6 +32,8 @@ export class Routes {
 
         router.get("/racing/findOne/:name", (req: Request, res: Response, next: NextFunction) =>
             this.racing.getTrackByName(req, res, next));
+        router.get("/racing/user/:name", (req: Request, res: Response, next: NextFunction) =>
+            this.racing.getTrackByName(req, res, next));
 
         router.get("/crossword-grid", (req: Request, res: Response, next: NextFunction) => { this.crossword.getGrid(req, res, next); });
 

@@ -5,11 +5,14 @@ import "rxjs/add/operator/map";
 import { Track } from "./../editeur/track";
 
 @Injectable()
-export class UserServices {
+export class UserService {
     public constructor(private http: HttpClient) {
 
     }
     public getTracksService(): Observable<Track[]> {
         return this.http.get<Track[]>("http://localhost:3000/racing/user");
+    }
+    public getTrackServiceByName(name: string): Observable<Track[]> {
+        return this.http.get<Track[]>("http://localhost:3000/racing/user/" + name);
     }
 }

@@ -18,6 +18,7 @@ import { TrackServices } from "./racing/track.services/track.service";
 import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
 import { EventHandlerService } from "./racing/eventHandler.services/event-handler.service";
+import { RaceComponent } from "./racing/race/race.component";
 
 const appRoutes: Routes = [
     { path: "editeur/:name", component: EditeurComponent },
@@ -25,6 +26,8 @@ const appRoutes: Routes = [
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
+    { path: "race/:name", component: RaceComponent },
+    { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
     { path: "**", component: PageNotFoundComponent }
@@ -40,6 +43,7 @@ const appRoutes: Routes = [
         RacingGameComponent,
         CrosswordGridComponent,
         UserComponent,
+        RaceComponent,
     ],
     imports: [
         BrowserModule,
