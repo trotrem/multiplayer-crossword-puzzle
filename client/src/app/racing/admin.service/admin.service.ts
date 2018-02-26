@@ -5,7 +5,7 @@ import "rxjs/add/operator/map";
 import { Track } from "./../editeur/track";
 
 @Injectable()
-export class AdminServices {
+export class AdminService {
 
     public constructor(private http: HttpClient) {
 

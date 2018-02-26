@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { AdminServices } from "./admin.services";
+import { AdminService } from "./../admin.service/admin.service";
 import { Track } from "../editeur/track";
 import { Router } from "@angular/router";
 
@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 })
 export class AdminComponent implements OnInit {
 
-  private adminServices: AdminServices;
+  private adminService: AdminService;
 
   private tracks: Track[];
 
@@ -20,7 +20,7 @@ export class AdminComponent implements OnInit {
   private isSelected: boolean;
 
   public constructor(private http: HttpClient, private router: Router) {
-    this.adminServices = new AdminServices(this.http);
+    this.adminService = new AdminService(this.http);
     this.tracks = new Array<Track>();
     this.selectedTrack = new Track();
     this.isSelected = false;
@@ -31,7 +31,7 @@ export class AdminComponent implements OnInit {
   }
 
   private getTracks(): void {
-    this.adminServices.getTracksService()
+    this.adminService.getTracksService()
       .subscribe((res: Array<Track>) => {
         this.tracks = res;
       });
@@ -48,7 +48,7 @@ export class AdminComponent implements OnInit {
   }
 
   public deleteTrack(): void {
-    this.adminServices.deleteTrack(this.selectedTrack);
+    this.adminService.deleteTrack(this.selectedTrack);
   }
 
   public notReadyToModify(): boolean {
