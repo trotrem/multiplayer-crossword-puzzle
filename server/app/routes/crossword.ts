@@ -23,6 +23,46 @@ module Route {
             }
             res.send(JSON.stringify(gridData));
         }
+
+        public getEasyGrid(req: Request, res: Response, next: NextFunction): void {
+            const grid: Grid = new Grid();
+            grid.makeGrid();
+            const words: WordsInventory = new WordsInventory(grid);
+            words.createListOfWord();
+            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            gridData.blackCells = grid.BlackSquares;
+            for (const word of words.ListOfWord) {
+                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
+            }
+            res.send(JSON.stringify(gridData));
+        }
+
+        public getMediumGrid(req: Request, res: Response, next: NextFunction): void {
+            const grid: Grid = new Grid();
+            grid.makeGrid();
+            const words: WordsInventory = new WordsInventory(grid);
+            words.createListOfWord();
+            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            gridData.blackCells = grid.BlackSquares;
+            for (const word of words.ListOfWord) {
+                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
+            }
+            res.send(JSON.stringify(gridData));
+        }
+
+        public getHardGrid(req: Request, res: Response, next: NextFunction): void {
+            const grid: Grid = new Grid();
+            grid.makeGrid();
+            const words: WordsInventory = new WordsInventory(grid);
+            words.createListOfWord();
+            const gridData: GridData = { blackCells: [], wordInfos: [] };
+            gridData.blackCells = grid.BlackSquares;
+            for (const word of words.ListOfWord) {
+                gridData.wordInfos.push({ direction: word.Direction, x: word.PosX, y: word.PosY, length: word.Length, definition: "definition"});
+            }
+            res.send(JSON.stringify(gridData));
+        }
+
     }
 }
 

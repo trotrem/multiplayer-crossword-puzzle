@@ -8,6 +8,12 @@ export enum Direction {
     Horizontal
 }
 
+export enum Difficulty {
+    easy,
+    medium,
+    hard
+}
+
 export interface WordInfo {
     direction: Direction;
     x: number;

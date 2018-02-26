@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { GridData, Direction } from "../../../../../common/communication/message";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
+import {Router} from "@angular/router";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -47,15 +48,37 @@ export class CrosswordGridComponent implements OnInit {
       }
     }
     this.words = new Array<WordDescription>();
-
-    this.fetchGrid();
+    this.fetchEasyGrid();
   }
 
   public ngOnInit(): void {
   }
 
   public fetchGrid(): void {
+
     this.http.get("http://localhost:3000/crossword-grid")
+    .subscribe((data) => {
+      const gridData: GridData = data as GridData;
+      gridData.blackCells.forEach((cell) => {
+          this.cells[cell.y][cell.x].isBlack = true;
+        });
+      gridData.wordInfos.forEach((word) => {
+        const cells: Cell[] = new Array<Cell>();
+        for (let i: number = 0; i < word.length; i++) {
+          if (word.direction === Direction.Horizontal) {
+            cells.push(this.cells[word.y][word.x + i]);
+          } else if (word.direction === Direction.Vertical) {
+            cells.push(this.cells[word.y + i][word.x]);
+          }
+        }
+        this.words.push({direction: word.direction, cells: cells, definition: word.definition});
+      });
+    });
+  }
+
+  public fetchEasyGrid(): void {
+
+    this.http.get("http://localhost:3000/crossword-grid/easy")
     .subscribe((data) => {
       const gridData: GridData = data as GridData;
       gridData.blackCells.forEach((cell) => {
