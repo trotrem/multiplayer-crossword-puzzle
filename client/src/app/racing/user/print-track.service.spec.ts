@@ -6,10 +6,11 @@ import { PrintTrackService } from "./print-track.service";
 /* tslint:disable:no-magic-numbers */
 
 describe("PrintTrackService", () => {
+  // tslint:disable-next-line:prefer-const
   let canvas: HTMLCanvasElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PrintTrackService]
+      providers: [PrintTrackService,  HTMLCanvasElement]
     });
   });
 
