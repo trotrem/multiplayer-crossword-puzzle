@@ -1,20 +1,26 @@
 import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
-import { Track } from "./track";
+import { Track } from "./..//track-savor/track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
-
 @Injectable()
 export class TrackServices {
+
     public constructor(private http: HttpClient) {
     }
+
     public saveTrackService(track: Track): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.post("http://localhost:3000/track", JSON.stringify(track), {
+        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name, {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
+        this.http.post("http://localhost:3000/racing/track", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {
@@ -22,6 +28,7 @@ export class TrackServices {
     }
 
     public getTrackService(name: string): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/" + name);
+        return this.http.get<Track[]>("http://localhost:3000/racing/findOne/" + name);
+
     }
 }

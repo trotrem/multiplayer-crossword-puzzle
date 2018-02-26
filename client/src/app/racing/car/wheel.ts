@@ -1,6 +1,7 @@
 export const DEFAULT_WHEEL_RADIUS: number = 0.3505; // 245/50R18
 export const DEFAULT_WHEEL_MASS: number = 15;
 export const DEFAULT_FRICTION_COEFFICIENT: number = 1;
+const RADIUS_COEFFICIENT: number = 2;
 
 export class Wheel {
     private _angularVelocity: number;
@@ -17,8 +18,7 @@ export class Wheel {
     }
 
     public get inertia(): number {
-        // tslint:disable-next-line:no-magic-numbers
-        return this._mass * this._radius * this._radius / 2;
+        return this._mass * this._radius * this._radius / RADIUS_COEFFICIENT;
     }
 
     public get radius(): number {

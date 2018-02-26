@@ -14,7 +14,10 @@ import { CrosswordGridComponent } from "./crossword/crossword-grid/crossword-gri
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
-import { TrackServices } from "./racing/editeur/track-services";
+import { TrackServices } from "./racing/track.services/track.service";
+import { UserComponent } from "./racing/user/user.component";
+import {SceneServices} from "./racing/scene.services/scene.service";
+import { RaceComponent } from "./racing/race/race.component";
 
 const appRoutes: Routes = [
     { path: "editeur/:name", component: EditeurComponent },
@@ -24,6 +27,9 @@ const appRoutes: Routes = [
     { path: "crossword/hard", component: CrosswordGridComponent},
     { path: "editeur", component: EditeurComponent },
     { path: "admin", component: AdminComponent },
+    { path: "user", component: UserComponent },
+    { path: "race/:name", component: RaceComponent },
+    { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
     { path: "**", component: PageNotFoundComponent }
@@ -38,6 +44,8 @@ const appRoutes: Routes = [
         PageNotFoundComponent,
         RacingGameComponent,
         CrosswordGridComponent,
+        UserComponent,
+        RaceComponent,
     ],
     imports: [
         BrowserModule,
@@ -50,6 +58,7 @@ const appRoutes: Routes = [
           )
     ],
     providers: [
+        SceneServices,
         TrackServices,
         RenderService,
         BasicService,

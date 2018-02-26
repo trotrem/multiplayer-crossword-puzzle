@@ -1,13 +1,14 @@
 <p>
   admin works!
 </p>
-
-<ul class="tracks">
-  <li *ngFor="let track of tracks"
+<h5>Please select the name of the desired track  </h5>
+<ol class="tracks">
+  <li *ngFor="let track of tracks">
+  <a class="name"
       [class.selected]="track === selectedTrack"
-      (click)="onSelect(track)">
-    <span class="badge">{{track.name}}</span>
+      (click)="onSelect(track)">{{track.name}}</a>
   </li>
-</ul>
+</ol>
+
 <button [disabled]="notReadyToModify()" (click)="editTrack()">edit Track</button>
 <button [disabled]="notReadyToModify()" (click)="deleteTrack()">delete Track</button>

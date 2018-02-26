@@ -12,14 +12,6 @@ module Route {
 
         public savetrack(req: Request, res: Response, next: NextFunction): void {
             const myData: Document = new tracks(req.body);
-            // tslint:disable-next-line:only-arrow-functions
-            tracks.remove({ name: req.body.name }, function (err: Error): void {
-                if (!err) {
-                    console.warn("delete");
-                } else {
-                    console.error("erreur dans delete");
-                }
-            });
             myData.save()
                 .then((item: Document) => {
                     res.send("Name saved to database");
@@ -36,7 +28,7 @@ module Route {
                     console.warn("find all");
                     res.send(allTracks);
                 } else {
-                    console.error("erreur dans find all");
+                    console.error("unable to find all");
 
                 }
             });
@@ -46,10 +38,10 @@ module Route {
             // tslint:disable-next-line:only-arrow-functions
             tracks.remove({ name: req.params.name }, function (err: Error): void {
                 if (!err) {
-                    console.warn("delete");
+                    console.warn("delete one");
                     res.send("track delete");
                 } else {
-                    res.status(BAD_REQUEST_ERROR).send("erreur dans delete");
+                    res.status(BAD_REQUEST_ERROR).send("unable to delete");
                 }
             });
         }
@@ -61,7 +53,7 @@ module Route {
                     console.warn("find ");
                     res.send(track);
                 } else {
-                    console.error("erreur dans find ");
+                    console.error("unable to find ");
 
                 }
             });
