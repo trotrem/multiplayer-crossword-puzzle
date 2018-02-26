@@ -23,7 +23,7 @@ describe("SceneService", () => {
     event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 2, false, false, false, false, 0, null);
     service.initialize(canvas);
     service.onLeftClick(event);
-    expect(service.scene.children).toBeTruthy();
+    expect(service.getScene().children).toBeTruthy();
   }));
   it("should delete a point when rightClick ", inject([SceneServices], (service: SceneServices) => {
     spyOn(service, "onRightClick");
@@ -34,7 +34,7 @@ describe("SceneService", () => {
     service.initialize(canvas);
     service.onLeftClick(event);
     service.onRightClick(event);
-    expect(service.scene.children.length).toBe(0);
+    expect(service.getScene().children.length).toBe(0);
   }));
   it("should drag a point when Drag ", inject([SceneServices], (service: SceneServices) => {
     spyOn(service, "onDrag");

@@ -20,7 +20,6 @@ describe("PrintTrackService", () => {
   }));
   it("should create a scene", inject([PrintTrackService], (service: PrintTrackService) => {
     service.initialize(canvas);
-    service.createScene();
     expect(service.getScene().children.length).toBe(0);
   }));
   it("should draw a track", inject([PrintTrackService], (service: PrintTrackService) => {
@@ -34,7 +33,6 @@ describe("PrintTrackService", () => {
     points.push(position3);
     points.push(position4);
     service.initialize(canvas);
-    service.createScene();
     service.drawTrack(points);
     expect(service.getScene().children.length).toBe(3);
   }));

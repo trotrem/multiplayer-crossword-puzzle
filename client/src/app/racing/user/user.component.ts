@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService} from "./user.service";
-import {Track } from "./../editeur/track";
+import { UserService } from "./user.service";
+import { Track } from "./../editeur/track";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { PrintTrackService } from "./print-track.service";
@@ -20,11 +20,11 @@ export class UserComponent implements OnInit {
 
   private printTrackService: PrintTrackService;
 
-  public constructor(private http: HttpClient, private route: ActivatedRoute,  private router: Router) {
+  public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.userService = new UserService(this.http);
     this.tracks = new Array<Track>();
     this.printTrackService = new PrintTrackService();
-    this.tracks = new Array< Track>();
+    this.tracks = new Array<Track>();
     this.selectedTrack = new Track();
   }
 
@@ -42,4 +42,18 @@ export class UserComponent implements OnInit {
     this.router.navigateByUrl("/race/" + this.selectedTrack.name);
   }
 
+  public getAttributTracks(): Track[] {
+    return this.tracks;
+  }
+
+  public setTracks(track: Track[]): void {
+    this.tracks = track;
+  }
+  public getSelectedTrack(): Track {
+    return this.selectedTrack;
+  }
+
+  public setSelectedTrack(track: Track): void {
+    this.selectedTrack = track;
+  }
 }

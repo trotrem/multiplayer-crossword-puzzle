@@ -3,39 +3,30 @@ import * as THREE from "three";
 import { TrackCreator } from "./../trackcreator/track-creator";
 
 const MAX_SELECTION: number = 2;
-const CLICK: number = 0;
-const CONTEXTMENU: number = 1;
-const DRAGSTART: number = 2;
-const DRAG: number = 3;
-const DRAGEND: number = 4;
 
 @Injectable()
 export class SceneServices {
-  public camera: THREE.PerspectiveCamera;
+  private camera: THREE.PerspectiveCamera;
 
-  public scene: THREE.Scene;
+  private scene: THREE.Scene;
   private lines: Array<THREE.Line>;
 
   private renderer: THREE.Renderer;
   private dragIndex: number;
 
-  public canvas: HTMLCanvasElement;
+  private canvas: HTMLCanvasElement;
   private trackCreator: TrackCreator;
 
   public constructor() {
-
-  }
-  public getCamera(): THREE.PerspectiveCamera {
-    return this.camera;
+    this.dragIndex = -1;
+    this.trackCreator = new TrackCreator();
+    this.lines = new Array<THREE.Line>();
   }
 
   public initialize(canvas: HTMLCanvasElement): void {
     if (canvas) {
       this.canvas = canvas;
     }
-    this.dragIndex = -1;
-    this.trackCreator = new TrackCreator();
-    this.lines = new Array<THREE.Line>();
     this.createScene();
     this.animate();
   }
@@ -141,7 +132,7 @@ export class SceneServices {
 
   }
 
-  public removeTrack(): void {
+  private removeTrack(): void {
     while (this.scene.children.length > 0) {
       this.scene.remove(this.scene.children[0]);
     }
@@ -160,5 +151,49 @@ export class SceneServices {
 
   public setIsClosed(isClosed: boolean): void {
     this.trackCreator.isClosed = isClosed;
+  }
+
+  public getCamera(): THREE.PerspectiveCamera {
+    return this.camera;
+  }
+  public setCamera(camera: THREE.PerspectiveCamera): void {
+    this.camera = camera;
+  }
+  public getScene(): THREE.Scene {
+    return this.scene;
+  }
+  public setScene(scene: THREE.Scene): void {
+    this.scene = scene;
+  }
+
+  public getRenderer(): THREE.Renderer {
+    return this.renderer;
+  }
+
+  public setRenderer(renderer: THREE.Renderer): void {
+    this.renderer = renderer;
+  }
+
+  public getLines(): Array<THREE.Line> {
+    return this.lines;
+  }
+
+  public setLines(lines: Array<THREE.Line>): void {
+    this.lines = lines;
+  }
+
+  public getDragIndex(): number {
+    return this.dragIndex;
+  }
+
+  public setDragIndex(dragIndex: number): void {
+    this.dragIndex = dragIndex;
+  }
+
+  public getCanvas(): HTMLCanvasElement {
+    return this.canvas;
+  }
+  public setCanvas(canvas: HTMLCanvasElement): void {
+    this.canvas = canvas;
   }
 }

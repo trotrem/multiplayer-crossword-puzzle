@@ -4,19 +4,15 @@ import * as THREE from "three";
 @Injectable()
 export class PrintTrackService {
 
-  public camera: THREE.PerspectiveCamera;
+  private camera: THREE.PerspectiveCamera;
 
-  public scene: THREE.Scene;
+  private scene: THREE.Scene;
 
   private renderer: THREE.Renderer;
 
-  public canvas: HTMLCanvasElement;
+  private canvas: HTMLCanvasElement;
 
   public constructor() { }
-
-  public getScene(): THREE.Scene {
-    return this.scene;
-  }
 
   public initialize(canvas: HTMLCanvasElement): void {
     if (canvas) {
@@ -49,4 +45,31 @@ export class PrintTrackService {
       this.scene.add(line);
     }
   }
+  public getCamera(): THREE.PerspectiveCamera {
+    return this.camera;
+  }
+  public setCamera(camera: THREE.PerspectiveCamera): void {
+    this.camera = camera;
+  }
+  public getScene(): THREE.Scene {
+    return this.scene;
+  }
+  public setScene(scene: THREE.Scene): void {
+    this.scene = scene;
+  }
+
+  public getRenderer(): THREE.Renderer {
+    return this.renderer;
+  }
+
+  public setRenderer(renderer: THREE.Renderer): void {
+    this.renderer = renderer;
+  }
+  public getCanvas(): HTMLCanvasElement {
+    return this.canvas;
+  }
+  public setCanvas(canvas: HTMLCanvasElement): void {
+    this.canvas = canvas;
+  }
+
 }
