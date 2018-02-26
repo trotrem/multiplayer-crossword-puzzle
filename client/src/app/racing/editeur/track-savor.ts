@@ -16,10 +16,14 @@ export class TrackSavor {
         this.track = new Track();
         this.submitValid = false;
         this.points = new Array<THREE.Vector3>();
+        this.startingZone = new THREE.Line3;
     }
 
     public setPoints(points: Array<THREE.Vector3>): void {
         this.points = points;
+    }
+    public getPoints(): Array<THREE.Vector3> {
+        return this.points;
     }
     public setTrack(track: Track): void {
         this.track = track;

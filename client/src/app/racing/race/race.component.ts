@@ -36,6 +36,11 @@ export class RaceComponent implements OnInit {
       this.printTrackService = new PrintTrackService();
       this.userService = new UserService(this.http);
   }
+
+  public setTrack(track: Track): void {
+    this.track = track;
+    }
+
   public ngOnInit(): void {
     this.printTrackService.initialize(this.canvas);
     const name: string = this.route.snapshot.paramMap.get("name");

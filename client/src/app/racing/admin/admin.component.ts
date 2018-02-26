@@ -25,6 +25,21 @@ export class AdminComponent implements OnInit {
     this.selectedTrack = new Track();
     this.isSelected = false;
   }
+  public setTracks(tracks: Track[]): void {
+    this.tracks = tracks;
+  }
+  public setSelectedTrack(track: Track): void {
+    this.selectedTrack = track;
+  }
+  public setisSelected(bool: boolean): void {
+    this.isSelected = bool;
+  }
+  public getSelectedTrack(): Track {
+    return this.selectedTrack;
+  }
+  public getisSelected(): boolean {
+    return this.isSelected ;
+  }
 
   public ngOnInit(): void {
     this.getTracks();

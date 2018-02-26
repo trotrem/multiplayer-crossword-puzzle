@@ -35,12 +35,15 @@ export class EditeurComponent implements OnInit {
         this.track = new Track();
         this.sceneService = new SceneServices();
         this.trackService = new TrackServices(this.http);
+        this.trackSavor = new TrackSavor(this.http);
     }
+    public setTrack(track: Track): void {
+        this.track = track;
+      }
 
     public ngOnInit(): void {
         this.sceneService.initialize(this.canvas);
         const name: string = this.route.snapshot.paramMap.get("name");
-        this.trackSavor = new TrackSavor(this.http);
         if (name !== null) {
             this.getTrack(name);
         }
