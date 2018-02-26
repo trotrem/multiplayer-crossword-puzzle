@@ -27,7 +27,7 @@ export class Routes {
 
         router.get("/crossword/grid", (req: Request, res: Response, next: NextFunction) => this.crossword.getGrid(req, res, next));
 
-        router.get("/crossword/words", (req: Request, res: Response, next: NextFunction) =>
+        router.get("/crossword/cheatwords/:gridId", (req: Request, res: Response, next: NextFunction) =>
             this.crossword.getCheatModeWords(req, res, next));
 
         router.post("/crossword/validate", (req: Request, res: Response, next: NextFunction) =>
