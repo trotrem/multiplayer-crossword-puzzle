@@ -30,10 +30,6 @@ export class UserComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getTracks();
-    /*const name: string = this.route.snapshot.paramMap.get("name");
-    if (name !== null) {
-      this.getTrack(name);
-  }*/
   }
   private getTracks(): void {
     this.userService.getTracksService()
@@ -41,15 +37,6 @@ export class UserComponent implements OnInit {
         this.tracks = res;
       });
   }
-
-  /*private getTrack(name: string): void {
-      this.userService.getTrackServiceByName(name)
-          .subscribe((res: Track[]) => {
-              this.selectedTrack = res[0];
-              this.printTrackService.drawTrack(this.selectedTrack.points);
-          });
-  }*/
-
   public showTrack(track: Track): void {
     this.selectedTrack = track;
     this.router.navigateByUrl("/race/" + this.selectedTrack.name);

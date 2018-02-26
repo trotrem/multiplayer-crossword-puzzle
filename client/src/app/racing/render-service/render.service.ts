@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
 import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight } from "three";
 import { Car } from "../car/car";
+import { EventHandlerRenderService } from "./event-handler-render.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -25,6 +26,7 @@ export class RenderService {
     private scene: THREE.Scene;
     private stats: Stats;
     private lastDate: number;
+    private evenHandeler: EventHandlerRenderService;
 
     public get car(): Car {
         return this._car;
@@ -32,6 +34,7 @@ export class RenderService {
 
     public constructor() {
         this._car = new Car();
+        this.evenHandeler = new EventHandlerRenderService();
     }
 
     public async initialize(container: HTMLDivElement): Promise<void> {
@@ -100,41 +103,11 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
-    // TODO: Create an event handler service.
     public handleKeyDown(event: KeyboardEvent): void {
-        switch (event.keyCode) {
-            case ACCELERATE_KEYCODE:
-                this._car.isAcceleratorPressed = true;
-                break;
-            case LEFT_KEYCODE:
-                this._car.steerLeft();
-                break;
-            case RIGHT_KEYCODE:
-                this._car.steerRight();
-                break;
-            case BRAKE_KEYCODE:
-                this._car.brake();
-                break;
-            default:
-                break;
-        }
+       this.evenHandeler.handleKeyDown(event, this.car);
     }
 
-    // TODO: Create an event handler service.
     public handleKeyUp(event: KeyboardEvent): void {
-        switch (event.keyCode) {
-            case ACCELERATE_KEYCODE:
-                this._car.isAcceleratorPressed = false;
-                break;
-            case LEFT_KEYCODE:
-            case RIGHT_KEYCODE:
-                this._car.releaseSteering();
-                break;
-            case BRAKE_KEYCODE:
-                this._car.releaseBrakes();
-                break;
-            default:
-                break;
-        }
+       this.evenHandeler.handleKeyUp(event, this.car);
     }
 }
