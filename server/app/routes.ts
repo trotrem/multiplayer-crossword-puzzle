@@ -33,11 +33,17 @@ export class Routes {
         router.post("/crossword/validate", (req: Request, res: Response, next: NextFunction) =>
             this.crossword.validateWord(req, res, next));
 
-        router.get("/crossword-grid/easy", (req: Request, res: Response, next: NextFunction) => { this.crossword.getEasyGrid(req, res, next); });
+        router.get("/crossword-grid/easy", (req: Request, res: Response, next: NextFunction) => {
+            this.crossword.getEasyGrid(req, res, next);
+        });
 
-        router.get("/crossword-grid/medium", (req: Request, res: Response, next: NextFunction) => { this.crossword.getMediumGrid(req, res, next); });
+        router.get("/crossword-grid/medium", (req: Request, res: Response, next: NextFunction) => {
+            this.crossword.getMediumGrid(req, res, next);
+        });
 
-        router.get("/crossword-grid/hard", (req: Request, res: Response, next: NextFunction) => { this.crossword.getHardGrid(req, res, next); });
+        router.get("/crossword-grid/hard", (req: Request, res: Response, next: NextFunction) => {
+            this.crossword.getHardGrid(req, res, next);
+        });
 
         router.delete("/:name/deleteTrack", (req: Request, res: Response, next: NextFunction) => this.racing.deleteTrack(req, res, next));
 

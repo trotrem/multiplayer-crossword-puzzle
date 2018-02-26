@@ -2,7 +2,7 @@
 // import { ExternalApiService } from "../lexiconAPI/externalApi.service";
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
-import { Point } from "../../../../../common/communication/message"
+import { Point } from "../../../../common/communication/message";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;

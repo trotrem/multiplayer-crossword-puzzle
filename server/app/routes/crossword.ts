@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { GridData } from "../../../common/communication/message";
-import { Grid } from "./crossword/grid/grid";
-import { Word } from "./crossword/grid/word";
-import { WordsInventory } from "./crossword/grid/wordsInventory";
+import { Grid } from "../../models/crossword/grid/grid";
+import { Word } from "../../models/crossword/grid/word";
+import { WordsInventory } from "../../models/crossword/grid/wordsInventory";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { GridCache } from "../cache/crosswordGridCache";

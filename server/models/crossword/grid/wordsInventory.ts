@@ -1,7 +1,7 @@
 import { Word } from "./word";
 import { Grid } from "./grid";
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
-import { Direction } from "../../../../../common/communication/message";
+import { Direction } from "../../../../common/communication/message";
 
 export class WordsInventory {
     private _grid: Grid;
@@ -66,9 +66,7 @@ export class WordsInventory {
     }
 
     private fillWord(): void {
-        let word: Word;
-        for (let i = 0; i < this._listOfWord.length; i++) {
-            word = this._listOfWord[i];
+        for (const word of this._listOfWord) {
             let wordFilled: string = "";
             for (let letter: number = 0; letter < word.Length; letter++) {
                 wordFilled += "?";
