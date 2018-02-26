@@ -7,16 +7,9 @@ export const DEFAULT_MINIMUM_RPM: number = 800;
 export const DEFAULT_SHIFT_RPM: number = 5500;
 export const DEFAULT_TRANSMISSION_EFFICIENCY: number = 0.7;
 export const DEFAULT_MAX_RPM: number = 7000;
-/* tslint:disable: no-magic-numbers */
-export const DEFAULT_GEAR_RATIOS: number[] = [
-    4.4,
-    2.59,
-    1.8,
-    1.34,
-    1,
-    0.75
-];
-/* tslint:enable: no-magic-numbers */
+// tslint:disable-next-line:no-magic-numbers
+export const DEFAULT_GEAR_RATIOS: number[] = [ 4.4 , 2.59 , 1.8 , 1.34 , 1 , 0.75];
+const RPM_COEFFICIENT: number = 2;
 
 export class Engine {
     private _currentGear: number;
@@ -62,6 +55,7 @@ export class Engine {
             transmissionEfficiency = DEFAULT_TRANSMISSION_EFFICIENCY;
         }
 
+        // tslint:disable-next-line:no-suspicious-comment
         // TODO: check all interactions with RPM values, such as downshift vs minimumrpm, upshift maximum, etc.
         this.gearRatios = gearRatios;
         this.driveRatio = driveRatio;
@@ -72,6 +66,9 @@ export class Engine {
 
         this._currentGear = 0;
         this._rpm = this.minimumRPM;
+    }
+    private checkRpmInteractions(): void {
+
     }
 
     public update(speed: number, wheelRadius: number): void {
@@ -104,8 +101,8 @@ export class Engine {
         }
 
         const wheelAngularVelocity: number = speed / wheelRadius;
-        // tslint:disable-next-line: no-magic-numbers
-        let rpm: number = (wheelAngularVelocity / (Math.PI * 2)) * MIN_TO_SEC * this.driveRatio * this.gearRatios[this._currentGear];
+        let rpm: number = (wheelAngularVelocity / (Math.PI * RPM_COEFFICIENT)) *
+        MIN_TO_SEC * this.driveRatio * this.gearRatios[this._currentGear];
         rpm = rpm < this.minimumRPM ? this.minimumRPM : rpm;
 
         return rpm > DEFAULT_MAX_RPM ? DEFAULT_MAX_RPM : rpm;

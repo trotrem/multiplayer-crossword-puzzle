@@ -46,11 +46,18 @@ export class EditeurComponent implements OnInit {
         }
 
     }
-
-    public updateScene(eventNumber: number, event: MouseEvent): void {
-        this.sceneService.updateScene(event, eventNumber);
+    public onLeftClick(event: MouseEvent): void {
+        this.sceneService.onLeftClick(event);
     }
-
+    public onRightClick(event: MouseEvent): void {
+        this.sceneService.onRightClick(event);
+    }
+    public onDrag(event: MouseEvent, end: boolean): void {
+        this.sceneService.onDrag(event, end);
+    }
+    public getDraggedPointIndex(event: MouseEvent, end: boolean): void {
+        this.sceneService.getDraggedPointIndex(event);
+    }
     public notReadyToSubmit(): boolean {
         return !this.sceneService.getIsClosed() || !this.sceneService.getTrackValid();
     }
@@ -71,7 +78,7 @@ export class EditeurComponent implements OnInit {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
                 this.sceneService.setIsClosed(true);
-                this.sceneService.redraw(newPoints);
+                this.sceneService.redrawTrack(newPoints);
             });
     }
 

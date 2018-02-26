@@ -4,7 +4,7 @@ import * as THREE from "three";
 // "magic numers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 
-describe("Contraints", () => {
+describe("TrackValoidator", () => {
     const trackValidator: TrackValidator = new TrackValidator();
     it("should create the object contraints", () => {
         expect(trackValidator).toBeDefined();
@@ -25,7 +25,7 @@ describe("Contraints", () => {
         const position1: THREE.Vector3 = new THREE.Vector3(-24, -22.6, 0);
         points.push(position1);
         const position2: THREE.Vector3 = new THREE.Vector3(-10.3, -23.3, 0);
-        expect(trackValidator.isValid(points, position1, position2).length).toBe(1);
+        expect(trackValidator.isValid(points, position1, position2).length).toBe(3);
     });
 
     it("shouldnt accept two segments crossing", () => {
@@ -36,6 +36,6 @@ describe("Contraints", () => {
         const position1: THREE.Vector3 = new THREE.Vector3(12, 6, 0);
         points.push(position1);
         const position2: THREE.Vector3 = new THREE.Vector3(-42, 7.7, 0);
-        expect(trackValidator.isValid(points, position1, position2).length).toBe(2);
+        expect(trackValidator.isValid(points, position1, position2).length).toBe(5);
     });
 });
