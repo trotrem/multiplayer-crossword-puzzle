@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { SceneServices } from "../scene.services/scene.service";
 import * as THREE from "three";
-import { Contraints } from "./../editeur/contraints";
+import { TrackValidator } from "./../editeur/track-validator";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -12,12 +12,12 @@ export class TrackCreator {
 
     public isClosed: boolean;
 
-    public contraints: Contraints;
+    public trackValidator: TrackValidator;
 
     public trackValid: boolean;
 
     public constructor() {
-        this.contraints = new Contraints();
+        this.trackValidator = new TrackValidator();
         this.points = new Array<THREE.Vector3>();
         this.trackValid = true;
         this.trackValid = false;
@@ -68,7 +68,7 @@ export class TrackCreator {
         let lines: Array<THREE.Line> = new Array<THREE.Line>();
         let illegalPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
         let color: number;
-        illegalPoints = this.contraints.isValid(this.points, lastPos, newPos);
+        illegalPoints = this.trackValidator.isValid(this.points, lastPos, newPos);
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
@@ -85,6 +85,7 @@ export class TrackCreator {
         lineGeometry.vertices.push(newPos);
         const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
         lines.push(line);
+        this.trackValidator.popPoints();
 
         return lines;
     }
