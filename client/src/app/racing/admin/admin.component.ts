@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { AdminService } from "./../admin.service/admin.service";
-import { Track } from "../editeur/track";
+import { Track } from "../track-savor/track";
 import { Router } from "@angular/router";
 
 @Component({

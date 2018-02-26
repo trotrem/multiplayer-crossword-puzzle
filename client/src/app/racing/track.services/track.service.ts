@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
-import { Track } from "./../editeur/track";
+import { Track } from "./..//track-savor/track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";

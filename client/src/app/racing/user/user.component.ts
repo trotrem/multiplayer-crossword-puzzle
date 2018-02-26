@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "./user.service";
-import { Track } from "./../editeur/track";
+import { UserService } from "../user.service/user.service";
+import { Track } from "./../track-savor/track";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { PrintTrackService } from "./print-track.service";
+import { PrintTrackService } from "../print-track.service/print-track.service";
 
 @Component({
   selector: "app-user",

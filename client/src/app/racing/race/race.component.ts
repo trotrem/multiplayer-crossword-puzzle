@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef  } from "@angular/core";
-import { Track } from "./../editeur/track";
+import { Track } from "./../track-savor/track";
 import { ActivatedRoute } from "@angular/router";
-import { PrintTrackService } from "./../user/print-track.service";
-import { UserService } from "../user/user.service";
+import { PrintTrackService } from "../print-track.service/print-track.service";
+import { UserService } from "../user.service/user.service";
 import { HttpClient } from "@angular/common/http";
 
 @Component({

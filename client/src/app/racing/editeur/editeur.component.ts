@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
-import { TrackSavor } from "./track-savor";
-import { Track } from "./track";
+import { TrackSavor } from "../track-savor/track-savor";
+import { Track } from "../track-savor/track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./../scene.services/scene.service";
 import { TrackServices } from "../track.services/track.service";
