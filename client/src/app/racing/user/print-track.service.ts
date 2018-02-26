@@ -12,7 +12,11 @@ export class PrintTrackService {
 
   public canvas: HTMLCanvasElement;
 
-  public constructor() {}
+  public constructor() { }
+
+  public getScene(): THREE.Scene {
+    return this.scene;
+  }
 
   public initialize(canvas: HTMLCanvasElement): void {
     if (canvas) {
@@ -37,10 +41,10 @@ export class PrintTrackService {
   }
 
   public drawTrack(points: THREE.Vector3[]): void {
-    for (let i: number = 1 ; i < points.length; i++) {
+    for (let i: number = 1; i < points.length; i++) {
       const lineGeometry: THREE.Geometry = new THREE.Geometry;
-      lineGeometry.vertices.push(points[ i - 1]);
-      lineGeometry.vertices.push(points[ i ]);
+      lineGeometry.vertices.push(points[i - 1]);
+      lineGeometry.vertices.push(points[i]);
       const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6 }));
       this.scene.add(line);
     }
