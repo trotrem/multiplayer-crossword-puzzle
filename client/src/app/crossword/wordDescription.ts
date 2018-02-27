@@ -1,5 +1,5 @@
 import {Cell} from "./cell";
-import { Direction } from "../../../../common/communication/message";
+import { Direction } from "../../../../common/communication/types";
 
 export interface WordDescription {
     id: number;

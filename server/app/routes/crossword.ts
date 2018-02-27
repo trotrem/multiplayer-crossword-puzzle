@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { GridData, Difficulty } from "../../../common/communication/message";
+import { GridData, Difficulty } from "../../../common/communication/types";
 import { Word } from "../../models/crossword/grid/word";
 import "reflect-metadata";
 import { injectable, } from "inversify";
@@ -12,9 +12,14 @@ module Route {
     export class CrosswordHandler {
         public getGrid(req: Request, res: Response, next: NextFunction): void {
             const placeholderGrid: PlaceholderGrid = new PlaceholderGrid(req.params.difficulty as Difficulty);
+            const gridData: GridData = this.fillGridData(placeholderGrid);
+            res.send(GridCache.Instance.addGrid(gridData, placeholderGrid.Words.map((x: Word): string => x.GridWord.word)));
+        }
+
+        private fillGridData(grid: PlaceholderGrid): GridData {
             const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
-            gridData.blackCells = placeholderGrid.Grid.BlackSquares;
-            placeholderGrid.WordList.ListOfWord.forEach((word: Word, index: number) => {
+            gridData.blackCells = grid.BlackSquares;
+            grid.Words.forEach((word: Word, index: number) => {
                 gridData.wordInfos.push({ id: index,
                                           direction: word.Direction,
                                           x: word.PosX,
@@ -22,9 +27,8 @@ module Route {
                                           length: word.Length,
                                           definition: word.GridWord.definitions[0]});
             });
-            res.send(GridCache.Instance.addGrid(gridData,
-                                                placeholderGrid.WordList.ListOfWord.map(
-                                                     (wordInfo: Word): string => wordInfo.GridWord.word)));
+
+            return gridData;
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
