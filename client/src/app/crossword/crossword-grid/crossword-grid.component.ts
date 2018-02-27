@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { GridData, Direction, WordValidationParameters, Difficulty } from "../../../../../common/communication/message";
+import { GridData, Direction, WordValidationParameters, Difficulty } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 

@@ -1,4 +1,4 @@
-import { GridData } from "../../../common/communication/message";
+import { GridData } from "../../../common/communication/types";
 
 interface CacheWord {
     word: string;

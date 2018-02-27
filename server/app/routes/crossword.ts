@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { GridData, Difficulty } from "../../../common/communication/message";
+import { GridData, Difficulty } from "../../../common/communication/types";
 import { Word } from "../../models/crossword/grid/word";
 import "reflect-metadata";
 import { injectable, } from "inversify";
