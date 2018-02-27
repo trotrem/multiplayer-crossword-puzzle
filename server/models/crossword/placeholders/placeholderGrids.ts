@@ -4,7 +4,7 @@
 import { Grid } from "../grid/grid";
 import { WordsInventory } from "../grid/wordsInventory";
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
-import { Difficulty, Point } from "../../../../common/communication/types";
+import { Difficulty, IPoint } from "../../../../common/communication/types";
 import { Word } from "../grid/word";
 import { Square } from "../grid/square";
 
@@ -30,7 +30,7 @@ export class PlaceholderGrid {
         return this.grid.Grid;
     }
 
-    public get BlackSquares(): Point[] {
+    public get BlackSquares(): IPoint[] {
         return this.grid.BlackSquares;
     }
 

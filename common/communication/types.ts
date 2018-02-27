@@ -1,4 +1,4 @@
-export interface Point {
+export interface IPoint {
     x: number;
     y: number;
 }
@@ -8,7 +8,7 @@ export enum Direction {
     Horizontal
 }
 
-export interface WordValidationParameters {
+export interface IWordValidationParameters {
     gridId: number;
     word: string;
     wordIndex: number;
@@ -16,7 +16,7 @@ export interface WordValidationParameters {
 
 export type Difficulty = "easy" | "medium" | "hard";
 
-export interface WordInfo {
+export interface IWordInfo {
     id: number;
     direction: Direction;
     x: number;
@@ -30,8 +30,8 @@ export class Message {
     public body: string;
 }
 
-export interface GridData {
+export interface IGridData {
     id: number;
-    blackCells: Array<Point>;
-    wordInfos: Array<WordInfo>;
+    blackCells: Array<IPoint>;
+    wordInfos: Array<IWordInfo>;
 }

@@ -1,4 +1,4 @@
-import { GridData } from "../../../common/communication/types";
+import { IGridData } from "../../../common/communication/types";
 
 interface CacheWord {
     word: string;
@@ -7,7 +7,7 @@ interface CacheWord {
 
 interface CacheGrid {
     words: Array<CacheWord>;
-    gridData: GridData;
+    gridData: IGridData;
 }
 
 interface GridDictionary {
@@ -28,7 +28,7 @@ export class GridCache {
         return ((this._instance) || (this._instance = new this()));
     }
 
-    public getGridData(id: number): GridData {
+    public getGridData(id: number): IGridData {
         const grid: CacheGrid = this._grids[id];
 
         return { id: grid.gridData.id, blackCells: grid.gridData.blackCells.slice(), wordInfos: grid.gridData.wordInfos.slice() };
@@ -38,7 +38,7 @@ export class GridCache {
         return this._grids[id].words.map((word: CacheWord) => word.word).slice();
     }
 
-    public addGrid(gridData: GridData, words: string[]): GridData {
+    public addGrid(gridData: IGridData, words: string[]): IGridData {
         const id: number = this.gridUniqueKey();
         gridData.id = id;
         // disabled tslint on line because simplified arrow function conflicted with returned object.

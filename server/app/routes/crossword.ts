@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { GridData, Difficulty } from "../../../common/communication/types";
+import { IGridData, Difficulty } from "../../../common/communication/types";
 import { Word } from "../../models/crossword/grid/word";
 import "reflect-metadata";
 import { injectable, } from "inversify";
@@ -12,12 +12,12 @@ module Route {
     export class CrosswordHandler {
         public getGrid(req: Request, res: Response, next: NextFunction): void {
             const placeholderGrid: PlaceholderGrid = new PlaceholderGrid(req.params.difficulty as Difficulty);
-            const gridData: GridData = this.fillGridData(placeholderGrid);
+            const gridData: IGridData = this.fillGridData(placeholderGrid);
             res.send(GridCache.Instance.addGrid(gridData, placeholderGrid.Words.map((x: Word): string => x.GridWord.word)));
         }
 
-        private fillGridData(grid: PlaceholderGrid): GridData {
-            const gridData: GridData = { id: 0, blackCells: [], wordInfos: [] };
+        private fillGridData(grid: PlaceholderGrid): IGridData {
+            const gridData: IGridData = { id: 0, blackCells: [], wordInfos: [] };
             gridData.blackCells = grid.BlackSquares;
             grid.Words.forEach((word: Word, index: number) => {
                 gridData.wordInfos.push({ id: index,
