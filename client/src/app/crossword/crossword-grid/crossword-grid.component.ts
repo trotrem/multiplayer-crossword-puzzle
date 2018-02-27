@@ -28,7 +28,7 @@ export class CrosswordGridComponent implements OnInit {
   @Input() public nbPlayers: number;
   private words: WordDescription[];
   private id: number;
-  private _difficulty: Difficulty = Difficulty.hard;
+  private _difficulty: Difficulty = "easy";
   public selectedWord: WordDescription = null;
   private TipMode: typeof TipMode = TipMode;
   public tipMode: TipMode = TipMode.Definitions;
@@ -61,91 +61,34 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private setDifficulty(): void {
-    if (location.pathname === "/crossword/easy") {
-      this._difficulty = Difficulty.easy;
-    } else if (location.pathname === "/crossword/medium") {
-      this._difficulty = Difficulty.medium;
-    }
-
+    this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
+                       location.pathname === "/crossword/medium" ? "medium" :
+                       "hard";
   }
 
   public ngOnInit(): void {
   }
 
   public fetchGrid(): void {
-    if (this._difficulty === Difficulty.easy) {
-      this.fetchEasyGrid();
-    } else if (this._difficulty === Difficulty.medium) {
-      this.fetchMediumGrid();
-    } else {
-      this.fetchHardGrid();
-    }
-  }
-
-  public fetchEasyGrid(): void {
-    this.http.get("http://localhost:3000/crossword-grid/easy")
-      .subscribe((data) => {
-        const gridData: GridData = data as GridData;
-        this.id = gridData.id;
-        gridData.blackCells.forEach((cell) => {
-          this.cells[cell.y][cell.x].isBlack = true;
-        });
-        gridData.wordInfos.forEach((word, index) => {
-          const cells: Cell[] = new Array<Cell>();
-          for (let i: number = 0; i < word.length; i++) {
-            if (word.direction === Direction.Horizontal) {
-              cells.push(this.cells[word.y][word.x + i]);
-            } else if (word.direction === Direction.Vertical) {
-              cells.push(this.cells[word.y + i][word.x]);
-            }
-          }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
-        });
+    this.http.get("http://localhost:3000/crossword/grid/" + this._difficulty.valueOf())
+    .subscribe((data) => {
+      const gridData: GridData = data as GridData;
+      this.id = gridData.id;
+      gridData.blackCells.forEach((cell) => {
+        this.cells[cell.y][cell.x].isBlack = true;
       });
-  }
-
-  public fetchMediumGrid(): void {
-    this.http.get("http://localhost:3000/crossword-grid/medium")
-      .subscribe((data) => {
-        const gridData: GridData = data as GridData;
-        this.id = gridData.id;
-        gridData.blackCells.forEach((cell) => {
-          this.cells[cell.y][cell.x].isBlack = true;
-        });
-        gridData.wordInfos.forEach((word, index) => {
-          const cells: Cell[] = new Array<Cell>();
-          for (let i: number = 0; i < word.length; i++) {
-            if (word.direction === Direction.Horizontal) {
-              cells.push(this.cells[word.y][word.x + i]);
-            } else if (word.direction === Direction.Vertical) {
-              cells.push(this.cells[word.y + i][word.x]);
-            }
+      gridData.wordInfos.forEach((word, index) => {
+        const cells: Cell[] = new Array<Cell>();
+        for (let i: number = 0; i < word.length; i++) {
+          if (word.direction === Direction.Horizontal) {
+            cells.push(this.cells[word.y][word.x + i]);
+          } else if (word.direction === Direction.Vertical) {
+            cells.push(this.cells[word.y + i][word.x]);
           }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
-        });
+        }
+        this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
       });
-  }
-
-  public fetchHardGrid(): void {
-    this.http.get("http://localhost:3000/crossword-grid/hard")
-      .subscribe((data) => {
-        const gridData: GridData = data as GridData;
-        this.id = gridData.id;
-        gridData.blackCells.forEach((cell) => {
-          this.cells[cell.y][cell.x].isBlack = true;
-        });
-        gridData.wordInfos.forEach((word, index) => {
-          const cells: Cell[] = new Array<Cell>();
-          for (let i: number = 0; i < word.length; i++) {
-            if (word.direction === Direction.Horizontal) {
-              cells.push(this.cells[word.y][word.x + i]);
-            } else if (word.direction === Direction.Vertical) {
-              cells.push(this.cells[word.y + i][word.x]);
-            }
-          }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
-        });
-      });
+    });
   }
 
   public toggleTipMode(): void {

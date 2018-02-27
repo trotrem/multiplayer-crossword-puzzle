@@ -1,5 +1,5 @@
-import { GridWordInformation } from "../lexiconAPI/gridWordInformation"
-import { Direction } from "../../../../../common/communication/message"
+import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
+import { Direction } from "../../../../common/communication/message";
 
 /*export enum Direction {
     Y,

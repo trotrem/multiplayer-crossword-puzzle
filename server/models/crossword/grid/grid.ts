@@ -2,7 +2,7 @@
 // import { ExternalApiService } from "../lexiconAPI/externalApi.service";
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
-import { Point } from "../../../../../common/communication/message"
+import { Point } from "../../../../common/communication/message";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
@@ -24,6 +24,7 @@ export class Grid {
 
     constructor() {
         this._grid = new Array<Array<Square>>();
+        this.makeEmptyGrid();
     }
 
     public get Height(): number {
@@ -42,8 +43,8 @@ export class Grid {
                 if (cell.getIsBlack()) {
                     blacks.push({x, y});
                 }
-            })
-        })
+        });
+    });
 
         return blacks;
     }
@@ -94,8 +95,8 @@ export class Grid {
 
     private makeEmptyGrid(): void {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
-            const row: Square[] = new Array();
-            for (let indexJ = 0; indexJ < HEIGHT; indexJ++) {
+            const row: Square[] = new Array<Square>();
+            for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
                 row.push(new Square(indexI * HEIGHT + indexJ, false, null));
             }
             this._grid.push(row);
