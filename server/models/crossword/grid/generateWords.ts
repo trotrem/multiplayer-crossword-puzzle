@@ -1,3 +1,4 @@
+// tslint:disable
 /* import { Words } from "./words";
 import { Grid } from "./grid";
 import { Word, Direction } from "./word";

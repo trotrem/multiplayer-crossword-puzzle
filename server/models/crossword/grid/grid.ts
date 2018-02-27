@@ -38,8 +38,8 @@ export class Grid {
     }
     public get BlackSquares(): Point[] {
         const blacks: Point[] = [];
-        this._grid.forEach((row, x) => {
-            row.forEach((cell, y) => {
+        this._grid.forEach((row: Square[], x: number) => {
+            row.forEach((cell: Square, y: number) => {
                 if (cell.getIsBlack()) {
                     blacks.push({x, y});
                 }
