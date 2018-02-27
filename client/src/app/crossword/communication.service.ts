@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import { Difficulty, GridData, WordValidationParameters } from "../../../../common/communication/types";
+import { Difficulty, IGridData, IWordValidationParameters } from "../../../../common/communication/types";
 
 @Injectable()
 export class CommunicationService {
@@ -13,12 +13,12 @@ export class CommunicationService {
     return this.http.get<string[]>("http://localhost:3000/crossword/cheatwords/" + id);
   }
 
-  public fetchGrid(difficulty: Difficulty): Observable<GridData> {
-    return this.http.get<GridData>("http://localhost:3000/crossword/grid/" + difficulty.valueOf());
+  public fetchGrid(difficulty: Difficulty): Observable<IGridData> {
+    return this.http.get<IGridData>("http://localhost:3000/crossword/grid/" + difficulty.valueOf());
 
   }
 
-  public validate(parameters: WordValidationParameters): void {
+  public validate(parameters: IWordValidationParameters): void {
     const headers: HttpHeaders = new HttpHeaders()
       .set("Authorization", "my-auth-token")
       .set("Content-Type", "application/json");

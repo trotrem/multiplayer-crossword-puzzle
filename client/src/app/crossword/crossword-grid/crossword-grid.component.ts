@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { GridData, Direction, WordValidationParameters, Difficulty } from "../../../../../common/communication/types";
+import { IGridData, Direction, IWordValidationParameters, Difficulty } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
@@ -75,7 +75,7 @@ export class CrosswordGridComponent implements OnInit {
   public fetchGrid(): void {
     this.communicationService.fetchGrid(this._difficulty)
       .subscribe((data) => {
-        const gridData: GridData = data as GridData;
+        const gridData: IGridData = data as IGridData;
         this.id = gridData.id;
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
@@ -164,7 +164,7 @@ export class CrosswordGridComponent implements OnInit {
 
   private validate(word: WordDescription): void {
 
-    const parameters: WordValidationParameters = {
+    const parameters: IWordValidationParameters = {
       gridId: this.id,
       wordIndex: word.id,
       word: word.cells.map((elem) => elem.content).join("")
