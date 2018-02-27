@@ -40,4 +40,5 @@
 
 .definition-selected {
     cursor: default;
+    outline:1px solid #000;
 }
