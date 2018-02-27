@@ -3,7 +3,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 
 import { AdminService } from "./admin.service";
-import { Track } from "../editeur/track";
+import { Track } from "../track-savor/track";
 
 describe("AdminService", () => {
   beforeEach(() => {
