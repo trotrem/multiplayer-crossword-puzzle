@@ -1,7 +1,7 @@
 import { TestBed, inject, async } from "@angular/core/testing";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Difficulty, WordValidationParameters } from "../../../../common/communication/types";
+import { Difficulty, IWordValidationParameters } from "../../../../common/communication/types";
 
 import { CommunicationService } from "./communication.service";
 
@@ -46,7 +46,7 @@ describe("CommunicationService", () => {
   );
   it("should issue a post request", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
-      const parameters: WordValidationParameters = {
+      const parameters: IWordValidationParameters = {
         gridId: 1 ,
         word: "word",
         wordIndex: 2
