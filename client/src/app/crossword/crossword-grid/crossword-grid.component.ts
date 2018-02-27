@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { GridData, Direction, WordValidationParameters, Difficulty } from "../../../../../common/communication/message";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
+import { CommunicationService } from "../communication.service";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -24,6 +25,7 @@ enum TipMode {
   styleUrls: ["./crossword-grid.component.css"],
 })
 export class CrosswordGridComponent implements OnInit {
+  private communicationService: CommunicationService;
   public cells: Cell[][];
   @Input() public nbPlayers: number;
   private words: WordDescription[];
@@ -48,6 +50,7 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public constructor(private http: HttpClient) {
+    this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
@@ -62,33 +65,33 @@ export class CrosswordGridComponent implements OnInit {
 
   private setDifficulty(): void {
     this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
-                       location.pathname === "/crossword/medium" ? "medium" :
-                       "hard";
+      location.pathname === "/crossword/medium" ? "medium" :
+        "hard";
   }
 
   public ngOnInit(): void {
   }
 
   public fetchGrid(): void {
-    this.http.get("http://localhost:3000/crossword/grid/" + this._difficulty.valueOf())
-    .subscribe((data) => {
-      const gridData: GridData = data as GridData;
-      this.id = gridData.id;
-      gridData.blackCells.forEach((cell) => {
-        this.cells[cell.y][cell.x].isBlack = true;
-      });
-      gridData.wordInfos.forEach((word, index) => {
-        const cells: Cell[] = new Array<Cell>();
-        for (let i: number = 0; i < word.length; i++) {
-          if (word.direction === Direction.Horizontal) {
-            cells.push(this.cells[word.y][word.x + i]);
-          } else if (word.direction === Direction.Vertical) {
-            cells.push(this.cells[word.y + i][word.x]);
+    this.communicationService.fetchGrid(this._difficulty)
+      .subscribe((data) => {
+        const gridData: GridData = data as GridData;
+        this.id = gridData.id;
+        gridData.blackCells.forEach((cell) => {
+          this.cells[cell.y][cell.x].isBlack = true;
+        });
+        gridData.wordInfos.forEach((word, index) => {
+          const cells: Cell[] = new Array<Cell>();
+          for (let i: number = 0; i < word.length; i++) {
+            if (word.direction === Direction.Horizontal) {
+              cells.push(this.cells[word.y][word.x + i]);
+            } else if (word.direction === Direction.Vertical) {
+              cells.push(this.cells[word.y + i][word.x]);
+            }
           }
-        }
-        this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
+        });
       });
-    });
   }
 
   public toggleTipMode(): void {
@@ -160,29 +163,26 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private validate(word: WordDescription): void {
-    const headers: HttpHeaders = new HttpHeaders()
-    .set("Authorization", "my-auth-token")
-    .set("Content-Type", "application/json");
 
-    const parameters: WordValidationParameters = { gridId: this.id,
-                                                   wordIndex: word.id,
-                                                   word: word.cells.map((elem) => elem.content).join("") };
+    const parameters: WordValidationParameters = {
+      gridId: this.id,
+      wordIndex: word.id,
+      word: word.cells.map((elem) => elem.content).join("")
+    };
 
-    this.http.post("http://localhost:3000/crossword/validate",
-                   JSON.stringify(parameters),
-                   {headers: headers}).subscribe((data) => {});
+    this.communicationService.validate(parameters);
   }
 
   private fetchCheatModeWords(): void {
-    this.http.get("http://localhost:3000/crossword/cheatwords/" + this.id)
-    .subscribe((data) => {
-      const words: string[] = data as string[];
-      let i: number = 0;
-      for (const word of this.horizontalWords.concat(this.verticalWords)) {
-        word.word = words[i];
-        i++;
-      }
-    });
+    this.communicationService.fetchCheatModeWords(this.id)
+      .subscribe((data: string[]) => {
+        const words: string[] = data as string[];
+        let i: number = 0;
+        for (const word of this.horizontalWords.concat(this.verticalWords)) {
+          word.word = words[i];
+          i++;
+        }
+      });
   }
 
   private setSelectedWord(word: WordDescription, selected: boolean): void {
