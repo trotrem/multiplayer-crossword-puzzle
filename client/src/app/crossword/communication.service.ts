@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import { Difficulty, GridData, WordValidationParameters } from "../../../../common/communication/message";
+import { Difficulty, GridData, WordValidationParameters } from "../../../../common/communication/types";
 
 @Injectable()
 export class CommunicationService {

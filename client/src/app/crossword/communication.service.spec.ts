@@ -1,7 +1,7 @@
 import { TestBed, inject, async } from "@angular/core/testing";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Difficulty, GridData, WordValidationParameters } from "../../../../common/communication/message";
+import { Difficulty, GridData, WordValidationParameters } from "../../../../common/communication/types";
 
 import { CommunicationService } from "./communication.service";
 
