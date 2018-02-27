@@ -153,13 +153,14 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private erase(word: WordDescription): void {
-    const i: number = word.cells.findIndex((cell) => cell.content === "");
-    if (i > 0) {
-      word.cells[i - 1].content = "";
+    let i: number;
+    for (i = word.cells.length - 1; i >= 0; i--) {
+      if (word.cells[i].content !== "") {
+        word.cells[i].content = "";
 
-      return;
+        return;
+      }
     }
-    word.cells[word.cells.length - 1].content = "";
   }
 
   private validate(word: WordDescription): void {
