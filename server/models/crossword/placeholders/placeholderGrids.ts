@@ -71,9 +71,9 @@ export class PlaceholderGrid {
         this.wordsList.ListOfWord[10].setWord(new GridWordInformation("MODE", ["Fashion"], 0));
         this.wordsList.ListOfWord[11].setWord(new GridWordInformation("RAT", ["Rodent"], 0));
         this.wordsList.ListOfWord[12].setWord(new GridWordInformation("ARID", ["Parched"], 0));
-        this.wordsList.ListOfWord[13].setWord(new GridWordInformation("PEN", ["Write or compose"], 0));
-        this.wordsList.ListOfWord[14].setWord(new GridWordInformation("PEN", ["Teaching period"], 0));
-        this.wordsList.ListOfWord[15].setWord(new GridWordInformation("TERNS", ["Gull"], 0));
+        this.wordsList.ListOfWord[13].setWord(new GridWordInformation("EVE", ["First woman"], 0));
+        this.wordsList.ListOfWord[14].setWord(new GridWordInformation("PEN", ["Female swan"], 0));
+        this.wordsList.ListOfWord[15].setWord(new GridWordInformation("TERMS", ["Teaching periods"], 0));
         this.wordsList.ListOfWord[16].setWord(new GridWordInformation("SHRINE", ["Hallowed place"], 0));
         this.wordsList.ListOfWord[17].setWord(new GridWordInformation("MAP", ["Travel guide"], 0));
         this.wordsList.ListOfWord[18].setWord(new GridWordInformation("ADORE", ["Worship"], 0));

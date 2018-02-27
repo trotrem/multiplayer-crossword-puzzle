@@ -25,7 +25,7 @@ export class Routes {
 
         router.get("/admin", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
 
-        router.get("/crossword/grid/:difficulty", (req: Request, res: Response, next: NextFunction) => 
+        router.get("/crossword/grid/:difficulty", (req: Request, res: Response, next: NextFunction) =>
             this.crossword.getGrid(req, res, next));
 
         router.get("/crossword/cheatwords/:gridId", (req: Request, res: Response, next: NextFunction) =>
