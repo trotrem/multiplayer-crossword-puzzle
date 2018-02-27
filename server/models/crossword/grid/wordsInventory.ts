@@ -1,7 +1,7 @@
 import { Word } from "./word";
 import { Grid } from "./grid";
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
-import { Direction } from "../../../../common/communication/message";
+import { Direction } from "../../../../common/communication/types";
 
 export class WordsInventory {
     private _grid: Grid;
