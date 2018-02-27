@@ -8,12 +8,12 @@ import { SceneServices } from "./../scene.services/scene.service";
 import { TrackServices } from "../track.services/track.service";
 
 @Component({
-    selector: "app-editeur",
-    templateUrl: "./editeur.component.html",
-    styleUrls: ["./editeur.component.css"]
+    selector: "app-editor",
+    templateUrl: "./editor.component.html",
+    styleUrls: ["./editor.component.css"]
 })
 
-export class EditeurComponent implements OnInit {
+export class EditorComponent implements OnInit {
 
     @ViewChild("canvas")
 

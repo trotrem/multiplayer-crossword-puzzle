@@ -6,7 +6,7 @@ import { GameComponent } from "./racing/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
 import { RenderService } from "./racing/render-service/render.service";
 import { BasicService } from "./basic.service";
-import { EditeurComponent } from "./racing/editeur/editeur.component";
+import { EditorComponent } from "./racing/editor/editor.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { RacingGameComponent } from "./racing/racing-game/racing-game.component";
@@ -20,12 +20,12 @@ import {SceneServices} from "./racing/scene.services/scene.service";
 import { RaceComponent } from "./racing/race/race.component";
 
 const appRoutes: Routes = [
-    { path: "editeur/:name", component: EditeurComponent },
+    { path: "editor/:name", component: EditorComponent },
     { path: "crossword", component: CrosswordGridComponent },
     { path: "crossword/easy", component: CrosswordGridComponent },
     { path: "crossword/medium", component: CrosswordGridComponent},
     { path: "crossword/hard", component: CrosswordGridComponent},
-    { path: "editeur", component: EditeurComponent },
+    { path: "editor", component: EditorComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: RaceComponent },
@@ -39,7 +39,7 @@ const appRoutes: Routes = [
     declarations: [
         AppComponent,
         GameComponent,
-        EditeurComponent,
+        EditorComponent,
         AdminComponent,
         PageNotFoundComponent,
         RacingGameComponent,
