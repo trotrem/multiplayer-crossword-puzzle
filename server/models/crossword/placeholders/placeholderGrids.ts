@@ -11,14 +11,13 @@ export class PlaceholderGrid {
     protected wordsList: WordsInventory;
 
     constructor(difficulty: Difficulty) {
-        /* if (difficulty === Difficulty.easy) {
+        if (difficulty === "easy") {
             this.fillEasyGrid();
-        } else if (difficulty === Difficulty.medium) {
+        } else if (difficulty === "medium") {
             this.fillEasyGrid();
-        } else if (difficulty === Difficulty.hard) {
+        } else if (difficulty === "hard") {
             this.fillEasyGrid();
-        } */
-        this.fillEasyGrid();
+        }
     }
 
     public get Grid(): Grid {

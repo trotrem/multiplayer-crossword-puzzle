@@ -28,7 +28,7 @@ export class CrosswordGridComponent implements OnInit {
   @Input() public nbPlayers: number;
   private words: WordDescription[];
   private id: number;
-  private _difficulty: Difficulty = Difficulty.hard;
+  private _difficulty: Difficulty = "easy";
   public selectedWord: WordDescription = null;
   private TipMode: typeof TipMode = TipMode;
   public tipMode: TipMode = TipMode.Definitions;
@@ -61,19 +61,16 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private setDifficulty(): void {
-    if (location.pathname === "/crossword/easy") {
-      this._difficulty = Difficulty.easy;
-    } else if (location.pathname === "/crossword/medium") {
-      this._difficulty = Difficulty.medium;
-    }
-
+    this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
+                       location.pathname === "/crossword/medium" ? "medium" :
+                       "hard";
   }
 
   public ngOnInit(): void {
   }
 
   public fetchGrid(): void {
-    this.http.get("http://localhost:3000/crossword/grid/" + this._difficulty)
+    this.http.get("http://localhost:3000/crossword/grid/" + this._difficulty.valueOf())
     .subscribe((data) => {
       const gridData: GridData = data as GridData;
       this.id = gridData.id;
