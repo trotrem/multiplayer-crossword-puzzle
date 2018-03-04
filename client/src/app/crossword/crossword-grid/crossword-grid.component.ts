@@ -55,7 +55,7 @@ export class CrosswordGridComponent implements OnInit {
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false });
+        this.cells[i].push({ content: "", selected: false, isBlack: false, valid: false });
       }
     }
     this.words = new Array<WordDescription>();
@@ -102,6 +102,9 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onCellClicked(event: MouseEvent, cell: Cell): void {
+    if (cell.valid) {
+      return;
+    }
     event.stopPropagation();
     for (const word of this.words) {
       if (word.cells[0] === cell && word !== this.selectedWord) {
@@ -155,7 +158,7 @@ export class CrosswordGridComponent implements OnInit {
   private erase(word: WordDescription): void {
     let i: number;
     for (i = word.cells.length - 1; i >= 0; i--) {
-      if (word.cells[i].content !== "") {
+      if (word.cells[i].content !== "" && !word.cells[i].valid) {
         word.cells[i].content = "";
 
         return;
@@ -171,7 +174,15 @@ export class CrosswordGridComponent implements OnInit {
       word: word.cells.map((elem) => elem.content).join("")
     };
 
-    this.communicationService.validate(parameters);
+    this.communicationService.validate(parameters)
+      .subscribe((data) => {
+        console.warn(data);
+        if (data) {
+          for (const cell of word.cells) {
+            cell.valid = data;
+          }
+        }
+      });
   }
 
   private fetchCheatModeWords(): void {

@@ -34,6 +34,11 @@
     outline-width: 4px;
 }
 
+.valid {
+    outline-color:#99ff66;
+    outline-width: 2px;
+}
+
 .definition {
     cursor: pointer;
 }
@@ -42,3 +47,4 @@
     cursor: default;
     outline:1px solid #000;
 }
+
