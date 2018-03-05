@@ -31,9 +31,15 @@ module Route {
         } */
 
         public getGrid(req: Request, res: Response, next: NextFunction): void {
+
+        console.log("ah");
             const gen: GenerateWords = new GenerateWords();
+
+        console.log("oh");
             gen.generateGrid().then(() => {
-                const gridData: IGridData = {id: 0, blackCells: gen.Grid.BlackSquares, wordInfos: gen.WordsList.ListOfWord.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.GridWord.word, length: word.Length}})};
+                const gridData: IGridData = {id: 0, blackCells: gen.Grid.BlackSquares, wordInfos: gen.Grid.Words.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.Text, length: word.Length}})};
+
+        console.log("ih");
                 res.send(GridCache.Instance.addGrid(gridData, []));
             });
         }

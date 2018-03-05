@@ -1,10 +1,10 @@
-import { GridWordInformation } from "./gridWordInformation";
+import { WordDictionaryData } from "./gridWordInformation";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 import { expect } from "chai";
 
 const wordRetriever: WordRetriever = WordRetriever.instance;
-let words: GridWordInformation[] = [];
+let words: WordDictionaryData[] = [];
 
 describe("Test to see if wordRetrieve correctly create object of the word 'hall'.", () => {
 
@@ -82,7 +82,7 @@ describe("Test the get Easy and Medium WordList  to see if it returns only commo
 
     it("Easy: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
         words = await wordRetriever.getEasyWordList("H?ll");
-        words.forEach((wordInfo: GridWordInformation, index: number) => {
+        words.forEach((wordInfo: WordDictionaryData, index: number) => {
             const word: string = wordInfo.word;
             const expectedWord: string[] = ["hall", "hill", "hell"];
             assert.equal(word, expectedWord[index]);
@@ -91,7 +91,7 @@ describe("Test the get Easy and Medium WordList  to see if it returns only commo
 
     it("Medium: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
         words = await wordRetriever.getMediumWordList("H?ll");
-        words.forEach((wordInfo: GridWordInformation, index: number) => {
+        words.forEach((wordInfo: WordDictionaryData, index: number) => {
             const word: string = wordInfo.word;
             const expectedWord: string[] = ["hall", "hill", "hell"];
             assert.equal(word, expectedWord[index]);
@@ -100,7 +100,7 @@ describe("Test the get Easy and Medium WordList  to see if it returns only commo
 
     it("The words should all have 1 definition ", async () => {
         words = await wordRetriever.getEasyWordList("H?ll");
-        words.forEach((wordInfo: GridWordInformation) => {
+        words.forEach((wordInfo: WordDictionaryData) => {
             const length: number = wordInfo.definitions.length;
             assert.equal(length, 1);
         });
@@ -111,7 +111,7 @@ describe("Test the getHardWordList to see if it returns only uncommon words with
 
     it("The only word should be : 'hull'.", async () => {
         words = await wordRetriever.getHardWordList("H?ll");
-        words.forEach((wordInfo: GridWordInformation, index: number) => {
+        words.forEach((wordInfo: WordDictionaryData, index: number) => {
             const word: string = wordInfo.word;
             const expectedWord: string[] = ["hull"];
             assert.equal(word, expectedWord[index]);
@@ -120,7 +120,7 @@ describe("Test the getHardWordList to see if it returns only uncommon words with
 
     it("The words should all have 1 definition ", async () => {
         words = await wordRetriever.getHardWordList("H?ll");
-        words.forEach((wordInfo: GridWordInformation) => {
+        words.forEach((wordInfo: WordDictionaryData) => {
             const length: number = wordInfo.definitions.length;
             assert.equal(length, 1);
         });
@@ -131,7 +131,7 @@ describe("Querry of 5 letter words to check specific constraint", () => {
 
     it("All words should be 5 letters long. ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("?????");
-        words.forEach((wordInfo: GridWordInformation) => {
+        words.forEach((wordInfo: WordDictionaryData) => {
             const expectedLength: number = 5;
             expect(wordInfo.word).to.have.length(expectedLength);
         });
@@ -139,7 +139,7 @@ describe("Querry of 5 letter words to check specific constraint", () => {
 
     it("If we querry without '?', the words should still have the correct length", async () => {
         words = await wordRetriever.getWordsWithDefinitions("arise");
-        words.forEach((wordInfo: GridWordInformation) => {
+        words.forEach((wordInfo: WordDictionaryData) => {
             const expectedLength: number = 5;
             expect(wordInfo.word).to.have.length(expectedLength);
         });
@@ -147,7 +147,7 @@ describe("Querry of 5 letter words to check specific constraint", () => {
 
     it("There should only be noun and verb, all words possess at least 1 definition ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("?????");
-        words.forEach((wordInfo: GridWordInformation) => {
+        words.forEach((wordInfo: WordDictionaryData) => {
             wordInfo.definitions.forEach((def: string) => {
                 if (def.charAt(0) !== "v") {
                     expect(def).to.include("n\t");

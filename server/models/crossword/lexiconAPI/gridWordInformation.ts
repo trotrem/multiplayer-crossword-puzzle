@@ -1,5 +1,5 @@
 
-export class GridWordInformation {
+export class WordDictionaryData {
     private _isCommon: boolean = true;
 
     constructor(
@@ -13,11 +13,7 @@ export class GridWordInformation {
     public get word(): string {
         return this._word;
     }
-
-    public setWord(newWord: string): void {
-        this._word = newWord;
-    }
-
+    
     public get definitions(): string[] {
         return this._defs;
     }

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+/* import { expect } from "chai";
 import { WordsInventory } from "./wordsInventory";
 import { Grid } from "./grid";
 import { Word } from "./word";
@@ -28,7 +28,7 @@ describe("ListOfWords", () => {
     for(let i = 0; i< list.ListOfWord.length; i++){
         console.log(list.ListOfWord[i].Length);
         console.log(list.ListOfWord[i].GridWord.word);
-    }*/
+    }
     it("Should have words with a minimum of two letters", () => {
         let isMinimum: boolean = true;
         const listH: Word[] = list.ListOfWord;
@@ -40,3 +40,4 @@ describe("ListOfWords", () => {
         expect(isMinimum);
     });
 });
+ */

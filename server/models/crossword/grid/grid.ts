@@ -3,11 +3,13 @@
 // import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Square } from "./square";
 import { IPoint } from "../../../../common/communication/types";
+import { WordsInventory } from "./wordsInventory";
+import { Word } from "./word";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
-const MINBLACK: number = 30;
-const MAXBLACK: number = 35;
+const MINBLACK: number = 35;
+const MAXBLACK: number = 36;
 const MINCELLS: number = 0;
 const MAXCELLS: number = 99;
 const SPACEBTWCELLS: number = 2;
@@ -21,10 +23,12 @@ export class Grid {
     private _blackSquares: number[];
     private _notBlackSquares: number[];
     private _nbrBlack: number;
+    private _wordsInventory: WordsInventory;
 
     constructor() {
         this._grid = new Array<Array<Square>>();
         this.makeGrid();
+        this._wordsInventory = new WordsInventory(this._grid);
     }
 
     public get Height(): number {
@@ -43,8 +47,8 @@ export class Grid {
                 if (cell.isBlack) {
                     blacks.push({x, y});
                 }
+            });
         });
-    });
 
         return blacks;
     }
@@ -53,6 +57,9 @@ export class Grid {
     }
     public get NbrBlack(): number {
         return this._nbrBlack;
+    }
+    public get Words(): Word[] {
+        return this._wordsInventory.Words;
     }
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
@@ -97,7 +104,7 @@ export class Grid {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: Square[] = new Array<Square>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
-                row.push({id: indexI * HEIGHT + indexJ, isBlack: false, isUsed: false});
+                row.push({id: indexI * HEIGHT + indexJ, isBlack: false, letter: "", x: indexI, y: indexJ});
             }
             this._grid.push(row);
         }

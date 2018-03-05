@@ -1,90 +1,77 @@
 import { Word } from "./word";
-import { Grid } from "./grid";
-import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 import { Direction } from "../../../../common/communication/types";
+import { Square } from "./square";
 
 export class WordsInventory {
-    private _grid: Grid;
     private _listOfWord: Word[];
-    constructor(grid: Grid) {
-        this._grid = grid;
+    constructor(private _grid: Square[][]) {
         this._listOfWord = new Array<Word>();
+        this.createListOfWord();
     }
-    public get ListOfWord(): Word[] {
+    public get Words(): Word[] {
         return this._listOfWord;
     }
-    private lengthCounter: number = 0;
+    private currentCells: Square[] = [];
     private wordCounter: number = 0;
 
-    public createListOfWord(): void {
+    private createListOfWord(): void {
         // mot verticale
-        for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
-            for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
-                this.addWords(indexI, indexJ, Direction.Horizontal, indexI - this.lengthCounter);
+        for (let indexJ: number = 0; indexJ < this._grid.length; indexJ++) {
+            for (let indexI: number = 0; indexI < this._grid[0].length; indexI++) {
+                this.pushLetter(indexI, indexJ, Direction.Horizontal);
             }
             this.wordCounter++;
-            this.pushWord(this._grid.Height - this.lengthCounter, indexJ, Direction.Horizontal);
-            this.lengthCounter = 0;
+            this.pushWord(Direction.Horizontal);
+            this.currentCells = [];
         }
         this.wordCounter = 0;
-        this.lengthCounter = 0;
+        this.currentCells = [];
         // mot horizontale
-        for (let indexI: number = 0; indexI < this._grid.Height; indexI++) {
-            for (let indexJ: number = 0; indexJ < this._grid.Width; indexJ++) {
-                this.addWords(indexI, indexJ, Direction.Vertical, indexJ - this.lengthCounter);
+        for (let indexI: number = 0; indexI < this._grid.length; indexI++) {
+            for (let indexJ: number = 0; indexJ < this._grid[0].length; indexJ++) {
+                this.pushLetter(indexI, indexJ, Direction.Vertical);
             }
             this.wordCounter++;
-            this.pushWord(indexI, this._grid.Width - this.lengthCounter, Direction.Vertical);
-            this.lengthCounter = 0;
+            this.pushWord(Direction.Vertical);
+            this.currentCells = [];
         }
-        this.fillWord();
         this.fillUnusedCells();
+        this._listOfWord = this.Words.sort((word1, word2) => {
+            const length1 = word1.Length;
+            const length2 = word2.Length;
+            if (length1 > length2) { return -1; }
+            if (length1 < length2) { return 1; }
+            return 0;
+        });
     }
 
-    private addWords(indexI: number, indexJ: number, direction: Direction, startingPos: number): void {
-        if (!(this._grid.Grid[indexI][indexJ].isBlack)) {
-            this.lengthCounter++;
+    private pushLetter(indexI: number, indexJ: number, direction: Direction): void {
+        const cell = this._grid[indexI][indexJ];
+        if (!cell.isBlack) {
+            cell.x = indexI;
+            cell.y = indexJ;
+            this.currentCells.push(cell);
         } else {
             this.wordCounter++;
-            if (direction === Direction.Horizontal) {
-                this.pushWord(startingPos, indexJ, direction);
-            } else if (direction === Direction.Vertical) {
-                this.pushWord(indexI, startingPos, direction);
-            }
-            this.lengthCounter = 0;
+            this.pushWord(direction);
         }
     }
 
-    private pushWord(indexI: number, indexJ: number, direction: Direction): void {
-        if (this.lengthCounter > 2) {
+    private pushWord(direction: Direction): void {
+        if (this.currentCells.length > 2) {
             // console.log("new word " + indexI + ", " + indexJ + " Lentgh : " + this.lengthCounter);
-            this._listOfWord.push(new Word(
-                this.lengthCounter, this.wordCounter,
-                new GridWordInformation(null, null, 0),
-                indexI, indexJ, direction));
-        }
-    }
-
-    private fillWord(): void {
-        for (const word of this._listOfWord) {
-            let wordFilled: string = "";
-            for (let letter: number = 0; letter < word.Length; letter++) {
-                wordFilled += "?";
+            this._listOfWord.push(new Word(this.wordCounter, direction, this.currentCells));
+            for (const cell of this.currentCells) {
+                cell.letter = "?";
             }
-            word.GridWord.setWord(wordFilled);
         }
+        this.currentCells = [];
     }
 
     private fillUnusedCells(): void {
-        for (const word of this._listOfWord) {
-            for (let i = 0; i < word.Length; i++) {
-                const cell = word.getCellFromDistance(i);
-                this._grid.Grid[cell.x][cell.y].isUsed = true;
-            }
-        }
-        for (const row of this._grid.Grid) {
+        for (const row of this._grid) {
             for (const cell of row) {
-                if (!cell.isUsed) {
+                if (cell.letter !== "?") {
                     cell.isBlack = true;
                 }
             }

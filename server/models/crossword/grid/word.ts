@@ -1,53 +1,69 @@
-import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
+import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { Direction, IPoint } from "../../../../common/communication/types";
+import { Square } from "./square";
 
 /*export enum Direction {
     Y,
     X
 }*/
 export class Word {
-    private _length: number;
-    private _id: number;
-    private _text: GridWordInformation;
-    private _posX: number;
-    private _posY: number;
-    private _direction: Direction;
+    private _data: WordDictionaryData;
 
-    constructor(length: number, id: number, text: GridWordInformation, posX: number, posY: number, direction: Direction) {
-        this._length = length;
-        this._id = id;
-        this._text = text;
-        this._posX = posX;
-        this._posY = posY;
-        this._direction = direction;
-    }
+    constructor(private _id: number, private _direction: Direction, private _gridSquares: Square[]) {}
 
-    public get GridWord(): GridWordInformation {
-        return this._text;
+    public get DictionaryData(): WordDictionaryData {
+        return this._data;
     }
     public get Length(): number {
-        return this._length;
+        return this._gridSquares.length;
     }
     public get Number(): number {
         return this._id;
     }
-    public setWord(word: GridWordInformation): void {
-        this._text = word;
-    }
     public get PosX(): number {
-        return this._posX;
+        return this._gridSquares[0].x;
     }
     public get PosY(): number {
-        return this._posY;
+        return this._gridSquares[0].y;
     }
     public get MainPos(): number {
-        return this.Direction === Direction.Horizontal ? this._posX : this.PosY;
+        return this.Direction === Direction.Horizontal ? this.PosX : this.PosY;
     }
     public get SecondaryPos(): number {
-        return this.Direction === Direction.Horizontal ? this._posY : this.PosX;
+        return this.Direction === Direction.Horizontal ? this.PosY : this.PosX;
     }
     public get Direction(): Direction {
         return this._direction;
+    }
+    public get Text(): string {
+        return this._gridSquares.map((square) => square.letter).join("");
+    }
+    public trySetData(word: WordDictionaryData): boolean {
+        if (this.trySetText(word.word)) {
+            this._data = word;
+            return true;
+        }
+
+        return false;
+    }
+    private trySetText(text: string): boolean {
+        for (let i = 0; i < this._gridSquares.length; i++) {
+            if (this._gridSquares[i].letter !== "?" && this._gridSquares[i].letter !== text[i]) {
+                return false;
+            }
+        }
+        this.setText(text);
+
+        return true;
+    }
+    public setData(word: WordDictionaryData): void {
+        this._data = word;
+        this.setText(word.word);
+    }
+    private setText(text: string): void {
+        for (let i = 0; i < this._gridSquares.length; i++) {
+            this._gridSquares[i].letter = text[i];
+        }
     }
     public getCellFromDistance(distance: number): IPoint {
         return this.Direction === Direction.Horizontal ? 
