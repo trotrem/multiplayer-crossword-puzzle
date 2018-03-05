@@ -6,8 +6,8 @@ import { IPoint } from "../../../../common/communication/types";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
-const MINBLACK: number = 25;
-const MAXBLACK: number = 30;
+const MINBLACK: number = 30;
+const MAXBLACK: number = 35;
 const MINCELLS: number = 0;
 const MAXCELLS: number = 99;
 const SPACEBTWCELLS: number = 2;

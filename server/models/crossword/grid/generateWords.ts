@@ -75,28 +75,53 @@ export class GenerateWords {
         if(index === filledWords.length) {
             return true;
         }
-        console.log(filledWords.length - index);
         let words: GridWordInformation[] = await wordRetreive(filledWords[index]);
+        if (words.length > 0) {
+            words = words.filter(function(wordInfo) {
+                return filledWords.indexOf(wordInfo.word) === -1;
+            });
+            words = this.shuffle(words);
+        }
         for (let i = 0; i < words.length; i++) {
             this._wordsListSorted[index].setWord(words[i]);
             filledWords[index] = words[i].word;
-            this.refactorWords(index, filledWords);
+            if (!await this.refactorWords(index, filledWords)) {
+                return false;
+            }
             if (await this.addWord(index + 1, filledWords.slice())) {
                 return true;
             }
         }
+        console.log(filledWords);
+        console.log(filledWords.length - index);
         return false;
     }
  
     // TODO: modifier une liste temporaire
     //refactor tous les mots qui doivent encore etre changer (plus bas que le nouveau mot ajouté)
-    private refactorWords(index: number, words: string[]) {
+    private async refactorWords(index: number, words: string[]): Promise<boolean> {
         for(let i = index + 1; i < this._wordsListSorted.length; i++) {
             const j: number = this._wordsListSorted[i].crossingIndexOf(this._wordsListSorted[index]);
             if(j !== -1) {
                 const char: string = words[index][this._wordsListSorted[index].crossingIndexOf(this._wordsListSorted[i])];
                 words[i] = words[i].substr(0, j) + char + words[i].substr(j + 1);
+                if (words[i].indexOf("?") === -1) {
+                    let test: GridWordInformation[] = await wordRetreive(words[i]);
+                    if(test.length === 0 || test[0].word !== words[i]) {
+                        return false;
+                    }
+                }
             }
         }
+
+        return true;
+    }
+
+    private shuffle(a: Array<GridWordInformation>) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
     }
 }

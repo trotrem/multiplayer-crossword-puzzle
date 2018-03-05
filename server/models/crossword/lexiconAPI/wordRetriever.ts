@@ -20,7 +20,7 @@ export class WordRetriever {
     }
 
     public async getEasyWordList(word: string): Promise<GridWordInformation[]> {
-        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon && wordInfo.definitions.length > 0;
         const easyWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
         easyWordList.forEach((wordInfo: GridWordInformation) => {
             wordInfo.definitions = wordInfo.definitions.splice(0, 1);
@@ -30,7 +30,7 @@ export class WordRetriever {
     }
 
     public async getMediumWordList(word: string): Promise<GridWordInformation[]> {
-        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon;
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => wordInfo.isCommon && wordInfo.definitions.length > 0;
 
         const mediumWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
         mediumWordList.forEach((wordInfo: GridWordInformation) => {
@@ -44,7 +44,7 @@ export class WordRetriever {
     }
 
     public async getHardWordList(word: string): Promise<GridWordInformation[]> {
-        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => (!(wordInfo.isCommon));
+        const filter: (wordInfo: GridWordInformation) => boolean = (wordInfo: GridWordInformation) => (!(wordInfo.isCommon) && wordInfo.definitions.length > 0);
 
         const hardWordList: GridWordInformation[] = await this.createWordListWithDefinitions(word, filter);
         hardWordList.forEach((wordInfo: GridWordInformation) => {
