@@ -55,7 +55,7 @@ export class CrosswordGridComponent implements OnInit {
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false, valid: false });
+        this.cells[i].push({ content: "", selected: false, isBlack: false, wordFound: false });
       }
     }
     this.words = new Array<WordDescription>();
@@ -102,7 +102,7 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onCellClicked(event: MouseEvent, cell: Cell): void {
-    if (cell.valid) {
+    if (cell.wordFound) {
       return;
     }
     event.stopPropagation();
@@ -143,12 +143,13 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private write(char: string, word: WordDescription): void {
-    for (let i: number = 0; i < word.cells.length; i++) {
-      if (word.cells[i].content === "") {
-        word.cells[i].content = char;
-        if (i === word.cells.length - 1) {
-          this.validate(word);
-        }
+    for (const cell of word.cells) {
+      if (cell.content === "") {
+        cell.content = char;
+        /*if (i === word.cells.length - 1) {
+        }*/
+        this.validate(word);
+        // console.warn("bini");
 
         return;
       }
@@ -158,7 +159,7 @@ export class CrosswordGridComponent implements OnInit {
   private erase(word: WordDescription): void {
     let i: number;
     for (i = word.cells.length - 1; i >= 0; i--) {
-      if (word.cells[i].content !== "" && !word.cells[i].valid) {
+      if (word.cells[i].content !== "" && !word.cells[i].wordFound) {
         word.cells[i].content = "";
 
         return;
@@ -179,7 +180,7 @@ export class CrosswordGridComponent implements OnInit {
         console.warn(data);
         if (data) {
           for (const cell of word.cells) {
-            cell.valid = data;
+            cell.wordFound = data;
           }
         }
       });

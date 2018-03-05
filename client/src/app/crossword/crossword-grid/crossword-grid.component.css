@@ -34,9 +34,9 @@
     outline-width: 4px;
 }
 
-.valid {
-    outline-color:#99ff66;
-    outline-width: 2px;
+.wordFound {
+    /*outline-color:#00ff00;*/
+    background-color:#00ff00;
 }
 
 .definition {
