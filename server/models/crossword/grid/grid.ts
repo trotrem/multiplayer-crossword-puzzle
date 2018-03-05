@@ -24,7 +24,7 @@ export class Grid {
 
     constructor() {
         this._grid = new Array<Array<Square>>();
-        this.makeEmptyGrid();
+        this.makeGrid();
     }
 
     public get Height(): number {
@@ -40,7 +40,7 @@ export class Grid {
         const blacks: IPoint[] = [];
         this._grid.forEach((row: Square[], x: number) => {
             row.forEach((cell: Square, y: number) => {
-                if (cell.getIsBlack()) {
+                if (cell.isBlack) {
                     blacks.push({x, y});
                 }
         });
@@ -49,7 +49,7 @@ export class Grid {
         return blacks;
     }
     public getSquareIsBlack(i: number, j: number): boolean {
-        return this._grid[i][j].getIsBlack();
+        return this._grid[i][j].isBlack;
     }
     public get NbrBlack(): number {
         return this._nbrBlack;
@@ -97,7 +97,7 @@ export class Grid {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: Square[] = new Array<Square>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
-                row.push(new Square(indexI * HEIGHT + indexJ, false, null));
+                row.push({id: indexI * HEIGHT + indexJ, isBlack: false, isUsed: false});
             }
             this._grid.push(row);
         }
@@ -112,7 +112,7 @@ export class Grid {
             const indexTemp: number = this._blackSquares[index];
             const indexITemp: number = indexTemp % HEIGHT;
             const indexJTemp: number = Math.floor(indexTemp / HEIGHT);
-            this._grid[indexITemp][indexJTemp].setIsBlack(true);
+            this._grid[indexITemp][indexJTemp].isBlack = true;
 
         }
     }

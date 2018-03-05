@@ -38,11 +38,11 @@ export class WordsInventory {
             this.lengthCounter = 0;
         }
         this.fillWord();
-        this.fillGrid();
+        this.fillUnusedCells();
     }
 
     private addWords(indexI: number, indexJ: number, direction: Direction, startingPos: number): void {
-        if (!(this._grid.Grid[indexI][indexJ].getIsBlack())) {
+        if (!(this._grid.Grid[indexI][indexJ].isBlack)) {
             this.lengthCounter++;
         } else {
             this.wordCounter++;
@@ -56,7 +56,7 @@ export class WordsInventory {
     }
 
     private pushWord(indexI: number, indexJ: number, direction: Direction): void {
-        if (this.lengthCounter > 1) {
+        if (this.lengthCounter > 2) {
             // console.log("new word " + indexI + ", " + indexJ + " Lentgh : " + this.lengthCounter);
             this._listOfWord.push(new Word(
                 this.lengthCounter, this.wordCounter,
@@ -75,13 +75,19 @@ export class WordsInventory {
         }
     }
 
-    private fillGrid(): void {
-        for (let squareI: number = 0; squareI < this._grid.Height; squareI++) {
-            for (let squareJ: number = 0; squareJ < this._grid.Height; squareJ++) {
-                if (!(this._grid.Grid[squareI][squareJ]._isBlack)) {
-                    this._grid.Grid[squareI][squareJ].setLetter("?");
-                }
+    private fillUnusedCells(): void {
+        for (const word of this._listOfWord) {
+            for (let i = 0; i < word.Length; i++) {
+                const cell = word.getCellFromDistance(i);
+                this._grid.Grid[cell.x][cell.y].isUsed = true;
             }
         }
+        for (const row of this._grid.Grid) {
+            for (const cell of row) {
+                if (!cell.isUsed) {
+                    cell.isBlack = true;
+                }
+            }
+        } 
     }
 }
