@@ -7,4 +7,5 @@ export interface WordDescription {
     cells: Cell[];
     definition: string;
     word?: string;
+    wordFound: boolean;
 }

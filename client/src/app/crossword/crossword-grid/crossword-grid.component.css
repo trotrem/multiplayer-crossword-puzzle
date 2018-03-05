@@ -48,3 +48,7 @@
     outline:1px solid #000;
 }
 
+.definition-found {
+    text-decoration: line-through;
+}
+

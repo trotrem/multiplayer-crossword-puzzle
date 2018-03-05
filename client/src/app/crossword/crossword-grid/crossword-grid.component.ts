@@ -89,7 +89,7 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, wordFound: false });
         });
       });
   }
@@ -123,6 +123,9 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onIndexClicked(event: MouseEvent, word: WordDescription): void {
+    if (word.wordFound) {
+      return;
+    }
     event.stopPropagation();
     this.setSelectedWord(word, true);
   }
@@ -146,10 +149,7 @@ export class CrosswordGridComponent implements OnInit {
     for (const cell of word.cells) {
       if (cell.content === "") {
         cell.content = char;
-        /*if (i === word.cells.length - 1) {
-        }*/
         this.validate(word);
-        // console.warn("bini");
 
         return;
       }
@@ -177,11 +177,11 @@ export class CrosswordGridComponent implements OnInit {
 
     this.communicationService.validate(parameters)
       .subscribe((data) => {
-        console.warn(data);
         if (data) {
           for (const cell of word.cells) {
             cell.wordFound = data;
           }
+          word.wordFound = true;
         }
       });
   }

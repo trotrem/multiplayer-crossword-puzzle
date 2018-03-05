@@ -31,10 +31,14 @@
   </div>
   <div>
     <h2>horizontal</h2>
-    <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
+    <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)" 
+    [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.wordFound === true}">
+    {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
   </div>
   <div>
     <h2>vertical</h2>
-    <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word}">{{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
+    <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)" 
+    [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.wordFound === true}">
+    {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
   </div>
 </div>
