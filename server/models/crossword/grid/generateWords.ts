@@ -1,7 +1,7 @@
-// tslint:disable
-/* import { Words } from "./words";
+import { WordsInventory } from "./wordsInventory";
 import { Grid } from "./grid";
-import { Word, Direction } from "./word";
+import { Word } from "./word";
+import { Direction } from "../../../../common/communication/types";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
 
@@ -16,7 +16,7 @@ async function wordRetreive(word: string): Promise<GridWordInformation[]> {
 export class GenerateWords {
 
     private _grid: Grid;
-    private _wordsList = new Words(this._grid);
+    private _wordsList = new WordsInventory(this._grid);
     private _wordsListSorted = this._wordsList.ListOfWord.sort((word1, word2) => {
         const length1 = word1.Length;
         const length2 = word2.Length;
@@ -45,7 +45,7 @@ export class GenerateWords {
         this.gridFilling(newWord);
         this.refactorSortedList;
         //on chercher le tableau du prochain mot
-        wordRetreive(this._wordsListSorted[index + 1].Word.word)
+        wordRetreive(this._wordsListSorted[index + 1].GridWord.word)
             .then(
             (function (found) {
                 words = found;
@@ -71,10 +71,10 @@ export class GenerateWords {
     //ajoute le mot dans la grille
     private gridFilling(fillingWord: Word): void {
         for (let letter = 0; letter < fillingWord.Length; letter++) {
-            if (fillingWord.Direction == Direction.X) {
-                this._grid.Grid[fillingWord.PosX + letter][fillingWord.PosY].setLetter(fillingWord.Word.word[letter])//arranger le Word.word....
-            } else if (fillingWord.Direction == Direction.X) {
-                this._grid.Grid[fillingWord.PosX][fillingWord.PosY + letter].setLetter(fillingWord.Word.word[letter])
+            if (fillingWord.Direction == Direction.Horizontal) {
+                this._grid.Grid[fillingWord.PosX + letter][fillingWord.PosY].setLetter(fillingWord.GridWord.word[letter])//arranger le Word.word....
+            } else if (fillingWord.Direction == Direction.Vertical) { // temp
+                this._grid.Grid[fillingWord.PosX][fillingWord.PosY + letter].setLetter(fillingWord.GridWord.word[letter])
             }
         }
     }
@@ -87,9 +87,9 @@ export class GenerateWords {
         for (let i = index; i < this._wordsListSorted.length; i++) {
             wordRefactored = this._wordsListSorted[i];
             for (let letter = 0; letter < wordRefactored.Length; letter++) {
-                if (wordRefactored.Direction == Direction.X) {
+                if (wordRefactored.Direction == Direction.Horizontal) {
                     newLetters += this._grid[wordRefactored.PosX + i][wordRefactored.PosY];
-                } else if (wordRefactored.Direction == Direction.Y) {
+                } else if (wordRefactored.Direction == Direction.Vertical) {
                     newLetters += this._grid[wordRefactored.PosX][wordRefactored.PosY + i];
                 }
             }
@@ -98,4 +98,3 @@ export class GenerateWords {
         }
     }
 }
- */
