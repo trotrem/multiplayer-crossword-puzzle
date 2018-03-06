@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { IGridData, IWordInfo } from "../../../common/communication/types";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { GridCache } from "../cache/crosswordGridCache";
@@ -31,16 +30,9 @@ module Route {
         } */
 
         public getGrid(req: Request, res: Response, next: NextFunction): void {
-
-        console.log("ah");
             const gen: GenerateWords = new GenerateWords();
-
-        console.log("oh");
             gen.generateGrid().then(() => {
-                const gridData: IGridData = {id: 0, blackCells: gen.Grid.BlackSquares, wordInfos: gen.Grid.Words.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.Text, length: word.Length}})};
-
-        console.log("ih");
-                res.send(GridCache.Instance.addGrid(gridData, []));
+                res.send(GridCache.Instance.addGrid(gen.GridData, []));
             });
         }
 

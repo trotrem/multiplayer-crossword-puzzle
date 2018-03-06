@@ -1,5 +1,5 @@
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
-import { Direction, IPoint } from "../../../../common/communication/types";
+import { Direction } from "../../../../common/communication/types";
 import { Square } from "./square";
 
 /*export enum Direction {
@@ -25,12 +25,6 @@ export class Word {
     }
     public get PosY(): number {
         return this._gridSquares[0].y;
-    }
-    public get MainPos(): number {
-        return this.Direction === Direction.Horizontal ? this.PosX : this.PosY;
-    }
-    public get SecondaryPos(): number {
-        return this.Direction === Direction.Horizontal ? this.PosY : this.PosX;
     }
     public get Direction(): Direction {
         return this._direction;
@@ -64,28 +58,5 @@ export class Word {
         for (let i = 0; i < this._gridSquares.length; i++) {
             this._gridSquares[i].letter = text[i];
         }
-    }
-    public getCellFromDistance(distance: number): IPoint {
-        return this.Direction === Direction.Horizontal ? 
-               { x: this.PosX + distance, y: this.PosY } : 
-               { x: this.PosX, y: this.PosY + distance }
-    }
-    public crossingIndexOf(word: Word): number {
-        if(!this.isCrossing(word)) {
-            return -1;
-        }
-
-        return word.SecondaryPos - this.MainPos;
-    }
-
-    private isCrossing(word: Word): boolean {
-        if(this.Direction === word.Direction) {
-            return false;
-        }
-
-        return this.MainPos <= word.SecondaryPos && 
-               this.MainPos + this.Length > word.SecondaryPos &&
-               this.SecondaryPos >= word.MainPos &&
-               this.SecondaryPos < word.MainPos + word.Length;
     }
 }
