@@ -1,7 +1,6 @@
 import { Grid } from "./grid";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
-import { IWordInfo, IGridData } from "../../../../common/communication/types";
  
 const wordRetriever: WordRetriever = WordRetriever.instance;
  
@@ -12,7 +11,7 @@ async function wordRetreive(word: string): Promise<WordDictionaryData[]> {
 }
  
 export class GenerateWords {
-    public GridData: IGridData;
+    private _finalGrid: Grid;
 
     constructor() {
         process.on('unhandledRejection', (reason, p) => {
@@ -22,20 +21,22 @@ export class GenerateWords {
         // this._grid = await this.generateGrid();
     }
 
-    public async generateGrid(): Promise<void> {
+    public async generateGrid(): Promise<Grid> {
         while(1) {
             const grid: Grid = new Grid();
             if(await this.addWord(0, grid) === true) {
-                return;
+                return this._finalGrid;
             }
         }
+        
+        return null;
     }
  
     // alterner quand la longueur est pareille?
     //trouver meilleur nom de variable
     private async addWord(index: number, grid: Grid): Promise<boolean> {
         if(index === grid.Words.length) {
-            this.GridData = {id: 0, blackCells: grid.BlackSquares, wordInfos: grid.Words.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.DictionaryData.definitions[0], length: word.Length}}).sort((w1, w2) => w1.id - w2.id)};
+            this._finalGrid = grid;
             return true;
         }
         console.log(grid.Words.length - index);

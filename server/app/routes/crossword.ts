@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { injectable, } from "inversify";
 import { GridCache } from "../cache/crosswordGridCache";
 import { GenerateWords } from "../../models/crossword/grid/generateWords";
+import { IWordInfo } from "../../../common/communication/types";
 
 module Route {
 
@@ -31,8 +32,10 @@ module Route {
 
         public getGrid(req: Request, res: Response, next: NextFunction): void {
             const gen: GenerateWords = new GenerateWords();
-            gen.generateGrid().then(() => {
-                res.send(GridCache.Instance.addGrid(gen.GridData, []));
+            gen.generateGrid().then((grid) => {
+                const sortedWords = grid.Words.sort((w1, w2) => w1.Number - w2.Number);
+                res.send(GridCache.Instance.addGrid({id: 0, blackCells: grid.BlackSquares, wordInfos: sortedWords.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.DictionaryData.definitions[0], length: word.Length}})}
+                , sortedWords.map((w) => w.Text.toUpperCase())));
             });
         }
 
