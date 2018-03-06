@@ -1,7 +1,7 @@
-namespace CommandPattern {
-    export class Command {
-        public execute(): void {
-            throw new Error("Call of an abstract method!");
-        }
-    }
+export interface IMap<T> {
+    [key: string]: T;
+}
+
+export interface ICommand {
+    Execute(): void;
 }

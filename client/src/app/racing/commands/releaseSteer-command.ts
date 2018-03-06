@@ -1,7 +1,7 @@
 import { ICommand } from "./command";
 import { Car } from "../car/car";
 
-export class AccelerationCommand implements ICommand {
+export class ReleaseSteerCommand implements ICommand {
     private car: Car;
 
     public constructor(car: Car) {
@@ -9,6 +9,6 @@ export class AccelerationCommand implements ICommand {
     }
 
     public Execute(): void {
-        this.car.isAcceleratorPressed = true;
+        this.car.releaseSteering();
     }
 }

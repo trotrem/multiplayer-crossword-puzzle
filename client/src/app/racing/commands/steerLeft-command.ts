@@ -1,16 +1,14 @@
-/// <reference path="command.ts" />
-namespace CommandPattern {
-    export class SteerLeftCommand extends Command {
-        private receiver: Receiver;
+import { ICommand } from "./command";
+import { Car } from "../car/car";
 
-        public constructor(receiver: Receiver) {
-            super();
-            this.receiver = receiver;
-        }
+export class SteerLeftCommand implements ICommand {
+    private car: Car;
 
-        public execute(): void {
-            console.warn("Execute Method of SteerLeft is being called.");
-            this.receiver.action();
-        }
+    public constructor(car: Car) {
+        this.car = car;
+    }
+
+    public Execute(): void {
+        this.car.steerLeft();
     }
 }
