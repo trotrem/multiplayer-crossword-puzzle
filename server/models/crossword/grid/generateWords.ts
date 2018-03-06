@@ -25,12 +25,8 @@ export class GenerateWords {
     public async generateGrid(): Promise<void> {
         while(1) {
             const grid: Grid = new Grid();
-            let words: WordDictionaryData[] = await wordRetreive(grid.Words[0].Text);
-            for (let i = 0; i < words.length; i++) {
-                grid.Words[0].trySetData(words[i]);
-                if(await this.addWord(1, grid) === true) {
-                    return;
-                }
+            if(await this.addWord(0, grid) === true) {
+                return;
             }
         }
     }
@@ -39,9 +35,10 @@ export class GenerateWords {
     //trouver meilleur nom de variable
     private async addWord(index: number, grid: Grid): Promise<boolean> {
         if(index === grid.Words.length) {
-            this.GridData = {id: 0, blackCells: grid.BlackSquares, wordInfos: grid.Words.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.Text, length: word.Length}})};
+            this.GridData = {id: 0, blackCells: grid.BlackSquares, wordInfos: grid.Words.map((word): IWordInfo => {return {id: word.Number, direction: word.Direction, x: word.PosX, y: word.PosY, definition: word.DictionaryData.definitions[0], length: word.Length}}).sort((w1, w2) => w1.id - w2.id)};
             return true;
         }
+        console.log(grid.Words.length - index);
         let words: WordDictionaryData[] = await wordRetreive(grid.Words[index].Text);
         if (words.length > 0) {
             if (grid.Words[index].Text.indexOf("?") === -1 && words[0].word !== grid.Words[index].Text) {

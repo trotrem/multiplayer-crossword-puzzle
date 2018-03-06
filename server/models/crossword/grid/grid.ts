@@ -8,8 +8,8 @@ import { Word } from "./word";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
-const MINBLACK: number = 35;
-const MAXBLACK: number = 36;
+const MINBLACK: number = 32;
+const MAXBLACK: number = 34;
 const MINCELLS: number = 0;
 const MAXCELLS: number = 99;
 const SPACEBTWCELLS: number = 2;
