@@ -1,5 +1,15 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
+const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
+  color: 0xFFFFFF,
+  linewidth: 7,
+  linejoin: "round"
+});
+const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
+  color: 0x00FF00,
+  linewidth: 7,
+  linejoin: "round"
+});
 
 @Injectable()
 export class PrintTrackService {
@@ -39,10 +49,25 @@ export class PrintTrackService {
   public drawTrack(points: THREE.Vector3[]): void {
     for (let i: number = 1; i < points.length; i++) {
       const lineGeometry: THREE.Geometry = new THREE.Geometry;
+      let line: THREE.Line;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
-      const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6 }));
+      if (i === 1) {
+        line = new THREE.Line(lineGeometry, FIRST_LINE_MATERIAL);
+      } else {
+        line = new THREE.Line(lineGeometry, LINE_MATERIAL);
+      }
       this.scene.add(line);
+      /*for (let i: number = 0; i < points.length; i += 4) {
+        const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
+        const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
+        const lineGeometry: THREE.Geometry = new THREE.Geometry;
+        for (let i: number = 0; i < curvedPoints.length; i++) {
+          lineGeometry.vertices.push(curvedPoints[i]);
+        }
+        const line: THREE.Line = new THREE.Line(lineGeometry, LINE_MATERIAL);
+        this.scene.add(line);
+      }*/
     }
   }
   public getCamera(): THREE.PerspectiveCamera {
