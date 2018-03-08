@@ -7,5 +7,6 @@ export interface WordDescription {
     cells: Cell[];
     definition: string;
     word?: string;
+    // TODO: devrait appeler found à la place? Ca fait bizarre word.wordFound
     wordFound: boolean;
 }

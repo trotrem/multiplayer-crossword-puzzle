@@ -106,6 +106,7 @@ export class CrosswordGridComponent implements OnInit {
       return;
     }
     event.stopPropagation();
+    // TODO: Pourquoi 2 boucles différentes? Peut être mettre la/les boucles dans une autre fonction?
     for (const word of this.words) {
       if (word.cells[0] === cell && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
