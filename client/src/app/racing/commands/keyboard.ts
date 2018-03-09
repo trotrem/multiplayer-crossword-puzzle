@@ -2,17 +2,22 @@
 import { ICommand, IMap } from "./command";
 
 export class Keyboard {
-    private commands: IMap<Array<ICommand>>;
+    private _commands: IMap<Array<ICommand>>;
+    private static _instance: Keyboard;
 
-    public constructor() {
-        this.commands = {};
+    public static get Instance(): Keyboard {
+        return ((this._instance) || (this._instance = new this()));
+    }
+
+    private constructor() {
+        this._commands = {};
     }
 
     public AddCommand(keyCode: number, cmd: ICommand): void {
         if (!this.HasCommand(keyCode)) {
-            this.commands[keyCode.toString()] = new Array<ICommand>();
+            this._commands[keyCode.toString()] = new Array<ICommand>();
         }
-        this.commands[keyCode.toString()].push(cmd);
+        this._commands[keyCode.toString()].push(cmd);
     }
 
     private HasCommand(keyCode: number): boolean {
@@ -20,7 +25,7 @@ export class Keyboard {
     }
 
     private GetCommands(keyCode: number): Array<ICommand> {
-        return this.commands[keyCode.toString()] || null;
+        return this._commands[keyCode.toString()] || null;
     }
 
     public ExecuteKeyDownCommands(keyCode: number): void {

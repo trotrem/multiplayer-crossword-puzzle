@@ -2,13 +2,13 @@ import { ICommand } from "./command";
 import { Car } from "../car/car";
 
 export class SteerLeftCommand implements ICommand {
-    private car: Car;
+    private _car: Car;
 
     public constructor(car: Car) {
-        this.car = car;
+        this._car = car;
     }
 
     public Execute(): void {
-        this.car.steerLeft();
+        this._car.steerLeft();
     }
 }
