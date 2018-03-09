@@ -2,8 +2,8 @@
 import { ICommand, IMap } from "./command";
 
 export class Keyboard {
-    private _commands: IMap<Array<ICommand>>;
     private static _instance: Keyboard;
+    private _commands: IMap<Array<ICommand>>;
 
     public static get Instance(): Keyboard {
         return ((this._instance) || (this._instance = new this()));
