@@ -84,7 +84,7 @@ export class TrackCreator {
         lineGeometry.vertices.push(newPos);
         const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
         lines.push(line);
-        this.trackValidator.popPoints();
+        this.trackValidator.emptyPoints();
 
         return lines;
     }
