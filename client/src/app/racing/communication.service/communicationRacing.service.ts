@@ -4,6 +4,8 @@ import { Track } from "./..//track-savor/track";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
+
+export const URL_SERVER: string = "http://localhost:3000/racing/";
 @Injectable()
 export class CommunicationRacingService {
 
@@ -15,7 +17,7 @@ export class CommunicationRacingService {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
         this.deleteTrack(track);
-        this.http.post("http://localhost:3000/racing/track", JSON.stringify(track), {
+        this.http.post(URL_SERVER + "track", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {
@@ -23,12 +25,12 @@ export class CommunicationRacingService {
     }
 
     public getTrackByName(name: string): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/racing/findOne/" + name);
+        return this.http.get<Track[]>(URL_SERVER + "findOne/" + name);
 
     }
 
     public getTracks(): Observable<Track[]> {
-        return this.http.get<Track[]>("http://localhost:3000/racing/admin");
+        return this.http.get<Track[]>(URL_SERVER + "admin");
     }
 
     public deleteTrack(track: Track): void {
@@ -36,7 +38,7 @@ export class CommunicationRacingService {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name , {
+        this.http.delete(URL_SERVER + "deleteTrack/" + track.name , {
             headers: headers
         })
             .subscribe((data: Response) => {
