@@ -5,21 +5,16 @@ import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
 @Injectable()
-export class TrackServices {
+export class CommunicationRacingService {
 
     public constructor(private http: HttpClient) {
     }
 
-    public saveTrackService(track: Track): void {
+    public saveTrack(track: Track): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
-
-        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name, {
-            headers: headers
-        })
-            .subscribe((data: Response) => {
-            });
+        this.deleteTrack(track);
         this.http.post("http://localhost:3000/racing/track", JSON.stringify(track), {
             headers: headers
         })
@@ -27,8 +22,25 @@ export class TrackServices {
             });
     }
 
-    public getTrackService(name: string): Observable<Track[]> {
+    public getTrackByName(name: string): Observable<Track[]> {
         return this.http.get<Track[]>("http://localhost:3000/racing/findOne/" + name);
 
     }
+
+    public getTracks(): Observable<Track[]> {
+        return this.http.get<Track[]>("http://localhost:3000/racing/admin");
+    }
+
+    public deleteTrack(track: Track): void {
+        const headers: HttpHeaders = new HttpHeaders()
+            .set("Authorization", "my-auth-token")
+            .set("Content-Type", "application/json");
+
+        this.http.delete("http://localhost:3000/racing/deleteTrack/" + track.name , {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
+    }
+
 }

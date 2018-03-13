@@ -5,7 +5,7 @@ import { TrackSavor } from "../track-savor/track-savor";
 import { Track } from "../track-savor/track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./../scene.services/scene.service";
-import { TrackServices } from "../track.services/track.service";
+import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 
 @Component({
     selector: "app-editor",
@@ -25,7 +25,7 @@ export class EditorComponent implements OnInit {
 
     private sceneService: SceneServices;
 
-    private trackService: TrackServices;
+    private communicationService: CommunicationRacingService;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
@@ -34,7 +34,7 @@ export class EditorComponent implements OnInit {
     public constructor(private http: HttpClient, private route: ActivatedRoute) {
         this.track = new Track();
         this.sceneService = new SceneServices();
-        this.trackService = new TrackServices(this.http);
+        this.communicationService = new CommunicationRacingService(this.http);
         this.trackSavor = new TrackSavor(this.http);
     }
     public setTrack(track: Track): void {
@@ -76,7 +76,7 @@ export class EditorComponent implements OnInit {
     }
 
     private getTrack(name: string): void {
-        this.trackService.getTrackService(name)
+        this.communicationService.getTrackByName(name)
             .subscribe((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;

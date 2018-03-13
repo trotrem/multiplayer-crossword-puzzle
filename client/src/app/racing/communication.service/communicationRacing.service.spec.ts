@@ -1,22 +1,22 @@
 import { TestBed, inject, async } from "@angular/core/testing";
 
-import { TrackServices } from "./track.service";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Track } from "../track-savor/track";
+import { CommunicationRacingService } from "./communicationRacing.service";
 
-describe("TrackService", () => {
+describe("CommunicationRacingService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
         HttpClientTestingModule
       ],
-      providers: [TrackServices]
+      providers: [CommunicationRacingService]
     });
   });
 
-  it("should be created", inject([TrackServices], (service: TrackServices) => {
+  it("should be created", inject([CommunicationRacingService], (service: CommunicationRacingService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -45,12 +45,23 @@ describe("TrackService", () => {
   )
   );
 
-  it("should issue a GET request", async(
+  it("should issue a GET request findByName", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
       const name: string = "Amal";
       http.get("http://localhost:3000/racing/findOne/" + name).subscribe();
       backend.expectOne({
         url: "http://localhost:3000/racing/findOne/" + name,
+        method: "GET"
+      });
+    })
+  )
+  );
+
+  it("should issue a GET request", async(
+    inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
+      http.get("http://localhost:3000/racing/admin").subscribe();
+      backend.expectOne({
+        url: "http://localhost:3000/racing/admin",
         method: "GET"
       });
     })

@@ -2,8 +2,8 @@ import { TrackSavor } from "./track-savor";
 
 import { TestBed, inject } from "@angular/core/testing";
 
-import { TrackServices } from "./../track.services/track.service";
 import { HttpClientModule, HttpClient  } from "@angular/common/http";
+import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 
 describe("TrackSavor", () => {
   // tslint:disable-next-line:prefer-const
@@ -14,11 +14,11 @@ describe("TrackSavor", () => {
       imports: [
         HttpClientModule
       ],
-      providers: [TrackServices]
+      providers: [CommunicationRacingService]
     });
   });
 
-  it("should be created", inject([TrackServices], (service: TrackServices) => {
+  it("should be created", inject([CommunicationRacingService], (service: CommunicationRacingService) => {
     expect(trackSavor).toBeTruthy();
   }));
 });

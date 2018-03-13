@@ -14,10 +14,10 @@ import { CrosswordGridComponent } from "./crossword/crossword-grid/crossword-gri
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
-import { TrackServices } from "./racing/track.services/track.service";
 import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
 import { RaceComponent } from "./racing/race/race.component";
+import { CommunicationRacingService } from "./racing/communication.service/communicationRacing.service";
 
 const appRoutes: Routes = [
     { path: "editor/:name", component: EditorComponent },
@@ -59,7 +59,7 @@ const appRoutes: Routes = [
     ],
     providers: [
         SceneServices,
-        TrackServices,
+        CommunicationRacingService,
         RenderService,
         BasicService,
         {provide: APP_BASE_HREF, useValue : "/" }
