@@ -180,6 +180,7 @@ export class CrosswordGridComponent implements OnInit {
         if (data) {
           for (const cell of word.cells) {
             cell.wordFound = data;
+            cell.selected = false;
           }
           word.found = true;
         }

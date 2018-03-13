@@ -32,10 +32,12 @@
 
 .selected {
     outline-width: 4px !important;
+    outline-color: black !important;
 }
 
 .wordFound {
-     background-color:#00ff00;
+    color: #1fcc1f;
+    outline: 2px solid #1fcc1f;
  }
 
 .definition {
