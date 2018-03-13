@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 // import { UserService } from "../user.service/user.service";
-import { Track } from "./../track-savor/track";
+import { Track } from "./../track";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { PrintTrackService } from "../print-track.service/print-track.service";
@@ -26,7 +26,7 @@ export class UserComponent implements OnInit {
     this.tracks = new Array<Track>();
     this.printTrackService = new PrintTrackService();
     this.tracks = new Array<Track>();
-    this.selectedTrack = new Track();
+    // this.selectedTrack = new Track();
   }
 
   public ngOnInit(): void {

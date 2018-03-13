@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef  } from "@angular/core";
-import { Track } from "./../track-savor/track";
+import { Track } from "./../track";
 import { ActivatedRoute } from "@angular/router";
 import { PrintTrackService } from "../print-track.service/print-track.service";
 import { HttpClient } from "@angular/common/http";
@@ -27,7 +27,7 @@ export class RaceComponent implements OnInit {
   }
 
   public constructor(private route: ActivatedRoute, private http: HttpClient) {
-      this.track = new Track();
+      // this.track = new Track();
       this.printTrackService = new PrintTrackService();
       this.communicationService = new CommunicationRacingService(this.http);
   }

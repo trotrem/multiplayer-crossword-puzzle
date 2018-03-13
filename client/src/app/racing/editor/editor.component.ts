@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
-import { TrackSavor } from "../track-savor/track-savor";
-import { Track } from "../track-savor/track";
+import { Track } from "../track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./../scene.services/scene.service";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import * as THREE from "three";
 
 @Component({
     selector: "app-editor",
@@ -18,13 +18,9 @@ export class EditorComponent implements OnInit {
     @ViewChild("canvas")
 
     private canvasRef: ElementRef;
-
-    private trackSavor: TrackSavor;
-
+    private submitValid: boolean;
     private track: Track;
-
     private sceneService: SceneServices;
-
     private communicationService: CommunicationRacingService;
 
     private get canvas(): HTMLCanvasElement {
@@ -32,14 +28,17 @@ export class EditorComponent implements OnInit {
     }
 
     public constructor(private http: HttpClient, private route: ActivatedRoute) {
-        this.track = new Track();
+        this.track = {
+            name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
+            bestScores: new Array<number>()
+        };
+        this.submitValid = false;
         this.sceneService = new SceneServices();
         this.communicationService = new CommunicationRacingService(this.http);
-        this.trackSavor = new TrackSavor(this.http);
     }
     public setTrack(track: Track): void {
         this.track = track;
-      }
+    }
 
     public ngOnInit(): void {
         this.sceneService.initialize(this.canvas);
@@ -65,14 +64,18 @@ export class EditorComponent implements OnInit {
         return !this.sceneService.getIsClosed() || !this.sceneService.getTrackValid();
     }
     public notReadyToSave(): boolean {
-        return this.notReadyToSubmit() || !this.trackSavor.getSubmitvalue();
+        return this.notReadyToSubmit() || !this.submitValid;
     }
     public savetrack(): void {
-        this.trackSavor.setPoints(this.sceneService.getPoints());
-        this.trackSavor.savetrack();
+        this.track.points = this.sceneService.getPoints();
+        this.track.startingZone = new THREE.Line3(this.track.points[0], this.track.points[1]);
+        this.communicationService.deleteTrack(this.track);
+        this.communicationService.saveTrack(this.track);
     }
     public onSubmit(f: NgForm): void {
-        this.trackSavor.onSubmit(f);
+        this.track.description = f.value.description;
+        this.track.name = f.value.name;
+        this.submitValid = true;
     }
 
     private getTrack(name: string): void {

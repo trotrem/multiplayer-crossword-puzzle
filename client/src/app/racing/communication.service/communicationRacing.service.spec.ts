@@ -1,8 +1,8 @@
 import { TestBed, inject, async } from "@angular/core/testing";
-
+import * as THREE from "three";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Track } from "../track-savor/track";
+import { Track } from "../track";
 import { CommunicationRacingService } from "./communicationRacing.service";
 
 describe("CommunicationRacingService", () => {
@@ -22,11 +22,10 @@ describe("CommunicationRacingService", () => {
 
   it("should issue a DELETE request", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
-      const track: Track = new Track();
-      track.name = "Laurence";
-      http.delete("http://localhost:3000/racing/deleteTrack/" + track.name).subscribe();
+      const name: String = "Laurence";
+      http.delete("http://localhost:3000/racing/deleteTrack/" + name).subscribe();
       backend.expectOne({
-        url: "http://localhost:3000/racing/deleteTrack/" + track.name,
+        url: "http://localhost:3000/racing/deleteTrack/" + name,
         method: "DELETE"
       });
     })
@@ -35,10 +34,13 @@ describe("CommunicationRacingService", () => {
 
   it("should issue a POST request", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
-      const track: Track = new Track();
+      const track: Track = {
+        name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
+        bestScores: new Array<number>()
+    };
       http.post("http://localhost:3000/racing/track", JSON.stringify(track)).subscribe();
       backend.expectOne({
-        url: "http://localhost:3000/racing/track" + track.name,
+        url: "http://localhost:3000/racing/track" + name,
         method: "POST"
       });
     })
@@ -57,7 +59,7 @@ describe("CommunicationRacingService", () => {
   )
   );
 
-  it("should issue a GET request", async(
+  it("should issue a GET request find all", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
       http.get("http://localhost:3000/racing/admin").subscribe();
       backend.expectOne({
