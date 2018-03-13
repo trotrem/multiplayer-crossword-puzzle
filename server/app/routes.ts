@@ -34,14 +34,10 @@ export class Routes {
         router.post("/crossword/validate", (req: Request, res: Response, next: NextFunction) =>
             this.crossword.validateWord(req, res, next));
 
-        router.get("/racing/user", (req: Request, res: Response, next: NextFunction) => this.racing.getAlltracks(req, res, next));
-
         router.delete("/racing/deleteTrack/:name", (req: Request, res: Response, next: NextFunction) =>
             this.racing.deleteTrack(req, res, next));
 
         router.get("/racing/findOne/:name", (req: Request, res: Response, next: NextFunction) =>
-            this.racing.getTrackByName(req, res, next));
-        router.get("/racing/user/:name", (req: Request, res: Response, next: NextFunction) =>
             this.racing.getTrackByName(req, res, next));
 
         return router;
