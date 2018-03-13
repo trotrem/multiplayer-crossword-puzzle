@@ -27,7 +27,6 @@ export class RaceComponent implements OnInit {
   }
 
   public constructor(private route: ActivatedRoute, private http: HttpClient) {
-      // this.track = new Track();
       this.printTrackService = new PrintTrackService();
       this.communicationService = new CommunicationRacingService(this.http);
   }
