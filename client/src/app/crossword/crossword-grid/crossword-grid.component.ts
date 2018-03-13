@@ -89,7 +89,7 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, wordFound: false });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
         });
       });
   }
@@ -106,7 +106,6 @@ export class CrosswordGridComponent implements OnInit {
       return;
     }
     event.stopPropagation();
-    // TODO: Pourquoi 2 boucles différentes? Peut être mettre la/les boucles dans une autre fonction?
     for (const word of this.words) {
       if (word.cells[0] === cell && word !== this.selectedWord) {
         this.setSelectedWord(word, true);
@@ -124,7 +123,7 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onIndexClicked(event: MouseEvent, word: WordDescription): void {
-    if (word.wordFound) {
+    if (word.found) {
       return;
     }
     event.stopPropagation();
@@ -182,7 +181,7 @@ export class CrosswordGridComponent implements OnInit {
           for (const cell of word.cells) {
             cell.wordFound = data;
           }
-          word.wordFound = true;
+          word.found = true;
         }
       });
   }
