@@ -25,13 +25,15 @@ export class PrintCarsService {
 
     return this.carsPair;
 }
-  public insertPairOfCars(line: THREE.Line3, scene: THREE.Scene ): void {
+  public insertPairOfCars(line: THREE.Line3, scene: THREE.Scene ): Car[] {
     for (let i: number = 0; i < CARS_PAIRS_MAX; i++) {
     const positions: THREE.Vector3[] = this.randomPositions.getRandomPairOfAdjacentPositions(line);
     this.translateCarPosition(i, positions[i]);
     scene.add(this.carsPair[i]);
     console.warn(this.carsPair[i].position);
     }
+
+    return this.carsPair;
 }
   private translateCarPosition(index: number, vector: THREE.Vector3): void {
     this.carsPair[index].translateX(vector.x);

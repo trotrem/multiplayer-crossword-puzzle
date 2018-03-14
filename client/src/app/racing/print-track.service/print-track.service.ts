@@ -85,7 +85,10 @@ export class PrintTrackService {
     }
   }
   public insertCars(line: THREE.Line3): void {
-   this.printCarService.insertPairOfCars(line, this.scene);
+
+    this.carsPairs[0] = this.printCarService.insertPairOfCars(line, this.scene);
+    // this.carsPairs[1] = this.printCarService.insertPairOfCars(line, this.scene);
+
   }
 
   public getCamera(): THREE.PerspectiveCamera {

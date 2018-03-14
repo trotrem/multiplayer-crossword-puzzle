@@ -43,8 +43,8 @@ describe("RandomCarCreatorService", () => {
       const line: THREE.Line3 = new THREE.Line3(new THREE.Vector3(2, 4, 8), new THREE.Vector3(-1, 0, 2));
       const vectors: THREE.Vector3[] = service.getRandomPairOfAdjacentPositions(line);
       // tslint:disable-next-line:no-magic-numbers
-      expect(vectors[1].y).toBe(vectors[0].y + 0.5);
+      expect(vectors[1].y).toBe(vectors[0].y + 0.01);
       // tslint:disable-next-line:no-magic-numbers
-      expect(vectors[1].z).toBe(vectors[0].z + 0.5);
+      expect(vectors[1].z).toBe(vectors[0].z + 0.01);
     }));
 });
