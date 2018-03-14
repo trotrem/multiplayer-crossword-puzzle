@@ -70,6 +70,7 @@ export class PrintTrackService {
       }*/
     }
   }
+
   public getCamera(): THREE.PerspectiveCamera {
     return this.camera;
   }
