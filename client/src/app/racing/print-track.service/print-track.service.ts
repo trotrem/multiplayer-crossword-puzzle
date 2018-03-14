@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
+import { ThrowStmt } from "@angular/compiler";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
   linewidth: 7,
@@ -49,15 +50,13 @@ export class PrintTrackService {
   public drawTrack(points: THREE.Vector3[]): void {
     for (let i: number = 1; i < points.length; i++) {
       const lineGeometry: THREE.Geometry = new THREE.Geometry;
-      let line: THREE.Line;
+      let material: THREE.LineBasicMaterial = LINE_MATERIAL ;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
       if (i === 1) {
-        line = new THREE.Line(lineGeometry, FIRST_LINE_MATERIAL);
-      } else {
-        line = new THREE.Line(lineGeometry, LINE_MATERIAL);
+        material = FIRST_LINE_MATERIAL;
       }
-      this.scene.add(line);
+      this.scene.add(new THREE.Line(lineGeometry, material));
       /*for (let i: number = 0; i < points.length; i += 4) {
         const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
         const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
