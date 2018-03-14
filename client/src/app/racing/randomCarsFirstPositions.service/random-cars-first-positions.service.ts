@@ -4,7 +4,7 @@ import { Car } from "../car/car";
 
 const DISTANCE_BETWEEN_CARS: number = 0.5;
 @Injectable()
-export class RandomCarCreatorService {
+export class RandomCarsFirstPositionsService {
   // public constructor() { }
   public getRandomPosition(firstLine: THREE.Line3): THREE.Vector3 {
     const randomXPosition: number = this.getRandomNumber(firstLine.start.x, firstLine.end.x);
