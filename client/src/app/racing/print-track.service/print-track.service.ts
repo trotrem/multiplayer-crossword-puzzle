@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { ThrowStmt } from "@angular/compiler";
+import { Car } from "../car/car";
+import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
   linewidth: 7,
@@ -11,6 +13,9 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linewidth: 7,
   linejoin: "round"
 });
+const CARS_PAIRS_MAX: number = 2;
+const WHITE: number = 0xFFFFFF;
+const AMBIENT_LIGHT_OPACITY: number = 0.5;
 
 @Injectable()
 export class PrintTrackService {
@@ -23,7 +28,15 @@ export class PrintTrackService {
 
   private canvas: HTMLCanvasElement;
 
-  public constructor() { }
+  private cars: Car[];
+
+  private randomPositions: RandomCarsFirstPositionsService;
+
+  public constructor() {
+    this.cars = new Array<Car>();
+    this.cars[0] = new Car();
+    this.randomPositions = new RandomCarsFirstPositionsService();
+  }
 
   public initialize(canvas: HTMLCanvasElement): void {
     if (canvas) {
@@ -40,6 +53,12 @@ export class PrintTrackService {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.cars[0].init();
+    // this.camera.position.set(0, INITIAL_CAMERA_POSITION_Y, 0);
+    this.camera.lookAt(this.cars[0].position);
+    this.scene.add(this.cars[0]);
+    this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+
   }
 
   public animate(): void {
@@ -68,6 +87,24 @@ export class PrintTrackService {
         this.scene.add(line);
       }*/
     }
+  }
+  public insertCars(line: THREE.Line3): void {
+    // for (let i: number = 0; i < CARS_PAIRS_MAX ; i++) {
+      const positions: THREE.Vector3[] = this.randomPositions.getRandomPairOfAdjacentPositions(line);
+      // const firstCar: Car = new Car();
+      // const secondCar: Car = new Car();
+      // firstCar.init();
+      this.cars[0].translateX(positions[0].x);
+      this.cars[0].translateY(positions[0].y);
+      this.cars[0].translateZ(positions[0].z);
+      this.scene.add(this.cars[0]);
+      /*secondCar.translateX(positions[1].x);
+      secondCar.translateY(positions[1].y);
+      this.scene.add(secondCar);*/
+      console.warn(this.cars[0].position);
+      // console.warn(secondCar.position);
+      // console.warn(secondCar.);
+    // }
   }
 
   public getCamera(): THREE.PerspectiveCamera {
