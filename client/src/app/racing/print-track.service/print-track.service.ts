@@ -14,6 +14,7 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linewidth: 7,
   linejoin: "round"
 });
+const MAX_CARS_PAIRS: number = 2;
 
 @Injectable()
 export class PrintTrackService {
@@ -26,12 +27,12 @@ export class PrintTrackService {
 
   private canvas: HTMLCanvasElement;
 
-  private cars: Car[];
+  private carsPairs: Car[][];
 
   private printCarService: PrintCarsService;
 
   public constructor() {
-    this.cars = new Array<Car>();
+    this.carsPairs = new Array<Car[]>(MAX_CARS_PAIRS);
     this.printCarService = new PrintCarsService();
 
   }
@@ -51,7 +52,9 @@ export class PrintTrackService {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.cars.push(this.printCarService.initiateCar(this.camera, this.scene));
+    for (let i: number = 0; i < MAX_CARS_PAIRS; i++) {
+    this.carsPairs.push(this.printCarService.initiateCars(this.camera, this.scene));
+    }
   }
 
   public animate(): void {
@@ -82,7 +85,7 @@ export class PrintTrackService {
     }
   }
   public insertCars(line: THREE.Line3): void {
-   this.printCarService.insertCars(line, this.scene);
+   this.printCarService.insertPairOfCars(line, this.scene);
   }
 
   public getCamera(): THREE.PerspectiveCamera {

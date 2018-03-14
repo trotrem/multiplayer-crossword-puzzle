@@ -10,28 +10,32 @@ const AMBIENT_LIGHT_OPACITY: number = 0.5;
 @Injectable()
 export class PrintCarsService {
   private randomPositions: RandomCarsFirstPositionsService;
-  private car: Car;
+  private carsPair: Car[];
   public constructor() {
-    this.car = new Car();
+    this. carsPair = new Array<Car>(CARS_PAIRS_MAX);
     this.randomPositions = new RandomCarsFirstPositionsService();
   }
-  public initiateCar(camera: THREE.PerspectiveCamera, scene: THREE.Scene): Car {
-    this.car.init();
-    camera.lookAt(this.car.position);
-    scene.add(this.car);
+  public initiateCars(camera: THREE.PerspectiveCamera, scene: THREE.Scene): Car[] {
+    for (let i: number = 0; i < CARS_PAIRS_MAX; i++) {
+    this.carsPair[i] = new Car();
+    this.carsPair[i].init();
+    camera.lookAt(this.carsPair[i].position);
     scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+    }
 
-    return this.car;
+    return this.carsPair;
 }
-  public insertCars(line: THREE.Line3, scene: THREE.Scene ): void {
+  public insertPairOfCars(line: THREE.Line3, scene: THREE.Scene ): void {
+    for (let i: number = 0; i < CARS_PAIRS_MAX; i++) {
     const positions: THREE.Vector3[] = this.randomPositions.getRandomPairOfAdjacentPositions(line);
-    this.translateCarPosition(positions[0]);
-    scene.add(this.car);
-    console.warn(this.car.position);
+    this.translateCarPosition(i, positions[i]);
+    scene.add(this.carsPair[i]);
+    console.warn(this.carsPair[i].position);
+    }
 }
-  private translateCarPosition( vector: THREE.Vector3): void {
-    this.car.translateX(vector.x);
-    this.car.translateY(vector.y);
-    this.car.translateZ(vector.z);
+  private translateCarPosition(index: number, vector: THREE.Vector3): void {
+    this.carsPair[index].translateX(vector.x);
+    this.carsPair[index].translateY(vector.y);
+    this.carsPair[index].translateZ(vector.z);
   }
 }

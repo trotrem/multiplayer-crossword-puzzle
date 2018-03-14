@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { Car } from "../car/car";
 
-const DISTANCE_BETWEEN_CARS: number = 0.5;
+const DISTANCE_BETWEEN_CARS: number = 0.01;
 @Injectable()
 export class RandomCarsFirstPositionsService {
   // public constructor() { }
