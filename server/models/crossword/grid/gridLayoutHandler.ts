@@ -1,15 +1,9 @@
-// import * as requestOption from "request-promise-native";
-// import { ExternalApiService } from "../lexiconAPI/externalApi.service";
-// import { GridWordInformation } from "../lexiconAPI/gridWordInformation";
-import { Square } from "./square";
-import { IPoint } from "../../../../common/communication/types";
-import { WordsInventory } from "./wordsInventory";
-import { Word } from "./word";
+import { IGrid, ICell } from "./dataStructures";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
-const MINBLACK: number = 32;
-const MAXBLACK: number = 34;
+const MINBLACK: number = 29;
+const MAXBLACK: number = 29;
 const MINCELLS: number = 0;
 const MAXCELLS: number = 99;
 const SPACEBTWCELLS: number = 2;
@@ -17,50 +11,12 @@ const SPACEBTWCELLS: number = 2;
 /*const NOTBLACKSQUARES: number[]; /*= [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
     19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];*/
 
-export class Grid {
+export class GridLayoutHandler {
 
-    private _grid: Square[][];
     private _blackSquares: number[];
     private _notBlackSquares: number[];
     private _nbrBlack: number;
-    private _wordsInventory: WordsInventory;
 
-    constructor() {
-        this._grid = new Array<Array<Square>>();
-        this.makeGrid();
-        this._wordsInventory = new WordsInventory(this._grid);
-    }
-
-    public get Height(): number {
-        return HEIGHT;
-    }
-    public get Width(): number {
-        return WIDTH;
-    }
-    public get Grid(): Array<Array<Square>> {
-        return this._grid;
-    }
-    public get BlackSquares(): IPoint[] {
-        const blacks: IPoint[] = [];
-        this._grid.forEach((row: Square[], x: number) => {
-            row.forEach((cell: Square, y: number) => {
-                if (cell.isBlack) {
-                    blacks.push({x, y});
-                }
-            });
-        });
-
-        return blacks;
-    }
-    public getSquareIsBlack(i: number, j: number): boolean {
-        return this._grid[i][j].isBlack;
-    }
-    public get NbrBlack(): number {
-        return this._nbrBlack;
-    }
-    public get Words(): Word[] {
-        return this._wordsInventory.Words;
-    }
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
@@ -100,18 +56,20 @@ export class Grid {
         }
     }
 
-    private makeEmptyGrid(): void {
+    private makeEmptyGrid(grid: IGrid): void {
+        grid.cells = new Array<Array<ICell>>();
+        grid.blackCells = new Array<ICell>();
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
-            const row: Square[] = new Array<Square>();
+            const row: ICell[] = new Array<ICell>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
                 row.push({id: indexI * HEIGHT + indexJ, isBlack: false, letter: "", x: indexI, y: indexJ});
             }
-            this._grid.push(row);
+            grid.cells.push(row);
         }
     }
 
-    public makeGrid(): void {
-        this.makeEmptyGrid();
+    public makeGrid(grid: IGrid): void {
+        this.makeEmptyGrid(grid);
         // making an empty grid
         this.generateBlackSquare();
         // putting black square in the grid
@@ -119,8 +77,8 @@ export class Grid {
             const indexTemp: number = this._blackSquares[index];
             const indexITemp: number = indexTemp % HEIGHT;
             const indexJTemp: number = Math.floor(indexTemp / HEIGHT);
-            this._grid[indexITemp][indexJTemp].isBlack = true;
-
+            grid.cells[indexITemp][indexJTemp].isBlack = true;
+            grid.blackCells.push({x: indexITemp, y: indexJTemp});
         }
     }
 }
