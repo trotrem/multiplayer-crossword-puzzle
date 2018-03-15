@@ -20,7 +20,7 @@ describe("PrintTrackService", () => {
   }));
   it("should create a scene", inject([PrintTrackService], (service: PrintTrackService) => {
     service.initialize(canvas);
-    expect(service.getScene().children.length).toBe(0);
+    expect(service.getScene().children.length).toBe(4);
   }));
   it("should draw a track", inject([PrintTrackService], (service: PrintTrackService) => {
     const points: Array<THREE.Vector3> = new Array<THREE.Vector3>();
@@ -34,7 +34,7 @@ describe("PrintTrackService", () => {
     points.push(position4);
     service.initialize(canvas);
     service.drawTrack(points);
-    expect(service.getScene().children.length).toBe(3);
+    expect(service.getScene().children.length).toBe(7);
   }));
 
 });

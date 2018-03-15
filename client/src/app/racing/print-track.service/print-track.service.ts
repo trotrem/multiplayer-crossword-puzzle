@@ -1,5 +1,9 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
+import { ThrowStmt } from "@angular/compiler";
+import { Car } from "../car/car";
+import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
+import { PrintCarsService } from "../printCar.service/print-cars.service";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
   linewidth: 7,
@@ -10,6 +14,7 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linewidth: 7,
   linejoin: "round"
 });
+const MAX_CARS_PAIRS: number = 2;
 
 @Injectable()
 export class PrintTrackService {
@@ -22,7 +27,15 @@ export class PrintTrackService {
 
   private canvas: HTMLCanvasElement;
 
-  public constructor() { }
+  private carsPairs: Car[][];
+
+  private printCarService: PrintCarsService;
+
+  public constructor() {
+    this.carsPairs = new Array<Car[]>(MAX_CARS_PAIRS);
+    this.printCarService = new PrintCarsService();
+
+  }
 
   public initialize(canvas: HTMLCanvasElement): void {
     if (canvas) {
@@ -39,6 +52,9 @@ export class PrintTrackService {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    for (let i: number = 0; i < MAX_CARS_PAIRS; i++) {
+    this.carsPairs.push(this.printCarService.initiateCars(this.camera, this.scene));
+    }
   }
 
   public animate(): void {
@@ -49,15 +65,13 @@ export class PrintTrackService {
   public drawTrack(points: THREE.Vector3[]): void {
     for (let i: number = 1; i < points.length; i++) {
       const lineGeometry: THREE.Geometry = new THREE.Geometry;
-      let line: THREE.Line;
+      let material: THREE.LineBasicMaterial = LINE_MATERIAL ;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
       if (i === 1) {
-        line = new THREE.Line(lineGeometry, FIRST_LINE_MATERIAL);
-      } else {
-        line = new THREE.Line(lineGeometry, LINE_MATERIAL);
+        material = FIRST_LINE_MATERIAL;
       }
-      this.scene.add(line);
+      this.scene.add(new THREE.Line(lineGeometry, material));
       /*for (let i: number = 0; i < points.length; i += 4) {
         const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
         const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
@@ -70,6 +84,13 @@ export class PrintTrackService {
       }*/
     }
   }
+  public insertCars(line: THREE.Line3): void {
+
+    this.carsPairs[0] = this.printCarService.insertPairOfCars(line, this.scene);
+    // this.carsPairs[1] = this.printCarService.insertPairOfCars(line, this.scene);
+
+  }
+
   public getCamera(): THREE.PerspectiveCamera {
     return this.camera;
   }
