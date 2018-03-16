@@ -14,9 +14,18 @@ const LOWER_Z: number = 122;
 export class GridEventService {
   public selectedWord: WordDescription = null;
   private words: WordDescription[];
+  private id: number;
 
-  public constructor() { }
+  public constructor(words: WordDescription[], id: number) {
+    this.words = words;
+    this.id = id;
+  }
 
+  @HostListener("document:click")
+  // (listens to document event so it's not called in the code)
+  private onBackgroundClick(): void {  // tslint:disable-line
+    this.setSelectedWord(null, false);
+  }
   private setSelectedWord(word: WordDescription, selected: boolean): void {
     if (this.selectedWord === word) {
       return;

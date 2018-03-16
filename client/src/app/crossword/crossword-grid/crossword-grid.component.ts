@@ -35,6 +35,7 @@ export class CrosswordGridComponent implements OnInit {
   private TipMode: typeof TipMode = TipMode;
   public tipMode: TipMode = TipMode.Definitions;
 
+  // service grid-event
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
   private onBackgroundClick(): void {  // tslint:disable-line
