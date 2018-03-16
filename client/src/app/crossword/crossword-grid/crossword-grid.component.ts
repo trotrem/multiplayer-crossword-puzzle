@@ -52,6 +52,7 @@ export class CrosswordGridComponent implements OnInit {
   public constructor(private http: HttpClient) {
     this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
+    // service grid ??
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
@@ -174,7 +175,7 @@ export class CrosswordGridComponent implements OnInit {
 
     this.communicationService.validate(parameters);
   }
-
+// service grid-mode
   private fetchCheatModeWords(): void {
     this.communicationService.fetchCheatModeWords(this.id)
       .subscribe((data: string[]) => {
@@ -186,7 +187,7 @@ export class CrosswordGridComponent implements OnInit {
         }
       });
   }
-
+// servie grid-event
   private setSelectedWord(word: WordDescription, selected: boolean): void {
     if (this.selectedWord === word) {
       return;

@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
 import { CommunicationService } from "./communication.service";
+import { WordDescription } from "./wordDescription";
+import { Direction } from "../../../../common/communication/types";
 
 enum TipMode {
   Definitions,
@@ -11,8 +13,20 @@ export class GridModeService {
   private communicationService: CommunicationService;
   private TipMode: typeof TipMode = TipMode;
   public tipMode: TipMode = TipMode.Definitions;
+  private words: WordDescription[];
 
-  constructor() { }
+  public constructor(communicationService: CommunicationService, words: WordDescription[] ) {
+    this.communicationService = communicationService;
+    this.words = words;
+   }
+
+  public get horizontalWords(): WordDescription[] {
+    return this.words.filter((word) => word.direction === Direction.Horizontal);
+  }
+
+  public get verticalWords(): WordDescription[] {
+    return this.words.filter((word) => word.direction === Direction.Vertical);
+  }
 
   public toggleTipMode(): void {
     if (this.horizontalWords[0].word === undefined) {

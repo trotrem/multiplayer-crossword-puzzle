@@ -22,15 +22,16 @@ export class GridService {
   private _difficulty: Difficulty = "easy";
   private words: WordDescription[];
 
-  public constructor(private http: HttpClient) {
-    this.communicationService = new CommunicationService(this.http);
-    this.cells = new Array<Array<Cell>>();
+  public constructor(communicationService: CommunicationService, cells: Cell[][], words: WordDescription[]) {
+    this.communicationService = communicationService;
+    this.cells = cells;
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
         this.cells[i].push({ content: "", selected: false, isBlack: false });
       }
     }
+    this.words = words;
   }
 
   private setDifficulty(): Difficulty {
