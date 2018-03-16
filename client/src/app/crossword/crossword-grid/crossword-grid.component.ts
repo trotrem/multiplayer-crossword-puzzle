@@ -62,7 +62,7 @@ export class CrosswordGridComponent implements OnInit {
     this.setDifficulty();
     this.fetchGrid();
   }
-
+// dans grid.service
   private setDifficulty(): void {
     this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
       location.pathname === "/crossword/medium" ? "medium" :
@@ -72,6 +72,7 @@ export class CrosswordGridComponent implements OnInit {
   public ngOnInit(): void {
   }
 
+  // dans grid.service
   public fetchGrid(): void {
     this.communicationService.fetchGrid(this._difficulty)
       .subscribe((data) => {
@@ -93,7 +94,7 @@ export class CrosswordGridComponent implements OnInit {
         });
       });
   }
-
+ // grid-mode.service
   public toggleTipMode(): void {
     if (this.horizontalWords[0].word === undefined) {
       this.fetchCheatModeWords();
