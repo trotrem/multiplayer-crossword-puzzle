@@ -1,0 +1,43 @@
+<p>
+  Home Page. Welcome to the crossword
+</p>
+<form #form = "ngForm" (ngSubmit)= play(form)>
+<label>Choose the difficulty</label>
+<div class="form-group">
+  <div class="radio">
+      <label>
+          <input type="radio" name="EasyMediumHard" value="easy" [(ngModel)] ="EasyMediumHard">
+          Easy
+      </label>
+  </div>
+  <div class="radio">
+      <label>
+          <input type="radio" name="EasyMediumHard" value="medium" [(ngModel)] ="EasyMediumHard">
+          Medium
+      </label>
+  </div>
+  <div class="radio">
+    <label>
+        <input type="radio" name="EasyMediumHard" value="hard" [(ngModel)] ="EasyMediumHard">
+        Hard
+    </label>
+  </div>
+</div>
+
+<label>Number of players : </label>
+<div class="form-group">
+  <div class="radio">
+      <label>
+          <input type="radio" name="OneTwo" value="one" [(ngModel)] = "oneTwo">
+          One
+      </label>
+  </div>
+  <div class="radio">
+      <label>
+          <input type="radio" name="OneTwo" value="two" [(ngModel)] = "oneTwo">
+          Two
+      </label>
+  </div>
+</div>
+<button type="submit" >Play</button>
+</form>
