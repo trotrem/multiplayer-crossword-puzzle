@@ -16,7 +16,7 @@ export class WordRetriever {
 
     public async getWordsWithDefinitions(word: string): Promise<WordDictionaryData[]> {
 
-        return this.createWordListWithDefinitions(word, (wordInfo: WordDictionaryData) => true);
+        return this.createWordListWithDefinitions(word, (wordInfo: WordDictionaryData) => wordInfo.definitions.length > 0);
     }
 
     public async getEasyWordList(word: string): Promise<WordDictionaryData[]> {
@@ -48,7 +48,8 @@ export class WordRetriever {
 
         const hardWordList: WordDictionaryData[] = await this.createWordListWithDefinitions(word, filter);
         hardWordList.forEach((wordInfo: WordDictionaryData) => {
-            wordInfo.definitions = wordInfo.definitions.splice(0, 1);
+            wordInfo.definitions = 
+                (wordInfo.definitions.length > 1) ? (wordInfo.definitions.splice(1, 1)) : wordInfo.definitions.splice(0, 1);
         });
 
         return hardWordList;

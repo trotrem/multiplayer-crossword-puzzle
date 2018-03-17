@@ -4,10 +4,11 @@ import { WordsUtils } from "./wordsUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
+import { Utils } from "../../../utils";
  
 const wordRetriever: WordRetriever = WordRetriever.instance;
  
-async function wordRetreive(word: string): Promise<WordDictionaryData[]> {
+async function wordRetrieve(word: string): Promise<WordDictionaryData[]> {
     let words: WordDictionaryData[];
     words = await wordRetriever.getWordsWithDefinitions(word);
     return words;
@@ -48,36 +49,26 @@ export class GenerateWords {
         }
         console.log(grid.words.length - index);
         let currentText: string = WordsUtils.getText(grid.words[index], grid);
-        let words: WordDictionaryData[] = await wordRetreive(currentText);
+        let words: WordDictionaryData[] = await wordRetrieve(currentText);
         if (words.length > 0) {
+            words = words.filter((wordInfo) => {
+                return grid.words.map((w: IWordContainer) => WordsUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
+            });
             if (currentText.indexOf("?") === -1 && words[0].word !== currentText) {
                 
                 return null;
             }
-            words = words.filter((wordInfo) => {
-                return grid.words.map((w: IWordContainer) => WordsUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
-            });
-            words = this.shuffle(words);
         }
         for (let i = 0; i < Math.min(10, words.length); i++) {
-            if (WordsUtils.trySetData(words[i], grid.words[index], grid)) {
+            if(WordsUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
                 let nextStep: IGrid = await this.addWord(index + 1, grid);
                 if(nextStep !== null) {
                     return nextStep;
                 }
-
-                return null;
+                break;
             }
         }
 
         return null;
-    }
-
-    private shuffle(a: Array<WordDictionaryData>) {
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
     }
 }

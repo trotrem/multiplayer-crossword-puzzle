@@ -1,4 +1,5 @@
 import { IGrid, ICell } from "./dataStructures";
+import { Utils } from "../../../utils";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
@@ -17,11 +18,8 @@ export class GridLayoutHandler {
     private _notBlackSquares: number[];
     private _nbrBlack: number;
 
-    private randomIntFromInterval(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
     private findAcceptableBlackSquare(): number {
-        const black: number = this.randomIntFromInterval(MINCELLS, MAXCELLS);
+        const black: number = Utils.randomIntFromInterval(MINCELLS, MAXCELLS);
 
         if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) !== -1) {
             return this.findAcceptableBlackSquare();
@@ -33,7 +31,7 @@ export class GridLayoutHandler {
     private generateBlackSquare(): void {
         this._blackSquares = new Array<number>();
         this._notBlackSquares = new Array<number>();
-        this._nbrBlack = this.randomIntFromInterval(MINBLACK, MAXBLACK);
+        this._nbrBlack = Utils.randomIntFromInterval(MINBLACK, MAXBLACK);
 
         for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
             const currentBlack: number = this.findAcceptableBlackSquare();
