@@ -5,6 +5,7 @@ import { GridCache } from "../cache/crosswordGridCache";
 import { GenerateWords } from "../../models/crossword/grid/generateWords";
 import { IWordInfo } from "../../../common/communication/types";
 import { IWordContainer } from "../../models/crossword/grid/dataStructures";
+import { WordsUtils } from "../../models/crossword/grid/wordsUtils";
 
 module Route {
 
@@ -22,7 +23,7 @@ module Route {
                                                                   y: word.gridSquares[0].y, 
                                                                   definition: word.data.definitions[0], 
                                                                   length: word.gridSquares.length}})}
-                , sortedWords.map((w: IWordContainer) => w.gridSquares.map((s) => grid.cells[s.x][s.y].letter).join("").toUpperCase())));
+                , sortedWords.map((w: IWordContainer) => WordsUtils.getText(w, grid).toUpperCase())));
             });
         }
 

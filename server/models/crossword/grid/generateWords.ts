@@ -3,6 +3,7 @@ import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
 import { WordsInventory } from "./wordsInventory";
+import { WordsUtils } from "./wordsUtils";
  
 const wordRetriever: WordRetriever = WordRetriever.instance;
  
@@ -14,7 +15,6 @@ async function wordRetreive(word: string): Promise<WordDictionaryData[]> {
  
 export class GenerateWords {
     private _layoutHandler: GridLayoutHandler;
-    private _wordsManager: WordsInventory;
 
     constructor() {
         process.on('unhandledRejection', (reason, p) => {
@@ -26,11 +26,10 @@ export class GenerateWords {
 
     public async generateGrid(): Promise<IGrid> {
         this._layoutHandler = new GridLayoutHandler();
-        this._wordsManager = new WordsInventory();
         while(1) {
             let grid: IGrid = {cells:[], words: [], blackCells: []};
             this._layoutHandler.makeGrid(grid);
-            this._wordsManager.createListOfWord(grid);
+            WordsInventory.createListOfWord(grid);
             console.log("yo");
             let result: IGrid = await this.addWord(0, grid);
             if(result !== null) {
@@ -48,7 +47,7 @@ export class GenerateWords {
             return grid;
         }
         console.log(grid.words.length - index);
-        let currentText: string = this._wordsManager.Text(grid.words[index], grid);
+        let currentText: string = WordsUtils.getText(grid.words[index], grid);
         let words: WordDictionaryData[] = await wordRetreive(currentText);
         if (words.length > 0) {
             if (currentText.indexOf("?") === -1 && words[0].word !== currentText) {
@@ -56,12 +55,12 @@ export class GenerateWords {
                 return null;
             }
             words = words.filter((wordInfo) => {
-                return grid.words.map((w: IWordContainer) => this._wordsManager.Text(w, grid)).indexOf(wordInfo.word) === -1;
+                return grid.words.map((w: IWordContainer) => WordsUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
             });
             words = this.shuffle(words);
         }
         for (let i = 0; i < Math.min(10, words.length); i++) {
-            if (this._wordsManager.trySetData(words[i], grid.words[index], grid)) {
+            if (WordsUtils.trySetData(words[i], grid.words[index], grid)) {
                 let nextStep: IGrid = await this.addWord(index + 1, grid);
                 if(nextStep !== null) {
                     return nextStep;
