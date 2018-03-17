@@ -11,7 +11,7 @@ export class ExternalApiService {
         qs: {
             sp: "",
             md: "df",
-            max: 1000,
+            max: 50,
         },
         simple: true,
     };

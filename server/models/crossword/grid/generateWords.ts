@@ -54,10 +54,6 @@ export class GenerateWords {
             words = words.filter((wordInfo) => {
                 return grid.words.map((w: IWordContainer) => WordsUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
             });
-            if (currentText.indexOf("?") === -1 && words[0].word !== currentText) {
-                
-                return null;
-            }
         }
         for (let i = 0; i < Math.min(10, words.length); i++) {
             if(WordsUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
