@@ -9,32 +9,23 @@ export class WordsInventory {
 
     public createListOfWord(grid: IGrid): void {
         grid.words = new Array<IWordContainer>();
-        // mot verticale
-        for (let indexJ: number = 0; indexJ < grid.cells.length; indexJ++) {
-            for (let indexI: number = 0; indexI < grid.cells[0].length; indexI++) {
-                this.pushLetter({x: indexI, y: indexJ}, Direction.Horizontal, grid);
-            }
-            this.wordCounter++;
-            this.pushWord(Direction.Horizontal, grid);
-            this.currentCells = [];
-        }
-        this.wordCounter = 0;
-        this.currentCells = [];
-        // mot horizontale
-        for (let indexI: number = 0; indexI < grid.cells.length; indexI++) {
-            for (let indexJ: number = 0; indexJ < grid.cells[0].length; indexJ++) {
-                this.pushLetter({x: indexI, y: indexJ}, Direction.Vertical, grid);
-            }
-            this.wordCounter++;
-            this.pushWord(Direction.Vertical, grid);
-            this.currentCells = [];
-        }
+
+        this.createWordContainers(Direction.Horizontal, grid);
+        this.createWordContainers(Direction.Vertical, grid);
+
         this.fillUnusedCells(grid);
-        grid.words = grid.words.sort((word1: IWordContainer, word2: IWordContainer) => {
-            const length1 = word1.gridSquares.length;
-            const length2 = word2.gridSquares.length;
-            if (length1 > length2) { return -1; } else return 1;
-        });
+
+        this.sortWordsByLength(grid);
+    }
+
+    private createWordContainers(direction: Direction, grid: IGrid): void {
+        for (let i: number = 0; i < grid.cells.length; i++) {
+            for (let j: number = 0; j < grid.cells[0].length; j++) {
+                this.pushLetter(direction === Direction.Horizontal? {x: j, y: i}: {x: i, y: j}, direction, grid);
+            }
+            this.pushWord(direction, grid);
+            this.currentCells = [];
+        }
     }
 
     private pushLetter(position: IPoint, direction: Direction, grid: IGrid): void {
@@ -44,13 +35,13 @@ export class WordsInventory {
             cell.y = position.y;
             this.currentCells.push(cell);
         } else {
-            this.wordCounter++;
             this.pushWord(direction, grid);
         }
     }
 
     private pushWord(direction: Direction, grid: IGrid): void {
         if (this.currentCells.length > 2) {
+            this.wordCounter ++;
             grid.words.push({id: this.wordCounter, direction, gridSquares: this.currentCells});
             for (const cell of this.currentCells) {
                 cell.letter = "?";
@@ -67,6 +58,14 @@ export class WordsInventory {
                 }
             }
         } 
+    }
+
+    private sortWordsByLength(grid: IGrid) {
+        grid.words = grid.words.sort((word1: IWordContainer, word2: IWordContainer) => {
+            const length1 = word1.gridSquares.length;
+            const length2 = word2.gridSquares.length;
+            if (length1 > length2) { return -1; } else return 1;
+        });
     }
 
     public Text(word: IWordContainer, grid: IGrid): string {
