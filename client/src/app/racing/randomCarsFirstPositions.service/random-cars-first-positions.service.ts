@@ -4,6 +4,7 @@ import * as THREE from "three";
 const FIRST_CAR_INDEX: number = 2;
 const HALF_LINE_DEVIDER: number = 2 ;
 const SECOND_CAR_INDEX: number = 1;
+const QUARTER_DISTANCE_DIVIDER: number = 4;
 @Injectable()
 export class RandomCarsFirstPositionsService {
   private getStartingPosition(line: THREE.Line3, index: number): THREE.Vector3 {
@@ -25,17 +26,17 @@ export class RandomCarsFirstPositionsService {
     return vect;
   }
 
-  public getRandomPairOfAdjacentPositions(firstLine: THREE.Line3): THREE.Vector3[] {
+  public getCarsPositions(firstLine: THREE.Line3): THREE.Vector3[] {
    const pairPositions: THREE.Vector3[] = new Array<THREE.Vector3>();
    const firstCarPosition: THREE.Vector3 = this.getStartingPosition(firstLine, HALF_LINE_DEVIDER).clone();
    pairPositions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX));
    pairPositions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX));
 
    pairPositions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX).
-   setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / 4));
+   setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / QUARTER_DISTANCE_DIVIDER));
 
    pairPositions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).
-   setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / 4));
+   setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / QUARTER_DISTANCE_DIVIDER));
 
    return pairPositions;
   }
