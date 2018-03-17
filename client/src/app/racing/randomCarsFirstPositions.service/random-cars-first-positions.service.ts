@@ -41,7 +41,7 @@ export class RandomCarsFirstPositionsService {
   public getRandomPairOfAdjacentPositions(firstLine: THREE.Line3): THREE.Vector3[] {
    const pairPositions: THREE.Vector3[] = new Array<THREE.Vector3>();
    const targetVector: THREE.Vector3 = this.getDeltaVector(firstLine);
-   const firstCarPosition: THREE.Vector3 = this.getRandomPosition(this.getStartingPosition(firstLine));
+   const firstCarPosition: THREE.Vector3 = this.getStartingPosition(firstLine).clone();
    pairPositions.push(this.getAdjacentCar1Position(firstCarPosition, targetVector));
    pairPositions.push(this.getAdjacentCar2Position(firstCarPosition, targetVector));
 
