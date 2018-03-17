@@ -1,9 +1,9 @@
 import { GridLayoutHandler } from "./gridLayoutHandler";
+import { WordsPositionsHelper } from "./wordsPositionsHelper";
+import { WordsUtils } from "./wordsUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
-import { WordsInventory } from "./wordsInventory";
-import { WordsUtils } from "./wordsUtils";
  
 const wordRetriever: WordRetriever = WordRetriever.instance;
  
@@ -29,7 +29,7 @@ export class GenerateWords {
         while(1) {
             let grid: IGrid = {cells:[], words: [], blackCells: []};
             this._layoutHandler.makeGrid(grid);
-            WordsInventory.createListOfWord(grid);
+            WordsPositionsHelper.createListOfWord(grid);
             console.log("yo");
             let result: IGrid = await this.addWord(0, grid);
             if(result !== null) {

@@ -1,7 +1,7 @@
 import { Direction, IPoint } from "../../../../common/communication/types";
 import { IGrid, IWordContainer, ICell } from "./dataStructures";
 
-export class WordsInventory {
+export class WordsPositionsHelper {
     public static createListOfWord(grid: IGrid): void {
         grid.words = new Array<IWordContainer>();
 
