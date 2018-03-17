@@ -14,6 +14,7 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linejoin: "round"
 });
 const MAX_CARS_PAIRS: number = 2;
+const CAMERA_DISTANCE: number = 100;
 
 @Injectable()
 export class PrintTrackService {
@@ -45,8 +46,8 @@ export class PrintTrackService {
   }
   public createScene(): void {
     this.camera = new THREE.PerspectiveCamera();
-    const CAMERA_DISTANCE: number = 100;
-    this.camera.position.set(0, 0 , CAMERA_DISTANCE);
+    this.camera.position.set(0, CAMERA_DISTANCE, 0); // pour changer à la vue initiale on la remet à
+                                                     //  this.camera.position.set(0, 0, CAMERA_DISTANCE);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
