@@ -6,7 +6,7 @@ const HALF_LINE_DEVIDER: number = 2 ;
 const SECOND_CAR_INDEX: number = 1;
 const QUARTER_DISTANCE_DIVIDER: number = 4;
 @Injectable()
-export class RandomCarsFirstPositionsService {
+export class PositionsDefinerService {
   private getStartingPosition(line: THREE.Line3, index: number): THREE.Vector3 {
     return new THREE.Vector3(((line.end.x + line.start.x) / index),
                              ((line.end.y + line.start.y) / index), ((line.end.z + line.start.z)) / index );

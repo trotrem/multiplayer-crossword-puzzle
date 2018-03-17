@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
+import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 import { Car } from "../car/car";
 import * as THREE from "three";
 
@@ -9,11 +9,11 @@ const AMBIENT_LIGHT_OPACITY: number = 0.5;
 
 @Injectable()
 export class PrintCarsService {
-  private randomPositions: RandomCarsFirstPositionsService;
+  private carsPositions: PositionsDefinerService;
   private cars: Car[];
   public constructor() {
     this. cars = new Array<Car>(CARS_MAX);
-    this.randomPositions = new RandomCarsFirstPositionsService();
+    this.carsPositions = new PositionsDefinerService();
   }
   public initiateCars(camera: THREE.PerspectiveCamera, scene: THREE.Scene): Car[] {
     for (let i: number = 0; i < CARS_MAX; i++) {
@@ -27,7 +27,7 @@ export class PrintCarsService {
 }
   public insertCars(line: THREE.Line3, scene: THREE.Scene ): Car[] {
     for (let i: number = 0; i < CARS_MAX; i++) {
-    const positions: THREE.Vector3[] = this.randomPositions.getCarsPositions(line);
+    const positions: THREE.Vector3[] = this.carsPositions.getCarsPositions(line);
     this.translateCarPosition(i, positions[i]);
     scene.add(this.cars[i]);
     console.warn(this.cars[i].position);

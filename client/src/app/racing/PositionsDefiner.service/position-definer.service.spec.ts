@@ -1,7 +1,7 @@
 import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 
-import { RandomCarsFirstPositionsService } from "./random-cars-first-positions.service";
+import { RandomCarsFirstPositionsService } from "./position-definer.service";
 
 describe("RandomCarCreatorService", () => {
   beforeEach(() => {

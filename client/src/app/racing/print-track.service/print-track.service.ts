@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { ThrowStmt } from "@angular/compiler";
 import { Car } from "../car/car";
-import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
@@ -87,7 +86,6 @@ export class PrintTrackService {
   public insertCars(line: THREE.Line3): void {
 
     this.cars = this.printCarService.insertCars(line, this.scene);
-    // this.carsPairs[1] = this.printCarService.insertPairOfCars(line, this.scene);
 
   }
 
