@@ -1,49 +1,34 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
 
-const DISTANCE_BETWEEN_CARS: number = 0.01;
+const FIRST_CAR_INDEX: number = 2;
+const HALF_LINE_DEVIDER: number = 2 ;
+const QUARTER_LINE_DEVIDER: number = 4 ;
+const SECOND_CAR_INDEX: number = 1;
+const FIRST_CARS_X_POSITION: number = 5;
 @Injectable()
 export class RandomCarsFirstPositionsService {
-  // public constructor() { }
-  public getRandomPosition(startingPoint: THREE.Vector3): THREE.Vector3 {
-    const randomXPosition: number =  startingPoint.x;
-    const randomYPosition: number = startingPoint.y;
-    const randomZPosition: number = startingPoint.z;
+  public getStartingPosition(line: THREE.Line3, index: number): THREE.Vector3 {
 
-    return new THREE.Vector3(randomXPosition, randomYPosition, randomZPosition);
-  }
-  public getStartingPosition(line: THREE.Line3): THREE.Vector3 {
-
-    return new THREE.Vector3(((line.end.x + line.start.x) / 2), ((line.end.y + line.start.y) / 2), ((line.end.z + line.start.z)) / 2 );
+    return new THREE.Vector3(((line.end.x + line.start.x) / index),
+                             ((line.end.y + line.start.y) / index), ((line.end.z + line.start.z)) / index );
   }
 
-  private getAdjacentCar1Position(vector: THREE.Vector3, targetVector: THREE.Vector3): THREE.Vector3 {
+  private getCarPosition(vector: THREE.Vector3, index: number): THREE.Vector3 {
     const vec: THREE.Spherical = new THREE.Spherical();
     vec.setFromVector3(vector);
-    // vec.reflect(targetVector.normalize());
-    vec.set(vec.radius, vec.phi, Math.PI * 2);
+    vec.set(vec.radius, vec.phi, Math.PI * index);
     const vect: THREE.Vector3 = new THREE.Vector3();
+    vect.setFromSpherical(vec);
 
-    return vect.setFromSpherical(vec);
-  }
-  private getAdjacentCar2Position(vector: THREE.Vector3, targetVector: THREE.Vector3): THREE.Vector3 {
-    const vec: THREE.Spherical = new THREE.Spherical();
-    vec.setFromVector3(vector);
-    vec.set(vec.radius, vec.phi, Math.PI * 1);
-    const vect: THREE.Vector3 = new THREE.Vector3();
-
-    return vect.setFromSpherical(vec);
-  }
-  private getDeltaVector(line: THREE.Line3): THREE.Vector3 {
-    return new THREE.Vector3((line.end.x - line.start.x), (line.end.y - line.start.y), (line.end.z - line.start.z));
+    return vect;
   }
 
   public getRandomPairOfAdjacentPositions(firstLine: THREE.Line3): THREE.Vector3[] {
    const pairPositions: THREE.Vector3[] = new Array<THREE.Vector3>();
-   const targetVector: THREE.Vector3 = this.getDeltaVector(firstLine);
-   const firstCarPosition: THREE.Vector3 = this.getStartingPosition(firstLine).clone();
-   pairPositions.push(this.getAdjacentCar1Position(firstCarPosition, targetVector));
-   pairPositions.push(this.getAdjacentCar2Position(firstCarPosition, targetVector));
+   const firstCarPosition: THREE.Vector3 = this.getStartingPosition(firstLine, HALF_LINE_DEVIDER).clone();
+   pairPositions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX).setX(FIRST_CARS_X_POSITION));
+   pairPositions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).setX(FIRST_CARS_X_POSITION));
 
    return pairPositions;
   }
