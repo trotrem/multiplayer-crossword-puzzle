@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable, } from "inversify";
-import { tracks } from "../../models/racingDbSchemas";
+import { trackDocument } from "../../models/racingDbSchemas";
 import { Document} from "mongoose";
 const BAD_REQUEST_ERROR: number = 400;
 
@@ -11,7 +11,7 @@ module Route {
     export class Racing {
 
         public savetrack(req: Request, res: Response, next: NextFunction): void {
-            const myData: Document = new tracks(req.body);
+            const myData: Document = new trackDocument(req.body);
             myData.save()
                 .then((item: Document) => {
                     res.send("Name saved to database");
@@ -23,7 +23,7 @@ module Route {
 
         public getAlltracks(req: Request, res: Response, next: NextFunction): void {
             // tslint:disable-next-line:only-arrow-functions
-            tracks.find({}, function (err: Error, allTracks: Document[]): void {
+            trackDocument.find({}, function (err: Error, allTracks: Document[]): void {
                 if (!err) {
                     console.warn("find all");
                     res.send(allTracks);
@@ -36,7 +36,7 @@ module Route {
 
         public deleteTrack(req: Request, res: Response, next: NextFunction): void {
             // tslint:disable-next-line:only-arrow-functions
-            tracks.remove({ name: req.params.name }, function (err: Error): void {
+            trackDocument.remove({ name: req.params.name }, function (err: Error): void {
                 if (!err) {
                     console.warn("delete one");
                     res.send("track delete");
@@ -48,7 +48,7 @@ module Route {
 
         public getTrackByName(req: Request, res: Response, next: NextFunction): void {
              // tslint:disable-next-line:only-arrow-functions
-            tracks.find({name: req.params.name}, function (err: Error, track: Document): void {
+            trackDocument.find({name: req.params.name}, function (err: Error, track: Document): void {
                 if (!err) {
                     console.warn("find ");
                     res.send(track);

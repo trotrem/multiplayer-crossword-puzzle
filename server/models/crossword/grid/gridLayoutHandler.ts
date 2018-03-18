@@ -71,12 +71,12 @@ export class GridLayoutHandler {
         // making an empty grid
         this.generateBlackSquare();
         // putting black square in the grid
-        for (let index = 0; index < this._blackSquares.length; index++) {
+        this._blackSquares.forEach((square: number, index: number) => {
             const indexTemp: number = this._blackSquares[index];
             const indexITemp: number = indexTemp % HEIGHT;
             const indexJTemp: number = Math.floor(indexTemp / HEIGHT);
             grid.cells[indexITemp][indexJTemp].isBlack = true;
             grid.blackCells.push({x: indexITemp, y: indexJTemp});
-        }
+        });
     }
 }

@@ -5,4 +5,4 @@ const crosswordSchema: mongoose.Schema = new mongoose.Schema({
     difficulty: { type: String, required: true }
 });
 
-export let CrosswordDocument: mongoose.Model<mongoose.Document> = mongoose.model("Grids", crosswordSchema);
+export let crosswordDocument: mongoose.Model<mongoose.Document> = mongoose.model("Grids", crosswordSchema);

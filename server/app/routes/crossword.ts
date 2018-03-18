@@ -6,7 +6,7 @@ import { GenerateWords } from "../../models/crossword/grid/generateWords";
 import { Difficulty } from "../../../common/communication/types";
 import { IGrid } from "../../models/crossword/grid/dataStructures";
 import { Document } from "mongoose";
-import { CrosswordDocument } from "../../models/crosswordDbSchemas";
+import { crosswordDocument } from "../../models/crosswordDbSchemas";
 import { Utils } from "../../utils";
 
 const MAX_SAME_DIFFICULTY_DB_GRIDS: number = 10;
@@ -16,7 +16,7 @@ namespace Route {
   export class CrosswordHandler {
     public getGrid(req: Request, res: Response, next: NextFunction): void {
       const newGrid: Promise<IGrid> = this.generateGrid(req.params.difficulty);
-      CrosswordDocument.find(
+      crosswordDocument.find(
         { difficulty: req.params.difficulty },
         async (err: Error, allGrids: Document[]): Promise<void> => {
           if (!err && allGrids.length > 0) {
@@ -70,7 +70,7 @@ namespace Route {
       difficulty: Difficulty,
       overwriteId: number
     ): void {
-      const newGrid: Document = new CrosswordDocument({ grid, difficulty });
+      const newGrid: Document = new crosswordDocument({ grid, difficulty });
       newGrid
         .save()
         .then((item: Document) => {
@@ -85,7 +85,7 @@ namespace Route {
     }
 
     private async shouldDeleteGrid(difficulty: Difficulty): Promise<boolean> {
-      return CrosswordDocument.count({ difficulty: difficulty }).then(
+      return crosswordDocument.count({ difficulty: difficulty }).then(
         (count: number) => {
           return count > MAX_SAME_DIFFICULTY_DB_GRIDS;
         }
@@ -96,7 +96,7 @@ namespace Route {
 
     private deleteGrid(difficulty: Difficulty, overwriteId: number): void {
       if (overwriteId !== null) {
-        CrosswordDocument.deleteOne({ _id: overwriteId })
+        crosswordDocument.deleteOne({ _id: overwriteId })
           .then(() => {
             console.warn("Deleted fetched grid");
           })
@@ -104,7 +104,7 @@ namespace Route {
             console.warn("Unable to delete from database");
           });
       } else {
-        CrosswordDocument.deleteOne({ difficulty: difficulty })
+        crosswordDocument.deleteOne({ difficulty: difficulty })
           .skip(
             Utils.randomIntFromInterval(0, MAX_SAME_DIFFICULTY_DB_GRIDS - 1)
           )
