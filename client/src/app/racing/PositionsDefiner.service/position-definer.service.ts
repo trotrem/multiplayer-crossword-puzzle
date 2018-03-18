@@ -17,28 +17,28 @@ export class PositionsDefinerService {
   }
 
   private getCarPosition(vector: THREE.Vector3, index: number): THREE.Vector3 {
-    const vec: THREE.Spherical = new THREE.Spherical();
-    vec.setFromVector3(vector);
-    vec.set(vec.radius, vec.phi, Math.PI * index);
-    const vect: THREE.Vector3 = new THREE.Vector3();
-    vect.setFromSpherical(vec);
+    const sphericalVec: THREE.Spherical = new THREE.Spherical();
+    sphericalVec.setFromVector3(vector);
+    sphericalVec.set(sphericalVec.radius, sphericalVec.phi, Math.PI * index);
+    const newVector: THREE.Vector3 = new THREE.Vector3();
+    newVector.setFromSpherical(sphericalVec);
 
-    return vect;
+    return newVector;
   }
 
   public getCarsPositions(firstLine: THREE.Line3): THREE.Vector3[] {
-   const pairPositions: THREE.Vector3[] = new Array<THREE.Vector3>();
+   const positions: THREE.Vector3[] = new Array<THREE.Vector3>();
    const firstCarPosition: THREE.Vector3 = this.getStartingPosition(firstLine, HALF_LINE_DEVIDER).clone();
-   pairPositions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX));
-   pairPositions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX));
+   positions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX));
+   positions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX));
 
-   pairPositions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX).
+   positions.push(this.getCarPosition(firstCarPosition, FIRST_CAR_INDEX).
    setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / QUARTER_DISTANCE_DIVIDER));
 
-   pairPositions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).
+   positions.push(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).
    setX(this.getCarPosition(firstCarPosition, SECOND_CAR_INDEX).x + this.getMaxDistance(firstLine) / QUARTER_DISTANCE_DIVIDER));
 
-   return pairPositions;
+   return positions;
   }
 
 }
