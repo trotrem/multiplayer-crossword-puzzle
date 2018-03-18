@@ -3,9 +3,11 @@ import "reflect-metadata";
 import { injectable, } from "inversify";
 import { GridCache } from "../cache/crosswordGridCache";
 import { GenerateWords } from "../../models/crossword/grid/generateWords";
-import { IWordInfo } from "../../../common/communication/types";
-import { IWordContainer } from "../../models/crossword/grid/dataStructures";
-import { WordsUtils } from "../../models/crossword/grid/wordsUtils";
+import {  Difficulty } from "../../../common/communication/types";
+import { IGrid, IWordContainer } from "../../models/crossword/grid/dataStructures";
+import { Document } from "mongoose";
+import { CrosswordDocument } from "../../models/crosswordDbSchemas";
+import { Utils } from "../../utils";
 
 module Route {
 
@@ -13,18 +15,19 @@ module Route {
     export class CrosswordHandler {
 
         public getGrid(req: Request, res: Response, next: NextFunction): void {
-            const gen: GenerateWords = new GenerateWords();
-            gen.generateGrid().then((grid) => {
-                const sortedWords = grid.words.sort((w1: IWordContainer, w2: IWordContainer) => w1.id - w2.id);
-                res.send(GridCache.Instance.addGrid({id: 0, blackCells: grid.blackCells, wordInfos: sortedWords.map(
-                    (word: IWordContainer): IWordInfo => {return {id: word.id, 
-                                                                  direction: word.direction, 
-                                                                  x: word.gridSquares[0].x, 
-                                                                  y: word.gridSquares[0].y, 
-                                                                  definition: word.data.definitions[0], 
-                                                                  length: word.gridSquares.length}})}
-                , sortedWords.map((w: IWordContainer) => WordsUtils.getText(w, grid).toUpperCase())));
+            let newGrid: Promise<IGrid> = this.generateGrid(req.params.difficulty);
+            CrosswordDocument.find({difficulty: req.params.difficulty}, async (err: Error, allGrids: Document[]): Promise<void> => {
+                if (!err && allGrids.length > 0) {
+                    console.log((allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)]["grid"].words[0] as IWordContainer).data.definitions);
+                    console.warn("find all");
+                    res.send(GridCache.Instance.addGrid(allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)]["grid"]));
+                } else {
+                    console.error("unable to find all");
+                    res.send(GridCache.Instance.addGrid(await newGrid));
+                }
+                this.saveGrid(await newGrid, req.params.difficulty);
             });
+            
         }
 
         public validateWord(req: Request, res: Response, next: NextFunction): void {
@@ -39,6 +42,31 @@ module Route {
 
         public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
             res.send(GridCache.Instance.getWords(req.params.gridId));
+        }
+
+        private async generateGrid(difficulty: Difficulty): Promise<IGrid> {
+            const gen: GenerateWords = new GenerateWords();
+            return await gen.generateGrid();
+        }
+
+        private saveGrid(grid: IGrid, difficulty: Difficulty): void {
+            let newGrid: Document = new CrosswordDocument({grid, difficulty});
+            newGrid.save()
+            .then((item: Document) => {
+                CrosswordDocument.count({difficulty: difficulty}).exec((err: Error, count: number) => {
+                    if (count > 10) {
+                        // Again query all users but only fetch one offset by our random #
+                        CrosswordDocument.deleteOne({difficulty: difficulty})
+                        .skip(Utils.randomIntFromInterval(0, count - 1))
+                        .catch((err: Error) => {
+                            console.warn("Unable to delete from database");
+                        });;
+                    }
+                });
+            })
+            .catch((err: Error) => {
+                console.warn("Unable to save to database");
+            });
         }
     }
 }

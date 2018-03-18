@@ -2,7 +2,7 @@ import { IPoint } from "../../../../common/communication/types";
 import { IGrid, IWordContainer } from "./dataStructures";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 
-export class WordsUtils {
+export class GridUtils {
     public static getText(word: IWordContainer, grid: IGrid): string {
         return word.gridSquares.map((pos: IPoint) => grid.cells[pos.x][pos.y].letter).join("");
     }

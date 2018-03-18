@@ -81,8 +81,7 @@ export class WordRetriever {
 
     private addWord(wordsWithDefinitions: WordDictionaryData[], words: JSON, index: string): void {
         const tempFrequency: number = parseFloat(words[index].tags[0].substring(OFFSET_FREQUENCY));
-        const tempWord: WordDictionaryData = new WordDictionaryData(
-            words[index].word, words[index].defs, tempFrequency);
+        const tempWord: WordDictionaryData = new WordDictionaryData(words[index].word, words[index].defs, tempFrequency);
         wordsWithDefinitions.push(tempWord);
     }
 

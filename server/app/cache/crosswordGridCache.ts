@@ -1,4 +1,7 @@
-import { IGridData } from "../../../common/communication/types";
+import { IGridData, IWordInfo } from "../../../common/communication/types";
+import { IGrid, IWordContainer } from "../../models/crossword/grid/dataStructures";
+import { GridUtils } from "../../models/crossword/grid/wordsUtils";
+import { WordDictionaryData } from "../../models/crossword/lexiconAPI/gridWordInformation";
 
 interface CacheWord {
     word: string;
@@ -38,11 +41,10 @@ export class GridCache {
         return this._grids[id].words.map((word: CacheWord) => word.word).slice();
     }
 
-    public addGrid(gridData: IGridData, words: string[]): IGridData {
-        const id: number = this.gridUniqueKey();
-        gridData.id = id;
+    public addGrid(grid: IGrid): IGridData {
         // disabled tslint on line because simplified arrow function conflicted with returned object.
-        this._grids[id] = { gridData: gridData, words: words.map((word: string): CacheWord => { return { word: word, validated: false } } ) }; // tslint:disable-line
+        let gridData = this.convertIGridToGridData(grid);
+        this._grids[gridData.id] = { gridData: gridData, words: grid.words.map((w: IWordContainer): CacheWord => { return { word: GridUtils.getText(w, grid).toUpperCase(), validated: false } } ) };
 
         return gridData;
     }
@@ -62,5 +64,18 @@ export class GridCache {
         }while ( key in this._grids );
 
         return key;
+    }
+
+    private convertIGridToGridData(grid: IGrid): IGridData {
+        const id: number = this.gridUniqueKey();
+        const sortedWords = grid.words.sort((w1: IWordContainer, w2: IWordContainer) => w1.id - w2.id);
+        return {id: id, blackCells: grid.blackCells, wordInfos: sortedWords.map(
+            (word: IWordContainer): IWordInfo => {return {id: word.id, 
+                                                          direction: word.direction, 
+                                                          x: word.gridSquares[0].x, 
+                                                          y: word.gridSquares[0].y, 
+                                                          definition: (word.data as WordDictionaryData).definitions[0], 
+                                                          length: word.gridSquares.length}})};
+                                                          
     }
 }

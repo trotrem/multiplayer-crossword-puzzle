@@ -1,6 +1,6 @@
 import { GridLayoutHandler } from "./gridLayoutHandler";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { WordsUtils } from "./wordsUtils";
+import { GridUtils } from "./wordsUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
@@ -48,15 +48,15 @@ export class GenerateWords {
             return grid;
         }
         console.log(grid.words.length - index);
-        let currentText: string = WordsUtils.getText(grid.words[index], grid);
+        let currentText: string = GridUtils.getText(grid.words[index], grid);
         let words: WordDictionaryData[] = await wordRetrieve(currentText);
         if (words.length > 0) {
             words = words.filter((wordInfo) => {
-                return grid.words.map((w: IWordContainer) => WordsUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
+                return grid.words.map((w: IWordContainer) => GridUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
             });
         }
         for (let i = 0; i < Math.min(10, words.length); i++) {
-            if(WordsUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
+            if(GridUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
                 let nextStep: IGrid = await this.addWord(index + 1, grid);
                 if(nextStep !== null) {
                     return nextStep;
