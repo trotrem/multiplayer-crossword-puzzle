@@ -1,57 +1,48 @@
 import { IGrid, ICell } from "./dataStructures";
 import { Utils } from "../../../utils";
+import { IPoint } from "../../../../common/communication/types";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
 const MINBLACK: number = 34;
 const MAXBLACK: number = 34;
-const MINCELLS: number = 0;
-const MAXCELLS: number = 99;
 const SPACEBTWCELLS: number = 2;
-// Les cases qui ne peuvent pas etre noires forment un carré de 8x8, pour eviter d'avoir un mot d'une lettre
-/*const NOTBLACKSQUARES: number[]; /*= [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 10, 12, 13, 14, 15, 16, 17, 18,
-    19, 8, 28, 38, 48, 58, 68, 78, 88, 98, 80, 82, 83, 84, 85, 86, 87, 89];*/
 
 export class GridLayoutHandler {
 
-    private _blackSquares: number[];
-    private _notBlackSquares: number[];
-    private _nbrBlack: number;
+    private findAcceptableBlackSquare(blackSquares: IPoint[]): IPoint {
+        const x: number = Utils.randomIntFromInterval(0, WIDTH);
+        const y: number = Utils.randomIntFromInterval(0, HEIGHT);
 
-    private findAcceptableBlackSquare(): number {
-        const black: number = Utils.randomIntFromInterval(MINCELLS, MAXCELLS);
-
-        if (this._notBlackSquares.indexOf(black) !== -1 || this._blackSquares.indexOf(black) !== -1) {
-            return this.findAcceptableBlackSquare();
+        for (const black of blackSquares) {
+            if (this.notBlackSquares(black).indexOf({x, y}) !== -1 || black === {x, y}) {
+                return this.findAcceptableBlackSquare(blackSquares);
+            }
         }
 
-        return black;
+        return {x, y};
     }
 
-    private generateBlackSquare(): void {
-        this._blackSquares = new Array<number>();
-        this._notBlackSquares = new Array<number>();
-        this._nbrBlack = Utils.randomIntFromInterval(MINBLACK, MAXBLACK);
+    private generateBlackSquares(grid: IGrid): void {
+        const blackSquares: IPoint[] = new Array<IPoint>();
 
-        for (let indexBlack: number = 0; indexBlack < this._nbrBlack; indexBlack++) {
-            const currentBlack: number = this.findAcceptableBlackSquare();
+        for (let i: number = 0; i < Utils.randomIntFromInterval(MINBLACK, MAXBLACK); i++) {
+            const currentBlack: IPoint = this.findAcceptableBlackSquare(blackSquares);
             this.notBlackSquares(currentBlack);
-            this._blackSquares[indexBlack] = currentBlack;
+            blackSquares.push(currentBlack);
         }
+
+        grid.blackCells = blackSquares;
     }
-    private notBlackSquares(currentBlack: number): void {
-        if ((currentBlack % WIDTH) > 1) {
-            this._notBlackSquares.push(currentBlack - SPACEBTWCELLS);
-        }
-        if ((currentBlack % WIDTH) < WIDTH - SPACEBTWCELLS) {
-            this._notBlackSquares.push(currentBlack + SPACEBTWCELLS);
-        }
-        if (currentBlack > HEIGHT * SPACEBTWCELLS) {
-            this._notBlackSquares.push(currentBlack - (SPACEBTWCELLS * HEIGHT));
-        }
-        if ((currentBlack < (HEIGHT - SPACEBTWCELLS) * (SPACEBTWCELLS * HEIGHT))) {
-            this._notBlackSquares.push(currentBlack + (SPACEBTWCELLS * HEIGHT));
-        }
+
+    private notBlackSquares(currentBlack: IPoint): IPoint[] {
+        const notBlackSquares: IPoint[] = [];
+        notBlackSquares.push({x: currentBlack.x - SPACEBTWCELLS, y: currentBlack.y});
+        notBlackSquares.push({x: currentBlack.x + SPACEBTWCELLS, y: currentBlack.y});
+        notBlackSquares.push({x: currentBlack.x, y: currentBlack.y - SPACEBTWCELLS});
+        notBlackSquares.push({x: currentBlack.x, y: currentBlack.y + SPACEBTWCELLS});
+
+        return notBlackSquares;
     }
 
     private makeEmptyGrid(grid: IGrid): void {
@@ -67,16 +58,9 @@ export class GridLayoutHandler {
     }
 
     public makeGrid(grid: IGrid): void {
-        this.makeEmptyGrid(grid);
         // making an empty grid
-        this.generateBlackSquare();
+        this.makeEmptyGrid(grid);
         // putting black square in the grid
-        this._blackSquares.forEach((square: number, index: number) => {
-            const indexTemp: number = this._blackSquares[index];
-            const indexITemp: number = indexTemp % HEIGHT;
-            const indexJTemp: number = Math.floor(indexTemp / HEIGHT);
-            grid.cells[indexITemp][indexJTemp].isBlack = true;
-            grid.blackCells.push({x: indexITemp, y: indexJTemp});
-        });
+        this.generateBlackSquares(grid);
     }
 }
