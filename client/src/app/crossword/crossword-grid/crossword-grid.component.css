@@ -53,16 +53,3 @@
     text-decoration: line-through;
 }
 
-#horizontal {
-    font-size: 10px;
-    text-align: initial;
-    /*margin-top: -15px;*/
-    margin-left: 2px;
-}
-
-#vertical {
-    font-size: 10px;
-    text-align: initial;
-    /*margin-top: -5px;*/
-    margin-left: 10px;
-}

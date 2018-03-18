@@ -8,7 +8,7 @@
       <div class="crossword-row" *ngFor="let row of cells">
         <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)"
          [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true, 'wordFound': cell.letterFound === true}">
-         <div id= "horizontal">{{cell.index[0]}}</div><div  id= "vertical">{{cell.index[1]}}</div>{{cell.content}}
+         {{cell.content}}
         </div>
       </div>
     </div>

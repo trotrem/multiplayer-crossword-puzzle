@@ -56,7 +56,7 @@ export class CrosswordGridComponent implements OnInit {
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false, index: Array<String>() });
+        this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
       }
     }
     this.words = new Array<WordDescription>();
@@ -88,36 +88,15 @@ export class CrosswordGridComponent implements OnInit {
           const cells: Cell[] = new Array<Cell>();
           for (let i: number = 0; i < word.length; i++) {
             if (word.direction === Direction.Horizontal) {
-              /*if (i === 0) {
-                this.cells[word.y][word.x + i].index.push("" + (index + 1));
-              } /*else {
-                this.cells[word.y][word.x + i].index.push(".");
-              }*/
               cells.push(this.cells[word.y][word.x + i]);
             } else if (word.direction === Direction.Vertical) {
-              /*if (i === 0) {
-                this.cells[word.y + i][word.x].index.push("" + (index - this.horizontalWords.length + 1));
-              }*/
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
           this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
         });
-        // this.deleteIndex();
       });
   }
-
-  /*private deleteIndex(): void {
-    for (const word of this.words) {
-      for (const cell of word.cells) {
-        if (cell.index[0] === cell.index[1]) {
-          cell.index.pop();
-        } else if (cell.index[0] === "." && cell.index.length > 1) {
-            cell.index[0] = null;
-        }
-      }
-    }
-  }*/
 
   public toggleTipMode(): void {
     if (this.horizontalWords[0].word === undefined) {

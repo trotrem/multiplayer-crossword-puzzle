@@ -3,5 +3,4 @@ export interface Cell {
     content: string;
     selected: boolean;
     letterFound: boolean;
-    index: String[];
 }
