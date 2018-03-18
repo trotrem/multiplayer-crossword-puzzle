@@ -26,9 +26,12 @@ export class PrintCarsService {
     return this.cars;
 }
   public insertCars(line: THREE.Line3, scene: THREE.Scene ): Car[] {
-    for (let i: number = 0; i < CARS_MAX; i++) {
+
     const positions: THREE.Vector3[] = this.carsPositions.getCarsPositions(line);
-    this.translateCarPosition(i, positions[i]);
+    for (let i: number = 0; i < CARS_MAX; i++) {
+    const randomPosition: THREE.Vector3 = positions[Math.floor(Math.random() * positions.length)];
+    this.translateCarPosition(i, randomPosition);
+    positions.splice(positions.indexOf(randomPosition), 1);
     scene.add(this.cars[i]);
     console.warn(this.cars[i].position);
     }
