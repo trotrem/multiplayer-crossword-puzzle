@@ -15,6 +15,18 @@ export class PrintCarsService {
     this. cars = new Array<Car>(CARS_MAX);
     this.carsPositions = new PositionsDefinerService();
   }
+  public getCars(): Car[] {
+    return this.cars;
+  }
+  public getCarsPositions(): PositionsDefinerService {
+    return this.carsPositions;
+  }
+  public setCars(cars: Car[]): void {
+    this.cars = cars;
+  }
+  public setCarsPositions(positions: PositionsDefinerService): void {
+    this.carsPositions = positions;
+  }
   public initiateCars(camera: THREE.PerspectiveCamera, scene: THREE.Scene): Car[] {
     for (let i: number = 0; i < CARS_MAX; i++) {
     this.cars[i] = new Car();
