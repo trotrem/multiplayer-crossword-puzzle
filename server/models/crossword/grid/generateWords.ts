@@ -17,21 +17,12 @@ async function wordRetrieve(word: string): Promise<WordDictionaryData[]> {
 export class GenerateWords {
     private _layoutHandler: GridLayoutHandler;
 
-    constructor() {
-        process.on('unhandledRejection', (reason, p) => {
-            console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
-            // application specific logging, throwing an error, or other logic here
-        });
-        // this._grid = await this.generateGrid();
-    }
-
     public async generateGrid(): Promise<IGrid> {
         this._layoutHandler = new GridLayoutHandler();
         while(1) {
             let grid: IGrid = {cells:[], words: [], blackCells: []};
             this._layoutHandler.makeGrid(grid);
             WordsPositionsHelper.createListOfWord(grid);
-            console.log("yo");
             let result: IGrid = await this.addWord(0, grid);
             if(result !== null) {
                 return result;
@@ -41,13 +32,10 @@ export class GenerateWords {
         return null;
     }
  
-    // alterner quand la longueur est pareille?
-    //trouver meilleur nom de variable
     private async addWord(index: number, grid: IGrid): Promise<IGrid> {
         if(index === grid.words.length) {
             return grid;
         }
-        console.log(grid.words.length - index);
         let currentText: string = GridUtils.getText(grid.words[index], grid);
         let words: WordDictionaryData[] = await wordRetrieve(currentText);
         if (words.length > 0) {
