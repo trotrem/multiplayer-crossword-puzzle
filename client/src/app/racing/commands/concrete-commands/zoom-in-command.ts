@@ -1,4 +1,4 @@
-import { ICommand } from "./command";
+import { ICommand } from "../command";
 // import { Car } from "../car/car";
 
 export class ZoomInCommand implements ICommand {
@@ -6,7 +6,7 @@ export class ZoomInCommand implements ICommand {
     public constructor() {
     }
 
-    public Execute(): void {
+    public execute(): void {
         // Call zoomIn function
     }
 }

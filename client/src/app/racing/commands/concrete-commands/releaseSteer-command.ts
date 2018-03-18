@@ -1,5 +1,5 @@
-import { ICommand } from "./command";
-import { Car } from "../car/car";
+import { ICommand } from "../command";
+import { Car } from "../../car/car";
 
 export class ReleaseSteerCommand implements ICommand {
     private _car: Car;
@@ -8,7 +8,7 @@ export class ReleaseSteerCommand implements ICommand {
         this._car = car;
     }
 
-    public Execute(): void {
+    public execute(): void {
         this._car.releaseSteering();
     }
 }

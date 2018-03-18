@@ -1,53 +1,32 @@
 // Invoker of command pattern
+import { Injectable } from "@angular/core";
 import { ICommand, IMap } from "./command";
 
+@Injectable()
 export class Keyboard {
-    private static _instance: Keyboard;
-    private _commands: IMap<Array<ICommand>>;
+    protected _commands: IMap<Array<ICommand>>;
 
-    public static get Instance(): Keyboard {
-        return ((this._instance) || (this._instance = new this()));
-    }
-
-    private constructor() {
-        this._commands = {};
-    }
-
-    public AddCommand(keyCode: number, cmd: ICommand): void {
-        if (!this.HasCommand(keyCode)) {
+    public addCommand(keyCode: number, cmd: ICommand): void {
+        if (!this.hasCommand(keyCode)) {
             this._commands[keyCode.toString()] = new Array<ICommand>();
         }
         this._commands[keyCode.toString()].push(cmd);
     }
 
-    private HasCommand(keyCode: number): boolean {
-        return (this.GetCommands(keyCode) !== null);
+    private hasCommand(keyCode: number): boolean {
+        return (this.getCommands(keyCode) !== null);
     }
 
-    private GetCommands(keyCode: number): Array<ICommand> {
+    private getCommands(keyCode: number): Array<ICommand> {
         return this._commands[keyCode.toString()] || null;
     }
 
-    public ExecuteKeyDownCommands(keyCode: number): void {
-        if (this.HasCommand(keyCode)) {
-            const commands: Array<ICommand> = this.GetCommands(keyCode);
-            commands[0].Execute();
-        }
-    }
-
-    public ExecuteKeyUpCommands(keyCode: number): void {
-        if (this.HasCommand(keyCode)) {
-            const commands: Array<ICommand> = this.GetCommands(keyCode);
-            commands[1].Execute();
-        }
-    }
-
-    public ExecuteCommands(keyCode: number): void {
-        if (this.HasCommand(keyCode)) {
-            const commands: Array<ICommand> = this.GetCommands(keyCode);
+    public executeCommands(keyCode: number): void {
+        if (this.hasCommand(keyCode)) {
+            const commands: Array<ICommand> = this.getCommands(keyCode);
 
             for (const command of commands) {
-                command.Execute();
+                command.execute();
             }
         }
     }

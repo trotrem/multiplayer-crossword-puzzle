@@ -1,4 +1,4 @@
-import { ICommand } from "./command";
+import { ICommand } from "../command";
 // import { Car } from "../car/car";
 
 export class SwitchCameraCommand implements ICommand {
@@ -8,7 +8,7 @@ export class SwitchCameraCommand implements ICommand {
         // this._car = car;
     }
 
-    public Execute(): void {
+    public execute(): void {
         // Call camera switch function
     }
 }

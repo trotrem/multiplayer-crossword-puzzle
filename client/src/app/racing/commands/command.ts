@@ -3,5 +3,5 @@ export interface IMap<T> {
 }
 
 export interface ICommand {
-    Execute(): void;
+    execute(): void;
 }
