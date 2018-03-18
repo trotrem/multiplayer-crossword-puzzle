@@ -18,6 +18,7 @@ import { TrackServices } from "./racing/track.services/track.service";
 import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
 import { RaceComponent } from "./racing/race/race.component";
+import { RacePlayComponent } from "./racing/race-play/race-play.component";
 
 const appRoutes: Routes = [
     { path: "editor/:name", component: EditorComponent },
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: RaceComponent },
+    { path: "race/:name/play", component: RacePlayComponent },
     { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
@@ -46,6 +48,7 @@ const appRoutes: Routes = [
         CrosswordGridComponent,
         UserComponent,
         RaceComponent,
+        RacePlayComponent
     ],
     imports: [
         BrowserModule,

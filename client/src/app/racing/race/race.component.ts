@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef  } from "@angular/core";
 import { Track } from "./../track-savor/track";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { PrintTrackService } from "../print-track.service/print-track.service";
 import { UserService } from "../user.service/user.service";
 import { HttpClient } from "@angular/common/http";
@@ -26,7 +26,7 @@ export class RaceComponent implements OnInit {
       return this.canvasRef.nativeElement;
   }
 
-  public constructor(private route: ActivatedRoute, private http: HttpClient) {
+  public constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {
       this.track = new Track();
       this.printTrackService = new PrintTrackService();
       this.userService = new UserService(this.http);
@@ -55,5 +55,8 @@ export class RaceComponent implements OnInit {
           console.warn(this.track.startingZone);
       });
 }
+  public showTrack(): void {
+    this.router.navigateByUrl("/race/" + this.track.name + "/play/");
+  }
 
 }
