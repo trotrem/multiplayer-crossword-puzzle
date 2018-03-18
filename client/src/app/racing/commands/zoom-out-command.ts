@@ -1,5 +1,5 @@
 import { ICommand } from "./command";
-import { Car } from "../car/car";
+// import { Car } from "../car/car";
 
 export class ZoomOutCommand implements ICommand {
 
