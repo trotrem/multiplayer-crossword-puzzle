@@ -1,16 +1,16 @@
 import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 
-import { RandomCarsFirstPositionsService } from "./random-cars-first-positions.service";
+import { PositionsDefinerService  } from "./position-definer.service";
 
 describe("RandomCarCreatorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RandomCarsFirstPositionsService]
+      providers: [PositionsDefinerService ]
     });
   });
 
-  it("should be created", inject([RandomCarsFirstPositionsService], (service: RandomCarsFirstPositionsService) => {
+  /*it("should be created", inject([PositionsDefinerService ], (service: PositionsDefinerService ) => {
     expect(service).toBeTruthy();
   }));
   it("should get random positionX inside a specific line",
@@ -46,5 +46,5 @@ describe("RandomCarCreatorService", () => {
       expect(vectors[1].y).toBe(vectors[0].y + 0.01);
       // tslint:disable-next-line:no-magic-numbers
       expect(vectors[1].z).toBe(vectors[0].z + 0.01);
-    }));
+    }));*/
 });

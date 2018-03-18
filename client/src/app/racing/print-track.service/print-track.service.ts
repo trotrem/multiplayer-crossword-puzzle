@@ -3,9 +3,7 @@ import * as THREE from "three";
 // import * as extrudePolyline from "extrude-polyline";
 import { ThrowStmt } from "@angular/compiler";
 import { Car } from "../car/car";
-import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
-import { Vector3 } from "three";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
   linewidth: 7,
@@ -17,25 +15,8 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linejoin: "round"
 });
 const MAX_CARS_PAIRS: number = 2;
-/*const EXTRUDEPOLYLINE = require("extrude-polyline");
-const COMPLEX = require("three-simplicial-complex")(THREE);
+const CAMERA_DISTANCE: number = 100;
 
-function thickPolyline(points, lineWidth) {
-  const simplicialComplex = extrudePolyline({
-    // Adjust to taste!
-    thickness: lineWidth,
-    cap: "square",  // or 'butt'
-    join: "bevel",  // or 'miter',
-    miterLimit: 10,
-  }).build(points);
-
-  // Add a z-coordinate.
-  for (const position of simplicialComplex.positions) {
-    position[2] = 0;
-  }
-
-  return COMPLEX(simplicialComplex);
-}*/
 @Injectable()
 export class PrintTrackService {
 
@@ -47,12 +28,12 @@ export class PrintTrackService {
 
   private canvas: HTMLCanvasElement;
 
-  private carsPairs: Car[][];
+  private cars: Car[];
 
   private printCarService: PrintCarsService;
 
   public constructor() {
-    this.carsPairs = new Array<Car[]>(MAX_CARS_PAIRS);
+    this.cars = new Array<Car>(MAX_CARS_PAIRS);
     this.printCarService = new PrintCarsService();
 
   }
@@ -66,14 +47,14 @@ export class PrintTrackService {
   }
   public createScene(): void {
     this.camera = new THREE.PerspectiveCamera();
-    const CAMERA_DISTANCE: number = 100;
-    this.camera.position.set(0, 0, CAMERA_DISTANCE);
+    this.camera.position.set(0, CAMERA_DISTANCE, 0); // pour changer à la vue initiale on la remet à
+                                                     //  this.camera.position.set(0, 0, CAMERA_DISTANCE);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     for (let i: number = 0; i < MAX_CARS_PAIRS; i++) {
-      this.carsPairs.push(this.printCarService.initiateCars(this.camera, this.scene));
+    this.cars = this.printCarService.initiateCars(this.camera, this.scene);
     }
   }
 
@@ -123,8 +104,7 @@ export class PrintTrackService {
   }
   public insertCars(line: THREE.Line3): void {
 
-    this.carsPairs[0] = this.printCarService.insertPairOfCars(line, this.scene);
-    // this.carsPairs[1] = this.printCarService.insertPairOfCars(line, this.scene);
+    this.cars = this.printCarService.insertCars(line, this.scene);
 
   }
 
@@ -155,4 +135,10 @@ export class PrintTrackService {
     this.canvas = canvas;
   }
 
+  public setCars(cars: Car[]): void {
+      this.cars = cars;
+  }
+  public getCars(): Car[] {
+    return this.cars;
+}
 }
