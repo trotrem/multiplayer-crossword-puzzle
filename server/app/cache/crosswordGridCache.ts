@@ -48,7 +48,6 @@ export class GridCache {
   }
 
   public addGrid(grid: IGrid): IGridData {
-    // disabled tslint on line because simplified arrow function conflicted with returned object.
     const gridData: IGridData = this.convertIGridToGridData(grid);
     this._grids[gridData.id] = {
       gridData: gridData,

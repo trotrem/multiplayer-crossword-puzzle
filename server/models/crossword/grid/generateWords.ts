@@ -7,14 +7,14 @@ import { IGrid, IWordContainer } from "./dataStructures";
 import { Utils } from "../../../utils";
 
 const wordRetriever: WordRetriever = WordRetriever.instance;
-const MAX_ATTEMPTS: number = 100;
 
 export class GenerateWords {
   private _layoutHandler: GridLayoutHandler;
 
   public async generateGrid(): Promise<IGrid> {
     this._layoutHandler = new GridLayoutHandler();
-    for (let i: number = 0; i < MAX_ATTEMPTS; i++) {
+    const go: boolean = true;
+    while (go) {
       const grid: IGrid = { cells: [], words: [], blackCells: [] };
       this._layoutHandler.makeGrid(grid);
       WordsPositionsHelper.createListOfWord(grid);
@@ -33,6 +33,7 @@ export class GenerateWords {
     }
     let words: WordDictionaryData[] = await this.wordRetrieve(GridUtils.getText(grid.words[index], grid));
     words = this.filterRepeatedWords(words, grid);
+    console.log(grid.words.length - index);
     for ({} of words) {
       if (
         GridUtils.trySetData(

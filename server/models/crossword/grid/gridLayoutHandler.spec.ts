@@ -1,11 +1,13 @@
+// TODO: fix
 // tslint:disable
+declare var require: any
 import { expect } from "chai";
-import * as mocha from "mocha";
-import * as rewire from "rewire";
 import { GridLayoutHandler } from "./gridLayoutHandler";
 import { IGrid } from "./dataStructures";
 
-const gridLayoutHandler = rewire("./gridLayoutHandler");
+var rewire = require('rewire');
+
+const gridLayoutHandler: any = rewire("./gridLayoutHandler");
 
 describe("makeGrid", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };
@@ -14,7 +16,7 @@ describe("makeGrid", () => {
         grid = { cells: [], words: [], blackCells: [] };
         layoutHandler.makeGrid(grid);
       });
-    
+
     it("Should be 10 witdh and 10 height", () => {
         expect(grid.cells.length).equals(10);
         expect(grid.cells[0].length).equals(10);

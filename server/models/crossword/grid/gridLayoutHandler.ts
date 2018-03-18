@@ -26,10 +26,9 @@ export class GridLayoutHandler {
     private generateBlackSquares(grid: IGrid): void {
         const blackSquares: IPoint[] = new Array<IPoint>();
 
-        for (let i: number = 0; i < Utils.randomIntFromInterval(MINBLACK, MAXBLACK); i++) {
-            const currentBlack: IPoint = this.findAcceptableBlackSquare(blackSquares);
-            this.notBlackSquares(currentBlack);
-            blackSquares.push(currentBlack);
+        const nbBlacks: number = Utils.randomIntFromInterval(MINBLACK, MAXBLACK);
+        for (let i: number = 0; i < nbBlacks; i++) {
+            blackSquares.push(this.findAcceptableBlackSquare(blackSquares));
         }
 
         grid.blackCells = blackSquares;
