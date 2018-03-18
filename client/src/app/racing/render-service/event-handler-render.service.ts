@@ -9,6 +9,9 @@ import { BrakeCommand } from "../commands/brake-command";
 import { ReleaseSteerCommand } from "../commands/releaseSteer-command";
 import { DecelerateCommand } from "../commands/decelerate-command";
 import { ReleaseBrakesCommand } from "../commands/releasebBrakes-command";
+import { ZoomInCommand } from "../commands/zoom-in-command";
+import { ZoomOutCommand } from "../commands/zoom-out-command";
+import { SwitchCameraCommand } from "../commands/switch-camera-command";
 import * as keyCode from "../commands/key-code";
 
 @Injectable()
@@ -25,6 +28,9 @@ export class EventHandlerRenderService {
         Keyboard.Instance.AddCommand(keyCode.LEFT_KEYCODE, new SteerLeftCommand(car));
         Keyboard.Instance.AddCommand(keyCode.RIGHT_KEYCODE, new SteerRightCommand(car));
         Keyboard.Instance.AddCommand(keyCode.BRAKE_KEYCODE, new BrakeCommand(car));
+        Keyboard.Instance.AddCommand(keyCode.ZOOM_IN_KEYCODE, new ZoomInCommand());
+        Keyboard.Instance.AddCommand(keyCode.ZOOM_OUT_KEYCODE, new ZoomOutCommand());
+        Keyboard.Instance.AddCommand(keyCode.SWITCH_CAMERA_KEYCODE, new SwitchCameraCommand());
         // Key up commands (index 1)
         Keyboard.Instance.AddCommand(keyCode.LEFT_KEYCODE, new ReleaseSteerCommand(car));
         Keyboard.Instance.AddCommand(keyCode.RIGHT_KEYCODE, new ReleaseSteerCommand(car));
