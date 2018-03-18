@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
+// import * as extrudePolyline from "extrude-polyline";
 import { ThrowStmt } from "@angular/compiler";
 import { Car } from "../car/car";
 import { RandomCarsFirstPositionsService } from "../randomCarsFirstPositions.service/random-cars-first-positions.service";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
+import { Vector3 } from "three";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
   linewidth: 7,
@@ -15,7 +17,25 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linejoin: "round"
 });
 const MAX_CARS_PAIRS: number = 2;
+/*const EXTRUDEPOLYLINE = require("extrude-polyline");
+const COMPLEX = require("three-simplicial-complex")(THREE);
 
+function thickPolyline(points, lineWidth) {
+  const simplicialComplex = extrudePolyline({
+    // Adjust to taste!
+    thickness: lineWidth,
+    cap: "square",  // or 'butt'
+    join: "bevel",  // or 'miter',
+    miterLimit: 10,
+  }).build(points);
+
+  // Add a z-coordinate.
+  for (const position of simplicialComplex.positions) {
+    position[2] = 0;
+  }
+
+  return COMPLEX(simplicialComplex);
+}*/
 @Injectable()
 export class PrintTrackService {
 
@@ -53,7 +73,7 @@ export class PrintTrackService {
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     for (let i: number = 0; i < MAX_CARS_PAIRS; i++) {
-    this.carsPairs.push(this.printCarService.initiateCars(this.camera, this.scene));
+      this.carsPairs.push(this.printCarService.initiateCars(this.camera, this.scene));
     }
   }
 
@@ -63,15 +83,32 @@ export class PrintTrackService {
   }
 
   public drawTrack(points: THREE.Vector3[]): void {
+
     for (let i: number = 1; i < points.length; i++) {
-      const lineGeometry: THREE.Geometry = new THREE.Geometry;
-      let material: THREE.LineBasicMaterial = LINE_MATERIAL ;
+      /*const lineGeometry: THREE.Geometry = new THREE.Geometry;
+      let material: THREE.LineBasicMaterial = LINE_MATERIAL;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
       if (i === 1) {
         material = FIRST_LINE_MATERIAL;
       }
-      this.scene.add(new THREE.Line(lineGeometry, material));
+      this.scene.add(new THREE.Line(lineGeometry, material));*/
+      const point1 = points[i-1];
+      const point2 = points[i];
+      let vector12 = new THREE.Vector3().copy(point2).sub(point1);
+      let point3 = new THREE.Vector3().copy(vector12).multiplyScalar(0.5).add(point1);
+
+      let plane = new THREE.PlaneGeometry(1, 1, 1);
+
+      let floor = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+      floor.position.copy(point3);
+      floor.position.y = 31;
+      floor.scale.x = vector12.length();
+      floor.scale.z = floor.position.z * 2;
+      floor.rotateY(- Math.atan2(vector12.z, vector12.x));
+      this.scene.add(floor);
+
+
       /*for (let i: number = 0; i < points.length; i += 4) {
         const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
         const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
