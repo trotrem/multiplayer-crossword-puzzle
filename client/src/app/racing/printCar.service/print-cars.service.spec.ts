@@ -12,4 +12,8 @@ describe("PrintCarsService", () => {
   it("should be created", inject([PrintCarsService], (service: PrintCarsService) => {
     expect(service).toBeTruthy();
   }));
+
+  it("should be created", inject([PrintCarsService], (service: PrintCarsService) => {
+    expect(service).toBeTruthy();
+  }));
 });

@@ -117,4 +117,10 @@ export class PrintTrackService {
     this.canvas = canvas;
   }
 
+  public setCars(cars: Car[]): void {
+      this.cars = cars;
+  }
+  public getCars(): Car[] {
+    return this.cars;
+}
 }
