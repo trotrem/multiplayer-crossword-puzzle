@@ -23,43 +23,43 @@
 }
 
 .lightRed{
-    background-color: red;
+    background-color: #330000;
 } 
 
 /*Animation*/
 .lightRed {
-    -webkit-animation: redlightClose .1s 4s forwards;
-            animation: redlightClose .1s 4s forwards;
+    -webkit-animation: redlightOpen .2s 4s forwards;
+            animation: redlightOpen .2s 4s forwards;
     
 }
   
 .lightYellow {
-    -webkit-animation: yellowlightOpen .2s 4.25s forwards;
-            animation: yellowlightOpen .2s 4.25s forwards;
+    -webkit-animation: yellowlightOpen .2s 5s forwards;
+            animation: yellowlightOpen .2s 5s forwards;
 }
 
 /*.lightYellow{
-    -webkit-animation: yellowlightClose .2s 5.25s forwards;
-            animation: yellowlightClose .2s 5.25s forwards;
+    -webkit-animation: yellowlightClose .2s 5.25s backwards;
+            animation: yellowlightClose .2s 5.25s backwards;
 }*/
   
 .lightGreen {
-    -webkit-animation: greenlightOpen .1s 5.5s forwards;
-            animation: greenlightOpen .1s 5.5s forwards;
+    -webkit-animation: greenlightOpen .2s 6s forwards;
+            animation: greenlightOpen .2s 6s forwards;
 }
 
 /*Keyframes*/
 @-webkit-keyframes yellowlightOpen {from {background-color: #666600;} to {background-color: yellow;} }
 @keyframes yellowlightOpen {from {background-color: #666600;} to {background-color: yellow;} }
-@-webkit-keyframes yellowlightClose {from {background-color: yellow;} to {background-color: #666600;} }
-@keyframes yellowlightClose {from {background-color: yellow;} to {background-color: #666600;} }
+/*@-webkit-keyframes yellowlightClose {from {background-color: yellow;} to {background-color: #666600;} }
+@keyframes yellowlightClose {from {background-color: yellow;} to {background-color: #666600;} }*/
 
 @-webkit-keyframes redlightOpen {from {background-color: #330000;} to {background-color: red;} }
 @keyframes redlightOpen {from {background-color: #330000;} to {background-color: red;} }
-@-webkit-keyframes redlightClose {from {background-color: red;} to {background-color: #330000;} }
-@keyframes redlightClose {from {background-color: red;} to {background-color: #330000;} }
+/*@-webkit-keyframes redlightClose {from {background-color: red;} to {background-color: #330000;} }
+@keyframes redlightClose {from {background-color: red;} to {background-color: #330000;} }*/
 
 @-webkit-keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
 @keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
-@-webkit-keyframes greenlightClose {from {background-color: #47D147;} to {background-color: #004C00;} }
-@keyframes greenlightClose {from {background-color: #47D147;} to {background-color: #004C00;} }
+/*@-webkit-keyframes greenlightClose {from {background-color: #47D147;} to {background-color: #004C00;} }
+@keyframes greenlightClose {from {background-color: #47D147;} to {background-color: #004C00;} }*/
