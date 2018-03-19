@@ -1,0 +1,23 @@
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import {Difficulty} from "./../../../../../common/communication/types";
+
+@Component({
+  selector: "app-end-game",
+  templateUrl: "./end-game.component.html",
+  styleUrls: ["./end-game.component.css"]
+})
+export class EndGameComponent implements OnInit {
+  private _difficulty: Difficulty = "easy";
+  private nbPlayers: string;
+
+  public constructor(private route: ActivatedRoute) { }
+
+  public ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this._difficulty = params["Difficulty"];
+      this.nbPlayers = params["nbPlayers"];
+    });
+  }
+
+}
