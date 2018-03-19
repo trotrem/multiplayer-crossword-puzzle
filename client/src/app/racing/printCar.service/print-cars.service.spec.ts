@@ -52,4 +52,22 @@ describe("PrintCarsService", () => {
       }
     }
   }));
+  it("the cars shouldn't have the same random position for each service call",
+     inject([PrintCarsService], (service: PrintCarsService) => {
+    const cars1: Car[] = new Array <Car>();
+    for (let i: number = 0; i < 4; i++) {
+        cars1.push(new Car());
+      }
+    const cars2: Car[] = new Array <Car>();
+    for (let i: number = 0; i < 4; i++) {
+          cars2.push(new Car());
+      }
+    const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
+    const position2: THREE.Vector3 = new THREE.Vector3(-12, 9, 0);
+    service.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars1);
+    service.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars2);
+    for (let i: number = 0; i < 4; i++) {
+          expect(cars1[i].position === cars2[i].position).toBeFalsy();
+        }
+  }));
 });
