@@ -29,7 +29,7 @@ export class RenderService {
 
     public constructor() {
         this._car = new Car();
-        this.evenHandeler = new EventHandlerRenderService();
+        this.evenHandeler = new EventHandlerRenderService(this._car);
     }
 
     public async initialize(container: HTMLDivElement): Promise<void> {

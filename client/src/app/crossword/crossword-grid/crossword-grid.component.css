@@ -16,7 +16,7 @@
     grid-template-columns: repeat(10, 50px);
 }
 
-.cell, .black, .selected {
+.cell, .black, .selected, .wordFound {
     width:50px;
     height:50px;
     outline:1px solid #000;
@@ -31,8 +31,14 @@
 }
 
 .selected {
-    outline-width: 4px;
+    outline-width: 4px !important;
+    outline-color: black !important;
 }
+
+.wordFound {
+    color: #1fcc1f;
+    outline: 2px solid #1fcc1f;
+ }
 
 .definition {
     cursor: pointer;
@@ -42,3 +48,8 @@
     cursor: default;
     outline:1px solid #000;
 }
+
+.definition-found {
+    text-decoration: line-through;
+}
+

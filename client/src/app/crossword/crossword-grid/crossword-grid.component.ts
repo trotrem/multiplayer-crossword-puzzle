@@ -4,6 +4,7 @@ import { IGridData, Direction, IWordValidationParameters, Difficulty } from "../
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -27,7 +28,7 @@ enum TipMode {
 export class CrosswordGridComponent implements OnInit {
   private communicationService: CommunicationService;
   public cells: Cell[][];
-  @Input() public nbPlayers: number;
+  @Input() public nbPlayers: string;
   private words: WordDescription[];
   private id: number;
   private _difficulty: Difficulty = "easy";
@@ -50,14 +51,14 @@ export class CrosswordGridComponent implements OnInit {
     return this.words.filter((word) => word.direction === Direction.Vertical);
   }
 
-  public constructor(private http: HttpClient) {
+  public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
     // service grid ??
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false });
+        this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
       }
     }
     this.words = new Array<WordDescription>();
@@ -72,6 +73,10 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this._difficulty = params["Difficulty"];
+      this.nbPlayers = params["nbPlayers"];
+    });
   }
 
   // dans grid.service
@@ -92,7 +97,7 @@ export class CrosswordGridComponent implements OnInit {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
         });
       });
   }
@@ -105,6 +110,9 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onCellClicked(event: MouseEvent, cell: Cell): void {
+    if (cell.letterFound) {
+      return;
+    }
     event.stopPropagation();
     for (const word of this.words) {
       if (word.cells[0] === cell && word !== this.selectedWord) {
@@ -123,6 +131,9 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public onIndexClicked(event: MouseEvent, word: WordDescription): void {
+    if (word.found) {
+      return;
+    }
     event.stopPropagation();
     this.setSelectedWord(word, true);
   }
@@ -143,12 +154,11 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private write(char: string, word: WordDescription): void {
-    for (let i: number = 0; i < word.cells.length; i++) {
-      if (word.cells[i].content === "") {
-        word.cells[i].content = char;
-        if (i === word.cells.length - 1) {
-          this.validate(word);
-        }
+    for (const cell of word.cells) {
+      if (cell.content === "") {
+        cell.content = char;
+        this.validate(word);
+        this.wordFoundByOtherWord();
 
         return;
       }
@@ -158,7 +168,7 @@ export class CrosswordGridComponent implements OnInit {
   private erase(word: WordDescription): void {
     let i: number;
     for (i = word.cells.length - 1; i >= 0; i--) {
-      if (word.cells[i].content !== "") {
+      if (word.cells[i].content !== "" && !word.cells[i].letterFound) {
         word.cells[i].content = "";
 
         return;
@@ -174,7 +184,33 @@ export class CrosswordGridComponent implements OnInit {
       word: word.cells.map((elem) => elem.content).join("")
     };
 
-    this.communicationService.validate(parameters);
+    this.communicationService.validate(parameters)
+      .subscribe((data) => {
+        if (data) {
+          for (const cell of word.cells) {
+            cell.letterFound = true;
+          }
+          word.found = true;
+        }
+
+        this.validateGrid();
+      });
+  }
+
+  private wordFoundByOtherWord(): void {
+    for (const word of this.words) {
+      this.validate(word);
+    }
+  }
+
+  private validateGrid(): void {
+    for (const word of this.words) {
+      if (!word.found) {
+        return;
+      }
+    }
+    console.warn("Congrat");
+    this.openDialogEndGame();
   }
 // service grid-mode
   private fetchCheatModeWords(): void {
@@ -207,5 +243,9 @@ export class CrosswordGridComponent implements OnInit {
     for (const cell of word.cells) {
       cell.selected = selected;
     }
+  }
+
+  private openDialogEndGame(): void {
+    this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 }

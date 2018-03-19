@@ -127,7 +127,7 @@ export class TrackValidator {
 
     }
 
-    public popPoints(): void {
+    public emptyPoints(): void {
         while (this.illegalPoints.length > 0) {
             this.illegalPoints.pop();
         }
