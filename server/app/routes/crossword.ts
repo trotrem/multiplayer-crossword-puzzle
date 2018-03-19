@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable } from "inversify";
 import { GridCache } from "../cache/crosswordGridCache";
-import { GenerateWords } from "../../models/crossword/grid/generateWords";
+import { GenerateWords } from "../models/crossword/grid/generateWords";
 import { Difficulty } from "../../../common/communication/types";
-import { IGrid } from "../../models/crossword/grid/dataStructures";
+import { IGrid } from "../models/crossword/grid/dataStructures";
 import { Document } from "mongoose";
-import { crosswordDocument } from "../../models/crosswordDbSchemas";
-import { Utils } from "../../utils";
+import { crosswordDocument } from "../models/crosswordDbSchemas";
+import { Utils } from "../utils";
 
 const MAX_SAME_DIFFICULTY_DB_GRIDS: number = 10;
 

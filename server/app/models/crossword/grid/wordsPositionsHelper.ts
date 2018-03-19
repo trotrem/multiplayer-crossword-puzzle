@@ -1,4 +1,4 @@
-import { Direction, IPoint } from "../../../../common/communication/types";
+import { Direction, IPoint } from "../../../../../common/communication/types";
 import { IGrid, IWordContainer, ICell } from "./dataStructures";
 
 const MINIMUM_WORD_LENGTH: number = 2;

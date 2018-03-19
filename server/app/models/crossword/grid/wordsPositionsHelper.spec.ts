@@ -1,15 +1,8 @@
 // TODO: fix
 // tslint:disable
-declare var require: any
 import { expect } from "chai";
-import * as mocha from "mocha";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
 import { IGrid } from "./dataStructures";
-import { Direction } from "../../../../common/communication/types";
-
-var rewire = require('rewire');
-
-const wordsPositionsHelper: any = rewire("./wordsPositionsHelper.ts");
 
 describe("createListOfWord", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };

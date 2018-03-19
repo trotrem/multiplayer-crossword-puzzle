@@ -1,34 +1,35 @@
 import { GridLayoutHandler } from "./gridLayoutHandler";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { GridUtils } from "./wordsUtils";
+import { GridUtils } from "./gridUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
-import { Utils } from "../../../utils";
+import { Utils } from "../../..//utils";
 
-export class GenerateWords {
+export module GenerateWords {
 
-  public static async generateGrid(): Promise<IGrid> {
+  export const generateGrid: () => Promise<IGrid> = async () => {
     const go: boolean = true;
     while (go) {
       const grid: IGrid = { cells: [], words: [], blackCells: [] };
       GridLayoutHandler.makeGrid(grid);
       WordsPositionsHelper.createListOfWord(grid);
-      const result: IGrid = await this.addWord(0, grid);
+      const result: IGrid = await addWord(0, grid);
       if (result !== null) {
         return result;
       }
     }
 
     return null;
-  }
+  };
 
-  private static async addWord(index: number, grid: IGrid): Promise<IGrid> {
+  // exported for testing purposes only, should be called through generateGrid
+  export const addWord: (index: number, grid: IGrid) => Promise<IGrid> = async (index: number, grid: IGrid) => {
     if (index === grid.words.length) {
       return grid;
     }
-    let words: WordDictionaryData[] = await this.wordRetrieve(GridUtils.getText(grid.words[index], grid));
-    words = this.filterRepeatedWords(words, grid);
+    let words: WordDictionaryData[] = await wordRetrieve(GridUtils.getText(grid.words[index], grid));
+    words = filterRepeatedWords(words, grid);
     for ({} of words) {
       if (
         GridUtils.trySetData(
@@ -37,7 +38,7 @@ export class GenerateWords {
           grid
         )
       ) {
-        const nextStep: IGrid = await this.addWord(index + 1, grid);
+        const nextStep: IGrid = await addWord(index + 1, grid);
         if (nextStep !== null) {
           return nextStep;
         }
@@ -46,12 +47,10 @@ export class GenerateWords {
     }
 
     return null;
-  }
+  };
 
-  private static filterRepeatedWords(
-    words: WordDictionaryData[],
-    grid: IGrid
-  ): WordDictionaryData[] {
+  const filterRepeatedWords: (words: WordDictionaryData[], grid: IGrid) => WordDictionaryData[] =
+  (words: WordDictionaryData[], grid: IGrid) => {
     if (words.length > 0) {
       words = words.filter((wordInfo: WordDictionaryData) => {
         return (
@@ -63,12 +62,12 @@ export class GenerateWords {
     }
 
     return words;
-  }
+  };
 
-  private static async wordRetrieve(word: string): Promise<WordDictionaryData[]> {
+  const wordRetrieve: (word: string) => Promise<WordDictionaryData[]> = async (word: string) => {
     let words: WordDictionaryData[];
     words = await WordRetriever.instance.getWordsWithDefinitions(word);
 
     return words;
-  }
+  };
 }

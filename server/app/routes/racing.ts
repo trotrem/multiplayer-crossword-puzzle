@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable, } from "inversify";
-import { trackDocument } from "../../models/racingDbSchemas";
+import { trackDocument } from "../models/racingDbSchemas";
 import { Document} from "mongoose";
 const BAD_REQUEST_ERROR: number = 400;
 

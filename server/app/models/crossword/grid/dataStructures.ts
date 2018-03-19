@@ -1,5 +1,5 @@
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
-import { Direction, IPoint } from "../../../../common/communication/types";
+import { Direction, IPoint } from "../../../../../common/communication/types";
 
 export interface ICell {
     isBlack: boolean;

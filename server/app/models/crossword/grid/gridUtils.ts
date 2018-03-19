@@ -1,4 +1,4 @@
-import { IPoint } from "../../../../common/communication/types";
+import { IPoint } from "../../../../../common/communication/types";
 import { IGrid, IWordContainer } from "./dataStructures";
 import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 
