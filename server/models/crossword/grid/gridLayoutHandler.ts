@@ -52,7 +52,7 @@ export class GridLayoutHandler {
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: ICell[] = new Array<ICell>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {
-                row.push({id: indexI * HEIGHT + indexJ, isBlack: false, letter: "", x: indexI, y: indexJ});
+                row.push({isBlack: false, letter: "", x: indexI, y: indexJ});
             }
             grid.cells.push(row);
         }

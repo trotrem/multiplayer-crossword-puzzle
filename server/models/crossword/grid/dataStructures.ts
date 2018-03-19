@@ -2,7 +2,6 @@ import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { Direction, IPoint } from "../../../../common/communication/types";
 
 export interface ICell {
-    id: number;
     isBlack: boolean;
     letter: string;
     x: number;
