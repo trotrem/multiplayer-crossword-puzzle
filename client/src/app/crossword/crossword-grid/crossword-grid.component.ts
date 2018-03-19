@@ -4,7 +4,7 @@ import { IGridData, Direction, IWordValidationParameters, Difficulty } from "../
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -28,7 +28,7 @@ enum TipMode {
 export class CrosswordGridComponent implements OnInit {
   private communicationService: CommunicationService;
   public cells: Cell[][];
-  @Input() public nbPlayers: number;
+  @Input() public nbPlayers: string;
   private words: WordDescription[];
   private id: number;
   private _difficulty: Difficulty = "easy";
@@ -50,7 +50,7 @@ export class CrosswordGridComponent implements OnInit {
     return this.words.filter((word) => word.direction === Direction.Vertical);
   }
 
-  public constructor(private http: HttpClient, private route: ActivatedRoute) {
+  public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
@@ -72,7 +72,8 @@ export class CrosswordGridComponent implements OnInit {
 
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
-    this._difficulty = params["Difficulty"];
+      this._difficulty = params["Difficulty"];
+      this.nbPlayers = params["nbPlayers"];
     });
   }
 
@@ -185,7 +186,6 @@ export class CrosswordGridComponent implements OnInit {
         if (data) {
           for (const cell of word.cells) {
             cell.letterFound = true;
-            cell.selected = false;
           }
           word.found = true;
         }
@@ -207,6 +207,7 @@ export class CrosswordGridComponent implements OnInit {
       }
     }
     console.warn("Congrat");
+    this.openDialogEndGame();
   }
 
   private fetchCheatModeWords(): void {
@@ -239,5 +240,10 @@ export class CrosswordGridComponent implements OnInit {
     for (const cell of word.cells) {
       cell.selected = selected;
     }
+  }
+
+  private openDialogEndGame(): void {
+    console.warn(this.nbPlayers);
+    this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 }

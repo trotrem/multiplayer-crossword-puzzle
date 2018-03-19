@@ -10,17 +10,12 @@ import { Difficulty } from "../../../../../common/communication/types";
 })
 export class HomePageComponent implements OnInit {
 
-  private difficulty: Difficulty;
-
-  public constructor( private router: Router) { }
+  public constructor(private router: Router) { }
 
   public ngOnInit(): void {
   }
 
   public play(form: NgForm): void {
-    // this.router.navigateByUrl("/crossword/" + form.value.EasyMediumHard);
-    this.difficulty = form.value.EasyMediumHard;
-    console.warn(form.value.EasyMediumHard);
-    this.router.navigate(["/crossword/", { Difficulty: form.value.EasyMediumHard }]);
+    this.router.navigate(["/crossword/" + form.value.oneTwo + "/", { Difficulty: form.value.EasyMediumHard }]);
   }
 }
