@@ -14,6 +14,15 @@ const wordsPositionsHelper: any = rewire("./wordsPositionsHelper.ts");
 describe("createListOfWord", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };
 
+    it("Should add words", () => {
+        grid = { cells: [[{isBlack: false, letter: "", x: 0, y: 0}, {isBlack: false, letter: "", x: 1, y: 0}, {isBlack: false, letter: "", x: 2, y: 0}, {isBlack: false, letter: "", x: 3, y: 0}],
+                         [{isBlack: false, letter: "", x: 0, y: 1}, {isBlack: false, letter: "", x: 1, y: 1}, {isBlack: false, letter: "", x: 2, y: 1}, {isBlack: false, letter: "", x: 3, y: 1}],
+                         [{isBlack: false, letter: "", x: 0, y: 2}, {isBlack: false, letter: "", x: 1, y: 2}, {isBlack: false, letter: "", x: 2, y: 2}, {isBlack: false, letter: "", x: 3, y: 2}],
+                         [{isBlack: false, letter: "", x: 0, y: 3}, {isBlack: false, letter: "", x: 1, y: 3}, {isBlack: false, letter: "", x: 2, y: 3}, {isBlack: false, letter: "", x: 3, y: 3}]], words: [], blackCells: [] };
+        WordsPositionsHelper.createListOfWord(grid);
+        expect(grid.words.length).equals(8);
+    });
+
     it("Should ignore words shorter than 2", () => {
         grid = { cells: [[{isBlack: false, letter: "", x: 0, y: 0}, {isBlack: false, letter: "", x: 1, y: 0}],
                          [{isBlack: false, letter: "", x: 0, y: 1}, {isBlack: false, letter: "", x: 1, y: 1}]], words: [], blackCells: [] };

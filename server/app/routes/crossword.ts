@@ -15,7 +15,7 @@ namespace Route {
   @injectable()
   export class CrosswordHandler {
     public getGrid(req: Request, res: Response, next: NextFunction): void {
-      const newGrid: Promise<IGrid> = this.generateGrid(req.params.difficulty);
+      const newGrid: Promise<IGrid> = GenerateWords.generateGrid();
       crosswordDocument.find(
         { difficulty: req.params.difficulty },
         async (err: Error, allGrids: Document[]): Promise<void> => {
@@ -53,12 +53,6 @@ namespace Route {
 
     public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
       res.send(GridCache.Instance.getWords(req.params.gridId));
-    }
-
-    private async generateGrid(difficulty: Difficulty): Promise<IGrid> {
-      const gen: GenerateWords = new GenerateWords();
-
-      return gen.generateGrid();
     }
 
     private saveGrid(grid: IGrid, difficulty: Difficulty, overwriteId: number): void {

@@ -6,11 +6,9 @@ import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
 import { IGrid, IWordContainer } from "./dataStructures";
 import { Utils } from "../../../utils";
 
-const wordRetriever: WordRetriever = WordRetriever.instance;
-
 export class GenerateWords {
 
-  public async generateGrid(): Promise<IGrid> {
+  public static async generateGrid(): Promise<IGrid> {
     const go: boolean = true;
     while (go) {
       const grid: IGrid = { cells: [], words: [], blackCells: [] };
@@ -25,7 +23,7 @@ export class GenerateWords {
     return null;
   }
 
-  private async addWord(index: number, grid: IGrid): Promise<IGrid> {
+  private static async addWord(index: number, grid: IGrid): Promise<IGrid> {
     if (index === grid.words.length) {
       return grid;
     }
@@ -50,7 +48,7 @@ export class GenerateWords {
     return null;
   }
 
-  private filterRepeatedWords(
+  private static filterRepeatedWords(
     words: WordDictionaryData[],
     grid: IGrid
   ): WordDictionaryData[] {
@@ -67,9 +65,9 @@ export class GenerateWords {
     return words;
   }
 
-  private async wordRetrieve(word: string): Promise<WordDictionaryData[]> {
+  private static async wordRetrieve(word: string): Promise<WordDictionaryData[]> {
     let words: WordDictionaryData[];
-    words = await wordRetriever.getWordsWithDefinitions(word);
+    words = await WordRetriever.instance.getWordsWithDefinitions(word);
 
     return words;
   }
