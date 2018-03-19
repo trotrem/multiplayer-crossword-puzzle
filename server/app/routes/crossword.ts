@@ -51,11 +51,7 @@ namespace Route {
       }
     }
 
-    public getCheatModeWords(
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ): void {
+    public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
       res.send(GridCache.Instance.getWords(req.params.gridId));
     }
 
@@ -65,17 +61,13 @@ namespace Route {
       return gen.generateGrid();
     }
 
-    private saveGrid(
-      grid: IGrid,
-      difficulty: Difficulty,
-      overwriteId: number
-    ): void {
+    private saveGrid(grid: IGrid, difficulty: Difficulty, overwriteId: number): void {
       const newGrid: Document = new crosswordDocument({ grid, difficulty });
       newGrid
         .save()
         .then((item: Document) => {
           console.warn("Created and saved new grid");
-          if (this.shouldDeleteGrid(difficulty)) {
+          if (overwriteId !== null && this.shouldDeleteGrid(difficulty)) {
             this.deleteGrid(difficulty, overwriteId);
           }
         })
@@ -94,28 +86,14 @@ namespace Route {
     }
 
     private deleteGrid(difficulty: Difficulty, overwriteId: number): void {
-      if (overwriteId !== null) {
-        crosswordDocument
-          .deleteOne({ _id: overwriteId })
-          .then(() => {
-            console.warn("Deleted fetched grid");
-          })
-          .catch(() => {
-            console.warn("Unable to delete from database");
-          });
-      } else {
-        crosswordDocument
-          .deleteOne({ difficulty: difficulty })
-          .skip(
-            Utils.randomIntFromInterval(0, MAX_SAME_DIFFICULTY_DB_GRIDS - 1)
-          )
-          .then(() => {
-            console.warn("Deleted random grid");
-          })
-          .catch(() => {
-            console.warn("Unable to delete from database");
-          });
-      }
+      crosswordDocument
+        .deleteOne({ _id: overwriteId })
+        .then(() => {
+          console.warn("Deleted fetched grid");
+        })
+        .catch(() => {
+          console.warn("Unable to delete from database");
+        });
     }
   }
 }

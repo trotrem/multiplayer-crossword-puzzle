@@ -4,8 +4,8 @@ import { IPoint } from "../../../../common/communication/types";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
-const MINBLACK: number = 34;
-const MAXBLACK: number = 34;
+const MINBLACK: number = 29;
+const MAXBLACK: number = 31;
 const SPACEBTWCELLS: number = 2;
 
 export class GridLayoutHandler {
