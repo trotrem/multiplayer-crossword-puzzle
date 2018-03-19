@@ -11,8 +11,8 @@ const SPACEBTWCELLS: number = 2;
 export class GridLayoutHandler {
 
     private findAcceptableBlackSquare(blackSquares: IPoint[]): IPoint {
-        const x: number = Utils.randomIntFromInterval(0, WIDTH);
-        const y: number = Utils.randomIntFromInterval(0, HEIGHT);
+        const x: number = Utils.randomIntFromInterval(0, WIDTH - 1);
+        const y: number = Utils.randomIntFromInterval(0, HEIGHT - 1);
 
         for (const black of blackSquares) {
             if (this.notBlackSquares(black).indexOf({x, y}) !== -1 || black === {x, y}) {
@@ -28,7 +28,9 @@ export class GridLayoutHandler {
 
         const nbBlacks: number = Utils.randomIntFromInterval(MINBLACK, MAXBLACK);
         for (let i: number = 0; i < nbBlacks; i++) {
-            blackSquares.push(this.findAcceptableBlackSquare(blackSquares));
+            const newBlackCell: IPoint = this.findAcceptableBlackSquare(blackSquares);
+            blackSquares.push(newBlackCell);
+            grid.cells[newBlackCell.x][newBlackCell.y].isBlack = true;
         }
 
         grid.blackCells = blackSquares;
