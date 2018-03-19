@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import * as THREE from "three";
 // import * as extrudePolyline from "extrude-polyline";
 import { ThrowStmt } from "@angular/compiler";
-import { Car } from "../car/car";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
 const LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({
   color: 0xFFFFFF,
@@ -28,12 +27,9 @@ export class PrintTrackService {
 
   private canvas: HTMLCanvasElement;
 
-  private cars: Car[];
-
   private printCarService: PrintCarsService;
 
   public constructor() {
-    this.cars = new Array<Car>(MAX_CARS_PAIRS);
     this.printCarService = new PrintCarsService();
 
   }
@@ -53,9 +49,7 @@ export class PrintTrackService {
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    for (let i: number = 0; i < MAX_CARS_PAIRS; i++) {
-      this.cars = this.printCarService.initiateCars(this.camera, this.scene);
-    }
+
   }
 
   public animate(): void {
@@ -139,12 +133,5 @@ export class PrintTrackService {
   }
   public setCanvas(canvas: HTMLCanvasElement): void {
     this.canvas = canvas;
-  }
-
-  public setCars(cars: Car[]): void {
-    this.cars = cars;
-  }
-  public getCars(): Car[] {
-    return this.cars;
   }
 }
