@@ -84,11 +84,6 @@ export class PrintTrackService {
       }*/
     }
   }
-  public insertCars(line: THREE.Line3): void {
-
-    this.cars = this.printCarService.insertCars(line, this.scene);
-
-  }
 
   public getCamera(): THREE.PerspectiveCamera {
     return this.camera;

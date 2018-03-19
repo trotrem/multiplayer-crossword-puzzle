@@ -18,7 +18,7 @@ export class PrintCarsService {
   public getCars(): Car[] {
     return this.cars;
   }
-  public getCarsPositions(): PositionsDefinerService {
+  public getCarsPosition(): PositionsDefinerService {
     return this.carsPositions;
   }
   public setCars(cars: Car[]): void {
@@ -37,22 +37,22 @@ export class PrintCarsService {
 
     return this.cars;
 }
-  public insertCars(line: THREE.Line3, scene: THREE.Scene ): Car[] {
+  public insertCars(line: THREE.Line3, scene: THREE.Scene, cars: Car[]): Car[] {
 
     const positions: THREE.Vector3[] = this.carsPositions.getCarsPositions(line);
     for (let i: number = 0; i < CARS_MAX; i++) {
     const randomPosition: THREE.Vector3 = positions[Math.floor(Math.random() * positions.length)];
-    this.translateCarPosition(i, randomPosition);
+    this.translateCarPosition(i, randomPosition, cars);
     positions.splice(positions.indexOf(randomPosition), 1);
-    scene.add(this.cars[i]);
-    console.warn(this.cars[i].position);
+    scene.add(cars[i]);
+    console.warn(cars[i].position);
     }
 
     return this.cars;
 }
-  private translateCarPosition(index: number, vector: THREE.Vector3): void {
-    this.cars[index].translateX(vector.x);
-    this.cars[index].translateY(vector.y);
-    this.cars[index].translateZ(vector.z);
+  private translateCarPosition(index: number, vector: THREE.Vector3, cars: Car[]): void {
+    cars[index].translateX(vector.x);
+    cars[index].translateY(vector.y);
+    cars[index].translateZ(vector.z);
   }
 }

@@ -50,7 +50,7 @@ export class RaceComponent implements OnInit {
       .subscribe((res: Track[]) => {
           this.track = res[0];
           this.printTrackService.drawTrack(this.track.points);
-          this.printTrackService.insertCars(this.track.startingZone);
+          // this.printTrackService.insertCars(this.track.startingZone);
           console.warn(this.printTrackService.getScene());
           console.warn(this.track.startingZone);
       });

@@ -1,45 +1,47 @@
 import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
-import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight } from "three";
+import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight, Line, Vector3 } from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
+import { PrintCarsService } from "../printCar.service/print-cars.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
 
-const INITIAL_CAMERA_POSITION_Y: number = 25;
+const INITIAL_CAMERA_POSITION_Y: number = 100;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
+const CARS_MAX: number = 4;
 
 @Injectable()
 export class RenderService {
     private camera: PerspectiveCamera;
     private container: HTMLDivElement;
-    private _car: Car;
+    // private cars: Car[];
     private renderer: WebGLRenderer;
     private scene: THREE.Scene;
     private stats: Stats;
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
-
-    public get car(): Car {
-        return this._car;
-    }
+    private printCarService: PrintCarsService;
 
     public constructor() {
-        this._car = new Car();
         this.evenHandeler = new EventHandlerRenderService();
+        this.printCarService = new PrintCarsService();
     }
 
-    public async initialize(container: HTMLDivElement): Promise<void> {
+    public async initialize(container: HTMLDivElement, line: THREE.Line3, cars: Car[]): Promise<void>  {
         if (container) {
             this.container = container;
         }
 
-        await this.createScene();
+        await this.createScene(cars);
+        this.insertCars(line, cars);
         this.initStats();
-        this.startRenderingLoop();
+        this.startRenderingLoop(cars);
+        console.warn(this.scene);
+
     }
 
     private initStats(): void {
@@ -48,46 +50,59 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
-    private update(): void {
+    private update(cars: Car[]): void {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
-        this._car.update(timeSinceLastFrame);
+        for (let i: number = 0 ; i < CARS_MAX ; i++) {
+            cars[i].update(timeSinceLastFrame);
+        }
         this.lastDate = Date.now();
     }
 
-    private async createScene(): Promise<void> {
+    private async createScene(cars: Car[]): Promise<void> {
         this.scene = new Scene();
 
-        this.camera = new PerspectiveCamera(
-            FIELD_OF_VIEW,
-            this.getAspectRatio(),
-            NEAR_CLIPPING_PLANE,
-            FAR_CLIPPING_PLANE
-        );
+        // this.camera = new PerspectiveCamera(
+        //     FIELD_OF_VIEW,
+        //     this.getAspectRatio(),
+        //     NEAR_CLIPPING_PLANE,
+        //     FAR_CLIPPING_PLANE
+        // );
+        this.camera = new PerspectiveCamera();
 
-        await this._car.init();
         this.camera.position.set(0, INITIAL_CAMERA_POSITION_Y, 0);
-        this.camera.lookAt(this._car.position);
-        this.scene.add(this._car);
-        this.scene.add(new AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+        this.camera.lookAt(new Vector3(0, 0, 0));
+
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            cars[i] = new Car();
+            await cars[i].init();
+            // this.camera.lookAt(cars[i].position);
+            this.scene.add(cars[i]);
+            this.scene.add(new AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+            }
     }
 
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
     }
 
-    private startRenderingLoop(): void {
+    private startRenderingLoop(cars: Car[]): void {
         this.renderer = new WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
-        this.render();
+        this.render(cars);
     }
+    public insertCars(line: THREE.Line3, cars: Car[]): Car[] {
 
-    private render(): void {
-        requestAnimationFrame(() => this.render());
-        this.update();
+        return this.printCarService.insertCars(line, this.scene, cars);
+
+      }
+
+    private render(cars: Car[]): void {
+        requestAnimationFrame(() => this.render(cars));
+        this.update(cars);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
     }
@@ -98,11 +113,11 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
-    public handleKeyDown(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyDown(event, this.car);
+    public handleKeyDown(event: KeyboardEvent, index: number, cars: Car[]): void {
+       this.evenHandeler.handleKeyDown(event, cars[index]);
     }
 
-    public handleKeyUp(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyUp(event, this.car);
+    public handleKeyUp(event: KeyboardEvent, index: number, cars: Car[]): void {
+       this.evenHandeler.handleKeyUp(event, cars[index]);
     }
 }
