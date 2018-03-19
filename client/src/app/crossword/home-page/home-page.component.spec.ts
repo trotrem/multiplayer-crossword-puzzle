@@ -1,9 +1,10 @@
-import { async, ComponentFixture, TestBed, inject } from "@angular/core/testing";
-
+import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
 import { HomePageComponent } from "./home-page.component";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { RouterTestingModule } from "@angular/router/testing";
+import {Difficulty} from "../../../../../common/communication/types";
+import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 
 describe("HomePageComponent", () => {
   let router: Router;
@@ -12,8 +13,9 @@ describe("HomePageComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HomePageComponent],
-      imports: [FormsModule, RouterTestingModule.withRoutes([])]
+      declarations: [HomePageComponent, CrosswordGridComponent],
+      imports: [FormsModule, RouterTestingModule.withRoutes([
+        { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent }])]
     })
       .compileComponents();
   }));
@@ -28,4 +30,13 @@ describe("HomePageComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
+
+  it('navigate to "crossword/nbPlayers/difficulty" takes you to /crossword/nbPlayers/difficulty', fakeAsync(() => {
+    const difficulty: Difficulty = "easy";
+    const nbPlayers: string = "one";
+    router.navigateByUrl("/crossword/" + nbPlayers + "/" + difficulty);
+    /* tslint:disable */
+    tick(50);
+    expect(router.url).toBe("/crossword/" + nbPlayers + "/" + difficulty);
+  }));
 });

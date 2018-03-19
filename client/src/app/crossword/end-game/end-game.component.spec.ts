@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick, inject } from "@angular/core/testing";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Location } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-
+import { Router, ActivatedRoute } from "@angular/router";
 import { EndGameComponent } from "./end-game.component";
 import { HomePageComponent } from "../home-page/home-page.component";
-import { Router, ActivatedRoute } from "@angular/router";
+import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
+import { Difficulty } from "../../../../../common/communication/types";
 
 describe("EndGameComponent", () => {
   let router: Router;
@@ -15,8 +15,10 @@ describe("EndGameComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule.withRoutes([{ path: "homePage", component: HomePageComponent }])],
-      declarations: [EndGameComponent, HomePageComponent]
+      imports: [FormsModule, RouterTestingModule.withRoutes([
+        { path: "homePage", component: HomePageComponent },
+        { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent }])],
+      declarations: [EndGameComponent, HomePageComponent, CrosswordGridComponent]
     })
       .compileComponents();
   }));
@@ -33,10 +35,19 @@ describe("EndGameComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  /* it('navigate to "homePage" takes you to /homePage', fakeAsync(
-     inject([Router], (router: Router) => {
-       router.navigate(["homePage"]);
-       // tick(50);
-       expect(router.url).toBe("/homePage");
-     })));*/
+  it('navigate to "homePage" takes you to /homePage', fakeAsync(() => {
+    router.navigateByUrl("/homePage");
+    /* tslint:disable */
+    tick(50);
+    expect(router.url).toBe("/homePage");
+  }));
+
+  it('navigate to "crossword/nbPlayers/difficulty" takes you to /crossword/nbPlayers/difficulty', fakeAsync(() => {
+    const difficulty: Difficulty = "easy";
+    const nbPlayers: string = "one";
+    router.navigateByUrl("/crossword/" + nbPlayers + "/" + difficulty);
+    /* tslint:disable */
+    tick(50);
+    expect(router.url).toBe("/crossword/" + nbPlayers + "/" + difficulty);
+  }));
 });
