@@ -29,7 +29,7 @@ const appRoutes: Routes = [
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: RaceComponent },
-    { path: "race/:name/play", component: GameComponent },
+    { path: "race/:name/play/", component: GameComponent },
     { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
