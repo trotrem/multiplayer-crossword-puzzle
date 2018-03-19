@@ -56,7 +56,7 @@ export class RaceComponent implements OnInit {
       });
 }
   public showTrack(): void {
-    this.router.navigateByUrl("/race/" + this.track.name + "/play/");
+    this.router.navigateByUrl("/race/" + this.track.name + "/play");
   }
 
 }
