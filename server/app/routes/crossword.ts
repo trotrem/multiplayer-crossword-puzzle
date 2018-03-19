@@ -24,15 +24,15 @@ namespace Route {
             const fetchedGrid: Document =
               allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)];
             res.send(GridCache.Instance.addGrid(fetchedGrid["grid"]));
-            this.saveGrid(
-              await newGrid,
-              req.params.difficulty,
-              fetchedGrid._id
-            );
+            if ((await newGrid) !== null) {
+              this.saveGrid(await newGrid, req.params.difficulty, fetchedGrid._id);
+            }
           } else {
             console.error("unable to fetch grids");
-            res.send(GridCache.Instance.addGrid(await newGrid));
-            this.saveGrid(await newGrid, req.params.difficulty, null);
+            if ((await newGrid) !== null) {
+              res.send(GridCache.Instance.addGrid(await newGrid));
+              this.saveGrid(await newGrid, req.params.difficulty, null);
+            }
           }
         }
       );
@@ -85,18 +85,18 @@ namespace Route {
     }
 
     private async shouldDeleteGrid(difficulty: Difficulty): Promise<boolean> {
-      return crosswordDocument.count({ difficulty: difficulty }).then(
-        (count: number) => {
+      return crosswordDocument
+        .count({ difficulty: difficulty })
+        .then((count: number) => {
           return count > MAX_SAME_DIFFICULTY_DB_GRIDS;
-        }
-      ).catch(
-          () => false
-      );
+        })
+        .catch(() => false);
     }
 
     private deleteGrid(difficulty: Difficulty, overwriteId: number): void {
       if (overwriteId !== null) {
-        crosswordDocument.deleteOne({ _id: overwriteId })
+        crosswordDocument
+          .deleteOne({ _id: overwriteId })
           .then(() => {
             console.warn("Deleted fetched grid");
           })
@@ -104,7 +104,8 @@ namespace Route {
             console.warn("Unable to delete from database");
           });
       } else {
-        crosswordDocument.deleteOne({ difficulty: difficulty })
+        crosswordDocument
+          .deleteOne({ difficulty: difficulty })
           .skip(
             Utils.randomIntFromInterval(0, MAX_SAME_DIFFICULTY_DB_GRIDS - 1)
           )

@@ -10,7 +10,7 @@ const SPACEBTWCELLS: number = 2;
 
 export class GridLayoutHandler {
 
-    private findAcceptableBlackSquare(blackSquares: IPoint[]): IPoint {
+    private static findAcceptableBlackSquare(blackSquares: IPoint[]): IPoint {
         const x: number = Utils.randomIntFromInterval(0, WIDTH - 1);
         const y: number = Utils.randomIntFromInterval(0, HEIGHT - 1);
 
@@ -23,7 +23,7 @@ export class GridLayoutHandler {
         return {x, y};
     }
 
-    private generateBlackSquares(grid: IGrid): void {
+    private static generateBlackSquares(grid: IGrid): void {
         const blackSquares: IPoint[] = new Array<IPoint>();
 
         const nbBlacks: number = Utils.randomIntFromInterval(MINBLACK, MAXBLACK);
@@ -36,7 +36,7 @@ export class GridLayoutHandler {
         grid.blackCells = blackSquares;
     }
 
-    private notBlackSquares(currentBlack: IPoint): IPoint[] {
+    private static notBlackSquares(currentBlack: IPoint): IPoint[] {
         const notBlackSquares: IPoint[] = [];
         notBlackSquares.push({x: currentBlack.x - SPACEBTWCELLS, y: currentBlack.y});
         notBlackSquares.push({x: currentBlack.x + SPACEBTWCELLS, y: currentBlack.y});
@@ -46,7 +46,7 @@ export class GridLayoutHandler {
         return notBlackSquares;
     }
 
-    private makeEmptyGrid(grid: IGrid): void {
+    private static makeEmptyGrid(grid: IGrid): void {
         grid.cells = new Array<Array<ICell>>();
         grid.blackCells = new Array<ICell>();
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
@@ -58,7 +58,7 @@ export class GridLayoutHandler {
         }
     }
 
-    public makeGrid(grid: IGrid): void {
+    public static makeGrid(grid: IGrid): void {
         // making an empty grid
         this.makeEmptyGrid(grid);
         // putting black square in the grid
