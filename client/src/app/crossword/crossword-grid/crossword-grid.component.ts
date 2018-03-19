@@ -243,7 +243,6 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private openDialogEndGame(): void {
-    console.warn(this.nbPlayers);
     this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 }
