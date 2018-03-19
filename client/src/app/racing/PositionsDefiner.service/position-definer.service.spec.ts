@@ -2,7 +2,8 @@ import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 
 import { PositionsDefinerService  } from "./position-definer.service";
-
+ // "magic numbers" utilisés pour les tests
+/* tslint:disable:no-magic-numbers */
 describe("RandomCarCreatorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -10,41 +11,21 @@ describe("RandomCarCreatorService", () => {
     });
   });
 
-  /*it("should be created", inject([PositionsDefinerService ], (service: PositionsDefinerService ) => {
+  it("should be created", inject([PositionsDefinerService ], (service: PositionsDefinerService ) => {
     expect(service).toBeTruthy();
   }));
-  it("should get random positionX inside a specific line",
-     inject([RandomCarsFirstPositionsService], (service: RandomCarsFirstPositionsService) => {
-    // tslint:disable-next-line:no-magic-numbers
+  it("should define an array of four vectors",
+     inject([PositionsDefinerService], (service: PositionsDefinerService) => {
     const line: THREE.Line3 = new THREE.Line3(new THREE.Vector3(2, 4, 8), new THREE.Vector3(-1, 0, 2));
-    const vector: THREE.Vector3 = service.getRandomPosition(line);
-    expect(vector.x).toBeLessThanOrEqual(line.start.x);
-    expect(vector.x).toBeGreaterThanOrEqual(line.end.x);
+    expect(service.getCarsPositions(line).length).toBe(4);
   }));
-  it("should get random positionY inside a specific line",
-     inject([RandomCarsFirstPositionsService], (service: RandomCarsFirstPositionsService) => {
-    // tslint:disable-next-line:no-magic-numbers
+  it("should define an array of the same four vectors if the same line is given as an argument",
+     inject([PositionsDefinerService], (service: PositionsDefinerService) => {
     const line: THREE.Line3 = new THREE.Line3(new THREE.Vector3(2, 4, 8), new THREE.Vector3(-1, 0, 2));
-    const vector: THREE.Vector3 = service.getRandomPosition(line);
-    expect(vector.y).toBeLessThanOrEqual(line.start.y);
-    expect(vector.y).toBeGreaterThanOrEqual(line.end.y);
+    const positions1: THREE.Vector3[] = service.getCarsPositions(line);
+    const positions2: THREE.Vector3[] = service.getCarsPositions(line);
+    for (let i: number = 0; i < 4; i++) {
+      expect(positions1[i]).toBeTruthy(positions2[i]);
+    }
   }));
-  it("should get random positionZ inside a specific line",
-     inject([RandomCarsFirstPositionsService], (service: RandomCarsFirstPositionsService) => {
-      // tslint:disable-next-line:no-magic-numbers
-      const line: THREE.Line3 = new THREE.Line3(new THREE.Vector3(2, 4, 8), new THREE.Vector3(-1, 0, 2));
-      const vector: THREE.Vector3 = service.getRandomPosition(line);
-      expect(vector.z).toBeLessThanOrEqual(line.start.z);
-      expect(vector.z).toBeGreaterThanOrEqual(line.end.z);
-    }));
-  it("should get a pair of adjacent positions inside to a specific line",
-     inject([RandomCarsFirstPositionsService], (service: RandomCarsFirstPositionsService) => {
-      // tslint:disable-next-line:no-magic-numbers
-      const line: THREE.Line3 = new THREE.Line3(new THREE.Vector3(2, 4, 8), new THREE.Vector3(-1, 0, 2));
-      const vectors: THREE.Vector3[] = service.getRandomPairOfAdjacentPositions(line);
-      // tslint:disable-next-line:no-magic-numbers
-      expect(vectors[1].y).toBe(vectors[0].y + 0.01);
-      // tslint:disable-next-line:no-magic-numbers
-      expect(vectors[1].z).toBe(vectors[0].z + 0.01);
-    }));*/
 });
