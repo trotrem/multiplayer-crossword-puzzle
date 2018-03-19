@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
-import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight } from "three";
+import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight, Vector3 } from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 
@@ -29,6 +29,7 @@ export class RenderService {
 
     public constructor() {
         this._car = new Car();
+        this._car.rotateX(Math.PI / 2);
         this.evenHandeler = new EventHandlerRenderService(this._car);
     }
 
@@ -49,9 +50,23 @@ export class RenderService {
     }
 
     private update(): void {
+        // const relativeCameraOffset: Vector3 = new Vector3(0, 25, 0);
+
+        // const cameraOffset: Vector3 = relativeCameraOffset.applyMatrix4(this._car.matrixWorld);
+
+        //this.camera.position.x = this._car.position.x;
+        //this.camera.position.y = this._car.position.y;
+        //this.camera.position.z = this.car.position.z;
+        //this.camera.updateMatrix();
+        //this.camera.updateProjectionMatrix();
+        
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this._car.update(timeSinceLastFrame);
         this.lastDate = Date.now();
+
+        this.camera.position.copy(this._car.position);
+        this.camera.lookAt(this._car.position);
+
     }
 
     private async createScene(): Promise<void> {
@@ -65,8 +80,9 @@ export class RenderService {
         );
 
         await this._car.init();
-        this.camera.position.set(0, INITIAL_CAMERA_POSITION_Y, 0);
-        this.camera.lookAt(this._car.position);
+        this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Y);
+        //
+        this.camera.lookAt(this.scene.position);
         this.scene.add(this._car);
         this.scene.add(new AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
@@ -94,15 +110,15 @@ export class RenderService {
 
     public onResize(): void {
         this.camera.aspect = this.getAspectRatio();
-        this.camera.updateProjectionMatrix();
+        //this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
     public handleKeyDown(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyDown(event, this.car);
+        this.evenHandeler.handleKeyDown(event, this.car);
     }
 
     public handleKeyUp(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyUp(event, this.car);
+        this.evenHandeler.handleKeyUp(event, this.car);
     }
 }
