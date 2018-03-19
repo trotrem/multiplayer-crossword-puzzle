@@ -18,7 +18,6 @@ const CARS_MAX: number = 4;
 export class RenderService {
     private camera: PerspectiveCamera;
     private container: HTMLDivElement;
-    // private cars: Car[];
     private renderer: WebGLRenderer;
     private scene: THREE.Scene;
     private stats: Stats;
@@ -94,9 +93,9 @@ export class RenderService {
         this.container.appendChild(this.renderer.domElement);
         this.render(cars);
     }
-    public insertCars(line: THREE.Line3, cars: Car[]): Car[] {
+    public insertCars(line: THREE.Line3, cars: Car[]): void {
 
-        return this.printCarService.insertCars(line, this.scene, cars);
+        this.printCarService.insertCars(line, this.scene, cars);
 
       }
 

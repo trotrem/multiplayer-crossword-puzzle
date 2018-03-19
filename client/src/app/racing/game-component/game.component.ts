@@ -29,9 +29,6 @@ export class GameComponent implements AfterViewInit {
         this.userService = new UserService(this.http);
         this.renderService = new RenderService();
         this.cars = new Array<Car>(CARS_MAX);
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this.cars.push(new Car);
-        }
         this.chosenCarIndex = 0;
 
     }
@@ -52,13 +49,9 @@ export class GameComponent implements AfterViewInit {
     }
 
     public ngAfterViewInit(): void {
-        // this.renderService.initialize(this.containerRef.nativeElement,);
-        // console.log(this.cars);
-        //  this.renderService.setCars(this.cars);
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
               this.getTrack(name);
-            //   console.log(this.renderService.getCars());
             }
 
     }
@@ -66,14 +59,12 @@ export class GameComponent implements AfterViewInit {
         this.userService.getTrackServiceByName(name)
           .subscribe((res: Track[]) => {
             const track: Track = res[0];
-            // console.log(track);
             this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, this.cars);
           });
 
         }
 
     public getCars(): Car[] {
-        // return this.renderService.getCars();
         return this.cars;
     }
 }
