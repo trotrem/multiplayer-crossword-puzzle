@@ -29,6 +29,9 @@ export class RenderService {
         this.evenHandeler = new EventHandlerRenderService();
         this.printCarService = new PrintCarsService();
     }
+    public getSene(): THREE.Scene {
+        return this.scene;
+    }
 
     public async initialize(container: HTMLDivElement, line: THREE.Line3, cars: Car[]): Promise<void>  {
         if (container) {
@@ -36,7 +39,7 @@ export class RenderService {
         }
 
         await this.createScene(cars);
-        this.insertCars(line, cars);
+        this.printCarService.insertCars(line, this.scene, cars);
         this.initStats();
         this.startRenderingLoop(cars);
         console.warn(this.scene);
@@ -93,11 +96,6 @@ export class RenderService {
         this.container.appendChild(this.renderer.domElement);
         this.render(cars);
     }
-    public insertCars(line: THREE.Line3, cars: Car[]): void {
-
-        this.printCarService.insertCars(line, this.scene, cars);
-
-      }
 
     private render(cars: Car[]): void {
         requestAnimationFrame(() => this.render(cars));

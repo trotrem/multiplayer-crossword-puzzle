@@ -1,14 +1,13 @@
 import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 import { PrintCarsService } from "./print-cars.service";
-import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 import { Car } from "../car/car";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("PrintCarsService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PrintCarsService, PositionsDefinerService]
+      providers: [PrintCarsService]
     });
   });
 
