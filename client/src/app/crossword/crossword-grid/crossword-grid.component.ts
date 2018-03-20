@@ -9,12 +9,6 @@ import { GridEventService } from "../grid-event.service";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
-const BACKSPACE: number = 8;
-const DELETE: number = 46;
-const UPPER_A: number = 65;
-const UPPER_Z: number = 90;
-const LOWER_A: number = 97;
-const LOWER_Z: number = 122;
 
 enum TipMode {
   Definitions,
@@ -55,36 +49,36 @@ export class CrosswordGridComponent implements OnInit {
   public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
-    // service grid ??
+    this.words = new Array<WordDescription>();
+    //  this.setDifficulty();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
         this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
       }
     }
-    this.words = new Array<WordDescription>();
-    this.setDifficulty();
     this.gridEventService = new GridEventService(this.words, this.http, this.router);
+
   }
-  // dans grid.service
+  /*// dans grid.service
   private setDifficulty(): void {
     this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
       location.pathname === "/crossword/medium" ? "medium" :
         "hard";
   }
-
+*/
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.gridEventService.setDifficulty(params["Difficulty"]);
       this._difficulty = params["Difficulty"];
-      this.gridEventService.setNbPlayers( params["nbPlayers"]);
+      this.gridEventService.setNbPlayers(params["nbPlayers"]);
       this.nbPlayers = params["nbPlayers"];
       this.fetchGrid();
     });
   }
 
   // dans grid.service
-  public fetchGrid(): void {
+  private fetchGrid(): void {
     this.communicationService.fetchGrid(this._difficulty)
       .subscribe((data) => {
         const gridData: IGridData = data as IGridData;
@@ -92,18 +86,22 @@ export class CrosswordGridComponent implements OnInit {
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });
-        gridData.wordInfos.forEach((word, index) => {
-          const cells: Cell[] = new Array<Cell>();
-          for (let i: number = 0; i < word.length; i++) {
-            if (word.direction === Direction.Horizontal) {
-              cells.push(this.cells[word.y][word.x + i]);
-            } else if (word.direction === Direction.Vertical) {
-              cells.push(this.cells[word.y + i][word.x]);
-            }
-          }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
-        });
+        this.fillWords(gridData);
       });
+  }
+
+  private fillWords(gridData: IGridData): void {
+    gridData.wordInfos.forEach((word, index) => {
+      const cells: Cell[] = new Array<Cell>();
+      for (let i: number = 0; i < word.length; i++) {
+        if (word.direction === Direction.Horizontal) {
+          cells.push(this.cells[word.y][word.x + i]);
+        } else if (word.direction === Direction.Vertical) {
+          cells.push(this.cells[word.y + i][word.x]);
+        }
+      }
+      this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
+    });
   }
   // grid-mode.service
   public toggleTipMode(): void {
@@ -128,7 +126,7 @@ export class CrosswordGridComponent implements OnInit {
 
   // service grid-mode
   private fetchCheatModeWords(): void {
-    this.communicationService.fetchCheatModeWords(this.gridEventService.id)
+    this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
       .subscribe((data: string[]) => {
         const words: string[] = data as string[];
         let i: number = 0;

@@ -15,11 +15,11 @@ const LOWER_Z: number = 122;
 
 @Injectable()
 export class GridEventService {
-  public selectedWord: WordDescription = null;
+  private selectedWord: WordDescription = null;
   private words: WordDescription[];
-  public id: number;
+  private id: number;
   private communicationService: CommunicationService;
-  public nbPlayers: string;
+  private nbPlayers: string;
   private _difficulty: Difficulty = "easy";
 
   public constructor(words: WordDescription[], private http: HttpClient, private router: Router) {
@@ -93,7 +93,7 @@ export class GridEventService {
     }
   }
 
-  public write(char: string, word: WordDescription): void {
+  private write(char: string, word: WordDescription): void {
     for (const cell of word.cells) {
       if (cell.content === "") {
         cell.content = char;
@@ -105,7 +105,7 @@ export class GridEventService {
     }
   }
 
-  public erase(word: WordDescription): void {
+  private erase(word: WordDescription): void {
     let i: number;
     for (i = word.cells.length - 1; i >= 0; i--) {
       if (word.cells[i].content !== "" && !word.cells[i].letterFound) {
@@ -148,10 +148,10 @@ export class GridEventService {
         return;
       }
     }
-    this.openDialogEndGame();
+    this.openEndGame();
   }
 
-  private openDialogEndGame(): void {
+  private openEndGame(): void {
     this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 
@@ -169,5 +169,9 @@ export class GridEventService {
 
   public setId(id: number): void {
     this.id = id;
+  }
+
+  public getId(): number {
+    return this.id;
   }
 }

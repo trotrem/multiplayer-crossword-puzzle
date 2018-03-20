@@ -16,22 +16,12 @@ const LOWER_Z: number = 122;
 
 @Injectable()
 export class GridService {
-  private communicationService: CommunicationService;
-  private id: number;
-  public cells: Cell[][];
   private _difficulty: Difficulty = "easy";
   private words: WordDescription[];
 
-  public constructor(communicationService: CommunicationService, cells: Cell[][], words: WordDescription[]) {
-    this.communicationService = communicationService;
-    this.cells = cells;
-    for (let i: number = 0; i < GRID_HEIGHT; i++) {
-      this.cells[i] = new Array<Cell>();
-      for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false , letterFound: false});
-      }
-    }
-    this.words = words;
+  public constructor( words: WordDescription[]) {
+    this.words = new Array<WordDescription>();
+
   }
 
   private setDifficulty(): Difficulty {
@@ -40,34 +30,36 @@ export class GridService {
         "hard";
   }
 
-  public fetchGrid(): void {
-    this.communicationService.fetchGrid(this._difficulty)
-      .subscribe((data) => {
-        const gridData: IGridData = data as IGridData;
-        this.id = gridData.id;
-        gridData.blackCells.forEach((cell) => {
-          this.cells[cell.y][cell.x].isBlack = true;
-        });
-        gridData.wordInfos.forEach((word, index) => {
-          const cells: Cell[] = new Array<Cell>();
-          for (let i: number = 0; i < word.length; i++) {
-            if (word.direction === Direction.Horizontal) {
-              cells.push(this.cells[word.y][word.x + i]);
-            } else if (word.direction === Direction.Vertical) {
-              cells.push(this.cells[word.y + i][word.x]);
-            }
-          }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition , found: false});
-        });
-      });
-  }
+  public fillWords(gridData: IGridData, cells: Cell[][]): WordDescription[] {
+    gridData.wordInfos.forEach((word, index) => {
+      const cellsWord: Cell[] = new Array<Cell>();
+      for (let i: number = 0; i < word.length; i++) {
+        if (word.direction === Direction.Horizontal) {
+          cellsWord.push(cells[word.y][word.x + i]);
+        } else if (word.direction === Direction.Vertical) {
+          cellsWord.push(cells[word.y + i][word.x]);
+        }
+      }
+      this.words.push({ id: index, direction: word.direction, cells: cellsWord, definition: word.definition, found: false });
+    });
 
-  public get Cells(): Cell[][] {
-    return this.cells;
-  }
-
-  public get Words(): WordDescription[] {
     return this.words;
+  }
+
+  public getWords(): WordDescription[] {
+    return this.words;
+  }
+
+  public createEmptyGrid(): Cell[][] {
+    const cells: Cell[][] = new Array<Array<Cell>>();
+    for (let i: number = 0; i < GRID_HEIGHT; i++) {
+      cells[i] = new Array<Cell>();
+      for (let j: number = 0; j < GRID_WIDTH; j++) {
+        cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
+      }
+    }
+
+    return cells;
   }
 
 }
