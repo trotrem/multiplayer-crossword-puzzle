@@ -28,7 +28,7 @@ export class GridService {
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
-        this.cells[i].push({ content: "", selected: false, isBlack: false });
+        this.cells[i].push({ content: "", selected: false, isBlack: false , letterFound: false});
       }
     }
     this.words = words;
@@ -57,7 +57,7 @@ export class GridService {
               cells.push(this.cells[word.y + i][word.x]);
             }
           }
-          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition });
+          this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition , found: false});
         });
       });
   }

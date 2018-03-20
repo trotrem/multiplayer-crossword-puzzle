@@ -14,6 +14,7 @@ export class GridModeService {
   private TipMode: typeof TipMode = TipMode;
   public tipMode: TipMode = TipMode.Definitions;
   private words: WordDescription[];
+  private id: number;
 
   public constructor(communicationService: CommunicationService, words: WordDescription[] ) {
     this.communicationService = communicationService;
