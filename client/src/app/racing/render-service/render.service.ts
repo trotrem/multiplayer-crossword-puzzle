@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
-import { PerspectiveCamera, WebGLRenderer, Scene, AmbientLight, Vector3 } from "three";
+import {WebGLRenderer, Scene, AmbientLight, Vector3 } from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
-
+import {OrthographicCamera} from "../camera/topView-camera";
+import {PerspectiveCamera} from "../camera/rearView-camera";
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
@@ -14,7 +15,8 @@ const AMBIENT_LIGHT_OPACITY: number = 0.5;
 
 @Injectable()
 export class RenderService {
-    private camera: PerspectiveCamera;
+    private cameras: [PerspectiveCamera, OrthographicCamera] = [null,null];
+    // private camera: PerspectiveCamera;
     private container: HTMLDivElement;
     private _car: Car;
     private renderer: WebGLRenderer;
@@ -50,39 +52,25 @@ export class RenderService {
     }
 
     private update(): void {
-        // const relativeCameraOffset: Vector3 = new Vector3(0, 25, 0);
-
-        // const cameraOffset: Vector3 = relativeCameraOffset.applyMatrix4(this._car.matrixWorld);
-
-        //this.camera.position.x = this._car.position.x;
-        //this.camera.position.y = this._car.position.y;
-        //this.camera.position.z = this.car.position.z;
-        //this.camera.updateMatrix();
-        //this.camera.updateProjectionMatrix();
-        
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this._car.update(timeSinceLastFrame);
         this.lastDate = Date.now();
-
-        this.camera.position.copy(this._car.position);
-        this.camera.lookAt(this._car.position);
-
+        /*this.camera.position.x = this._car.position.x;
+        this.camera.position.y = this._car.position.y;
+        this.camera.position.z = this.camera.position.z;
+        this.camera.lookAt(this._car.position);*/
+        /*const position: Vector3 = this._car.getWorldPosition();
+        this.camera.position.copy(position);
+        this.camera.lookAt(position);*/
     }
 
     private async createScene(): Promise<void> {
         this.scene = new Scene();
-
-        this.camera = new PerspectiveCamera(
-            FIELD_OF_VIEW,
-            this.getAspectRatio(),
-            NEAR_CLIPPING_PLANE,
-            FAR_CLIPPING_PLANE
-        );
+        this.cameras[1] = new OrthographicCamera();
 
         await this._car.init();
-        this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Y);
-        //
-        this.camera.lookAt(this.scene.position);
+        this.cameras[1].position.set(0, 0, INITIAL_CAMERA_POSITION_Y);
+        this.cameras[1].lookAt(this._car.position);
         this.scene.add(this._car);
         this.scene.add(new AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
@@ -104,13 +92,21 @@ export class RenderService {
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update();
+        /*const relativeCameraOffset = new Vector3(0, INITIAL_CAMERA_POSITION_Y, 0);
+
+        const cameraOffset = relativeCameraOffset.applyMatrix4(this._car.matrixWorld);
+
+        this.camera.position.x = cameraOffset.x;
+        this.camera.position.y = cameraOffset.y;
+        this.camera.position.z = cameraOffset.z;
+        this.camera.lookAt(this._car.position);*/
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
     }
 
     public onResize(): void {
         this.camera.aspect = this.getAspectRatio();
-        //this.camera.updateProjectionMatrix();
+        this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
