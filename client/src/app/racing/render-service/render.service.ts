@@ -14,7 +14,10 @@ const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-const LIGHT_RADIUS: number = 0.25;
+const WIDTH_SPHERE: number = 6;
+const WIDTH_PLANE: number = 16;
+const WIDTH_POINT: number = 0.5;
+
 @Injectable()
 export class RenderService {
     private camera: THREE.PerspectiveCamera;
@@ -119,34 +122,36 @@ export class RenderService {
        this.evenHandeler.handleKeyUp(event, cars[index]);
     }
 
+    private setPointMeshPosition(point: THREE.Vector3, sphere: THREE.SphereGeometry): THREE.Mesh {
+        const pointMesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
+        pointMesh.position.copy(point);
+        pointMesh.position.setZ(0);
+
+        return pointMesh;
+    }
+
+    private setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3 ): THREE.Mesh {
+        const plane: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 0);
+        const floor: THREE.Mesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
+        floor.position.copy(point);
+        floor.scale.x = vector.length();
+        floor.scale.y = WIDTH_PLANE;
+        floor.rotateZ(Math.atan2(vector.y, vector.x));
+
+        return floor;
+    }
+
     public drawTrack(points: THREE.Vector3[], car: Car): void {
-/* tslint:disable:no-magic-numbers */
         for (let i: number = 1; i < points.length; i++) {
           const point1: THREE.Vector3 = points[i - 1];
           const point2: THREE.Vector3 = points[i];
-          const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(6, 10, 0);
-          const point1mesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-          point1mesh.position.copy(point1);
-          point1mesh.position.setZ(0);
-          this.scene.add(point1mesh);
+          const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(WIDTH_SPHERE);
+          this.scene.add(this.setPointMeshPosition(point1, sphere));
+          this.scene.add(this.setPointMeshPosition(point2, sphere));
 
-          const point2mesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-          point2mesh.position.copy(point2);
-          point2mesh.position.setZ(0);
-          this.scene.add(point2mesh);
-
-          const vector12: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
-          const point3: THREE.Vector3 = new THREE.Vector3().copy(vector12).multiplyScalar(0.5).add(point1);
-
-          const plane: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 0);
-
-          const floor: THREE.Mesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-          floor.position.copy(point3);
-
-          floor.scale.x = vector12.length();
-          floor.scale.y = 16;
-          floor.rotateZ(Math.atan2(vector12.y, vector12.x));
-          this.scene.add(floor);
+          const vector1: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
+          const point3: THREE.Vector3 = new THREE.Vector3().copy(vector1).multiplyScalar(WIDTH_POINT).add(point1);
+          this.scene.add(this.setPlaneMesh(vector1, point3));
         }
       }
 }
