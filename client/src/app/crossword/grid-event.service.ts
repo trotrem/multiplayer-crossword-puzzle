@@ -22,9 +22,9 @@ export class GridEventService {
   private nbPlayers: string;
   private _difficulty: Difficulty = "easy";
 
-  public constructor( private http: HttpClient, private router: Router) {
+  public constructor(words: WordDescription[], private http: HttpClient, private router: Router) {
     this.communicationService = new CommunicationService(this.http);
-    this.words = new Array<WordDescription>();
+    this.words = words;
   }
 
   public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
