@@ -43,8 +43,7 @@ export class PrintTrackService {
   }
   public createScene(): void {
     this.camera = new THREE.PerspectiveCamera();
-    this.camera.position.set(0, 0, CAMERA_DISTANCE); // pour changer à la vue initiale on la remet à
-    //  this.camera.position.set(0, 0, CAMERA_DISTANCE);
+    this.camera.position.set(0, 0, CAMERA_DISTANCE);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
@@ -60,50 +59,14 @@ export class PrintTrackService {
   public drawTrack(points: THREE.Vector3[]): void {
 
     for (let i: number = 1; i < points.length; i++) {
-      /*const lineGeometry: THREE.Geometry = new THREE.Geometry;
+      const lineGeometry: THREE.Geometry = new THREE.Geometry;
       let material: THREE.LineBasicMaterial = LINE_MATERIAL;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
       if (i === 1) {
         material = FIRST_LINE_MATERIAL;
-      }*/
-      // this.scene.add(new THREE.Line(lineGeometry, material));
-      const point1: THREE.Vector3 = points[i - 1];
-      const point2: THREE.Vector3 = points[i];
-
-      const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(6,10,10);
-
-      const point1mesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-      point1mesh.position.copy(point1);
-      this.scene.add(point1mesh);
-
-      const point2mesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-      point2mesh.position.copy(point2);
-      this.scene.add(point2mesh);
-
-      const vector12: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
-      const point3: THREE.Vector3 = new THREE.Vector3().copy(vector12).multiplyScalar(0.5).add(point1);
-
-      const plane: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 1);
-
-      const floor: THREE.Mesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: 0x7B8284 }));
-      floor.position.copy(point3);
-      // floor.position. = 31;
-      floor.scale.x = vector12.length();
-      floor.scale.y = 16;
-      // floor.translateZ(-7);
-      floor.rotateZ(Math.atan2(vector12.y, vector12.x));
-      this.scene.add(floor);
-      /*for (let i: number = 0; i < points.length; i += 4) {
-        const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
-        const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
-        const lineGeometry: THREE.Geometry = new THREE.Geometry;
-        for (let i: number = 0; i < curvedPoints.length; i++) {
-         s lineGeometry.vertices.push(curvedPoints[i]);
-        }
-        const line: THREE.Line = new THREE.Line(lineGeometry, LINE_MATERIAL);
-        this.scene.add(line);
-      }*/
+      }
+      this.scene.add(new THREE.Line(lineGeometry, material));
     }
   }
 

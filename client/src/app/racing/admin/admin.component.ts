@@ -37,8 +37,20 @@ export class AdminComponent implements OnInit {
   public getSelectedTrack(): Track {
     return this.selectedTrack;
   }
+  public getTracksList(): Track[] {
+    return this.tracks;
+  }
   public getisSelected(): boolean {
     return this.isSelected ;
+  }
+  public getRouter(): Router {
+    return this.router;
+  }
+  public getHttp(): HttpClient {
+    return this.http;
+  }
+  public getAdminService(): AdminService {
+    return this.adminService;
   }
 
   public ngOnInit(): void {
@@ -58,12 +70,16 @@ export class AdminComponent implements OnInit {
     console.warn(this.selectedTrack);
   }
 
-  public editTrack(): void {
+  public editTrack(): Track {
     this.router.navigateByUrl("/editor/" + this.selectedTrack.name);
+
+    return this.selectedTrack;
   }
 
-  public deleteTrack(): void {
+  public deleteTrack(): Track {
     this.adminService.deleteTrack(this.selectedTrack);
+
+    return this.selectedTrack;
   }
 
   public notReadyToModify(): boolean {
