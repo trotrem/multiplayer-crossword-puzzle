@@ -32,6 +32,7 @@ export module GenerateWords {
     if (index === grid.words.length) {
       return grid;
     }
+    console.log(grid.words.length - index);
     let words: WordDictionaryData[] = await wordRetrieve(GridUtils.getText(grid.words[index], grid));
     words = filterRepeatedWords(words, grid);
     for ({} of words) {

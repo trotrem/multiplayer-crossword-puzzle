@@ -59,9 +59,9 @@ namespace Route {
       const newGrid: Document = new crosswordDocument({ grid, difficulty });
       newGrid
         .save()
-        .then((item: Document) => {
+        .then(async (item: Document) => {
           console.warn("Created and saved new grid");
-          if (overwriteId !== null && this.shouldDeleteGrid(difficulty)) {
+          if (overwriteId !== null && await this.shouldDeleteGrid(difficulty)) {
             this.deleteGrid(difficulty, overwriteId);
           }
         })
