@@ -22,7 +22,7 @@ export class GridLayoutHandler {
 
         return {x, y};
     }
-
+    // TODO : appeller randomIntFromInterval avec deux fois le mm nombre 
     private static generateBlackSquares(grid: IGrid): void {
         const blackSquares: IPoint[] = new Array<IPoint>();
 
@@ -35,7 +35,7 @@ export class GridLayoutHandler {
 
         grid.blackCells = blackSquares;
     }
-
+    //TODO : duplication de code 
     private static notBlackSquares(currentBlack: IPoint): IPoint[] {
         const notBlackSquares: IPoint[] = [];
         notBlackSquares.push({x: currentBlack.x - SPACEBTWCELLS, y: currentBlack.y});
@@ -46,6 +46,7 @@ export class GridLayoutHandler {
         return notBlackSquares;
     }
 
+    //TODO: ca sert a quoi d'initilisaser les blacksCells dans cette fonction
     private static makeEmptyGrid(grid: IGrid): void {
         grid.cells = new Array<Array<ICell>>();
         grid.blackCells = new Array<ICell>();

@@ -36,11 +36,7 @@ export class WordsPositionsHelper {
     }
   }
 
-  private static visitPosition(
-    position: IPoint,
-    direction: Direction,
-    grid: IGrid
-  ): ICell {
+  private static visitPosition(position: IPoint, direction: Direction, grid: IGrid): ICell {
     const cell: ICell = grid.cells[position.x][position.y];
     if (!cell.isBlack) {
       cell.x = position.x;
@@ -52,11 +48,7 @@ export class WordsPositionsHelper {
     return null;
   }
 
-  private static pushWord(
-    direction: Direction,
-    grid: IGrid,
-    cells: ICell[]
-  ): void {
+  private static pushWord(direction: Direction, grid: IGrid, cells: ICell[]): void {
     if (cells.length > MINIMUM_WORD_LENGTH) {
       grid.words.push({ id: grid.words.length, direction, gridSquares: cells });
       for (const cell of cells) {
@@ -64,7 +56,7 @@ export class WordsPositionsHelper {
       }
     }
   }
-
+  // TODO: nom de fonction pas clair
   private static fillUnusedCells(grid: IGrid): void {
     for (const row of grid.cells) {
       for (const cell of row) {
@@ -74,7 +66,7 @@ export class WordsPositionsHelper {
       }
     }
   }
-
+// TODO: directement comparer word1.gridsquares.lenght sans creer de variable tampon
   private static sortWordsByLength(grid: IGrid): void {
     grid.words = grid.words.sort(
       (word1: IWordContainer, word2: IWordContainer) => {

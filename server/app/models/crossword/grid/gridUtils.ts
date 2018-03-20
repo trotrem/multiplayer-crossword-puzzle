@@ -8,12 +8,8 @@ export class GridUtils {
       .map((pos: IPoint) => grid.cells[pos.x][pos.y].letter)
       .join("");
   }
-
-  public static trySetData(
-    data: WordDictionaryData,
-    word: IWordContainer,
-    grid: IGrid
-  ): boolean {
+// TODO: fonction un peu superflu : tu peut mettre word.data = data dans settext()
+  public static trySetData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): boolean {
     if (this.trySetText(data.word, word, grid)) {
       word.data = data;
 
@@ -22,27 +18,19 @@ export class GridUtils {
 
     return false;
   }
-
-  public static setData(
-    data: WordDictionaryData,
-    word: IWordContainer,
-    grid: IGrid
-  ): void {
+  // TODO : est ce que tu l'appele quelque part ?
+  public static setData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): void {
     word.data = data;
     this.setText(data.word, word, grid);
   }
 
-  private static trySetText(
-    text: string,
-    word: IWordContainer,
-    grid: IGrid
-  ): boolean {
+  private static trySetText(text: string, word: IWordContainer, grid: IGrid): boolean {
     for (let i: number = 0; i < word.gridSquares.length; i++) {
       if (
         grid.cells[word.gridSquares[i].x][word.gridSquares[i].y].letter !==
-          "?" &&
+        "?" &&
         grid.cells[word.gridSquares[i].x][word.gridSquares[i].y].letter !==
-          text[i]
+        text[i]
       ) {
         return false;
       }
@@ -52,11 +40,7 @@ export class GridUtils {
     return true;
   }
 
-  private static setText(
-    text: string,
-    word: IWordContainer,
-    grid: IGrid
-  ): void {
+  private static setText(text: string, word: IWordContainer, grid: IGrid): void {
     for (let i: number = 0; i < word.gridSquares.length; i++) {
       grid.cells[word.gridSquares[i].x][word.gridSquares[i].y].letter = text[i];
     }

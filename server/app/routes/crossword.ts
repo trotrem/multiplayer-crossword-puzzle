@@ -41,6 +41,7 @@ namespace Route {
     public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
       res.send(GridCache.Instance.getWords(req.params.gridId));
     }
+
     public validateWord(req: Request, res: Response, next: NextFunction): void {
       const words: string[] = GridCache.Instance.getWords(req.body.gridId);
       if (words.length > req.body.wordIndex && words[req.body.wordIndex] === req.body.word) {

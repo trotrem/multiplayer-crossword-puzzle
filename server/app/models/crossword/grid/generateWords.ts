@@ -20,7 +20,7 @@ export module GenerateWords {
 
     return words;
   };
-
+  // TODO : console.log
   // exported for testing purposes only, should be called through generateGrid
   export const addWord: (index: number, grid: IGrid, difficulty: Difficulty) =>
   Promise<IGrid> = async (index: number, grid: IGrid, difficulty: Difficulty) => {
@@ -32,6 +32,7 @@ export module GenerateWords {
       GridUtils.getText(grid.words[index], grid), difficulty);
     words = filterRepeatedWords(words, grid);
     for ({} of words) {
+      //TODO: faut pas 
       if (GridUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
         const nextStep: IGrid = await addWord(index + 1, grid, difficulty);
         if (nextStep !== null) {
