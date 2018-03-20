@@ -1,5 +1,4 @@
-// TODO: fix
-// tslint:disable
+// tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { GridLayoutHandler, MINBLACK, MAXBLACK } from "./gridLayoutHandler";
 import { IGrid } from "./dataStructures";
@@ -15,7 +14,7 @@ describe("makeGrid", () => {
         expect(grid.cells.length).equals(10);
         expect(grid.cells[0].length).equals(10);
     });
-    
+
     it("Number of black squares should be within the MinMax interval", () => {
         expect(grid.blackCells.length).gte(MINBLACK);
         expect(grid.blackCells.length).lte(MAXBLACK);

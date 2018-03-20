@@ -8,19 +8,23 @@ import { Utils } from "../../..//utils";
 
 export module GenerateWords {
 
-  export const generateGrid: () => Promise<IGrid> = async () => {
-    const go: boolean = true;
-    while (go) {
-      const grid: IGrid = { cells: [], words: [], blackCells: [] };
-      GridLayoutHandler.makeGrid(grid);
-      WordsPositionsHelper.createListOfWord(grid);
-      const result: IGrid = await addWord(0, grid);
-      if (result !== null) {
-        return result;
-      }
+  // exported for testing purposes only, should be called through generateGrid
+  export const filterRepeatedWords: (words: WordDictionaryData[], grid: IGrid) => WordDictionaryData[] =
+  (words: WordDictionaryData[], grid: IGrid) => {
+    if (words.length > 0) {
+      words = words.filter((wordInfo: WordDictionaryData) => {
+        return grid.words.map((w: IWordContainer) => GridUtils.getText(w, grid)).indexOf(wordInfo.word) === -1;
+      });
     }
 
-    return null;
+    return words;
+  };
+
+  const wordRetrieve: (word: string) => Promise<WordDictionaryData[]> = async (word: string) => {
+    let words: WordDictionaryData[];
+    words = await WordRetriever.instance.getWordsWithDefinitions(word);
+
+    return words;
   };
 
   // exported for testing purposes only, should be called through generateGrid
@@ -49,25 +53,18 @@ export module GenerateWords {
     return null;
   };
 
-  const filterRepeatedWords: (words: WordDictionaryData[], grid: IGrid) => WordDictionaryData[] =
-  (words: WordDictionaryData[], grid: IGrid) => {
-    if (words.length > 0) {
-      words = words.filter((wordInfo: WordDictionaryData) => {
-        return (
-          grid.words
-            .map((w: IWordContainer) => GridUtils.getText(w, grid))
-            .indexOf(wordInfo.word) === -1
-        );
-      });
+  export const generateGrid: () => Promise<IGrid> = async () => {
+    const go: boolean = true;
+    while (go) {
+      const grid: IGrid = { cells: [], words: [], blackCells: [] };
+      GridLayoutHandler.makeGrid(grid);
+      WordsPositionsHelper.createListOfWord(grid);
+      const result: IGrid = await addWord(0, grid);
+      if (result !== null) {
+        return result;
+      }
     }
 
-    return words;
-  };
-
-  const wordRetrieve: (word: string) => Promise<WordDictionaryData[]> = async (word: string) => {
-    let words: WordDictionaryData[];
-    words = await WordRetriever.instance.getWordsWithDefinitions(word);
-
-    return words;
+    return null;
   };
 }
