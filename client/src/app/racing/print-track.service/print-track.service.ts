@@ -60,15 +60,15 @@ export class PrintTrackService {
   public drawTrack(points: THREE.Vector3[]): void {
 
     for (let i: number = 1; i < points.length; i++) {
-      const lineGeometry: THREE.Geometry = new THREE.Geometry;
+      /*const lineGeometry: THREE.Geometry = new THREE.Geometry;
       let material: THREE.LineBasicMaterial = LINE_MATERIAL;
       lineGeometry.vertices.push(points[i - 1]);
       lineGeometry.vertices.push(points[i]);
       if (i === 1) {
         material = FIRST_LINE_MATERIAL;
-      }
-      this.scene.add(new THREE.Line(lineGeometry, material));
-      /*const point1: THREE.Vector3 = points[i - 1];
+      }*/
+      // this.scene.add(new THREE.Line(lineGeometry, material));
+      const point1: THREE.Vector3 = points[i - 1];
       const point2: THREE.Vector3 = points[i];
 
       const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(6,10,10);
@@ -91,16 +91,15 @@ export class PrintTrackService {
       // floor.position. = 31;
       floor.scale.x = vector12.length();
       floor.scale.y = 16;
-      floor.translateZ(-7);
-      floor.rotateY(90);
+      // floor.translateZ(-7);
       floor.rotateZ(Math.atan2(vector12.y, vector12.x));
-      this.scene.add(floor);*/
+      this.scene.add(floor);
       /*for (let i: number = 0; i < points.length; i += 4) {
         const curve: THREE.CubicBezierCurve3 = new THREE.CubicBezierCurve3(points[i], points[i + 1], points[i + 2], points[i + 3]);
         const curvedPoints: THREE.Vector3[] = curve.getPoints(50);
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
         for (let i: number = 0; i < curvedPoints.length; i++) {
-          lineGeometry.vertices.push(curvedPoints[i]);
+         s lineGeometry.vertices.push(curvedPoints[i]);
         }
         const line: THREE.Line = new THREE.Line(lineGeometry, LINE_MATERIAL);
         this.scene.add(line);

@@ -7,6 +7,7 @@ import { UserService } from "../user.service/user.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
 import { Track } from "./../track-savor/track";
+import * as THREE from "three";
 const CARS_MAX: number = 4;
 
 @Component({
@@ -60,6 +61,7 @@ export class GameComponent implements AfterViewInit {
           .subscribe((res: Track[]) => {
             const track: Track = res[0];
             this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, this.cars);
+            this.renderService.drawTrack(track.points, this.cars[this.chosenCarIndex]);
           });
 
         }
