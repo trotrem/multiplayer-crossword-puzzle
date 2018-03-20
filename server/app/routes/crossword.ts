@@ -38,21 +38,17 @@ namespace Route {
       );
     }
 
+    public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
+      res.send(GridCache.Instance.getWords(req.params.gridId));
+    }
     public validateWord(req: Request, res: Response, next: NextFunction): void {
       const words: string[] = GridCache.Instance.getWords(req.body.gridId);
-      if (
-        words.length > req.body.wordIndex &&
-        JSON.stringify(words[0] === req.body.word)
-      ) {
+      if (words.length > req.body.wordIndex && words[req.body.wordIndex] === req.body.word) {
         GridCache.Instance.validateWord(req.body.gridId, req.body.wordIndex);
         res.send(true);
       } else {
         res.send(false);
       }
-    }
-
-    public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
-      res.send(GridCache.Instance.getWords(req.params.gridId));
     }
 
     private saveGrid(grid: IGrid, difficulty: Difficulty, overwriteId: number): void {

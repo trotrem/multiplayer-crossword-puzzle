@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { AdminService } from "./../admin.service/admin.service";
-import { Track } from "../track-savor/track";
+// import { AdminService } from "./../admin.service/admin.service";
+import { Track } from "../track";
 import { Router } from "@angular/router";
+import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 
 @Component({
   selector: "app-admin",
@@ -11,7 +12,7 @@ import { Router } from "@angular/router";
 })
 export class AdminComponent implements OnInit {
 
-  private adminService: AdminService;
+  private communicationService: CommunicationRacingService;
 
   private tracks: Track[];
 
@@ -20,9 +21,8 @@ export class AdminComponent implements OnInit {
   private isSelected: boolean;
 
   public constructor(private http: HttpClient, private router: Router) {
-    this.adminService = new AdminService(this.http);
+    this.communicationService = new CommunicationRacingService(this.http);
     this.tracks = new Array<Track>();
-    this.selectedTrack = new Track();
     this.isSelected = false;
   }
   public setTracks(tracks: Track[]): void {
@@ -31,7 +31,7 @@ export class AdminComponent implements OnInit {
   public setSelectedTrack(track: Track): void {
     this.selectedTrack = track;
   }
-  public setisSelected(bool: boolean): void {
+  public setIsSelected(bool: boolean): void {
     this.isSelected = bool;
   }
   public getSelectedTrack(): Track {
@@ -46,7 +46,7 @@ export class AdminComponent implements OnInit {
   }
 
   private getTracks(): void {
-    this.adminService.getTracksService()
+    this.communicationService.getTracks()
       .subscribe((res: Array<Track>) => {
         this.tracks = res;
       });
@@ -63,7 +63,7 @@ export class AdminComponent implements OnInit {
   }
 
   public deleteTrack(): void {
-    this.adminService.deleteTrack(this.selectedTrack);
+    this.communicationService.deleteTrack(this.selectedTrack);
   }
 
   public notReadyToModify(): boolean {

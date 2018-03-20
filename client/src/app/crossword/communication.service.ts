@@ -18,15 +18,15 @@ export class CommunicationService {
 
   }
 
-  public validate(parameters: IWordValidationParameters): void {
+  public validate(parameters: IWordValidationParameters): Observable<boolean> {
     const headers: HttpHeaders = new HttpHeaders()
       .set("Authorization", "my-auth-token")
       .set("Content-Type", "application/json");
 
-    this.http.post(
+    return this.http.post<boolean>(
       "http://localhost:3000/crossword/validate",
       JSON.stringify(parameters),
-      { headers: headers }).subscribe((data) => { });
+      { headers: headers });
   }
 
 }
