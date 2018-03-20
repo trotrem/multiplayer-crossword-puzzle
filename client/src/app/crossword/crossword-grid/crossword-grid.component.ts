@@ -31,7 +31,6 @@ export class CrosswordGridComponent implements OnInit {
   public tipMode: TipMode = TipMode.Definitions;
   private gridEventService: GridEventService;
 
-  // service grid-event
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
   private onBackgroundClick(): void {  // tslint:disable-line
@@ -60,7 +59,7 @@ export class CrosswordGridComponent implements OnInit {
     this.gridEventService = new GridEventService(this.words, this.http, this.router);
 
   }
-  /*// dans grid.service
+  /*
   private setDifficulty(): void {
     this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
       location.pathname === "/crossword/medium" ? "medium" :
@@ -77,7 +76,6 @@ export class CrosswordGridComponent implements OnInit {
     });
   }
 
-  // dans grid.service
   private fetchGrid(): void {
     this.communicationService.fetchGrid(this._difficulty)
       .subscribe((data) => {
@@ -103,7 +101,7 @@ export class CrosswordGridComponent implements OnInit {
       this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
     });
   }
-  // grid-mode.service
+
   public toggleTipMode(): void {
     if (this.horizontalWords[0].word === undefined) {
       this.fetchCheatModeWords();
@@ -124,7 +122,6 @@ export class CrosswordGridComponent implements OnInit {
     this.gridEventService.onKeyPress(event);
   }
 
-  // service grid-mode
   private fetchCheatModeWords(): void {
     this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
       .subscribe((data: string[]) => {
