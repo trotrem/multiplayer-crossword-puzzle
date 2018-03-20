@@ -15,7 +15,7 @@ export class GridLayoutHandler {
         const y: number = Utils.randomIntFromInterval(0, HEIGHT - 1);
 
         for (const black of blackSquares) {
-            if (this.notBlackSquares(black).indexOf({x, y}) !== -1 || black === {x, y}) {
+            if (this.notBlackSquares(black).find((p: IPoint) => p.x === x && p.y === y) !== undefined || (black.x === x && black.y === y)) {
                 return this.findAcceptableBlackSquare(blackSquares);
             }
         }
