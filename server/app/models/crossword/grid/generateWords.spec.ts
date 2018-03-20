@@ -21,7 +21,7 @@ describe("addWord", () => {
                             words: [], blackCells: [] };
 
         WordsPositionsHelper.createListOfWord(grid);
-        grid = await GenerateWords.addWord(0, grid);
+        grid = await GenerateWords.addWord(0, grid, "hard");
         expect(GridUtils.getText(grid.words[0], grid).indexOf("?")).equals(-1);
         expect(GridUtils.getText(grid.words[1], grid).indexOf("?")).equals(-1);
         expect(GridUtils.getText(grid.words[2], grid).indexOf("?")).equals(-1);
@@ -38,7 +38,7 @@ describe("addWord", () => {
                                         gridSquares: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}] }],
                               blackCells: [] };
 
-        const result: IGrid = await GenerateWords.addWord(0, grid);
+        const result: IGrid = await GenerateWords.addWord(0, grid, "hard");
         expect(result).equals(null);
     });
 });

@@ -1,5 +1,6 @@
 import { WordDictionaryData } from "./gridWordInformation";
 import { ExternalApiService } from "./externalApi.service";
+import { Difficulty } from "../../../../../common/communication/types";
 
 const OFFSET_FREQUENCY: number = 2; // Tag format : f:xxxx
 const NUMERICAL_VALUES: RegExp = /d/;
@@ -13,13 +14,14 @@ export class WordRetriever {
     return this._instance || (this._instance = new this());
   }
 
-  public async getWordsWithDefinitions(
-    word: string
-  ): Promise<WordDictionaryData[]> {
-    return this.createWordListWithDefinitions(
-      word,
-      (wordInfo: WordDictionaryData) => wordInfo.definitions.length > 0
-    );
+  public async getWordsWithDefinitions(word: string, difficulty: Difficulty): Promise<WordDictionaryData[]> {
+    if (difficulty === "easy") {
+      return this.getEasyWordList(word);
+    } else if (difficulty === "medium") {
+      return this.getMediumWordList(word);
+    } else {
+      return this.getHardWordList(word);
+    }
   }
 
   public async getEasyWordList(word: string): Promise<WordDictionaryData[]> {

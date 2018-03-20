@@ -15,7 +15,7 @@ namespace Route {
   @injectable()
   export class CrosswordHandler {
     public getGrid(req: Request, res: Response, next: NextFunction): void {
-      const newGrid: Promise<IGrid> = GenerateWords.generateGrid();
+      const newGrid: Promise<IGrid> = GenerateWords.generateGrid(req.params.difficulty);
       crosswordDocument.find(
         { difficulty: req.params.difficulty },
         async (err: Error, allGrids: Document[]): Promise<void> => {
