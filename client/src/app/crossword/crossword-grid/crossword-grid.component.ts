@@ -57,7 +57,7 @@ export class CrosswordGridComponent implements OnInit {
         this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
       }
     }
-    this.gridEventService = new GridEventService(this.words, this.http, this.router);
+    this.gridEventService = new GridEventService( this.http, this.router);
 
   }
   /*// dans grid.service
