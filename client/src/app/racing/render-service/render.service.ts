@@ -14,7 +14,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-
+const LIGHT_RADIUS: number = 0.25;
 @Injectable()
 export class RenderService {
     private camera: THREE.PerspectiveCamera;

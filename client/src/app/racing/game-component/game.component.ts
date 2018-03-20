@@ -62,6 +62,7 @@ export class GameComponent implements AfterViewInit {
             const track: Track = res[0];
             this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, this.cars);
             this.renderService.drawTrack(track.points, this.cars[this.chosenCarIndex]);
+
           });
 
         }
