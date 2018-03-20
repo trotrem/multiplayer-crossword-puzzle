@@ -5,7 +5,7 @@ import { IPoint } from "../../../../../common/communication/types";
 const WIDTH: number = 10;
 const HEIGHT: number = 10;
 export const MINBLACK: number = 30;
-export const MAXBLACK: number = 30;
+export const MAXBLACK: number = 34;
 const SPACEBTWCELLS: number = 2;
 
 export class GridLayoutHandler {
@@ -22,7 +22,7 @@ export class GridLayoutHandler {
 
         return {x, y};
     }
-    // TODO : appeller randomIntFromInterval avec deux fois le mm nombre 
+
     private static generateBlackSquares(grid: IGrid): void {
         const blackSquares: IPoint[] = new Array<IPoint>();
 
@@ -35,21 +35,16 @@ export class GridLayoutHandler {
 
         grid.blackCells = blackSquares;
     }
-    //TODO : duplication de code 
-    private static notBlackSquares(currentBlack: IPoint): IPoint[] {
-        const notBlackSquares: IPoint[] = [];
-        notBlackSquares.push({x: currentBlack.x - SPACEBTWCELLS, y: currentBlack.y});
-        notBlackSquares.push({x: currentBlack.x + SPACEBTWCELLS, y: currentBlack.y});
-        notBlackSquares.push({x: currentBlack.x, y: currentBlack.y - SPACEBTWCELLS});
-        notBlackSquares.push({x: currentBlack.x, y: currentBlack.y + SPACEBTWCELLS});
 
-        return notBlackSquares;
+    private static notBlackSquares(currentBlack: IPoint): IPoint[] {
+        return [{x: currentBlack.x - SPACEBTWCELLS, y: currentBlack.y},
+                {x: currentBlack.x + SPACEBTWCELLS, y: currentBlack.y},
+                {x: currentBlack.x, y: currentBlack.y - SPACEBTWCELLS},
+                {x: currentBlack.x, y: currentBlack.y + SPACEBTWCELLS}];
     }
 
-    //TODO: ca sert a quoi d'initilisaser les blacksCells dans cette fonction
     private static makeEmptyGrid(grid: IGrid): void {
         grid.cells = new Array<Array<ICell>>();
-        grid.blackCells = new Array<ICell>();
         for (let indexI: number = 0; indexI < WIDTH; indexI++) {
             const row: ICell[] = new Array<ICell>();
             for (let indexJ: number = 0; indexJ < HEIGHT; indexJ++) {

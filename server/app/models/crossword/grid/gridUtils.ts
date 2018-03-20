@@ -8,34 +8,23 @@ export class GridUtils {
       .map((pos: IPoint) => grid.cells[pos.x][pos.y].letter)
       .join("");
   }
-// TODO: fonction un peu superflu : tu peut mettre word.data = data dans settext()
-  public static trySetData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): boolean {
-    if (this.trySetText(data.word, word, grid)) {
-      word.data = data;
 
-      return true;
-    }
-
-    return false;
-  }
-  // TODO : est ce que tu l'appele quelque part ?
   public static setData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): void {
     word.data = data;
     this.setText(data.word, word, grid);
   }
 
-  private static trySetText(text: string, word: IWordContainer, grid: IGrid): boolean {
-    for (let i: number = 0; i < word.gridSquares.length; i++) {
+  public static wordFitsInGrid(newWord: string, container: IWordContainer, grid: IGrid): boolean {
+    for (let i: number = 0; i < container.gridSquares.length; i++) {
       if (
-        grid.cells[word.gridSquares[i].x][word.gridSquares[i].y].letter !==
+        grid.cells[container.gridSquares[i].x][container.gridSquares[i].y].letter !==
         "?" &&
-        grid.cells[word.gridSquares[i].x][word.gridSquares[i].y].letter !==
-        text[i]
+        grid.cells[container.gridSquares[i].x][container.gridSquares[i].y].letter !==
+        newWord[i]
       ) {
         return false;
       }
     }
-    this.setText(text, word, grid);
 
     return true;
   }

@@ -10,7 +10,7 @@ export class WordsPositionsHelper {
     this.createWordContainers(Direction.Horizontal, grid);
     this.createWordContainers(Direction.Vertical, grid);
 
-    this.fillUnusedCells(grid);
+    this.makeUnusedCellsBlack(grid);
 
     this.sortWordsByLength(grid);
   }
@@ -56,8 +56,8 @@ export class WordsPositionsHelper {
       }
     }
   }
-  // TODO: nom de fonction pas clair
-  private static fillUnusedCells(grid: IGrid): void {
+
+  private static makeUnusedCellsBlack(grid: IGrid): void {
     for (const row of grid.cells) {
       for (const cell of row) {
         if (cell.letter !== "?") {
@@ -66,13 +66,11 @@ export class WordsPositionsHelper {
       }
     }
   }
-// TODO: directement comparer word1.gridsquares.lenght sans creer de variable tampon
+
   private static sortWordsByLength(grid: IGrid): void {
     grid.words = grid.words.sort(
       (word1: IWordContainer, word2: IWordContainer) => {
-        const length1: number = word1.gridSquares.length;
-        const length2: number = word2.gridSquares.length;
-        if (length1 > length2) {
+        if (word1.gridSquares.length > word2.gridSquares.length) {
           return -1;
         } else {
           return 1;

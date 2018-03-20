@@ -10,7 +10,7 @@ import { Difficulty } from "../../../../../common/communication/types";
 export module GenerateWords {
 
   // exported for testing purposes only, should be called through generateGrid
-  export const filterRepeatedWords: (words: WordDictionaryData[], grid: IGrid) => WordDictionaryData[] =
+  export const filterRepeatedWords: ({}: WordDictionaryData[], {}: IGrid) => WordDictionaryData[] =
   (words: WordDictionaryData[], grid: IGrid) => {
     if (words.length > 0) {
       words = words.filter((wordInfo: WordDictionaryData) => {
@@ -20,20 +20,23 @@ export module GenerateWords {
 
     return words;
   };
-  // TODO : console.log
+
   // exported for testing purposes only, should be called through generateGrid
-  export const addWord: (index: number, grid: IGrid, difficulty: Difficulty) =>
+  export const addWord: ({}: number, {}: IGrid, {}: Difficulty) =>
   Promise<IGrid> = async (index: number, grid: IGrid, difficulty: Difficulty) => {
     if (index === grid.words.length) {
       return grid;
     }
-    console.log(grid.words.length - index);
     let words: WordDictionaryData[] = await WordRetriever.instance.getWordsWithDefinitions(
       GridUtils.getText(grid.words[index], grid), difficulty);
     words = filterRepeatedWords(words, grid);
     for ({} of words) {
-      //TODO: faut pas 
-      if (GridUtils.trySetData(words[Utils.randomIntFromInterval(0, words.length - 1)], grid.words[index], grid)) {
+
+      // check if word fits correctly in grid since the api sometimes sends words that don't
+      const newWordData: WordDictionaryData = words[Utils.randomIntFromInterval(0, words.length - 1)];
+      if (GridUtils.wordFitsInGrid(newWordData.word, grid.words[index], grid)) {
+        GridUtils.setData(newWordData, grid.words[index], grid);
+
         const nextStep: IGrid = await addWord(index + 1, grid, difficulty);
         if (nextStep !== null) {
           return nextStep;
@@ -45,7 +48,7 @@ export module GenerateWords {
     return null;
   };
 
-  export const generateGrid: (difficulty: Difficulty) =>
+  export const generateGrid: ({}: Difficulty) =>
   Promise<IGrid> = async (difficulty: Difficulty) => {
     const go: boolean = true;
     while (go) {
