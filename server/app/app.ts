@@ -7,6 +7,7 @@ import * as cors from "cors";
 import Types from "./types";
 import { injectable, inject } from "inversify";
 import { Routes } from "./routes";
+import * as mongoose from "mongoose";
 
 @injectable()
 export class Application {
@@ -30,6 +31,12 @@ export class Application {
         this.app.use(cookieParser());
         this.app.use(express.static(path.join(__dirname, "../client")));
         this.app.use(cors());
+
+        // mongoose configuration
+        require("mongoose").Promise = global.Promise;
+        mongoose.connect("mongodb://read_bool:projet22018@ds035290.mlab.com:35290/projet2_07", { useMongoClient: true }, () => {
+            console.warn("DB is connected");
+        });
     }
 
     public routes(): void {

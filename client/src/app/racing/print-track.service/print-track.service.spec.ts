@@ -2,6 +2,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 
 import { PrintTrackService } from "./print-track.service";
+import { PrintCarsService } from "../printCar.service/print-cars.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 

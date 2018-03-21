@@ -5,7 +5,6 @@ import { AppComponent } from "./app.component";
 import { GameComponent } from "./racing/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
 import { RenderService } from "./racing/render-service/render.service";
-import { BasicService } from "./basic.service";
 import { EditorComponent } from "./racing/editor/editor.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -18,17 +17,23 @@ import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
 import { RaceComponent } from "./racing/race/race.component";
 import { CommunicationRacingService } from "./racing/communication.service/communicationRacing.service";
+import { HomePageComponent } from "./crossword/home-page/home-page.component";
+import { EndGameComponent } from "./crossword/end-game/end-game.component";
 
 const appRoutes: Routes = [
     { path: "editor/:name", component: EditorComponent },
+    { path: "endGame", component: EndGameComponent},
+    { path: "endGame/:nbPlayers", component: EndGameComponent},
+    { path: "endGame/:nbPlayers/:Difficulty", component: EndGameComponent},
+    { path: "homePage", component: HomePageComponent },
     { path: "crossword", component: CrosswordGridComponent },
-    { path: "crossword/easy", component: CrosswordGridComponent },
-    { path: "crossword/medium", component: CrosswordGridComponent},
-    { path: "crossword/hard", component: CrosswordGridComponent},
+    { path: "crossword/:nbPlayers", component: CrosswordGridComponent },
+    { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent },
     { path: "editor", component: EditorComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: RaceComponent },
+    { path: "race/:name/play", component: GameComponent },
     { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
@@ -46,6 +51,8 @@ const appRoutes: Routes = [
         CrosswordGridComponent,
         UserComponent,
         RaceComponent,
+        HomePageComponent,
+        EndGameComponent,
     ],
     imports: [
         BrowserModule,
@@ -61,7 +68,6 @@ const appRoutes: Routes = [
         SceneServices,
         CommunicationRacingService,
         RenderService,
-        BasicService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]
