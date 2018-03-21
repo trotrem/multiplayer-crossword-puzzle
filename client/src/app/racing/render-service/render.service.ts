@@ -125,10 +125,10 @@ export class RenderService {
        this.evenHandeler.handleKeyUp(event, this.car);
     }
 
-    private setPointMeshPosition(point: THREE.Vector3, sphere: THREE.SphereGeometry): THREE.Mesh {
-        const pointMesh: THREE.Mesh = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: GRAY }));
+    private setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
+        const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ color: GRAY }));
         pointMesh.position.copy(point);
-        pointMesh.position.setZ(0);
+        // pointMesh.position.setZ(0);
 
         return pointMesh;
     }
@@ -156,9 +156,9 @@ export class RenderService {
         for (let i: number = 1; i < points.length; i++) {
           const point1: THREE.Vector3 = this.SetPointFromMatrix(points[i - 1]);
           const point2: THREE.Vector3 = this.SetPointFromMatrix(points[i]);
-          const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(WIDTH_SPHERE);
-          this.scene.add(this.setPointMeshPosition(point1, sphere));
-          this.scene.add(this.setPointMeshPosition(point2, sphere));
+          const circle: THREE.CircleGeometry = new THREE.CircleGeometry(WIDTH_SPHERE);
+          this.scene.add(this.setPointMeshPosition(point1, circle));
+          this.scene.add(this.setPointMeshPosition(point2, circle));
 
           const vector1: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
           const point3: THREE.Vector3 = new THREE.Vector3().copy(vector1).multiplyScalar(WIDTH_POINT).add(point1);
