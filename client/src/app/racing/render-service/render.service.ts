@@ -5,6 +5,7 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
 import { PrintTrackService } from "../print-track.service/print-track.service";
+import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -13,10 +14,12 @@ const FIELD_OF_VIEW: number = 70;
 const INITIAL_CAMERA_POSITION_Z: number = 100;
 const WHITE: number = 0xFFFFFF;
 const GRAY: number = 0x7B8284;
+const RED: number = 0xFF0000;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-const WIDTH_SPHERE: number = 6;
+const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
+const WIDTH_START: number = 12;
 const WIDTH_POINT: number = 0.5;
 
 @Injectable()
@@ -30,17 +33,19 @@ export class RenderService {
     private evenHandeler: EventHandlerRenderService;
     private printCarService: PrintCarsService;
     private car: Car;
+    private positionsDefiner: PositionsDefinerService;
 
     public constructor() {
         this.car = new Car();
         this.evenHandeler = new EventHandlerRenderService(this.car);
         this.printCarService = new PrintCarsService();
+        this.positionsDefiner = new PositionsDefinerService();
     }
     public getSene(): THREE.Scene {
         return this.scene;
     }
 
-    public async initialize(container: HTMLDivElement, line: THREE.Line3, cars: Car[]): Promise<void>  {
+    public async initialize(container: HTMLDivElement, line: THREE.Line3, cars: Car[]): Promise<void> {
         if (container) {
             this.container = container;
         }
@@ -62,7 +67,7 @@ export class RenderService {
 
     private update(cars: Car[]): void {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
-        for (let i: number = 0 ; i < CARS_MAX ; i++) {
+        for (let i: number = 0; i < CARS_MAX; i++) {
             cars[i].update(timeSinceLastFrame);
         }
         this.lastDate = Date.now();
@@ -87,7 +92,7 @@ export class RenderService {
             this.camera.lookAt(cars[0].position);
             this.scene.add(cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
-            }
+        }
     }
 
     private getAspectRatio(): number {
@@ -118,11 +123,11 @@ export class RenderService {
     }
 
     public handleKeyDown(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyDown(event, this.car);
+        this.evenHandeler.handleKeyDown(event, this.car);
     }
 
     public handleKeyUp(event: KeyboardEvent): void {
-       this.evenHandeler.handleKeyUp(event, this.car);
+        this.evenHandeler.handleKeyUp(event, this.car);
     }
 
     private setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
@@ -133,37 +138,36 @@ export class RenderService {
         return pointMesh;
     }
 
-    private setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3 ): THREE.Mesh {
-        const plane: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 0);
-        const floor: THREE.Mesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: GRAY }));
+    private setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3, scaleX: number, color: number): THREE.Mesh {
+        const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ color: color }));
         floor.position.copy(point);
-        floor.scale.x = vector.length();
+        floor.scale.x = scaleX;
         floor.scale.y = WIDTH_PLANE;
         floor.rotateZ(Math.atan2(vector.y, vector.x));
 
         return floor;
     }
-    private SetPointFromMatrix(point: THREE.Vector3): THREE.Vector3 {
-        const matrix: THREE.Matrix4 = new THREE.Matrix4();
-        matrix.makeTranslation(point.x , point.y , 0);
-        const vector: THREE.Vector3 = new THREE.Vector3();
-        vector.applyMatrix4(matrix);
 
-        return vector;
+    private SetPointFromMatrix(point: THREE.Vector3): THREE.Vector3 {
+
+        return new THREE.Vector3().applyMatrix4(new THREE.Matrix4().makeTranslation(point.x, point.y, 0));
     }
 
     public drawTrack(points: THREE.Vector3[]): void {
         for (let i: number = 1; i < points.length; i++) {
-          const point1: THREE.Vector3 = this.SetPointFromMatrix(points[i - 1]);
-          const point2: THREE.Vector3 = this.SetPointFromMatrix(points[i]);
-          const circle: THREE.CircleGeometry = new THREE.CircleGeometry(WIDTH_SPHERE);
-          this.scene.add(this.setPointMeshPosition(point1, circle));
-          this.scene.add(this.setPointMeshPosition(point2, circle));
+            this.scene.add(this.setPointMeshPosition(this.SetPointFromMatrix(points[i]), new THREE.CircleGeometry(WIDTH_SPHERE)));
 
-          const vector1: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
-          const point3: THREE.Vector3 = new THREE.Vector3().copy(vector1).multiplyScalar(WIDTH_POINT).add(point1);
+            const vector1: THREE.Vector3 =
+                new THREE.Vector3().copy(this.SetPointFromMatrix(points[i])).sub(this.SetPointFromMatrix(points[i - 1]));
+            const point3: THREE.Vector3 =
+                new THREE.Vector3().copy(vector1).multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[i - 1]));
 
-          this.scene.add(this.setPlaneMesh(vector1, point3));
+            this.scene.add(this.setPlaneMesh(vector1, point3, vector1.length(), GRAY));
+
+            if (i === 1) {
+                this.scene.add(this.setPlaneMesh(vector1, point3, WIDTH_START, RED));
+            }
+
         }
-      }
+    }
 }
