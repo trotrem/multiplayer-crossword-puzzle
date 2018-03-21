@@ -11,5 +11,5 @@
     <button [disabled]="notReadyToSubmit()">Submit</button>
 </form>
 <button [disabled]="notReadyToSave()"(click)="savetrack()">Save Track</button>
-<canvas #canvas draggable="true" (click) = "onLeftClick($event)" (contextmenu) = "onRightClick($event)"
+<canvas class="canva" #canvas draggable="true" (click) = "onLeftClick($event)" (contextmenu) = "onRightClick($event)"
 (drag)= "onDrag($event, false)" (dragend) = "onDrag($event, true)"(dragstart)= "getDraggedPointIndex($event)" > </canvas> 
