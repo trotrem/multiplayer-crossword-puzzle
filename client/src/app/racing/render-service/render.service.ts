@@ -33,13 +33,11 @@ export class RenderService {
     private evenHandeler: EventHandlerRenderService;
     private printCarService: PrintCarsService;
     private car: Car;
-    private positionsDefiner: PositionsDefinerService;
 
     public constructor() {
         this.car = new Car();
         this.evenHandeler = new EventHandlerRenderService(this.car);
         this.printCarService = new PrintCarsService();
-        this.positionsDefiner = new PositionsDefinerService();
     }
     public getSene(): THREE.Scene {
         return this.scene;
