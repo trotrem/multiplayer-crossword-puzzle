@@ -14,7 +14,7 @@ const FIRST_LINE_MATERIAL: THREE.LineBasicMaterial = new THREE.LineBasicMaterial
   linejoin: "round"
 });
 const MAX_CARS_PAIRS: number = 2;
-const CAMERA_DISTANCE: number = 150;
+const CAMERA_DISTANCE: number = 300;
 
 @Injectable()
 export class PrintTrackService {

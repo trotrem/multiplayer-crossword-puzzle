@@ -3,6 +3,11 @@ import * as THREE from "three";
 import { TrackCreator } from "./../trackcreator/track-creator";
 
 const MAX_SELECTION: number = 2;
+const FAR_CLIPPING_PLANE: number = 1000;
+const NEAR_CLIPPING_PLANE: number = 1;
+const FIELD_OF_VIEW: number = 70;
+
+const INITIAL_CAMERA_POSITION_Z: number = 100;
 
 @Injectable()
 export class SceneServices {
@@ -32,14 +37,23 @@ export class SceneServices {
   }
 
   public createScene(): void {
-    this.camera = new THREE.PerspectiveCamera();
-    const CAMERA_DISTANCE: number = 100;
-    this.camera.position.set(0, 0, CAMERA_DISTANCE);
+    this.camera = new THREE.PerspectiveCamera(
+      FIELD_OF_VIEW,
+      this.getAspectRatio(),
+      NEAR_CLIPPING_PLANE,
+      FAR_CLIPPING_PLANE
+  );
+
+    this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
+  private getAspectRatio(): number {
+    return this.canvas.clientWidth / this.canvas.clientHeight;
+}
 
   public animate(): void {
     requestAnimationFrame(() => this.animate());
