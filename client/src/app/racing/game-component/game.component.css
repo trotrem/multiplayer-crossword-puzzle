@@ -29,22 +29,16 @@ ul, li {
     background-color: #004C00;
 }
 
-.lightYellow{
-    background-color: #666600;
-}
-
-.lightRed{
-    background-color: #330000;
-} 
-
 /*Animation*/
 .lightRed {
+    background-color: #330000;
     -webkit-animation: redlightOpen .2s 4s forwards;
             animation: redlightOpen .2s 4s forwards;
     
 }
   
 .lightYellow {
+    background-color: #666600;
     -webkit-animation: yellowlightOpen .2s 5s forwards;
             animation: yellowlightOpen .2s 5s forwards;
 }
