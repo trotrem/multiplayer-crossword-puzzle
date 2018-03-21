@@ -5,7 +5,6 @@ import { AppComponent } from "./app.component";
 import { GameComponent } from "./racing/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
 import { RenderService } from "./racing/render-service/render.service";
-import { BasicService } from "./basic.service";
 import { EditorComponent } from "./racing/editor/editor.component";
 import { AdminComponent } from "./racing/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -51,7 +50,9 @@ const appRoutes: Routes = [
         RacingGameComponent,
         CrosswordGridComponent,
         UserComponent,
-        RaceComponent
+        RaceComponent,
+        HomePageComponent,
+        EndGameComponent,
     ],
     imports: [
         BrowserModule,
