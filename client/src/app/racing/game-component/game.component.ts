@@ -28,9 +28,9 @@ export class GameComponent implements AfterViewInit {
 
     public constructor(private route: ActivatedRoute, private http: HttpClient) {
         this.communicationService = new CommunicationRacingService(this.http);
-        this.renderService = new RenderService();
         this.cars = new Array<Car>(CARS_MAX);
         this.chosenCarIndex = 0;
+        this.renderService = new RenderService();
 
     }
 
@@ -41,12 +41,12 @@ export class GameComponent implements AfterViewInit {
 
     @HostListener("window:keydown", ["$event"])
     public onKeyDown(event: KeyboardEvent): void {
-        this.renderService.handleKeyDown(event, this.chosenCarIndex, this.cars);
+        this.renderService.handleKeyDown(event);
     }
 
     @HostListener("window:keyup", ["$event"])
     public onKeyUp(event: KeyboardEvent): void {
-        this.renderService.handleKeyUp(event, this.chosenCarIndex, this.cars);
+        this.renderService.handleKeyUp(event);
     }
 
     public ngAfterViewInit(): void {

@@ -29,12 +29,12 @@ export class RenderService {
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
     private printCarService: PrintCarsService;
-    private printTrackService: PrintTrackService;
+    private car: Car;
 
     public constructor() {
-        this.evenHandeler = new EventHandlerRenderService(new Car);
+        this.car = new Car();
+        this.evenHandeler = new EventHandlerRenderService(this.car);
         this.printCarService = new PrintCarsService();
-        this.printTrackService = new PrintTrackService();
     }
     public getSene(): THREE.Scene {
         return this.scene;
@@ -45,6 +45,8 @@ export class RenderService {
             this.container = container;
         }
         await this.createScene(cars);
+        this.car = cars[0];
+        this.evenHandeler = new EventHandlerRenderService(this.car);
         this.printCarService.insertCars(line, this.scene, cars);
         this.initStats();
         this.startRenderingLoop(cars);
@@ -115,12 +117,12 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
-    public handleKeyDown(event: KeyboardEvent, index: number, cars: Car[]): void {
-       this.evenHandeler.handleKeyDown(event, cars[index]);
+    public handleKeyDown(event: KeyboardEvent): void {
+       this.evenHandeler.handleKeyDown(event, this.car);
     }
 
-    public handleKeyUp(event: KeyboardEvent, index: number, cars: Car[]): void {
-       this.evenHandeler.handleKeyUp(event, cars[index]);
+    public handleKeyUp(event: KeyboardEvent): void {
+       this.evenHandeler.handleKeyUp(event, this.car);
     }
 
     private setPointMeshPosition(point: THREE.Vector3, sphere: THREE.SphereGeometry): THREE.Mesh {
