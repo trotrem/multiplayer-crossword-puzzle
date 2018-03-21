@@ -61,7 +61,7 @@ export class WordRetriever {
   public async getHardWordList(word: string): Promise<WordDictionaryData[]> {
     const filter: (wordInfo: WordDictionaryData) => boolean = (
       wordInfo: WordDictionaryData
-    ) => !wordInfo.isCommon && wordInfo.definitions.length > 0;
+    ) => wordInfo.isUncommon && wordInfo.definitions.length > 0;
 
     const hardWordList: WordDictionaryData[] = await this.createWordListWithDefinitions(
       word,
