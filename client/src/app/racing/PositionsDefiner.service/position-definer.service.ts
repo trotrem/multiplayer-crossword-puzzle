@@ -20,13 +20,10 @@ export class PositionsDefinerService {
   }
 
   private getCarPosition(vector: THREE.Vector3, index1: number, index2: number): THREE.Vector3 {
-    const matrix: THREE.Matrix3 = new THREE.Matrix3();
-    matrix.set(vector.x, 0, 0, 0, vector.y, 0, 0, 0, vector.z);
-    // matrix.makeTranslation(index1 , index2  , 0 );
+
     const newVector: THREE.Vector3 = vector.clone();
     newVector.setX(newVector.x - index1);
     newVector.setY(newVector.y - index2);
-    // newVector.applyMatrix3(matrix);
 
     return newVector;
   }

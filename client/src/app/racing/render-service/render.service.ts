@@ -152,9 +152,7 @@ export class RenderService {
 
     public drawTrack(points: THREE.Vector3[]): void {
         for (let i: number = 1; i < points.length; i++) {
-        //   const point1: THREE.Vector3 = points[i - 1];
           const point1: THREE.Vector3 = this.SetPointFromMatrix(points[i - 1]);
-        //   const point2: THREE.Vector3 = points[i];
           const point2: THREE.Vector3 = this.SetPointFromMatrix(points[i]);
           const sphere: THREE.SphereGeometry = new THREE.SphereGeometry(WIDTH_SPHERE);
           this.scene.add(this.setPointMeshPosition(point1, sphere));
