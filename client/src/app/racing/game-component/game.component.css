@@ -48,6 +48,10 @@ ul, li {
     -webkit-animation: yellowlightOpen .2s 5s forwards;
             animation: yellowlightOpen .2s 5s forwards;
 }
+.lightGreen {
+    -webkit-animation: greenlightOpen .2s 6s forwards;
+            animation: greenlightOpen .2s 6s forwards;
+}
 
 
 /*Keyframes*/
