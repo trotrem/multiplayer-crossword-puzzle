@@ -34,6 +34,7 @@ const appRoutes: Routes = [
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: RaceComponent },
+    { path: "race/:name/play", component: GameComponent },
     { path: "race", component: RaceComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
@@ -50,9 +51,7 @@ const appRoutes: Routes = [
         RacingGameComponent,
         CrosswordGridComponent,
         UserComponent,
-        RaceComponent,
-        EndGameComponent,
-        HomePageComponent,
+        RaceComponent
     ],
     imports: [
         BrowserModule,
@@ -68,7 +67,6 @@ const appRoutes: Routes = [
         SceneServices,
         CommunicationRacingService,
         RenderService,
-        BasicService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

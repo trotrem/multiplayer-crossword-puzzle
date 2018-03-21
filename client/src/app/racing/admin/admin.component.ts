@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-// import { AdminService } from "./../admin.service/admin.service";
 import { Track } from "../track";
 import { Router } from "@angular/router";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
@@ -37,8 +36,20 @@ export class AdminComponent implements OnInit {
   public getSelectedTrack(): Track {
     return this.selectedTrack;
   }
+  public getTracksList(): Track[] {
+    return this.tracks;
+  }
   public getisSelected(): boolean {
     return this.isSelected ;
+  }
+  public getRouter(): Router {
+    return this.router;
+  }
+  public getHttp(): HttpClient {
+    return this.http;
+  }
+  public getCommunicationService(): CommunicationRacingService {
+    return this.communicationService;
   }
 
   public ngOnInit(): void {
@@ -58,12 +69,16 @@ export class AdminComponent implements OnInit {
     console.warn(this.selectedTrack);
   }
 
-  public editTrack(): void {
+  public editTrack(): Track {
     this.router.navigateByUrl("/editor/" + this.selectedTrack.name);
+
+    return this.selectedTrack;
   }
 
-  public deleteTrack(): void {
+  public deleteTrack(): Track {
     this.communicationService.deleteTrack(this.selectedTrack);
+
+    return this.selectedTrack;
   }
 
   public notReadyToModify(): boolean {
