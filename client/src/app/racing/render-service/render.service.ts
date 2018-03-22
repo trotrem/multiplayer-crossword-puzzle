@@ -19,7 +19,7 @@ const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
 const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
-const WIDTH_START: number = 12;
+const WIDTH_START: number = 4;
 const WIDTH_POINT: number = 0.5;
 
 @Injectable()
@@ -163,7 +163,10 @@ export class RenderService {
             this.scene.add(this.setPlaneMesh(vector1, point3, vector1.length(), GRAY));
 
             if (i === 1) {
-                this.scene.add(this.setPlaneMesh(vector1, point3, WIDTH_START, RED));
+                const floor: THREE.Mesh = this.setPlaneMesh(vector1, point3, WIDTH_START, RED);
+                floor.translateX(-WIDTH_START);
+                console.warn(floor);
+                this.scene.add(floor);
             }
 
         }
