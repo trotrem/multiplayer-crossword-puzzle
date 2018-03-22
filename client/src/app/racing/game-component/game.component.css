@@ -15,6 +15,7 @@ ul, li {
     width: 85px;
     height: 180px;
     padding: 15px;
+    display: block;
 }
 
 /* -- Border radius for all lights at 50% -- */
@@ -25,26 +26,23 @@ ul, li {
     width: 50px;
 }
 
-.lightGreen {
-    background-color: #004C00;
-}
-
 /*Animation*/
 .lightRed {
     background-color: #330000;
-    -webkit-animation: redlightOpen .2s 4s forwards;
-            animation: redlightOpen .2s 4s forwards;
+    -webkit-animation: redlightOpen .2s 2s forwards;
+            animation: redlightOpen .2s 2s forwards;
     
 }
   
 .lightYellow {
     background-color: #666600;
-    -webkit-animation: yellowlightOpen .2s 5s forwards;
-            animation: yellowlightOpen .2s 5s forwards;
+    -webkit-animation: yellowlightOpen .2s 3s forwards;
+            animation: yellowlightOpen .2s 3s forwards;
 }
 .lightGreen {
-    -webkit-animation: greenlightOpen .2s 6s forwards;
-            animation: greenlightOpen .2s 6s forwards;
+    background-color: #004C00;
+    -webkit-animation: greenlightOpen .2s 5s forwards;
+            animation: greenlightOpen .2s 5s forwards;
 }
 
 
@@ -59,3 +57,31 @@ ul, li {
 @-webkit-keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
 @keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
 
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+ li{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid black;
+    float:left;  
+    left: 38vw; 
+    top : 6vh;
+  }
+  
+  .green {
+    background-color: rgb(55, 211, 24);
+  }
+  
+  .red {
+    background-color: red;
+  }
+
+  .disapear {
+    visibility:hidden;
+  }

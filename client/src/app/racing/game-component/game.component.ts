@@ -9,6 +9,10 @@ import { ActivatedRoute } from "@angular/router";
 import { Track } from "../track";
 import * as THREE from "three";
 const CARS_MAX: number = 4;
+const LIGHTS: number = 3;
+const DELAY_BETWEEN_RED: number = 600;
+const DELAY: number = 1000;
+const DELAY_FOR_RED: number = 1500;
 
 @Component({
     moduleId: module.id,
@@ -22,16 +26,20 @@ export class GameComponent implements AfterViewInit {
     @ViewChild("container")
     private containerRef: ElementRef;
     private communicationService: CommunicationRacingService;
-    private cars: Car[];
-    private chosenCarIndex: number;
+    // private cars: Car[];
     private renderService: RenderService;
+    private lights: string[];
+    private disabledCar: boolean;
 
     public constructor(private route: ActivatedRoute, private http: HttpClient) {
         this.communicationService = new CommunicationRacingService(this.http);
-        this.cars = new Array<Car>(CARS_MAX);
-        this.chosenCarIndex = 0;
+        // this.cars = new Array<Car>(CARS_MAX);
         this.renderService = new RenderService();
-
+        this.lights = new Array<string>();
+        for (let i: number = 0; i < LIGHTS; i++) {
+            this.lights.push("");
+        }
+        this.disabledCar = true;
     }
 
     @HostListener("window:resize", ["$event"])
@@ -39,35 +47,68 @@ export class GameComponent implements AfterViewInit {
         this.renderService.onResize();
     }
 
-    @HostListener("window:keydown", ["$event"])
-    public onKeyDown(event: KeyboardEvent): void {
-        this.renderService.handleKeyDown(event);
-    }
+    /* @HostListener("window:keydown", ["$event"])
+     public onKeyDown(event: KeyboardEvent): void {
+         if (this.disabledCar) {
+             console.warn("stop");
+              return;
+         }
+         this.renderService.handleKeyDown(event);
+     }
 
-    @HostListener("window:keyup", ["$event"])
-    public onKeyUp(event: KeyboardEvent): void {
-        this.renderService.handleKeyUp(event);
-    }
+     @HostListener("window:keyup", ["$event"])
+     public onKeyUp(event: KeyboardEvent): void {
+         if (this.disabledCar) {
+             return;
+         }
+         this.renderService.handleKeyUp(event);
+     }*/
 
     public ngAfterViewInit(): void {
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-              this.getTrack(name);
-            }
-
+            this.getTrack(name);
+        }
     }
-    private getTrack(name: string): void {
-        this.communicationService.getTrackByName(name)
-          .subscribe((res: Track[]) => {
-            const track: Track = res[0];
-            this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, this.cars);
-            this.renderService.drawTrack(track.points);
 
-          });
-
+    private async changeLightColor(color: string, delay: number): Promise<void> {
+        for (let i: number = 0; i < LIGHTS; i++) {
+            this.lights[i] = color;
+            await this.delay(delay);
         }
 
-    public getCars(): Car[] {
+    }
+    private async visualSignal(): Promise<void> {
+        this.changeLightColor("red", DELAY_BETWEEN_RED);
+        await this.delay(DELAY_FOR_RED);
+        this.changeLightColor("green", 0);
+        await this.delay(DELAY);
+        this.changeLightColor("", 0);
+        this.disabledCar = false;
+        this.renderService.initializeEventHandlerService();
+        await this.delay(DELAY);
+    }
+
+    private delay(ms: number): Promise<boolean> {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    private getTrack(name: string): void {
+        this.communicationService.getTrackByName(name)
+            .subscribe((res: Track[]) => {
+                const track: Track = res[0];
+                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone);
+                this.renderService.drawTrack(track.points);
+
+            });
+
+    }
+
+    /*public getCars(): Car[] {
         return this.cars;
+    }*/
+
+    private play(): void {
+        this.visualSignal();
     }
 }

@@ -28,11 +28,11 @@ export class EventHandlerRenderService {
         KeyUp.Instance.addCommand(KeyCode.BRAKE_KEYCODE, new Command.ReleaseBrakesCommand(car));
     }
 
-    public handleKeyDown(event: KeyboardEvent, car: Car): void {
+    /*public handleKeyDown(event: KeyboardEvent, car: Car): void {
         KeyDown.Instance.executeCommands(event.keyCode);
     }
 
     public handleKeyUp(event: KeyboardEvent, car: Car): void {
         KeyUp.Instance.executeCommands(event.keyCode);
-    }
+    }*/
 }

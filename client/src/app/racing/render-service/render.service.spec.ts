@@ -2,6 +2,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
+import { PrintCarsService } from "../printCar.service/print-cars.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("RenderService", () => {
@@ -17,19 +18,21 @@ describe("RenderService", () => {
         expect(service).toBeTruthy();
     }));
     it("should be create a scene", inject([RenderService], (service: RenderService) => {
-        const cars: Car[] = new Array <Car>();
+        const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car());
-      }
-        service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3( 3, 7, 10)), cars);
-        expect(service.getSene()).toBeDefined();
+        }
+        service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)));
+        expect(service.getScene()).toBeDefined();
     }));
     it("should add four cars to the scene", inject([RenderService], (service: RenderService) => {
-        const cars: Car[] = new Array <Car>();
+        const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car());
-      }
-        service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3( 3, 7, 10)), cars);
-        expect(service.getSene().children.length).toBeGreaterThanOrEqual(0);
+        }
+        const printCar: PrintCarsService = new PrintCarsService();
+        service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)));
+        printCar.insertCars(new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
+        expect(service.getScene().children.length).toEqual(4);
     }));
 });
