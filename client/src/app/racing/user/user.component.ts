@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Track } from "./../track";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { PrintTrackService } from "../print-track.service/print-track.service";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 
 @Component({
@@ -18,12 +17,9 @@ export class UserComponent implements OnInit {
 
   private selectedTrack: Track;
 
-  private printTrackService: PrintTrackService;
-
   public constructor(private http: HttpClient, private router: Router) {
     this.communicationService = new CommunicationRacingService(this.http);
     this.tracks = new Array<Track>();
-    this.printTrackService = new PrintTrackService();
     this.tracks = new Array<Track>();
   }
 
@@ -54,5 +50,9 @@ export class UserComponent implements OnInit {
 
   public setSelectedTrack(track: Track): void {
     this.selectedTrack = track;
+  }
+
+  public getTracksList(): Track[] {
+    return this.tracks;
   }
 }

@@ -9,21 +9,11 @@ const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const ROTATION_ANGLE_DIVIDER: number = 2;
 
 @Injectable()
-export class PrintCarsService {
-  private carsPositions: PositionsDefinerService;
-  public constructor() {
-    this.carsPositions = new PositionsDefinerService();
-  }
-  public getCarsPosition(): PositionsDefinerService {
-    return this.carsPositions;
-  }
-  public setCarsPositions(positions: PositionsDefinerService): void {
-    this.carsPositions = positions;
-  }
+export class CarsPositionsHandler {
 
-  public insertCars(line: THREE.Line3, scene: THREE.Scene, cars: Car[]): void {
+  public static insertCars(line: THREE.Line3, scene: THREE.Scene, cars: Car[]): void {
 
-    const positions: THREE.Vector3[] = this.carsPositions.getCarsPositions(line);
+    const positions: THREE.Vector3[] = PositionsDefinerService.getCarsPositions(line);
     for (let i: number = 0; i < CARS_MAX; i++) {
     const randomPosition: THREE.Vector3 = positions[Math.floor(Math.random() * positions.length)];
     cars[i].position.set(randomPosition.x, randomPosition.y, randomPosition.z);
@@ -33,9 +23,9 @@ export class PrintCarsService {
     scene.add(cars[i]);
     }
   }
-  public getRotateCarPosition(line: THREE.Line3): number {
+  public static getRotateCarPosition(line: THREE.Line3): number {
 
-      return Math.atan2(this.carsPositions.getDeltaLine(line).y, this.carsPositions.getDeltaLine(line).x) ;
+      return Math.atan2(PositionsDefinerService.getDeltaLine(line).y, PositionsDefinerService.getDeltaLine(line).x) ;
     }
 
 }

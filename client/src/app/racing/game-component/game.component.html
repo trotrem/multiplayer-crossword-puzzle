@@ -1,7 +1,11 @@
-<div class="lightbox">
-        <div class="lightRed"></div>
-        <div class="lightYellow"></div>
-        <div class="lightGreen"></div>
-      </div>
-<div #container class="canvas">
-</div>
+
+<button (click)="play()" [ngClass] = "{'disapear': disabledCar === false }"> PLAY </button>
+
+<div *ngFor="let light of lights" >
+  <ul>
+    <li *ngIf="light === 'red'" class="red"> </li>
+    <li *ngIf="light === 'green'" class="green"></li>
+    </ul>
+  </div>
+
+<div #container class="canvas"></div>

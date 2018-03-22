@@ -3,8 +3,8 @@ import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
-import { PrintCarsService } from "../printCar.service/print-cars.service";
-import { PrintTrackService } from "../print-track.service/print-track.service";
+import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
+import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -13,10 +13,12 @@ const FIELD_OF_VIEW: number = 70;
 const INITIAL_CAMERA_POSITION_Z: number = 100;
 const WHITE: number = 0xFFFFFF;
 const GRAY: number = 0x7B8284;
+const RED: number = 0xFF0000;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-const WIDTH_SPHERE: number = 6;
+const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
+const WIDTH_START: number = 4;
 const WIDTH_POINT: number = 0.5;
 
 @Injectable()
@@ -28,30 +30,31 @@ export class RenderService {
     private stats: Stats;
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
-    private printCarService: PrintCarsService;
-    private car: Car;
+    private cars: Car[];
 
     public constructor() {
-        this.car = new Car();
-        this.evenHandeler = new EventHandlerRenderService(this.car);
-        this.printCarService = new PrintCarsService();
+        this.cars = new Array<Car>(CARS_MAX);
+        this.cars[0] = new Car();
     }
-    public getSene(): THREE.Scene {
+    public getScene(): THREE.Scene {
         return this.scene;
     }
 
-    public async initialize(container: HTMLDivElement, line: THREE.Line3, cars: Car[]): Promise<void>  {
+    public async initialize(container: HTMLDivElement, line: THREE.Line3): Promise<void> {
         if (container) {
             this.container = container;
         }
-        await this.createScene(cars);
-        this.car = cars[0];
-        this.evenHandeler = new EventHandlerRenderService(this.car);
-        this.printCarService.insertCars(line, this.scene, cars);
+        await this.createScene();
+        CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
-        this.startRenderingLoop(cars);
+        this.startRenderingLoop();
         console.warn(this.scene);
+        console.warn(this.scene.children.length);
 
+    }
+
+    public initializeEventHandlerService(): void {
+        this.evenHandeler = new EventHandlerRenderService(this.cars[0]);
     }
 
     private initStats(): void {
@@ -62,7 +65,7 @@ export class RenderService {
 
     private update(cars: Car[]): void {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
-        for (let i: number = 0 ; i < CARS_MAX ; i++) {
+        for (let i: number = 0; i < CARS_MAX; i++) {
             cars[i].update(timeSinceLastFrame);
         }
         this.lastDate = Date.now();
@@ -75,7 +78,7 @@ export class RenderService {
         this.camera.lookAt(position);*/
     }
 
-    private async createScene(cars: Car[]): Promise<void> {
+    private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
 
         this.camera = new THREE.PerspectiveCamera(
@@ -89,31 +92,30 @@ export class RenderService {
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
         for (let i: number = 0; i < CARS_MAX; i++) {
-            cars[i] = new Car();
-            await cars[i].init();
-            this.camera.lookAt(cars[0].position);
-            this.scene.add(cars[i]);
+            this.cars[i] = new Car();
+            await this.cars[i].init();
+            this.scene.add(this.cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
-            }
+        }
     }
 
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
     }
 
-    private startRenderingLoop(cars: Car[]): void {
+    private startRenderingLoop(): void {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
-        this.render(cars);
+        this.render();
     }
 
-    private render(cars: Car[]): void {
-        requestAnimationFrame(() => this.render(cars));
-        this.update(cars);
+    private render(): void {
+        requestAnimationFrame(() => this.render());
+        this.update(this.cars);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
     }
@@ -124,53 +126,45 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
-    public handleKeyDown(event: KeyboardEvent): void {
-        this.evenHandeler.handleKeyDown(event, this.car);
-    }
-
-    public handleKeyUp(event: KeyboardEvent): void {
-        this.evenHandeler.handleKeyUp(event, this.car);
-    }
-
     private setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
         const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ color: GRAY }));
         pointMesh.position.copy(point);
-        // pointMesh.position.setZ(0);
 
         return pointMesh;
     }
 
-    private setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3 ): THREE.Mesh {
-        const plane: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 0);
-        const floor: THREE.Mesh = new THREE.Mesh(plane, new THREE.MeshBasicMaterial({ color: GRAY }));
+    private setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3, scaleX: number, color: number): THREE.Mesh {
+        const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ color: color }));
         floor.position.copy(point);
-        floor.scale.x = vector.length();
+        floor.scale.x = scaleX;
         floor.scale.y = WIDTH_PLANE;
         floor.rotateZ(Math.atan2(vector.y, vector.x));
 
         return floor;
     }
-    private SetPointFromMatrix(point: THREE.Vector3): THREE.Vector3 {
-        const matrix: THREE.Matrix4 = new THREE.Matrix4();
-        matrix.makeTranslation(point.x , point.y , 0);
-        const vector: THREE.Vector3 = new THREE.Vector3();
-        vector.applyMatrix4(matrix);
 
-        return vector;
+    private SetPointFromMatrix(point: THREE.Vector3): THREE.Vector3 {
+
+        return new THREE.Vector3().applyMatrix4(new THREE.Matrix4().makeTranslation(point.x, point.y, 0));
     }
 
     public drawTrack(points: THREE.Vector3[]): void {
         for (let i: number = 1; i < points.length; i++) {
-          const point1: THREE.Vector3 = this.SetPointFromMatrix(points[i - 1]);
-          const point2: THREE.Vector3 = this.SetPointFromMatrix(points[i]);
-          const circle: THREE.CircleGeometry = new THREE.CircleGeometry(WIDTH_SPHERE);
-          this.scene.add(this.setPointMeshPosition(point1, circle));
-          this.scene.add(this.setPointMeshPosition(point2, circle));
+            this.scene.add(this.setPointMeshPosition(this.SetPointFromMatrix(points[i]), new THREE.CircleGeometry(WIDTH_SPHERE)));
 
-          const vector1: THREE.Vector3 = new THREE.Vector3().copy(point2).sub(point1);
-          const point3: THREE.Vector3 = new THREE.Vector3().copy(vector1).multiplyScalar(WIDTH_POINT).add(point1);
+            const vector: THREE.Vector3 =
+                new THREE.Vector3().copy(this.SetPointFromMatrix(points[i])).sub(this.SetPointFromMatrix(points[i - 1]));
+            const point: THREE.Vector3 =
+                new THREE.Vector3().copy(vector).multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[i - 1]));
 
-          this.scene.add(this.setPlaneMesh(vector1, point3));
+            this.scene.add(this.setPlaneMesh(vector, point, vector.length(), GRAY));
+
+            if (i === 1) {
+                const floor: THREE.Mesh = this.setPlaneMesh(vector, point, WIDTH_START, RED);
+                floor.translateX(-WIDTH_START);
+                this.scene.add(floor);
+            }
+
         }
-      }
+    }
 }
