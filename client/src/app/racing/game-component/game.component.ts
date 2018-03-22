@@ -2,13 +2,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@
 import { RenderService } from "../render-service/render.service";
 import { Car } from "../car/car";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
-import { PrintTrackService } from "../print-track.service/print-track.service";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
 import { Track } from "../track";
 import * as THREE from "three";
-const CARS_MAX: number = 4;
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -26,14 +24,12 @@ export class GameComponent implements AfterViewInit {
     @ViewChild("container")
     private containerRef: ElementRef;
     private communicationService: CommunicationRacingService;
-    // private cars: Car[];
     private renderService: RenderService;
     private lights: string[];
     private disabledCar: boolean;
 
     public constructor(private route: ActivatedRoute, private http: HttpClient) {
         this.communicationService = new CommunicationRacingService(this.http);
-        // this.cars = new Array<Car>(CARS_MAX);
         this.renderService = new RenderService();
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
@@ -46,23 +42,6 @@ export class GameComponent implements AfterViewInit {
     public onResize(): void {
         this.renderService.onResize();
     }
-
-    /* @HostListener("window:keydown", ["$event"])
-     public onKeyDown(event: KeyboardEvent): void {
-         if (this.disabledCar) {
-             console.warn("stop");
-              return;
-         }
-         this.renderService.handleKeyDown(event);
-     }
-
-     @HostListener("window:keyup", ["$event"])
-     public onKeyUp(event: KeyboardEvent): void {
-         if (this.disabledCar) {
-             return;
-         }
-         this.renderService.handleKeyUp(event);
-     }*/
 
     public ngAfterViewInit(): void {
         const name: string = this.route.snapshot.paramMap.get("name");
@@ -103,10 +82,6 @@ export class GameComponent implements AfterViewInit {
             });
 
     }
-
-    /*public getCars(): Car[] {
-        return this.cars;
-    }*/
 
     private play(): void {
         this.visualSignal();

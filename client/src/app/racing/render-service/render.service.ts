@@ -4,7 +4,6 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { PrintCarsService } from "../printCar.service/print-cars.service";
-import { PrintTrackService } from "../print-track.service/print-track.service";
 import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
@@ -32,11 +31,9 @@ export class RenderService {
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
     private printCarService: PrintCarsService;
-    // private car: Car;
     private cars: Car[];
 
     public constructor() {
-       // this.car = new Car();
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
         this.printCarService = new PrintCarsService();
@@ -45,16 +42,14 @@ export class RenderService {
         return this.scene;
     }
 
-    public async initialize(container: HTMLDivElement, line: THREE.Line3, /*cars: Car[]*/): Promise<void> {
+    public async initialize(container: HTMLDivElement, line: THREE.Line3): Promise<void> {
         if (container) {
             this.container = container;
         }
-        await this.createScene(/*cars*/);
-        // this.car = cars[0];
-        // this.evenHandeler = new EventHandlerRenderService(this.cars[0]);
+        await this.createScene();
         this.printCarService.insertCars(line, this.scene, this.cars);
         this.initStats();
-        this.startRenderingLoop(/*cars*/);
+        this.startRenderingLoop();
         console.warn(this.scene);
         console.warn(this.scene.children.length);
 
@@ -78,7 +73,7 @@ export class RenderService {
         this.lastDate = Date.now();
     }
 
-    private async createScene(/*cars: Car[]*/): Promise<void> {
+    private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
 
         this.camera = new THREE.PerspectiveCamera(
@@ -104,18 +99,18 @@ export class RenderService {
         return this.container.clientWidth / this.container.clientHeight;
     }
 
-    private startRenderingLoop(/*cars: Car[]*/): void {
+    private startRenderingLoop(): void {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
-        this.render(/*cars*/);
+        this.render();
     }
 
-    private render(/*cars: Car[]*/): void {
-        requestAnimationFrame(() => this.render(/*cars*/));
+    private render(): void {
+        requestAnimationFrame(() => this.render());
         this.update(this.cars);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
@@ -126,13 +121,6 @@ export class RenderService {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
-
-    /* public handleKeyDown(event: KeyboardEvent): void {
-        // this.evenHandeler.handleKeyDown(event, this.cars[0]);
-     }
-     public handleKeyUp(event: KeyboardEvent): void {
-        // this.evenHandeler.handleKeyUp(event, this.cars[0]);
-     }*/
 
     private setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
         const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ color: GRAY }));
