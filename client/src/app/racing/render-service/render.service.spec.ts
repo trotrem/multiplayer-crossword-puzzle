@@ -2,7 +2,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
-import { PrintCarsService } from "../printCar.service/print-cars.service";
+import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("RenderService", () => {
@@ -10,7 +10,7 @@ describe("RenderService", () => {
     let container: HTMLDivElement;
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [RenderService]
+            providers: [RenderService, CarsPositionsHandler]
         });
     });
 
@@ -30,9 +30,9 @@ describe("RenderService", () => {
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car());
         }
-        const printCar: PrintCarsService = new PrintCarsService();
         service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)));
-        printCar.insertCars(new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
+        CarsPositionsHandler.insertCars(
+            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
     }));
 });

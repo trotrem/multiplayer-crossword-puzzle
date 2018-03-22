@@ -3,7 +3,7 @@ import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
-import { PrintCarsService } from "../printCar.service/print-cars.service";
+import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
@@ -30,13 +30,11 @@ export class RenderService {
     private stats: Stats;
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
-    private printCarService: PrintCarsService;
     private cars: Car[];
 
     public constructor() {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
-        this.printCarService = new PrintCarsService();
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -47,7 +45,7 @@ export class RenderService {
             this.container = container;
         }
         await this.createScene();
-        this.printCarService.insertCars(line, this.scene, this.cars);
+        CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
         this.startRenderingLoop();
         console.warn(this.scene);
@@ -89,7 +87,6 @@ export class RenderService {
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car();
             await this.cars[i].init();
-            // this.camera.lookAt(this.cars[0].position);
             this.scene.add(this.cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         }
@@ -125,7 +122,6 @@ export class RenderService {
     private setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
         const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ color: GRAY }));
         pointMesh.position.copy(point);
-        // pointMesh.position.setZ(0);
 
         return pointMesh;
     }

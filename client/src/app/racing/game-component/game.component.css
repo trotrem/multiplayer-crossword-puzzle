@@ -3,68 +3,18 @@
     height: 800px;
 }
 
-ul, li {
-    position: relative;
-    margin: 0;
-    top: 40px;
-    color: orange;
-}
-.lightbox {
-    margin: 0 auto;
-    background-color: black;
-    width: 85px;
-    height: 180px;
-    padding: 15px;
-    display: block;
-}
-
-/* -- Border radius for all lights at 50% -- */
-.lightGreen, .lightYellow, .lightRed {
-    border-radius: 50%;
-    margin: 5px auto;
-    height: 50px;
-    width: 50px;
-}
-
-/*Animation*/
-.lightRed {
-    background-color: #330000;
-    -webkit-animation: redlightOpen .2s 2s forwards;
-            animation: redlightOpen .2s 2s forwards;
-    
-}
-  
-.lightYellow {
-    background-color: #666600;
-    -webkit-animation: yellowlightOpen .2s 3s forwards;
-            animation: yellowlightOpen .2s 3s forwards;
-}
-.lightGreen {
-    background-color: #004C00;
-    -webkit-animation: greenlightOpen .2s 5s forwards;
-            animation: greenlightOpen .2s 5s forwards;
-}
-
-
-/*Keyframes*/
-@-webkit-keyframes yellowlightOpen {from {background-color: #666600;} to {background-color: yellow;} }
-@keyframes yellowlightOpen {from {background-color: #666600;} to {background-color: yellow;} }
-
-
-@-webkit-keyframes redlightOpen {from {background-color: #330000;} to {background-color: red;} }
-@keyframes redlightOpen {from {background-color: #330000;} to {background-color: red;} }
-
-@-webkit-keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
-@keyframes greenlightOpen {from {background-color: #004C00;} to {background-color: #47D147;} }
-
 
 ul {
+    position: relative;
+    top: 40px;
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
   
  li{
+    position: relative;
+    top: 40px;
     width: 64px;
     height: 64px;
     border-radius: 50%;
