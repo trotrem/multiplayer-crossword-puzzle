@@ -75,8 +75,7 @@ export class GameComponent implements AfterViewInit {
         this.communicationService.getTrackByName(name)
             .subscribe((res: Track[]) => {
                 const track: Track = res[0];
-                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone);
-                this.renderService.drawTrack(track.points);
+                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, track.points);
 
             });
 

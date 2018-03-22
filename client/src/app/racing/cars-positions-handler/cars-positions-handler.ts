@@ -23,7 +23,7 @@ export class CarsPositionsHandler {
     scene.add(cars[i]);
     }
   }
-  public static getRotateCarPosition(line: THREE.Line3): number {
+  private static getRotateCarPosition(line: THREE.Line3): number {
 
       return Math.atan2(PositionsDefinerService.getDeltaLine(line).y, PositionsDefinerService.getDeltaLine(line).x) ;
     }
