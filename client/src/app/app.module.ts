@@ -15,7 +15,6 @@ import { HttpModule } from "@angular/http";
 import {APP_BASE_HREF} from "@angular/common";
 import { UserComponent } from "./racing/user/user.component";
 import {SceneServices} from "./racing/scene.services/scene.service";
-import { RaceComponent } from "./racing/race/race.component";
 import { CommunicationRacingService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
@@ -32,9 +31,8 @@ const appRoutes: Routes = [
     { path: "editor", component: EditorComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
-    { path: "race/:name", component: RaceComponent },
-    { path: "race/:name/play", component: GameComponent },
-    { path: "race", component: RaceComponent },
+    { path: "race/:name", component: GameComponent },
+    { path: "race", component: GameComponent },
     { path: "racing", component: RacingGameComponent },
     { path: "", children: []},
     { path: "**", component: PageNotFoundComponent }
@@ -50,7 +48,6 @@ const appRoutes: Routes = [
         RacingGameComponent,
         CrosswordGridComponent,
         UserComponent,
-        RaceComponent,
         HomePageComponent,
         EndGameComponent,
     ],
