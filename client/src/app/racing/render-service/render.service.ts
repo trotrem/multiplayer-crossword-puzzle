@@ -106,7 +106,7 @@ export class RenderService {
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
         this.render();
-        console.warn(this.updatedCarPosition);
+        // console.warn(this.updatedCarPosition);
 
     }
 
@@ -116,7 +116,7 @@ export class RenderService {
         this.updatedCarPosition = this.cars[0].getUpdatedPosition();
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
-        console.warn(this.updatedCarPosition);
+        // console.warn(this.updatedCarPosition);
     }
 
     public onResize(): void {
