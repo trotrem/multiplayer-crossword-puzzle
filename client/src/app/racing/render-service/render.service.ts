@@ -31,13 +31,18 @@ export class RenderService {
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
     private cars: Car[];
+    private updatedCarPosition: THREE.Vector3;
 
     public constructor() {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
+        this.updatedCarPosition = new THREE.Vector3();
     }
     public getScene(): THREE.Scene {
         return this.scene;
+    }
+    public getUpdateCarPosition(): THREE.Vector3 {
+        return this.updatedCarPosition;
     }
 
     public async initialize(container: HTMLDivElement, line: THREE.Line3): Promise<void> {
@@ -48,8 +53,6 @@ export class RenderService {
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
         this.startRenderingLoop();
-        console.warn(this.scene);
-        console.warn(this.scene.children.length);
 
     }
 
@@ -66,9 +69,11 @@ export class RenderService {
     private update(cars: Car[]): void {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         for (let i: number = 0; i < CARS_MAX; i++) {
-            cars[i].update(timeSinceLastFrame);
+
+                cars[i].update(timeSinceLastFrame);
         }
         this.lastDate = Date.now();
+
     }
 
     private async createScene(): Promise<void> {
@@ -104,13 +109,17 @@ export class RenderService {
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
         this.render();
+        console.warn(this.updatedCarPosition);
+
     }
 
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
+        this.updatedCarPosition = this.cars[0].getUpdatedPosition();
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
+        console.warn(this.updatedCarPosition);
     }
 
     public onResize(): void {
