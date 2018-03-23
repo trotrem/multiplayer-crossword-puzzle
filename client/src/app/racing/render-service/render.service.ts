@@ -7,6 +7,7 @@ import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-h
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -36,7 +37,6 @@ export class RenderService {
 
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
-        this.cars[0] = new Car();
         this.updatedCarPosition = new THREE.Vector3();
         this.raceIsFinished = false;
         this.counter = 0;
@@ -57,11 +57,11 @@ export class RenderService {
         if (container) {
             this.container = container;
         }
-        await this.createScene();
+        await this.createScene(points);
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
         this.startRenderingLoop();
-        this.trackMeshs = TrackDisplay.drawTrack(points);
+
         for (const mesh of this.trackMeshs) {
             this.scene.add(mesh);
         }
@@ -90,7 +90,7 @@ export class RenderService {
 
     }
 
-    private async createScene(): Promise<void> {
+    private async createScene(points: THREE.Vector3[]): Promise<void> {
         this.scene = new THREE.Scene();
 
         this.camera = new THREE.PerspectiveCamera(
@@ -103,8 +103,14 @@ export class RenderService {
         this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+        
+        this.trackMeshs = TrackDisplay.drawTrack(points);
+        
+        let collisionService: WallsCollisionsService = new WallsCollisionsService();
+        collisionService.createWalls(points,7, this.scene);
+
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this.cars[i] = new Car();
+            this.cars[i] = new Car(collisionService);
             await this.cars[i].init();
             this.scene.add(this.cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));

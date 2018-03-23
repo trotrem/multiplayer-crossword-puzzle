@@ -3,6 +3,7 @@ import { Engine } from "./engine";
 import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -32,6 +33,7 @@ export class Car extends Object3D {
     private carLoader: CarLoader;
 
     private _speed: Vector3;
+    private _velocity: Vector3;
     private isBraking: boolean;
     private mesh: Object3D;
     private steeringWheelDirection: number;
@@ -40,6 +42,10 @@ export class Car extends Object3D {
 
     public get speed(): Vector3 {
         return this._speed.clone();
+    }
+
+    public get velocity(): Vector3 {
+        return this._velocity.clone();
     }
 
     public get currentGear(): number {
@@ -65,6 +71,7 @@ export class Car extends Object3D {
     }
 
     public constructor(
+        private collisionService: WallsCollisionsService,
         engine: Engine = new Engine(),
         rearWheel: Wheel = new Wheel(),
         wheelbase: number = DEFAULT_WHEELBASE,
@@ -153,6 +160,10 @@ export class Car extends Object3D {
         this.mesh.rotateY(omega);
 
     }
+    
+    public getDeltaPosition(deltaTime: number): Vector3 {
+        return this.speed.multiplyScalar(deltaTime);
+    }
 
     private physicsUpdate(deltaTime: number): void {
         this.rearWheel.angularVelocity += this.getAngularAcceleration() * deltaTime;
@@ -160,11 +171,13 @@ export class Car extends Object3D {
         this.weightRear = this.getWeightDistribution();
         this._speed.add(this.getDeltaSpeed(deltaTime));
         this._speed.setLength(this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length());
-        this.mesh.position.add(this.getDeltaPosition(deltaTime));
-        this.rearWheel.update(this._speed.length());
+        this._velocity = this.getDeltaPosition(deltaTime);
+        if(!this.collisionService.willCollide(this)) {
+            this.mesh.position.add(this.velocity);
+            this.rearWheel.update(this.speed.length());
 
-        this.updatedPosition = this.mesh.position;
-
+            this.updatedPosition = this.mesh.position;
+        }
     }
 
     private getWeightDistribution(): number {
@@ -255,10 +268,6 @@ export class Car extends Object3D {
 
     private getDeltaSpeed(deltaTime: number): Vector3 {
         return this.getAcceleration().multiplyScalar(deltaTime);
-    }
-
-    private getDeltaPosition(deltaTime: number): Vector3 {
-        return this.speed.multiplyScalar(deltaTime);
     }
 
     private isGoingForward(): boolean {

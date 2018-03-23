@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { RaceUtils } from "../utils/utils";
 import { Vector3 } from "three";
+import { Car } from "../car/car";
 
 interface ILine {
     pos1: THREE.Vector3;
@@ -20,6 +21,10 @@ export class WallsCollisionsService {
 
     private get _walls() {
         return this._exteriorwalls.concat(this._interiorwalls);
+    }
+
+    public willCollide(car: Car): boolean {
+        return false;
     }
 
     public createWalls(trackPoints: THREE.Vector3[], trackWidth: number, scene: THREE.Scene) {
