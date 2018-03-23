@@ -36,6 +36,7 @@ export class Car extends Object3D {
     private mesh: Object3D;
     private steeringWheelDirection: number;
     private weightRear: number;
+    private updatedPosition: Vector3;
 
     public get speed(): Vector3 {
         return this._speed.clone();
@@ -92,6 +93,7 @@ export class Car extends Object3D {
         this.mass = mass;
         this.dragCoefficient = dragCoefficient;
         this.carLoader = new CarLoader();
+        this.updatedPosition = new Vector3();
 
         this.isBraking = false;
         this.steeringWheelDirection = 0;
@@ -124,6 +126,10 @@ export class Car extends Object3D {
     public brake(): void {
         this.isBraking = true;
     }
+    public getUpdatedPosition(): Vector3 {
+
+        return this.updatedPosition;
+    }
 
     public update(deltaTime: number): void {
         deltaTime = deltaTime / MS_TO_SECONDS;
@@ -145,6 +151,7 @@ export class Car extends Object3D {
         const R: number = DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
         const omega: number = this._speed.length() / R;
         this.mesh.rotateY(omega);
+
     }
 
     private physicsUpdate(deltaTime: number): void {
@@ -155,6 +162,9 @@ export class Car extends Object3D {
         this._speed.setLength(this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length());
         this.mesh.position.add(this.getDeltaPosition(deltaTime));
         this.rearWheel.update(this._speed.length());
+
+        this.updatedPosition = this.mesh.position;
+
     }
 
     private getWeightDistribution(): number {

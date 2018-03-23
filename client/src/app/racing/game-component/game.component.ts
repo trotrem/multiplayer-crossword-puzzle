@@ -3,10 +3,9 @@ import { RenderService } from "../render-service/render.service";
 import { Car } from "../car/car";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Track } from "../track";
 import * as THREE from "three";
-import { Vector3 } from "three";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -28,9 +27,9 @@ export class GameComponent implements AfterViewInit {
     private lights: string[];
     private disabledCar: boolean;
 
-    public constructor(private route: ActivatedRoute, private http: HttpClient) {
+    public constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
         this.communicationService = new CommunicationRacingService(this.http);
-        this.renderService = new RenderService();
+        this.renderService = new RenderService(router);
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -78,11 +77,10 @@ export class GameComponent implements AfterViewInit {
                 const track: Track = res[0];
                 const points: THREE.Vector3[] = [];
                 for (let point of track.points) {
-                    points.push(new Vector3(point.x, point.y, point.z));
+                    points.push(new THREE.Vector3(point.x, point.y, point.z));
                 }
                 track.points = points;
-                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone);
-                this.renderService.drawTrack(track.points);
+                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, track.points);
 
             });
 
