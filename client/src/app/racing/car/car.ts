@@ -97,6 +97,7 @@ export class Car extends Object3D {
         this.mass = mass;
         this.dragCoefficient = dragCoefficient;
         this.carLoader = new CarLoader();
+        this.updatedPosition = new Vector3();
 
         this.isBraking = false;
         this.steeringWheelDirection = 0;
@@ -129,6 +130,10 @@ export class Car extends Object3D {
     public brake(): void {
         this.isBraking = true;
     }
+    public getUpdatedPosition(): Vector3 {
+
+        return this.updatedPosition;
+    }
 
     public update(deltaTime: number): void {
         deltaTime = deltaTime / MS_TO_SECONDS;
@@ -150,6 +155,7 @@ export class Car extends Object3D {
         const R: number = DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
         const omega: number = this._speed.length() / R;
         this.mesh.rotateY(omega);
+
     }
 
     private physicsUpdate(deltaTime: number): void {

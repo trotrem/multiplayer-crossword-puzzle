@@ -18,8 +18,10 @@ import {SceneServices} from "./racing/scene.services/scene.service";
 import { CommunicationRacingService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
+import { GameResultsComponent } from "./racing/game-results/game-results.component";
 
 const appRoutes: Routes = [
+    { path: "gameResults", component: GameResultsComponent },
     { path: "editor/:name", component: EditorComponent },
     { path: "endGame", component: EndGameComponent},
     { path: "endGame/:nbPlayers", component: EndGameComponent},
@@ -50,6 +52,7 @@ const appRoutes: Routes = [
         UserComponent,
         HomePageComponent,
         EndGameComponent,
+        GameResultsComponent,
     ],
     imports: [
         BrowserModule,
