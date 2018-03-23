@@ -22,6 +22,7 @@ import { GameResultsComponent } from "./racing/game-results/game-results.compone
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
+    { path: "gameResults/:CarIndex", component: GameResultsComponent },
     { path: "editor/:name", component: EditorComponent },
     { path: "endGame", component: EndGameComponent},
     { path: "endGame/:nbPlayers", component: EndGameComponent},

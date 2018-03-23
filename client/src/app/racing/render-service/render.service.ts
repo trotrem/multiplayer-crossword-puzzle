@@ -33,6 +33,7 @@ export class RenderService {
     private counter: number;
     private trackMeshs: THREE.Mesh[];
     private validIndex: number;
+    private timer: number;
 
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
@@ -42,6 +43,11 @@ export class RenderService {
         this.counter = 0;
         this.trackMeshs = new Array<THREE.Mesh>();
         this.validIndex = 0;
+        this.timer = 0;
+    }
+
+    public getCars(): Car[] {
+        return this.cars;
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -87,6 +93,7 @@ export class RenderService {
         this.setUpdateCarPosition();
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
+        this.timer += timeSinceLastFrame;
 
     }
 
@@ -146,6 +153,8 @@ export class RenderService {
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {
+                this.cars[0].setLabTimes(this.timer);
+                console.warn(this.cars[0].getLabTimes());
                 this.validIndex = 0;
                 this.counter += 1;
                 if (this.counter === LAP_MAX) {
@@ -156,7 +165,7 @@ export class RenderService {
         }
         if (this.raceIsFinished) {
             // console.log(this.raceIsFinished );
-            this.router.navigateByUrl("/gameResults");
+            this.router.navigateByUrl("/gameResults/" + 0);
 
         }
         // console.log(this.counter);
