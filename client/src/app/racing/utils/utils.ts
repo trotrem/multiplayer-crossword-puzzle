@@ -1,7 +1,22 @@
 import * as THREE from "three";
 
+const PRECISION: number = 0.0000001;
+
 // TODO: make editor use this
 export class RaceUtils {
+
+    public static linesCross(pos1: THREE.Vector3, pos2: THREE.Vector3, pos3: THREE.Vector3, pos4: THREE.Vector3): boolean {
+        const intersection: THREE.Vector3 = this.twoLinesIntersection(pos1, pos2, pos3, pos4);
+        if (intersection === null || Math.abs(pos1.distanceTo(intersection)
+                                     + intersection.distanceTo(pos2)
+                                     - pos1.distanceTo(pos2))
+                                     > PRECISION) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static twoLinesIntersection(
         position1: THREE.Vector3,
         position2: THREE.Vector3,

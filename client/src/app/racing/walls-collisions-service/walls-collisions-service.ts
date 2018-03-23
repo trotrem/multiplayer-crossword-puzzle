@@ -1,12 +1,8 @@
 import * as THREE from "three";
 import { RaceUtils } from "../utils/utils";
-import { Vector3 } from "three";
+import { Vector3, LineBasicMaterial } from "three";
 import { Car } from "../car/car";
-
-interface ILine {
-    pos1: THREE.Vector3;
-    pos2: THREE.Vector3;
-}
+import { ILine } from "../dataStructures";
 
 // Sides may be inverted depending on the orientation of the track (clockwise or counter-clockwise)
 enum WallSide {
@@ -16,48 +12,57 @@ enum WallSide {
 
 export class WallsCollisionsService {
 
-    private _exteriorwalls: ILine[] = [];
-    private _interiorwalls: ILine[] = [];
+    private _walls: ILine[] = [];
+    private _raycaster: THREE.Raycaster = new THREE.Raycaster();
+    private _intersects: THREE.Intersection[] = [];
 
-    private get _walls() {
-        return this._exteriorwalls.concat(this._interiorwalls);
+    constructor(private _scene: THREE.Scene) {
+
     }
 
     public willCollide(car: Car): boolean {
+        for (let i: number = 0; i < car.corners.length; i++) {
+            for (const wall of this._walls) {
+                if (RaceUtils.linesCross(car.corners[i], car.corners[(i + 1) % car.corners.length], wall.pos1, wall.pos2)) {
+                    return false;
+                }
+            }
+        }
         return false;
     }
 
     public createWalls(trackPoints: THREE.Vector3[], trackWidth: number, scene: THREE.Scene) {
-        this._exteriorwalls.push({pos1: null, pos2: null});
-        this._interiorwalls.push({pos1: null, pos2: null});
+        let exteriorWalls: ILine[] = [{pos1: null, pos2: null}];
+        let interiorWalls: ILine[] = [{pos1: null, pos2: null}];
 
         trackPoints.pop();
         for (let i: number = 0; i < trackPoints.length; i++) {
             let interiorCrossing: THREE.Vector3 = this.findWallPairIntersection(trackPoints, i, WallSide.interior);
             let exteriorCrossing: THREE.Vector3 = this.findWallPairIntersection(trackPoints, i, WallSide.exterior);
 
-            this._exteriorwalls[i].pos2 = exteriorCrossing;
+            exteriorWalls[i].pos2 = exteriorCrossing;
             if(i === trackPoints.length - 1) {
-                this._exteriorwalls[0].pos1 = exteriorCrossing;
+                exteriorWalls[0].pos1 = exteriorCrossing;
             } else {
-                this._exteriorwalls.push({pos1: exteriorCrossing, pos2: null});
+                exteriorWalls.push({pos1: exteriorCrossing, pos2: null});
             }
-            this._interiorwalls[i].pos2 = interiorCrossing;
+            interiorWalls[i].pos2 = interiorCrossing;
             if(i === trackPoints.length - 1) {
-                this._interiorwalls[0].pos1 = interiorCrossing;
+                interiorWalls[0].pos1 = interiorCrossing;
             } else {
-                this._interiorwalls.push({pos1: interiorCrossing, pos2: null});
+                interiorWalls.push({pos1: interiorCrossing, pos2: null});
             }
         }
 
-        for (const line of this._walls) {
+        for (const line of interiorWalls.concat(exteriorWalls)) {
             var geo = new THREE.Geometry();
             geo.vertices.push( line.pos1 );
             geo.vertices.push( line.pos2 );
             var wallMaterial = new THREE.LineBasicMaterial( { color: 0x00ff88 } );
             
             var wall = new THREE.Line( geo, wallMaterial );
-            
+            this._walls.push(line);
+
             scene.add( wall );
         }
     }
