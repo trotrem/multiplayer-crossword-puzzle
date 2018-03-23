@@ -1,7 +1,8 @@
 import * as THREE from "three";
 
+// TODO: make editor use this
 export class RaceUtils {
-    private twoLinesIntersect(
+    public static twoLinesIntersection(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
         position3: THREE.Vector3,
@@ -10,9 +11,11 @@ export class RaceUtils {
         if (this.calculateDet(position1, position2, position3, position4) !== 0) {
             return this.calculateIntersection(position1, position2, position3, position4);
         }
+
+        return null;
     }
 
-    private calculateDet(
+    private static calculateDet(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
         position3: THREE.Vector3,
@@ -21,7 +24,7 @@ export class RaceUtils {
             - (position4.y - position3.y) * (position1.x - position2.x);
     }
 
-    private calculateIntersection(
+    private static calculateIntersection(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
         position3: THREE.Vector3,

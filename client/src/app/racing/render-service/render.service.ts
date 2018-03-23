@@ -5,6 +5,8 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { Vector3 } from "three";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -159,5 +161,8 @@ export class RenderService {
             }
 
         }
+        
+        let collisions: WallsCollisionsService = new WallsCollisionsService();
+        collisions.createWalls(points,7, this.scene);
     }
 }
