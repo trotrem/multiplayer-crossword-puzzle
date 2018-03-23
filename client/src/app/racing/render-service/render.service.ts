@@ -15,7 +15,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 100;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-const LAP_MAX: number = 3;
+const LAP_MAX: number = 1;
 
 @Injectable()
 export class RenderService {

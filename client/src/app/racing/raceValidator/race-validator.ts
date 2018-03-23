@@ -1,13 +1,12 @@
 import * as THREE from "three";
-const ARRAY_MIN: number = 2;
-// const MAX_DISTANCE: number = 60;
 const ADD_TO_DISTANCE: number = 30;
 export class RaceValidator {
     public static getLapPositionVerifiers( meshs: THREE.Mesh[]): THREE.Vector3[] {
         const positions: THREE.Vector3[] = new Array<THREE.Vector3>();
 
-        for (let i: number = 0; i < meshs.length - ARRAY_MIN ; i += ARRAY_MIN) {
-            positions.push(meshs[i].position);
+        for (const mesh of meshs) {
+                positions.push(mesh.position.clone());
+
         }
 
         return positions;
