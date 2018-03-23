@@ -5,7 +5,8 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { TrackDisplay } from "./../trackDisplay/track-display";
-import {RaceValidator} from "./../raceValidator/race-validator";
+import { RaceValidator } from "./../raceValidator/race-validator";
+import { Router } from "@angular/router";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -33,7 +34,7 @@ export class RenderService {
     private trackMeshs: THREE.Mesh[];
     private validIndex: number;
 
-    public constructor() {
+    public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
         this.updatedCarPosition = new THREE.Vector3();
@@ -80,7 +81,7 @@ export class RenderService {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         for (let i: number = 0; i < CARS_MAX; i++) {
 
-                cars[i].update(timeSinceLastFrame);
+            cars[i].update(timeSinceLastFrame);
         }
 
         this.setUpdateCarPosition();
@@ -137,24 +138,26 @@ export class RenderService {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
-    public async validateLap(index: number): Promise<boolean > {
+    public async validateLap(index: number): Promise<boolean> {
         await this.setUpdateCarPosition();
-        let isPartlyValid: Promise<boolean> ;
+        let isPartlyValid: Promise<boolean>;
         const positions: THREE.Vector3[] = RaceValidator.getLapPositionVerifiers(this.trackMeshs);
         const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarPosition, positions[index]);
         if (isvalidated) {
-           this.validIndex += 1;
-           if (this.validIndex === positions.length) {
-               this.validIndex = 0;
-               this.counter += 1;
-               if (this.counter === LAP_MAX) {
-                   this.raceIsFinished = true;
-               }
-           }
-           isPartlyValid = this.validateLap(this.validIndex);
-           }
+            this.validIndex += 1;
+            if (this.validIndex === positions.length) {
+                this.validIndex = 0;
+                this.counter += 1;
+                if (this.counter === LAP_MAX) {
+                    this.raceIsFinished = true;
+                }
+            }
+            isPartlyValid = this.validateLap(this.validIndex);
+        }
         if (this.raceIsFinished) {
-            console.log(this.raceIsFinished );
+            // console.log(this.raceIsFinished );
+            this.router.navigateByUrl("/gameResults");
+
         }
         // console.log(this.counter);
 
