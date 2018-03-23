@@ -28,8 +28,7 @@ export class RenderService {
     private evenHandeler: EventHandlerRenderService;
     private cars: Car[];
     private updatedCarPosition: THREE.Vector3;
-    private lapIsValid: boolean;
-    private raceFinished: boolean;
+    private raceIsFinished: boolean;
     private counter: number;
     private trackMeshs: THREE.Mesh[];
     private validIndex: number;
@@ -38,7 +37,7 @@ export class RenderService {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
         this.updatedCarPosition = new THREE.Vector3();
-        this.lapIsValid = false;
+        this.raceIsFinished = false;
         this.counter = 0;
         this.trackMeshs = new Array<THREE.Mesh>();
         this.validIndex = 0;
@@ -128,8 +127,6 @@ export class RenderService {
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
-        // this.setUpdateCarPosition();
-        // this.validateLap(0);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
 
@@ -143,27 +140,22 @@ export class RenderService {
     public async validateLap(index: number): Promise<boolean > {
         await this.setUpdateCarPosition();
         let isPartlyValid: Promise<boolean> ;
-        // console.log(this.validIndex);
         const positions: THREE.Vector3[] = RaceValidator.getLapPositionVerifiers(this.trackMeshs);
-        // console.log(positions.length);
-        // console.log(this.getUpdateCarPosition());
         const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarPosition, positions[index]);
         if (isvalidated) {
-        //    console.log(isvalidated);
-           this.validIndex = this.validIndex + 1;
+           this.validIndex += 1;
            if (this.validIndex === positions.length) {
-               this.lapIsValid = true ;
                this.validIndex = 0;
-               this.counter = this.counter + 1;
+               this.counter += 1;
                if (this.counter === LAP_MAX) {
-                   this.raceFinished = true;
+                   this.raceIsFinished = true;
                }
            }
-           this.lapIsValid = false ;
            isPartlyValid = this.validateLap(this.validIndex);
            }
 
-           console.log(this.counter);
+        console.log(this.counter);
+
         return isPartlyValid;
     }
 
