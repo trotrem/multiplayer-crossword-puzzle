@@ -4,15 +4,9 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
-<<<<<<< HEAD
-import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { Vector3 } from "three";
-=======
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
->>>>>>> master
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
