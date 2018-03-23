@@ -37,6 +37,7 @@ export class Car extends Object3D {
     private steeringWheelDirection: number;
     private weightRear: number;
     private updatedPosition: Vector3;
+    private lapTimes: number[];
 
     public get speed(): Vector3 {
         return this._speed.clone();
@@ -71,17 +72,14 @@ export class Car extends Object3D {
         mass: number = DEFAULT_MASS,
         dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
-
         if (wheelbase <= 0) {
             console.error("Wheelbase should be greater than 0.");
             wheelbase = DEFAULT_WHEELBASE;
         }
-
         if (mass <= 0) {
             console.error("Mass should be greater than 0.");
             mass = DEFAULT_MASS;
         }
-
         if (dragCoefficient <= 0) {
             console.error("Drag coefficient should be greater than 0.");
             dragCoefficient = DEFAULT_DRAG_COEFFICIENT;
@@ -99,6 +97,7 @@ export class Car extends Object3D {
         this.steeringWheelDirection = 0;
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
+        this.lapTimes = new Array<number>();
     }
 
     public async init(): Promise<void> {
@@ -201,9 +200,8 @@ export class Car extends Object3D {
         const tirePressure: number = 1;
         // formula taken from: https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html
 
-        const rollingCoefficient: number = (1 / tirePressure) * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE,
-                                                                          NUMBER_REAR_WHEELS) *
-                                                                          COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
+        const rollingCoefficient: number = (1 / tirePressure) * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE, NUMBER_REAR_WHEELS) *
+            COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
 
         return this.direction.multiplyScalar(rollingCoefficient * this.mass * GRAVITY);
     }
@@ -263,5 +261,18 @@ export class Car extends Object3D {
 
     private isGoingForward(): boolean {
         return this.speed.normalize().dot(this.direction) > MINIMUM_SPEED;
+    }
+
+    public getLabTimes(): number[] {
+        return this.lapTimes;
+    }
+
+    public setLabTimes(time: number): void {
+        for (let i: number = 1; i < this.lapTimes.length; i++) {
+            if (this.lapTimes.length > 0) {
+                time -= this.lapTimes[this.lapTimes.length - i];
+            }
+        }
+        this.lapTimes.push(time);
     }
 }

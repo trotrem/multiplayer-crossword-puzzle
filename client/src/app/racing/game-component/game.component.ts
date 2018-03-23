@@ -63,7 +63,6 @@ export class GameComponent implements AfterViewInit {
         this.changeLightColor("green", 0);
         await this.delay(DELAY);
         this.changeLightColor("", 0);
-        this.disabledCar = false;
         this.renderService.initializeEventHandlerService();
         await this.delay(DELAY);
     }
@@ -83,6 +82,7 @@ export class GameComponent implements AfterViewInit {
     }
 
     private play(): void {
+        this.disabledCar = false;
         this.visualSignal();
     }
 }
