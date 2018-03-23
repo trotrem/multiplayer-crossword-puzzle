@@ -5,6 +5,7 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { TrackDisplay } from "./../trackDisplay/track-display";
+import {RaceValidator} from "./../raceValidator/race-validator";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -26,17 +27,26 @@ export class RenderService {
     private evenHandeler: EventHandlerRenderService;
     private cars: Car[];
     private updatedCarPosition: THREE.Vector3;
+    private lapIsValid: boolean;
+    private trackMeshs: THREE.Mesh[];
+    private validIndex: number;
 
     public constructor() {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
         this.updatedCarPosition = new THREE.Vector3();
+        this.lapIsValid = false;
+        this.trackMeshs = new Array<THREE.Mesh>();
+        this.validIndex = 0;
     }
     public getScene(): THREE.Scene {
         return this.scene;
     }
     public getUpdateCarPosition(): THREE.Vector3 {
         return this.updatedCarPosition;
+    }
+    public setUpdateCarPosition(): void {
+        this.updatedCarPosition = this.cars[0].getUpdatedPosition();
     }
 
     public async initialize(container: HTMLDivElement, line: THREE.Line3, points: THREE.Vector3[]): Promise<void> {
@@ -47,8 +57,8 @@ export class RenderService {
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
         this.startRenderingLoop();
-        const addToScene: THREE.Mesh[] = TrackDisplay.drawTrack(points);
-        for (const mesh of addToScene) {
+        this.trackMeshs = TrackDisplay.drawTrack(points);
+        for (const mesh of this.trackMeshs) {
             this.scene.add(mesh);
         }
     }
@@ -69,6 +79,8 @@ export class RenderService {
 
                 cars[i].update(timeSinceLastFrame);
         }
+        this.setUpdateCarPosition();
+        this.validateLap(this.validIndex);
         this.lastDate = Date.now();
 
     }
@@ -102,26 +114,45 @@ export class RenderService {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
         this.render();
-        // console.warn(this.updatedCarPosition);
 
     }
 
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
-        this.updatedCarPosition = this.cars[0].getUpdatedPosition();
+        // this.setUpdateCarPosition();
+        // this.validateLap(0);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
-        // console.warn(this.updatedCarPosition);
+
     }
 
     public onResize(): void {
         this.camera.aspect = this.getAspectRatio();
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    }
+    public async validateLap(index: number): Promise<boolean > {
+        await this.setUpdateCarPosition();
+        let isPartlyValid: Promise<boolean> ;
+        console.log(this.validIndex);
+        const positions: THREE.Vector3[] = RaceValidator.getLapPositionVerifiers(this.trackMeshs);
+        // console.log(positions.length);
+        // console.log(this.getUpdateCarPosition());
+        const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarPosition, positions[index]);
+        if (isvalidated) {
+        //    console.log(isvalidated);
+           this.validIndex = this.validIndex + 1;
+           if (this.validIndex === positions.length) {
+               return this.lapIsValid = true ;
+           }
+           isPartlyValid = this.validateLap(this.validIndex);
+           }
+        // if (this.lapIsValid){console.log(this.lapIsValid); }
+
+        return isPartlyValid;
     }
 }
