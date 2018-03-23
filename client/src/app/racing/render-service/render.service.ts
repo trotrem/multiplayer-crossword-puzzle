@@ -153,8 +153,10 @@ export class RenderService {
            }
            isPartlyValid = this.validateLap(this.validIndex);
            }
-
-        console.log(this.counter);
+        // if (this.raceIsFinished) {
+        //     console.log(this.raceIsFinished );
+        // }
+        // console.log(this.counter);
 
         return isPartlyValid;
     }

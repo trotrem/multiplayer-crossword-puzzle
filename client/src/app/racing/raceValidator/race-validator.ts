@@ -1,6 +1,6 @@
 import * as THREE from "three";
 const ARRAY_MIN: number = 2;
-const MAX_DISTANCE: number = 60;
+// const MAX_DISTANCE: number = 60;
 const MULTIPLY_DISTANCE: number = 2;
 export class RaceValidator {
     public static getLapPositionVerifiers( meshs: THREE.Mesh[]): THREE.Vector3[] {
