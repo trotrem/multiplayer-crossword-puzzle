@@ -36,6 +36,7 @@ export class Car extends Object3D {
     private mesh: Object3D;
     private steeringWheelDirection: number;
     private weightRear: number;
+    private updatedPosition: Vector3;
 
     public get speed(): Vector3 {
         return this._speed.clone();
@@ -61,6 +62,10 @@ export class Car extends Object3D {
         carDirection.applyMatrix4(rotationMatrix);
 
         return carDirection;
+    }
+
+    public get updatePosition(): Vector3 {
+        return this.updatedPosition;
     }
 
     public constructor(
@@ -155,6 +160,8 @@ export class Car extends Object3D {
         this._speed.setLength(this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length());
         this.mesh.position.add(this.getDeltaPosition(deltaTime));
         this.rearWheel.update(this._speed.length());
+
+        this.updatedPosition = this.mesh.position;
     }
 
     private getWeightDistribution(): number {
@@ -192,8 +199,8 @@ export class Car extends Object3D {
         // formula taken from: https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html
 
         const rollingCoefficient: number = (1 / tirePressure) * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE,
-                                                                          NUMBER_REAR_WHEELS) *
-                                                                          COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
+            NUMBER_REAR_WHEELS) *
+            COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
 
         return this.direction.multiplyScalar(rollingCoefficient * this.mass * GRAVITY);
     }

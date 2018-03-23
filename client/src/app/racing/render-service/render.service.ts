@@ -5,12 +5,14 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { PositionsDefinerService } from "../PositionsDefiner.service/position-definer.service";
+import { OrthographicCamera } from "../camera/topView-camera";
+import { PerspectiveCamera } from "../camera/rearView-camera";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
 
-const INITIAL_CAMERA_POSITION_Z: number = 100;
+const INITIAL_CAMERA_POSITION_Z: number = 50;
 const WHITE: number = 0xFFFFFF;
 const GRAY: number = 0x7B8284;
 const RED: number = 0xFF0000;
@@ -23,7 +25,8 @@ const WIDTH_POINT: number = 0.5;
 
 @Injectable()
 export class RenderService {
-    private camera: THREE.PerspectiveCamera;
+    private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
+    // private camera: THREE.PerspectiveCamera;
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
@@ -69,6 +72,7 @@ export class RenderService {
             cars[i].update(timeSinceLastFrame);
         }
         this.lastDate = Date.now();
+        this.cameras[1].updatePosition(this.cars[0]);
         /*this.camera.position.x = this._car.position.x;
         this.camera.position.y = this._car.position.y;
         this.camera.position.z = this.camera.position.z;
@@ -81,15 +85,13 @@ export class RenderService {
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
 
-        this.camera = new THREE.PerspectiveCamera(
-            FIELD_OF_VIEW,
-            this.getAspectRatio(),
-            NEAR_CLIPPING_PLANE,
-            FAR_CLIPPING_PLANE
-        );
+        this.cameras[0] = new PerspectiveCamera();
+        this.cameras[1] = new OrthographicCamera();
+        const relativeCameraOffset = new THREE.Vector3(1000, 1000, INITIAL_CAMERA_POSITION_Z);
 
-        this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        this.cameras[1].position.copy(relativeCameraOffset);
+        this.cameras[1].lookAt(this.cars[0].position);
+        // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.cars[0]);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car();
@@ -116,13 +118,13 @@ export class RenderService {
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
-        this.renderer.render(this.scene, this.camera);
+        this.renderer.render(this.scene, this.cameras[1]);
         this.stats.update();
     }
 
     public onResize(): void {
-        this.camera.aspect = this.getAspectRatio();
-        this.camera.updateProjectionMatrix();
+        // this.cameras[1].aspect = this.getAspectRatio();
+        this.cameras[1].updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 
@@ -146,6 +148,7 @@ export class RenderService {
     private SetPointFromMatrix(point: THREE.Vector3): THREE.Vector3 {
 
         return new THREE.Vector3().applyMatrix4(new THREE.Matrix4().makeTranslation(point.x, point.y, 0));
+
     }
 
     public drawTrack(points: THREE.Vector3[]): void {
