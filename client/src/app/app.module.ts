@@ -21,6 +21,7 @@ import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/game-results/game-results.component";
 
 const appRoutes: Routes = [
+    { path: "gameResults", component: GameResultsComponent },
     { path: "editor/:name", component: EditorComponent },
     { path: "endGame", component: EndGameComponent},
     { path: "endGame/:nbPlayers", component: EndGameComponent},
