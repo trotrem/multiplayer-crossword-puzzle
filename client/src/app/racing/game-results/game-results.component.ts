@@ -16,7 +16,7 @@ export class GameResultsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    console.warn(this.renderService.getCars()[0].getLabTimes());
+    // console.warn(this.renderService.getCars()[0].getLabTimes());
   }
 
 }

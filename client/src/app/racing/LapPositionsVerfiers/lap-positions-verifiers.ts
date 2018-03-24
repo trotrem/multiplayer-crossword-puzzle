@@ -19,7 +19,7 @@ export class LapPositionsVerfiers {
 
     public static getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
 
-        const position2: THREE.Vector3 = carPosition.clone().set(carPosition.x, carPosition.z, carPosition.y);
+        const position2: THREE.Vector3 = carPosition.clone();
 
         return position2.distanceTo(position) <= LapPositionsVerfiers.getMaxDistance(carPosition);
     }

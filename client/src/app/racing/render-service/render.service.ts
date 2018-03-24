@@ -38,12 +38,7 @@ export class RenderService {
 
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
-<<<<<<< HEAD
-        this.cars[0] = new Car();
-        this.updatedCarsPositions = new Array<THREE.Vector3>(CARS_MAX);
-=======
-        this.updatedCarPosition = new THREE.Vector3();
->>>>>>> master
+        this.updatedCarsPositions = new Array<THREE.Vector3>();
         this.raceIsFinished = false;
         this.counter = 0;
         this.trackMeshs = new Array<THREE.Mesh>();
@@ -105,9 +100,11 @@ export class RenderService {
         for (let i: number = 0; i < CARS_MAX; i++) {
 
             cars[i].update(timeSinceLastFrame);
-            this.setUpdateCarPosition(i);
-            this.validateLap(this.validIndex, i);
+            /*this.setUpdateCarPosition(i);
+            this.validateLap(this.validIndex, i);*/
         }
+        this.setUpdateCarPosition(0);
+        this.validateLap(this.validIndex, 0);
         this.lastDate = Date.now();
         this.timer += timeSinceLastFrame;
 
@@ -116,7 +113,6 @@ export class RenderService {
             geo.vertices.push( this.cars[0].corners[i] );
 
             var wallMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
-            
             var wall = new THREE.Points( geo, wallMaterial );
 
             this.scene.add( wall );
@@ -137,18 +133,17 @@ export class RenderService {
         this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-        
         this.trackMeshs = TrackDisplay.drawTrack(points);
-        
-        let collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
-        collisionService.createWalls(points,7, this.scene);
+
+        const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
+        collisionService.createWalls(points, 7, this.scene);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car(collisionService);
             await this.cars[i].init();
             this.scene.add(this.cars[i]);
         }
-        
+
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
 
@@ -166,28 +161,28 @@ export class RenderService {
 
     }
 
-    private gameLoop(){
+    private gameLoop(): void {
         let now: number;
         let delta: number;
         let interval: number;
         let then = Date.now();
         const loop = (time: number) => {
             requestAnimationFrame(loop);
-    
-            interval = 1000/(60);
+
+            interval = 1000 / (60);
             now = Date.now();
             delta = now - then;
-    
+
             if (delta > interval) {
                 // update time stuffs
                 then = now - (delta % interval);
-    
+
                 // call the fn
                 // and pass current fps to it
                 this.render();
             }
         };
-        
+
         return loop(0);
     }
 
@@ -211,22 +206,24 @@ export class RenderService {
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {
-                console.warn(this.timer);
+                console.log(this.validIndex);
+                // console.warn(this.timer);
                 this.cars[carIndex].setLabTimes(this.timer);
-                console.warn(this.cars[carIndex].getLabTimes());
+                // console.warn(this.cars[carIndex].getLabTimes());
                 this.validIndex = 0;
                 this.counter += 1;
                 if (this.counter === LAP_MAX) {
                     this.raceIsFinished = true;
+                    this.router.navigateByUrl("/gameResults");
                 }
             }
             isPartlyValid = this.validateLap(this.validIndex, carIndex);
         }
-        if (this.raceIsFinished) {
-            // console.log(this.raceIsFinished );
-            this.router.navigateByUrl("/gameResults");
-
-        }
+        /* if (this.raceIsFinished) {
+             // console.log(this.raceIsFinished );
+             this.router.navigateByUrl("/gameResults");
+ 
+         }*/
         // console.log(this.counter);
 
         return isPartlyValid;
