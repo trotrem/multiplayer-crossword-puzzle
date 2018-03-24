@@ -60,10 +60,9 @@ export class Car extends Object3D {
     return this._mesh.rotation.y * RAD_TO_DEG;
   }
 
-  public get corners(): Vector3[] {
+  public getCorners(pos: Vector3): Vector3[] {
     return [
-      this.getUpdatedPosition()
-        /* new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).add(
+      pos.add(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .add(
@@ -72,7 +71,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).add(
+      pos.add(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .sub(
@@ -81,7 +80,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).sub(
+      pos.sub(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .add(
@@ -90,7 +89,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).sub(
+      pos.sub(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .sub(
@@ -98,7 +97,7 @@ export class Car extends Object3D {
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
           )
-      ) */
+      )
     ];
   }
   
@@ -181,7 +180,7 @@ export class Car extends Object3D {
     this.isBraking = true;
   }
   public getUpdatedPosition(): Vector3 {
-    return this.updatedPosition;
+    return this.updatedPosition.clone();
   }
 
   public update(deltaTime: number): void {

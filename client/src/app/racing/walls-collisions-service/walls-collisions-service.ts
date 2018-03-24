@@ -21,9 +21,10 @@ export class WallsCollisionsService {
     }
 
     public willCollide(car: Car): boolean {
-        for (let i: number = 0; i < car.corners.length; i++) {
+        let corners: Vector3[] = car.getCorners(car.getUpdatedPosition());
+        for (let i: number = 0; i < corners.length; i++) {
             for (const wall of this._walls) {
-                if (RaceUtils.linesCross(car.corners[i], car.corners[(i + 1) % car.corners.length], wall.pos1, wall.pos2)) {
+                if (RaceUtils.linesCross(corners[i], corners[(i + 1) % corners.length], wall.pos1, wall.pos2)) {
                     return true;
                 }
             }

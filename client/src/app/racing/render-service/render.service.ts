@@ -88,6 +88,7 @@ export class RenderService {
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
 
+        // TODO remove this
         /* for (let i: number = 0; i < this.cars[0].corners.length; i++) {
             var geo = new THREE.Geometry();
             geo.vertices.push( this.cars[0].corners[i] );
@@ -139,7 +140,7 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
-        this.gameLoop();
+        this.render();
 
     }
 
@@ -169,6 +170,7 @@ export class RenderService {
     }
 
     private render(): void {
+        requestAnimationFrame(() => this.render());
         this.update(this.cars);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
