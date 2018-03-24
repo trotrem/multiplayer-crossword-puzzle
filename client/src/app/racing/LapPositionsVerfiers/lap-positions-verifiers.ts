@@ -1,6 +1,6 @@
 import * as THREE from "three";
 const ADD_TO_DISTANCE: number = 30;
-export class LapPositionsVerfiersCalculator {
+export class LapPositionsVerfiers {
     public static getLapPositionVerifiers( meshs: THREE.Mesh[]): THREE.Vector3[] {
         const positions: THREE.Vector3[] = new Array<THREE.Vector3>();
 
@@ -17,11 +17,11 @@ export class LapPositionsVerfiersCalculator {
 
     }
 
-    public static validateLapSection(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
+    public static getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
 
         const position2: THREE.Vector3 = carPosition.clone().set(carPosition.x, carPosition.z, carPosition.y);
 
-        return position2.distanceTo(position) <= LapPositionsVerfiersCalculator.getMaxDistance(carPosition);
+        return position2.distanceTo(position) <= LapPositionsVerfiers.getMaxDistance(carPosition);
     }
 
 }
