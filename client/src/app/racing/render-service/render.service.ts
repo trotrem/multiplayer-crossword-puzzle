@@ -28,7 +28,7 @@ export class RenderService {
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
     private cars: Car[];
-    private updatedCarPosition: THREE.Vector3;
+    private updatedCarsPositions: THREE.Vector3[];
     private raceIsFinished: boolean;
     private counter: number;
     private trackMeshs: THREE.Mesh[];
@@ -38,7 +38,7 @@ export class RenderService {
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
-        this.updatedCarPosition = new THREE.Vector3();
+        this.updatedCarsPositions = new Array<THREE.Vector3>(CARS_MAX);
         this.raceIsFinished = false;
         this.counter = 0;
         this.trackMeshs = new Array<THREE.Mesh>();
@@ -52,11 +52,11 @@ export class RenderService {
     public getScene(): THREE.Scene {
         return this.scene;
     }
-    public getUpdateCarPosition(): THREE.Vector3 {
-        return this.updatedCarPosition;
+    public getUpdateCarPosition(): THREE.Vector3[] {
+        return this.updatedCarsPositions;
     }
-    public setUpdateCarPosition(): void {
-        this.updatedCarPosition = this.cars[0].getUpdatedPosition();
+    public setUpdateCarPosition(index: number): void {
+        this.updatedCarsPositions[index] = this.cars[index].getUpdatedPosition();
     }
 
     public async initialize(container: HTMLDivElement, line: THREE.Line3, points: THREE.Vector3[]): Promise<void> {
@@ -88,10 +88,9 @@ export class RenderService {
         for (let i: number = 0; i < CARS_MAX; i++) {
 
             cars[i].update(timeSinceLastFrame);
+            this.setUpdateCarPosition(i);
+            this.validateLap(this.validIndex, i);
         }
-
-        this.setUpdateCarPosition();
-        this.validateLap(this.validIndex);
         this.lastDate = Date.now();
         this.timer += timeSinceLastFrame;
 
@@ -145,23 +144,23 @@ export class RenderService {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
-    public async validateLap(index: number): Promise<boolean> {
-        await this.setUpdateCarPosition();
+    public async validateLap(index: number, carIndex: number): Promise<boolean> {
+        await this.setUpdateCarPosition(carIndex);
         let isPartlyValid: Promise<boolean>;
         const positions: THREE.Vector3[] = RaceValidator.getLapPositionVerifiers(this.trackMeshs);
-        const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarPosition, positions[index]);
+        const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarsPositions[carIndex], positions[index]);
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {
                 this.cars[0].setLabTimes(this.timer);
-                console.warn(this.cars[0].getLabTimes());
+                // console.warn(this.cars[0].getLabTimes());
                 this.validIndex = 0;
                 this.counter += 1;
                 if (this.counter === LAP_MAX) {
                     this.raceIsFinished = true;
                 }
             }
-            isPartlyValid = this.validateLap(this.validIndex);
+            isPartlyValid = this.validateLap(this.validIndex, carIndex);
         }
         if (this.raceIsFinished) {
             // console.log(this.raceIsFinished );
