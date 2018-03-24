@@ -164,8 +164,9 @@ export class RenderService {
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {
+                console.warn(this.timer);
                 this.cars[carIndex].setLabTimes(this.timer);
-                // console.warn(this.cars[0].getLabTimes());
+                console.warn(this.cars[carIndex].getLabTimes());
                 this.validIndex = 0;
                 this.counter += 1;
                 if (this.counter === LAP_MAX) {
@@ -176,7 +177,7 @@ export class RenderService {
         }
         if (this.raceIsFinished) {
             // console.log(this.raceIsFinished );
-            this.router.navigateByUrl("/gameResults/" + carIndex);
+            this.router.navigateByUrl("/gameResults");
 
         }
         // console.log(this.counter);
