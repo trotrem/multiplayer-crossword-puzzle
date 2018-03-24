@@ -12,6 +12,7 @@ enum WallSide {
 
 const WALL_COLOR: number = 0x00FF88;
 const WALL_WIDTH: number = 8;
+const MAX_SLOWING_DISTANCE: number = 1;
 
 export class WallsCollisionsService {
     private _walls: ILine[] = [];
@@ -25,7 +26,7 @@ export class WallsCollisionsService {
         for (let i: number = 0; i < this._corners.length; i++) {
         for (const wall of this._walls) {
             /* if (RaceUtils.linesCross(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) { */
-            if(RaceUtils.doIntersect(RaceUtils.vectorToPoint(this._corners[i]), RaceUtils.vectorToPoint(this._corners[(i + 1) % this._corners.length]), RaceUtils.vectorToPoint(wall.pos1), RaceUtils.vectorToPoint(wall.pos2))) {
+            if(RaceUtils.doIntersect(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
                 normals.push(wall.pos2.clone().sub(wall.pos1).cross(new Vector3(0, 0, 1)).normalize());
             }
         }
@@ -34,10 +35,7 @@ export class WallsCollisionsService {
         return normals;
     }
 
-    public createWalls(
-        trackPoints: THREE.Vector3[],
-        scene: THREE.Scene
-    ): void {
+    public createWalls(trackPoints: THREE.Vector3[], scene: THREE.Scene): void {
         const exteriorWalls: ILine[] = [{ pos1: null, pos2: null }];
         const interiorWalls: ILine[] = [{ pos1: null, pos2: null }];
 
@@ -77,11 +75,7 @@ export class WallsCollisionsService {
         }
     }
 
-    private findWallPairIntersection(
-        trackPoints: THREE.Vector3[],
-        i: number,
-        wallSide: WallSide
-    ): THREE.Vector3 {
+    private findWallPairIntersection(trackPoints: THREE.Vector3[], i: number, wallSide: WallSide): THREE.Vector3 {
         const firstSegmentCoordinates: THREE.Vector3[] = this.trackToWallCoordinates(
         trackPoints
             .slice(i, i + 1)
