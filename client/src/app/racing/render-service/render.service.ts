@@ -7,6 +7,7 @@ import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-h
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
+import { PerspectiveCamera } from "../camera/rearView-camera";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -20,7 +21,8 @@ const LAP_MAX: number = 3;
 
 @Injectable()
 export class RenderService {
-    private camera: THREE.PerspectiveCamera;
+    private static readonly AXIS_HELPER: THREE.AxisHelper = new THREE.AxisHelper(6);
+    private camera: PerspectiveCamera;
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
@@ -65,6 +67,7 @@ export class RenderService {
         for (const mesh of this.trackMeshs) {
             this.scene.add(mesh);
         }
+        this.scene.add(RenderService.AXIS_HELPER);
     }
 
     public initializeEventHandlerService(): void {
@@ -83,25 +86,19 @@ export class RenderService {
 
             cars[i].update(timeSinceLastFrame);
         }
-
         this.setUpdateCarPosition();
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
-
+        //this.camera.rotateX(Math.PI);
+        this.camera.position.set(this.updatedCarPosition.x, this.updatedCarPosition.z, 50);
+        this.camera.lookAt(this.updatedCarPosition);
+        this.camera.updateProjectionMatrix();
     }
 
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
 
-        this.camera = new THREE.PerspectiveCamera(
-            FIELD_OF_VIEW,
-            this.getAspectRatio(),
-            NEAR_CLIPPING_PLANE,
-            FAR_CLIPPING_PLANE
-        );
-
-        this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        this.camera = new PerspectiveCamera();
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car();
