@@ -46,6 +46,8 @@ export class RenderService {
         this.counter = 0;
         this.trackMeshs = new Array<THREE.Mesh>();
         this.validIndex = 0;
+        this.cameras[0] = new PerspectiveCamera();
+        this.cameras[1] = new OrthographicCamera();
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -61,6 +63,7 @@ export class RenderService {
         if (container) {
             this.container = container;
         }
+        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
         await this.createScene();
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
@@ -81,36 +84,21 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
-    private update(cars: Car[]): void {
+    private async update(cars: Car[]): Promise<void> {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         for (let i: number = 0; i < CARS_MAX; i++) {
 
             cars[i].update(timeSinceLastFrame);
         }
 
-        this.setUpdateCarPosition();
+        await this.setUpdateCarPosition();
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
-        this.cameras[1].updatePosition(this.cars[0]);
-        /*this.camera.position.x = this._car.position.x;
-        this.camera.position.y = this._car.position.y;
-        this.camera.position.z = this.camera.position.z;
-        this.camera.lookAt(this._car.position);*/
-        /*const position: Vector3 = this._car.getWorldPosition();
-        this.camera.position.copy(position);
-        this.camera.lookAt(position);*/
+        this.cameras[1].updatePosition(this.updatedCarPosition);
     }
 
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
-
-        this.cameras[0] = new PerspectiveCamera();
-        this.cameras[1] = new OrthographicCamera();
-        const relativeCameraOffset = new THREE.Vector3(1000, 1000, INITIAL_CAMERA_POSITION_Z);
-
-        this.cameras[1].position.copy(relativeCameraOffset);
-        this.cameras[1].lookAt(this.cars[0].position);
-        // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.cars[0]);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car();
@@ -118,6 +106,7 @@ export class RenderService {
             this.scene.add(this.cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         }
+        this.scene.add(this.cameras[1]);
     }
 
     private getAspectRatio(): number {
