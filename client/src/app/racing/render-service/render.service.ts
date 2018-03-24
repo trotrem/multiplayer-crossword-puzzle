@@ -17,7 +17,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
 const CARS_MAX: number = 4;
-const LAP_MAX: number = 1;
+const LAP_MAX: number = 3;
 
 @Injectable()
 export class RenderService {
@@ -100,27 +100,19 @@ export class RenderService {
         for (let i: number = 0; i < CARS_MAX; i++) {
 
             cars[i].update(timeSinceLastFrame);
-            /*this.setUpdateCarPosition(i);
-            this.validateLap(this.validIndex, i);*/
+            // this.setUpdateCarPosition(i);
+            this.validateLap(this.validIndex, i);
         }
-        this.setUpdateCarPosition(0);
-        this.validateLap(this.validIndex, 0);
         this.lastDate = Date.now();
         this.timer += timeSinceLastFrame;
 
-        /* for (let i: number = 0; i < this.cars[0].corners.length; i++) {
-            var geo = new THREE.Geometry();
-            geo.vertices.push( this.cars[0].corners[i] );
+       /* var geo = new THREE.Geometry();
+        geo.vertices.push(this.cars[0].getUpdatedPosition());
 
-            var wallMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
-<<<<<<< HEAD
-=======
+        var wallMaterial = new THREE.PointsMaterial({ color: 0xff0000 });
+        var wall = new THREE.Points(geo, wallMaterial);
 
->>>>>>> master
-            var wall = new THREE.Points( geo, wallMaterial );
-
-            this.scene.add( wall );
-        } */
+        this.scene.add(wall);*/
 
     }
 
@@ -140,11 +132,7 @@ export class RenderService {
         this.trackMeshs = TrackDisplay.drawTrack(points);
 
         const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
-<<<<<<< HEAD
-        collisionService.createWalls(points, 7, this.scene);
-=======
         collisionService.createWalls(points, this.scene);
->>>>>>> master
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car(collisionService);
@@ -168,40 +156,6 @@ export class RenderService {
         this.render();
 
     }
-
-<<<<<<< HEAD
-    private gameLoop(): void {
-=======
-    /* private gameLoop(){
->>>>>>> master
-        let now: number;
-        let delta: number;
-        let interval: number;
-        let then = Date.now();
-        const loop = (time: number) => {
-            requestAnimationFrame(loop);
-
-<<<<<<< HEAD
-            interval = 1000 / (60);
-=======
-            interval = 1000/(60);
->>>>>>> master
-            now = Date.now();
-            delta = now - then;
-
-            if (delta > interval) {
-                // update time stuffs
-                then = now - (delta % interval);
-
-                // call the fn
-                // and pass current fps to it
-                this.render();
-            }
-        };
-
-        return loop(0);
-    } */
-
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
@@ -216,14 +170,16 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
     public async validateLap(index: number, carIndex: number): Promise<boolean> {
+        console.log(this.getUpdateCarPosition()[0]);
         await this.setUpdateCarPosition(carIndex);
         let isPartlyValid: Promise<boolean>;
         const positions: THREE.Vector3[] = LapPositionsVerfiers.getLapPositionVerifiers(this.trackMeshs);
         const isvalidated: boolean = LapPositionsVerfiers.getLapSectionvalidator(this.updatedCarsPositions[carIndex], positions[index]);
         if (isvalidated) {
             this.validIndex += 1;
+            console.log(this.validIndex);
             if (this.validIndex === positions.length) {
-                console.log(this.validIndex);
+                console.log("here");
                 // console.warn(this.timer);
                 this.cars[carIndex].setLabTimes(this.timer);
                 // console.warn(this.cars[carIndex].getLabTimes());
@@ -239,7 +195,6 @@ export class RenderService {
         /* if (this.raceIsFinished) {
              // console.log(this.raceIsFinished );
              this.router.navigateByUrl("/gameResults");
- 
          }*/
         // console.log(this.counter);
 
