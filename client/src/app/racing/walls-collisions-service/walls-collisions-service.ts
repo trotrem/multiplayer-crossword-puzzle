@@ -66,7 +66,7 @@ export class WallsCollisionsService {
             const geo: THREE.Geometry = new THREE.Geometry();
             geo.vertices.push(line.pos1);
             geo.vertices.push(line.pos2);
-            const wallMaterial: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({ color: WALL_COLOR });
+            const wallMaterial: THREE.LineBasicMaterial = new THREE.LineBasicMaterial({ visible: false });
 
             const wall: THREE.Line = new THREE.Line(geo, wallMaterial);
             this._walls.push(line);

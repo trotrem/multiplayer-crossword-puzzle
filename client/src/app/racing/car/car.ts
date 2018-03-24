@@ -213,7 +213,7 @@ export class Car extends Object3D {
     this._velocity = this.getDeltaPosition(deltaTime);
     const normals: Vector3[] = this.collisionService.getCollisionNormal(this);
     for (const collisionNormal of normals) {
-      this._speed.setLength(Math.max(this._speed.length() - 0.5, 2));
+      this._speed.setLength(Math.max(this._speed.length() - 0.5, Math.min(this._speed.length(), 4)));
       this._velocity.sub(collisionNormal.clone().multiplyScalar(this._velocity.dot(collisionNormal)));
     }
     this._mesh.position.add(this._velocity);
