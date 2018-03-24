@@ -63,7 +63,9 @@ export class RenderService {
         if (container) {
             this.container = container;
         }
-        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
+        /*pour camera TOP
+        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);*/
+        this.cameras[0].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
         await this.createScene();
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
@@ -94,7 +96,10 @@ export class RenderService {
         await this.setUpdateCarPosition();
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
+        /*Pour camera TOP*/
         this.cameras[1].updatePosition(this.updatedCarPosition);
+       // this.cameras[0].updatePosition(this.updatedCarPosition);
+
     }
 
     private async createScene(): Promise<void> {
@@ -106,7 +111,6 @@ export class RenderService {
             this.scene.add(this.cars[i]);
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         }
-        this.scene.add(this.cameras[1]);
     }
 
     private getAspectRatio(): number {
@@ -126,13 +130,18 @@ export class RenderService {
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
-        this.renderer.render(this.scene, this.cameras[1]);
+
+        this.renderer.render(this.scene, this.cameras[0]);
         this.stats.update();
 
     }
 
     public onResize(): void {
-        // this.cameras[1].aspect = this.getAspectRatio();
+        this.cameras[0].aspect = this.getAspectRatio();
+        this.cameras[0].updateProjectionMatrix();
+
+        this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
+        this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
         this.cameras[1].updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
