@@ -1,4 +1,4 @@
-import { TestBed, inject, async } from "@angular/core/testing";
+import { TestBed, inject, async, fakeAsync, tick } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
@@ -17,7 +17,7 @@ describe("RenderService", () => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
             imports: [
-                RouterTestingModule.withRoutes([{ path: "race/:name", component: GameResultsComponent }])]
+                RouterTestingModule.withRoutes([{ path: "gameResults/:CarIndex", component: GameResultsComponent }])]
             ,
             providers: [RenderService]
         });
@@ -48,4 +48,21 @@ describe("RenderService", () => {
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
     }));
+    it("race shoudn't be finished if a car don't finish 3 laps ", inject([RenderService], (service: RenderService) => {
+
+        service.initialize(
+            container,
+            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)),
+            points);
+        service.setCounter(2);
+        expect(service.getRaceIsFinished()).toBe(false);
+    }));
+
+    it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {
+        const carIndex: number = 0;
+        router.navigateByUrl("/gameResults/" + carIndex);
+        tick(50);
+        expect(router.url).toBe("/gameResults/" + carIndex);
+    }));
+
 });

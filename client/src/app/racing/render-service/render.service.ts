@@ -16,7 +16,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 100;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
-const LAP_MAX: number = 1;
+const LAP_MAX: number = 3;
 
 @Injectable()
 export class RenderService {
@@ -44,6 +44,18 @@ export class RenderService {
         this.trackMeshs = new Array<THREE.Mesh>();
         this.validIndex = 0;
         this.timer = 0;
+    }
+    public getRaceIsFinished(): boolean {
+        return this.raceIsFinished;
+    }
+    public setRaceIsFinished(bool: boolean): void {
+        this.raceIsFinished = bool;
+    }
+    public getCounter(): number {
+        return this.counter;
+    }
+    public setCounter(nbre: number): void {
+        this.counter = nbre;
     }
 
     public getCars(): Car[] {
@@ -152,7 +164,7 @@ export class RenderService {
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {
-                this.cars[0].setLabTimes(this.timer);
+                this.cars[carIndex].setLabTimes(this.timer);
                 // console.warn(this.cars[0].getLabTimes());
                 this.validIndex = 0;
                 this.counter += 1;
@@ -164,7 +176,7 @@ export class RenderService {
         }
         if (this.raceIsFinished) {
             // console.log(this.raceIsFinished );
-            this.router.navigateByUrl("/gameResults/" + 0);
+            this.router.navigateByUrl("/gameResults/" + carIndex);
 
         }
         // console.log(this.counter);
