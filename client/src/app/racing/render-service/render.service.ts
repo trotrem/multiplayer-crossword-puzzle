@@ -113,6 +113,10 @@ export class RenderService {
             geo.vertices.push( this.cars[0].corners[i] );
 
             var wallMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
             var wall = new THREE.Points( geo, wallMaterial );
 
             this.scene.add( wall );
@@ -136,7 +140,11 @@ export class RenderService {
         this.trackMeshs = TrackDisplay.drawTrack(points);
 
         const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
+<<<<<<< HEAD
         collisionService.createWalls(points, 7, this.scene);
+=======
+        collisionService.createWalls(points, this.scene);
+>>>>>>> master
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car(collisionService);
@@ -157,11 +165,15 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
-        this.gameLoop();
+        this.render();
 
     }
 
+<<<<<<< HEAD
     private gameLoop(): void {
+=======
+    /* private gameLoop(){
+>>>>>>> master
         let now: number;
         let delta: number;
         let interval: number;
@@ -169,7 +181,11 @@ export class RenderService {
         const loop = (time: number) => {
             requestAnimationFrame(loop);
 
+<<<<<<< HEAD
             interval = 1000 / (60);
+=======
+            interval = 1000/(60);
+>>>>>>> master
             now = Date.now();
             delta = now - then;
 
@@ -184,9 +200,10 @@ export class RenderService {
         };
 
         return loop(0);
-    }
+    } */
 
     private render(): void {
+        requestAnimationFrame(() => this.render());
         this.update(this.cars);
         this.renderer.render(this.scene, this.camera);
         this.stats.update();
