@@ -88,13 +88,12 @@ export class RenderService {
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
 
-        // TODO remove this
         /* for (let i: number = 0; i < this.cars[0].corners.length; i++) {
             var geo = new THREE.Geometry();
             geo.vertices.push( this.cars[0].corners[i] );
 
             var wallMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
-            
+
             var wall = new THREE.Points( geo, wallMaterial );
 
             this.scene.add( wall );
@@ -115,18 +114,17 @@ export class RenderService {
         this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-        
         this.trackMeshs = TrackDisplay.drawTrack(points);
-        
-        let collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
-        collisionService.createWalls(points,7, this.scene);
+
+        const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
+        collisionService.createWalls(points, this.scene);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car(collisionService);
             await this.cars[i].init();
             this.scene.add(this.cars[i]);
         }
-        
+
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
 
@@ -144,30 +142,30 @@ export class RenderService {
 
     }
 
-    private gameLoop(){
+    /* private gameLoop(){
         let now: number;
         let delta: number;
         let interval: number;
         let then = Date.now();
         const loop = (time: number) => {
             requestAnimationFrame(loop);
-    
+
             interval = 1000/(60);
             now = Date.now();
             delta = now - then;
-    
+
             if (delta > interval) {
                 // update time stuffs
                 then = now - (delta % interval);
-    
+
                 // call the fn
                 // and pass current fps to it
                 this.render();
             }
         };
-        
+
         return loop(0);
-    }
+    } */
 
     private render(): void {
         requestAnimationFrame(() => this.render());

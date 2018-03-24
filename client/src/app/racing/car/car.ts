@@ -62,37 +62,25 @@ export class Car extends Object3D {
 
   public getCorners(pos: Vector3): Vector3[] {
     return [
-      pos.add(
-        this.direction
-          .multiplyScalar(LENGTH / 2)
-          .add(
+      pos.add(this.direction.multiplyScalar(LENGTH / 2).add(
             this.direction.cross(
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
           )
       ),
-      pos.add(
-        this.direction
-          .multiplyScalar(LENGTH / 2)
-          .sub(
+      pos.add(this.direction.multiplyScalar(LENGTH / 2).sub(
             this.direction.cross(
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
           )
       ),
-      pos.sub(
-        this.direction
-          .multiplyScalar(LENGTH / 2)
-          .add(
+      pos.sub(this.direction.multiplyScalar(LENGTH / 2).add(
             this.direction.cross(
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
           )
       ),
-      pos.sub(
-        this.direction
-          .multiplyScalar(LENGTH / 2)
-          .sub(
+      pos.sub(this.direction.multiplyScalar(LENGTH / 2).sub(
             this.direction.cross(
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
@@ -100,7 +88,7 @@ export class Car extends Object3D {
       )
     ];
   }
-  
+
   public get mesh(): Object3D {
     return this._mesh;
   }
