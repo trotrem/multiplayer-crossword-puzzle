@@ -8,6 +8,7 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { Vector3 } from "three";
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -88,13 +89,14 @@ export class RenderService {
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
 
-        /* for (let i: number = 0; i < this.cars[0].corners.length; i++) {
-            var geo = new THREE.Geometry();
-            geo.vertices.push( this.cars[0].corners[i] );
+        const corners: Vector3[] = this.cars[0].getCorners(this.cars[0].getUpdatedPosition());
+        /* for (let i: number = 0; i < corners.length; i++) {
+            const geo: THREE.Geometry = new THREE.Geometry();
+            geo.vertices.push(corners[i]);
 
-            var wallMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
+            const wallMaterial: THREE.PointsMaterial = new THREE.PointsMaterial( { color: 0xff0000 } );
 
-            var wall = new THREE.Points( geo, wallMaterial );
+            const wall: THREE.Points = new THREE.Points( geo, wallMaterial );
 
             this.scene.add( wall );
         } */
