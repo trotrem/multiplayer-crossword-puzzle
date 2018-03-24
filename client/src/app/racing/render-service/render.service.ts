@@ -5,7 +5,7 @@ import { Car } from "../car/car";
 import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { TrackDisplay } from "./../trackDisplay/track-display";
-import { RaceValidator } from "./../raceValidator/race-validator";
+import { LapPositionsVerfiersCalculator } from "./../LapPositionsVerfiersCalculator/lap-positions-verifiers-calculator";
 import { Router } from "@angular/router";
 
 const FAR_CLIPPING_PLANE: number = 1000;
@@ -147,8 +147,9 @@ export class RenderService {
     public async validateLap(index: number, carIndex: number): Promise<boolean> {
         await this.setUpdateCarPosition(carIndex);
         let isPartlyValid: Promise<boolean>;
-        const positions: THREE.Vector3[] = RaceValidator.getLapPositionVerifiers(this.trackMeshs);
-        const isvalidated: boolean = RaceValidator.validateLapSection(this.updatedCarsPositions[carIndex], positions[index]);
+        const positions: THREE.Vector3[] = LapPositionsVerfiersCalculator.getLapPositionVerifiers(this.trackMeshs);
+        const isvalidated: boolean = LapPositionsVerfiersCalculator
+        .validateLapSection(this.updatedCarsPositions[carIndex], positions[index]);
         if (isvalidated) {
             this.validIndex += 1;
             if (this.validIndex === positions.length) {

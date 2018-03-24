@@ -1,6 +1,6 @@
 import * as THREE from "three";
 const ADD_TO_DISTANCE: number = 30;
-export class RaceValidator {
+export class LapPositionsVerfiersCalculator {
     public static getLapPositionVerifiers( meshs: THREE.Mesh[]): THREE.Vector3[] {
         const positions: THREE.Vector3[] = new Array<THREE.Vector3>();
 
@@ -21,7 +21,7 @@ export class RaceValidator {
 
         const position2: THREE.Vector3 = carPosition.clone().set(carPosition.x, carPosition.z, carPosition.y);
 
-        return position2.distanceTo(position) <= RaceValidator.getMaxDistance(carPosition);
+        return position2.distanceTo(position) <= LapPositionsVerfiersCalculator.getMaxDistance(carPosition);
     }
 
 }
