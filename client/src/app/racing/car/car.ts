@@ -48,6 +48,10 @@ export class Car extends Object3D {
     return this._speed.clone();
   }
 
+  public get velocity(): Vector3 {
+    return this._velocity.clone();
+  }
+
   public get currentGear(): number {
     return this.engine.currentGear;
   }
@@ -206,10 +210,13 @@ export class Car extends Object3D {
     this._speed.setLength(
       this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
     );
-    if (!this.collisionService.willCollide(this)) {
-      this._mesh.position.add(this.getDeltaPosition(deltaTime));
-      this.rearWheel.update(this.speed.length());
+    this._velocity = this.getDeltaPosition(deltaTime);
+    const normals: Vector3[] = this.collisionService.getCollisionNormal(this);
+    for (const collisionNormal of normals) {
+      this._velocity.sub(collisionNormal.clone().multiplyScalar(this._velocity.dot(collisionNormal)));
     }
+    this._mesh.position.add(this._velocity);
+    this.rearWheel.update(this.speed.length());
     this.updatedPosition = this._mesh.position;
   }
 

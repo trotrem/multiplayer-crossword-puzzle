@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { RaceUtils } from "../utils/utils";
 import { Car } from "../car/car";
 import { ILine } from "../dataStructures";
+import { Vector3 } from "three";
 
 // Sides may be inverted depending on the orientation of the track (clockwise or counter-clockwise)
 enum WallSide {
@@ -18,19 +19,19 @@ export class WallsCollisionsService {
 
     public constructor(private _scene?: THREE.Scene) {}
 
-    public willCollide(car: Car): boolean {
-
-        this._corners = car.getCorners(car.getUpdatedPosition());
+    public getCollisionNormal(car: Car): Vector3[] {
+        const normals: Vector3[] = []
+        this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));
         for (let i: number = 0; i < this._corners.length; i++) {
         for (const wall of this._walls) {
-            if (RaceUtils.linesCross(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
-
-                return true;
+            /* if (RaceUtils.linesCross(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) { */
+            if(RaceUtils.doIntersect(RaceUtils.vectorToPoint(this._corners[i]), RaceUtils.vectorToPoint(this._corners[(i + 1) % this._corners.length]), RaceUtils.vectorToPoint(wall.pos1), RaceUtils.vectorToPoint(wall.pos2))) {
+                normals.push(wall.pos2.clone().sub(wall.pos1).cross(new Vector3(0, 0, 1)).normalize());
             }
         }
         }
 
-        return false;
+        return normals;
     }
 
     public createWalls(
