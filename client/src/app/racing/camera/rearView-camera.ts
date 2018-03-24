@@ -16,9 +16,9 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
     private static readonly WIDTH: number = window.innerWidth;
     private static readonly HEIGHT: number = window.innerHeight;
     private static readonly ASPECT: number = PerspectiveCamera.WIDTH / PerspectiveCamera.HEIGHT;
-    private static readonly NEAR: number = 0.05;
+    private static readonly NEAR: number = 1;
     private static readonly FAR: number = 1000;
-    private static readonly VIEW_ANGLE: number = 0;
+    private static readonly VIEW_ANGLE: number = 70;
 
 
     public constructor() {
@@ -38,12 +38,9 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
         this.lookAt(PerspectiveCamera.LOOK_AT_POSITION);
     }
 
-    public setStartPosition(position: THREE.Vector3, carPosition: THREE.Vector3): void {
-        this.position.x = 0;
-        this.position.y = 0;
-        this.position.z = 0;
-        this.lookAt(this.position);
-        this.updateProjectionMatrix();
+    public setStartPosition(INITIAL_CAMERA_POSITION_Z: number): void {
+        this.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
+        this.lookAt(new THREE.Vector3(0, 0, 0));
     }
 
     public updatePosition(carPosition: THREE.Vector3): void {

@@ -10,20 +10,17 @@ import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
-
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
-
 const INITIAL_CAMERA_POSITION_Z: number = 50;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
 const LAP_MAX: number = 3;
-
 @Injectable()
 export class RenderService {
-    private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
+    private cameras: [THREE.PerspectiveCamera, OrthographicCamera] = [null, null];
     // private camera: THREE.PerspectiveCamera;
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
@@ -37,7 +34,6 @@ export class RenderService {
     private counter: number;
     private trackMeshs: THREE.Mesh[];
     private validIndex: number;
-
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
         this.cars[0] = new Car();
@@ -58,14 +54,12 @@ export class RenderService {
     public setUpdateCarPosition(): void {
         this.updatedCarPosition = this.cars[0].getUpdatedPosition();
     }
-
     public async initialize(container: HTMLDivElement, line: THREE.Line3, points: THREE.Vector3[]): Promise<void> {
         if (container) {
             this.container = container;
         }
-        /*pour camera TOP
-        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);*/
-        this.cameras[0].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
+        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
+        //this.cameras[0].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
         await this.createScene();
         CarsPositionsHandler.insertCars(line, this.scene, this.cars);
         this.initStats();
@@ -75,36 +69,28 @@ export class RenderService {
             this.scene.add(mesh);
         }
     }
-
     public initializeEventHandlerService(): void {
         this.evenHandeler = new EventHandlerRenderService(this.cars[0]);
     }
-
     private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
         this.container.appendChild(this.stats.dom);
     }
-
     private async update(cars: Car[]): Promise<void> {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         for (let i: number = 0; i < CARS_MAX; i++) {
-
             cars[i].update(timeSinceLastFrame);
         }
-
         await this.setUpdateCarPosition();
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
         /*Pour camera TOP*/
         this.cameras[1].updatePosition(this.updatedCarPosition);
-       // this.cameras[0].updatePosition(this.updatedCarPosition);
-
+        // this.cameras[0].updatePosition(this.updatedCarPosition);
     }
-
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
-
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.cars[i] = new Car();
             await this.cars[i].init();
@@ -112,11 +98,9 @@ export class RenderService {
             this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         }
     }
-
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
     }
-
     private startRenderingLoop(): void {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
@@ -124,22 +108,16 @@ export class RenderService {
         this.lastDate = Date.now();
         this.container.appendChild(this.renderer.domElement);
         this.render();
-
     }
-
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update(this.cars);
-
-        this.renderer.render(this.scene, this.cameras[0]);
+        this.renderer.render(this.scene, this.cameras[1]);
         this.stats.update();
-
     }
-
     public onResize(): void {
-        this.cameras[0].aspect = this.getAspectRatio();
-        this.cameras[0].updateProjectionMatrix();
-
+        /*this.cameras[0].aspect = this.getAspectRatio();
+        this.cameras[0].updateProjectionMatrix();*/
         this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
         this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
         this.cameras[1].updateProjectionMatrix();
@@ -164,11 +142,12 @@ export class RenderService {
         if (this.raceIsFinished) {
             // console.log(this.raceIsFinished );
             this.router.navigateByUrl("/gameResults");
-
         }
         // console.log(this.counter);
-
         return isPartlyValid;
     }
-
 }
+
+
+
+
