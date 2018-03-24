@@ -24,7 +24,7 @@ export class WallsCollisionsService {
         for (let i: number = 0; i < car.corners.length; i++) {
             for (const wall of this._walls) {
                 if (RaceUtils.linesCross(car.corners[i], car.corners[(i + 1) % car.corners.length], wall.pos1, wall.pos2)) {
-                    return false;
+                    return true;
                 }
             }
         }

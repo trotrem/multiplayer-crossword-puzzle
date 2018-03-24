@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const PRECISION: number = 0.0000001;
+const PRECISION: number = 0.0001;
 
 // TODO: make editor use this
 export class RaceUtils {

@@ -48,14 +48,6 @@ export class Car extends Object3D {
     return this._speed.clone();
   }
 
-  public get mesh(): Object3D {
-    return this._mesh;
-  }
-
-  public get velocity(): Vector3 {
-    return this._velocity.clone();
-  }
-
   public get currentGear(): number {
     return this.engine.currentGear;
   }
@@ -70,7 +62,8 @@ export class Car extends Object3D {
 
   public get corners(): Vector3[] {
     return [
-        new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).applyMatrix4(this._mesh.matrix).clone().add(
+      this.getUpdatedPosition()
+        /* new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).add(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .add(
@@ -79,7 +72,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).applyMatrix4(this._mesh.matrix).clone().add(
+      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).add(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .sub(
@@ -88,7 +81,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).applyMatrix4(this._mesh.matrix).clone().sub(
+      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).sub(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .add(
@@ -97,7 +90,7 @@ export class Car extends Object3D {
             )
           )
       ),
-      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).applyMatrix4(this._mesh.matrix).clone().sub(
+      new Vector3(this.getUpdatedPosition().x, this.getUpdatedPosition().z, 0).sub(
         this.direction
           .multiplyScalar(LENGTH / 2)
           .sub(
@@ -105,8 +98,12 @@ export class Car extends Object3D {
               new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
             )
           )
-      )
+      ) */
     ];
+  }
+  
+  public get mesh(): Object3D {
+    return this._mesh;
   }
 
   private get direction(): Vector3 {
@@ -222,9 +219,8 @@ export class Car extends Object3D {
     this._speed.setLength(
       this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
     );
-    this._velocity = this.getDeltaPosition(deltaTime);
     if (!this.collisionService.willCollide(this)) {
-      this._mesh.position.add(this.velocity);
+      this._mesh.position.add(this.getDeltaPosition(deltaTime));
       this.rearWheel.update(this.speed.length());
     }
     this.updatedPosition = this._mesh.position;

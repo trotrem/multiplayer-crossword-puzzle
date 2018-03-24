@@ -13,9 +13,9 @@ const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
 
-const INITIAL_CAMERA_POSITION_Z: number = 100;
+const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
-const AMBIENT_LIGHT_OPACITY: number = 0.5;
+const AMBIENT_LIGHT_OPACITY: number = 2;
 const CARS_MAX: number = 4;
 const LAP_MAX: number = 3;
 
@@ -88,7 +88,7 @@ export class RenderService {
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
 
-        for (let i: number = 0; i < this.cars[0].corners.length; i++) {
+        /* for (let i: number = 0; i < this.cars[0].corners.length; i++) {
             var geo = new THREE.Geometry();
             geo.vertices.push( this.cars[0].corners[i] );
 
@@ -97,7 +97,7 @@ export class RenderService {
             var wall = new THREE.Points( geo, wallMaterial );
 
             this.scene.add( wall );
-        }
+        } */
 
     }
 
@@ -124,8 +124,9 @@ export class RenderService {
             this.cars[i] = new Car(collisionService);
             await this.cars[i].init();
             this.scene.add(this.cars[i]);
-            this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         }
+        
+        this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
 
     private getAspectRatio(): number {
