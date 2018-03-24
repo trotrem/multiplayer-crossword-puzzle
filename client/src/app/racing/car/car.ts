@@ -343,9 +343,11 @@ export class Car extends Object3D {
     }
 
     public setLabTimes(time: number): void {
+        time /= MS_TO_SECONDS;
         for (let i: number = 1; i < this.lapTimes.length + 1; i++) {
             time -= this.lapTimes[this.lapTimes.length - i];
         }
         this.lapTimes.push(time);
     }
 }
+

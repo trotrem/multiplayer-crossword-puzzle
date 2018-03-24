@@ -8,6 +8,8 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { LapPositionsVerfiers } from "./../LapPositionsVerfiers/lap-positions-verifiers";
 import { Router } from "@angular/router";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { RaceUtils } from "./../utils/utils";
+const EXPONENT: number = 2;
 
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
@@ -31,19 +33,27 @@ export class RenderService {
     private cars: Car[];
     private updatedCarsPositions: THREE.Vector3[];
     private raceIsFinished: boolean;
-    private counter: number;
+    private counter: number[];
     private trackMeshs: THREE.Mesh[];
-    private validIndex: number;
+    private validIndex: number[];
     private timer: number;
 
     public constructor(private router: Router) {
         this.cars = new Array<Car>(CARS_MAX);
         this.updatedCarsPositions = new Array<THREE.Vector3>();
         this.raceIsFinished = false;
-        this.counter = 0;
+        this.counter = new Array<number>();
         this.trackMeshs = new Array<THREE.Mesh>();
-        this.validIndex = 0;
+        this.validIndex = new Array<number>();
         this.timer = 0;
+
+        this.initialiseArrayTo0(this.counter);
+        this.initialiseArrayTo0(this.validIndex);
+    }
+    private initialiseArrayTo0(numbers: number[]): void {
+        for (let n of numbers) {
+            n = 0;
+        }
     }
     public getRaceIsFinished(): boolean {
         return this.raceIsFinished;
@@ -51,10 +61,10 @@ export class RenderService {
     public setRaceIsFinished(bool: boolean): void {
         this.raceIsFinished = bool;
     }
-    public getCounter(): number {
+    public getCounter(): number[] {
         return this.counter;
     }
-    public setCounter(nbre: number): void {
+    public setCounter(nbre: number[]): void {
         this.counter = nbre;
     }
 
@@ -101,18 +111,16 @@ export class RenderService {
 
             cars[i].update(timeSinceLastFrame);
             // this.setUpdateCarPosition(i);
-            this.validateLap(this.validIndex, i);
+            this.validateLap(this.validIndex[i], i);
         }
         this.lastDate = Date.now();
         this.timer += timeSinceLastFrame;
 
-       /* var geo = new THREE.Geometry();
-        geo.vertices.push(this.cars[0].getUpdatedPosition());
-
-        var wallMaterial = new THREE.PointsMaterial({ color: 0xff0000 });
-        var wall = new THREE.Points(geo, wallMaterial);
-
-        this.scene.add(wall);*/
+        /* var geo = new THREE.Geometry();
+         geo.vertices.push(this.cars[0].getUpdatedPosition());
+         var wallMaterial = new THREE.PointsMaterial({ color: 0xff0000 });
+         var wall = new THREE.Points(geo, wallMaterial);
+         this.scene.add(wall);*/
 
     }
 
@@ -176,21 +184,23 @@ export class RenderService {
         const positions: THREE.Vector3[] = LapPositionsVerfiers.getLapPositionVerifiers(this.trackMeshs);
         const isvalidated: boolean = LapPositionsVerfiers.getLapSectionvalidator(this.updatedCarsPositions[carIndex], positions[index]);
         if (isvalidated) {
-            this.validIndex += 1;
+            this.validIndex[carIndex] += 1;
             console.log(this.validIndex);
-            if (this.validIndex === positions.length) {
+            if (this.validIndex[carIndex] === positions.length) {
                 console.log("here");
                 // console.warn(this.timer);
                 this.cars[carIndex].setLabTimes(this.timer);
                 // console.warn(this.cars[carIndex].getLabTimes());
-                this.validIndex = 0;
-                this.counter += 1;
-                if (this.counter === LAP_MAX) {
+                this.validIndex[carIndex] = 0;
+                this.counter[carIndex] += 1;
+                if (this.counter[carIndex] === LAP_MAX && carIndex === 0) {
                     this.raceIsFinished = true;
-                    this.router.navigateByUrl("/gameResults");
+                    const time: number = this.timer;
+                    console.warn("true");
+                    // this.router.navigateByUrl("/gameResults");
                 }
             }
-            isPartlyValid = this.validateLap(this.validIndex, carIndex);
+            isPartlyValid = this.validateLap(this.validIndex[carIndex], carIndex);
         }
         /* if (this.raceIsFinished) {
              // console.log(this.raceIsFinished );
@@ -199,6 +209,22 @@ export class RenderService {
         // console.log(this.counter);
 
         return isPartlyValid;
+    }
+
+    private estimateTime(time: number): void {
+        for (let i: number = 0; i < this.cars.length; i++) {
+            if (this.counter[i] < LAP_MAX) {
+                let distance: number =
+                    RaceUtils.calculateDistance(this.getUpdateCarPosition()[i], this.trackMeshs[this.validIndex[i] + 1].position);
+                for (let j: number = this.validIndex[i] + 1; j < this.trackMeshs.length - 1; j++) {
+                    distance += RaceUtils.calculateDistance(this.trackMeshs[j].position, this.trackMeshs[j + 1].position);
+                }
+                while (this.cars[i].getLabTimes().length !== LAP_MAX) {
+                    this.cars[i].setLabTimes((distance / this.cars[i].speed.length()) + time);
+                }
+            }
+
+        }
     }
 
 }

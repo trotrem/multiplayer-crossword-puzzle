@@ -1,4 +1,5 @@
 import * as THREE from "three";
+const EXPONENT: number = 2;
 
 const PRECISION: number = 0.0001;
 
@@ -8,9 +9,9 @@ export class RaceUtils {
     public static linesCross(pos1: THREE.Vector3, pos2: THREE.Vector3, pos3: THREE.Vector3, pos4: THREE.Vector3): boolean {
         const intersection: THREE.Vector3 = this.twoLinesIntersection(pos1, pos2, pos3, pos4);
         if (intersection === null || Math.abs(pos1.distanceTo(intersection)
-                                     + intersection.distanceTo(pos2)
-                                     - pos1.distanceTo(pos2))
-                                     > PRECISION) {
+            + intersection.distanceTo(pos2)
+            - pos1.distanceTo(pos2))
+            > PRECISION) {
             return false;
         }
 
@@ -22,7 +23,7 @@ export class RaceUtils {
         position2: THREE.Vector3,
         position3: THREE.Vector3,
         position4: THREE.Vector3): THREE.Vector3 {
-    
+
         if (this.calculateDet(position1, position2, position3, position4) !== 0) {
             return this.calculateIntersection(position1, position2, position3, position4);
         }
@@ -56,5 +57,8 @@ export class RaceUtils {
                 + (position1.x - position2.x) * position1.y)) / this.calculateDet(position1, position2, position3, position4);
 
         return intersection;
+    }
+    public static calculateDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
+        return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
     }
 }
