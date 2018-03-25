@@ -13,15 +13,11 @@ interface ILine {
     pos2: THREE.Vector3;
 }
 
-const WALL_COLOR: number = 0x00FF88;
 const WALL_WIDTH: number = 8;
-const MAX_SLOWING_DISTANCE: number = 1;
 
 export class WallsCollisionsService {
     private _walls: ILine[] = [];
     private _corners: THREE.Vector3[] = [];
-
-    public constructor(private _scene?: THREE.Scene) {}
 
     public getCollisionNormal(car: Car): THREE.Vector3[] {
         const normals: THREE.Vector3[] = [];

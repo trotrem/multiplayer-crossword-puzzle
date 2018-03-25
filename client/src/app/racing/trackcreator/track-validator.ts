@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RaceUtils } from "../utils/utils";
 const HALF_CIRCLE_DEGREES: number = 180;
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
@@ -43,56 +44,15 @@ export class TrackValidator {
         position3: THREE.Vector3,
         position4: THREE.Vector3): void {
 
-        let intersection: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
         if (position1 === position3 || position1 === position4 || position2 === position3 || position2 === position4) {
             return;
         }
 
-        if (this.calculateDet(position1, position2, position3, position4) !== 0) {
-            intersection = this.calculateIntersection(position1, position2, position3, position4);
-
-            if (this.findIsInLine(position1, position2, intersection) && this.findIsInLine(position3, position4, intersection)) {
-                this.setPoints(position3, position4);
-            }
+        if (RaceUtils.doIntersect(position1, position2, position3, position4)) {
+            this.setPoints(position3, position4);
         }
     }
 
-    private calculateDet(
-        position1: THREE.Vector3,
-        position2: THREE.Vector3,
-        position3: THREE.Vector3,
-        position4: THREE.Vector3): number {
-        return (position2.y - position1.y) * (position3.x - position4.x)
-            - (position4.y - position3.y) * (position1.x - position2.x);
-    }
-
-    private calculateIntersection(
-        position1: THREE.Vector3,
-        position2: THREE.Vector3,
-        position3: THREE.Vector3,
-        position4: THREE.Vector3): THREE.Vector3 {
-        const intersection: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-        intersection.x = (((position3.x - position4.x)
-            * ((position2.y - position1.y) * position1.x + (position1.x - position2.x) * position1.y))
-            - ((position1.x - position2.x) * ((position4.y - position3.y) * position3.x
-                + (position3.x - position4.x) * position3.y))) / this.calculateDet(position1, position2, position3, position4);
-
-        intersection.y = ((position2.y - position1.y)
-            * ((position4.y - position3.y) * position3.x + (position3.x - position4.x) * position3.y)
-            - (position4.y - position3.y) * ((position2.y - position1.y) * position1.x
-                + (position1.x - position2.x) * position1.y)) / this.calculateDet(position1, position2, position3, position4);
-
-        return intersection;
-    }
-
-    private findIsInLine(position1: THREE.Vector3, position2: THREE.Vector3, intersection: THREE.Vector3): boolean {
-        if (Math.abs(this.calculateDistance(intersection, position1) + this.calculateDistance(position2, intersection)
-            - this.calculateDistance(position2, position1)) > PRECISION) {
-            return false;
-        }
-
-        return true;
-    }
 
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): void {
         if (this.calculateDistance(position1, position2) < (MAX_LENGTH)) {

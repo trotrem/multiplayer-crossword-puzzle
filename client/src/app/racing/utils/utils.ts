@@ -1,9 +1,7 @@
-import { IPoint } from "../../../../../common/communication/types";
 import { Vector3 } from "three";
 
 const PRECISION: number = 0.0001;
 
-// TODO: make editor use this
 export class RaceUtils {
   public static linesCross(
     pos1: Vector3,
