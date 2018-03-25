@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
-import { Car } from "../car/car";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
