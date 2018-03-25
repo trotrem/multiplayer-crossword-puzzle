@@ -53,7 +53,6 @@ export class TrackValidator {
         }
     }
 
-
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): void {
         if (this.calculateDistance(position1, position2) < (MAX_LENGTH)) {
             this.illegalPoints.push(new THREE.Vector3(0, 0, 0));

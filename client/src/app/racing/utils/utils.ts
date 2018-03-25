@@ -5,6 +5,10 @@ import { Vector3 } from "three";
 const PRECISION: number = 0.0001;
 
 export class RaceUtils {
+
+  public static calculateDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
+    return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
+  }
   public static linesCross(
     pos1: Vector3,
     pos2: Vector3,
@@ -21,8 +25,8 @@ export class RaceUtils {
       intersect === null ||
       Math.abs(
         pos1.distanceTo(intersect) +
-          intersect.distanceTo(pos2) -
-          pos1.distanceTo(pos2)
+        intersect.distanceTo(pos2) -
+        pos1.distanceTo(pos2)
       ) > PRECISION
     ) {
       return false;
@@ -73,8 +77,8 @@ export class RaceUtils {
         ((position2.y - position1.y) * position1.x +
           (position1.x - position2.x) * position1.y) -
         (position1.x - position2.x) *
-          ((position4.y - position3.y) * position3.x +
-            (position3.x - position4.x) * position3.y)) /
+        ((position4.y - position3.y) * position3.x +
+          (position3.x - position4.x) * position3.y)) /
       this.calculateDet(position1, position2, position3, position4);
 
     intersection.y =
@@ -82,8 +86,8 @@ export class RaceUtils {
         ((position4.y - position3.y) * position3.x +
           (position3.x - position4.x) * position3.y) -
         (position4.y - position3.y) *
-          ((position2.y - position1.y) * position1.x +
-            (position1.x - position2.x) * position1.y)) /
+        ((position2.y - position1.y) * position1.x +
+          (position1.x - position2.x) * position1.y)) /
       this.calculateDet(position1, position2, position3, position4);
 
     return intersection;
