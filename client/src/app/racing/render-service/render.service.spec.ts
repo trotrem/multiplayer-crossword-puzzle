@@ -6,17 +6,32 @@ import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-h
 import { Routes, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../game-results/game-results.component";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientModule, HttpClient } from "@angular/common/http";
+import { Track } from "./../track";
+import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
+import { CarLoader } from "../car/car-loader";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("RenderService", () => {
+    const carLoader: CarLoader = new CarLoader();
+    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     // tslint:disable-next-line:prefer-const
     let container: HTMLDivElement;
+    let http: HttpClient;
     const points: THREE.Vector3[] = new Array<THREE.Vector3>();
     let router: Router;
+    const track: Track = {
+        name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
+        newScores: new Array<number>()
+    };
+    const service: RenderService = new RenderService(router, http);
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
             imports: [
+                HttpClientModule,
+                HttpClientTestingModule,
                 RouterTestingModule.withRoutes([{ path: "gameResults/:CarIndex", component: GameResultsComponent }])]
             ,
             providers: [RenderService]
@@ -24,45 +39,29 @@ describe("RenderService", () => {
 
     }));
 
-    beforeEach(inject([Router], (_router: Router) => {
+    beforeEach(inject([Router, HttpClient], (_router: Router, _http: HttpClient) => {
+        http = _http;
         router = _router;
     }));
 
-    it("should be created", inject([RenderService], (service: RenderService) => {
+    it("should be created", () => {
         expect(service).toBeTruthy();
-    }));
-    it("should be create a scene", inject([RenderService], (service: RenderService) => {
+    });
+    it("should be create a scene", () => {
         service.initialize(
-            container,
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)),
-            points);
+            container, track);
         expect(service.getScene()).toBeDefined();
-    }));
-    it("should add four cars to the scene", inject([RenderService], (service: RenderService) => {
+    });
+    it("should add four cars to the scene", async() => {
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car());
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), points);
+        service.initialize(container, track);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
-    }));
-    it("race shoudn't be finished if a car don't finish 3 laps ", inject([RenderService], (service: RenderService) => {
-
-        service.initialize(
-            container,
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)),
-            points);
-        service.setCounter(2);
-        expect(service.getRaceIsFinished()).toBe(false);
-    }));
-
-    it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {
-        const carIndex: number = 0;
-        router.navigateByUrl("/gameResults/" + carIndex);
-        tick(50);
-        expect(router.url).toBe("/gameResults/" + carIndex);
-    }));
+    });
 
 });
