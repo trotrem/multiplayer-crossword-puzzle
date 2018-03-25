@@ -22,12 +22,9 @@ export class EndGameComponent implements OnInit {
 
   private playSameCongif(): void {
     this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
-
   }
 
   private returnHome(): void {
     this.router.navigateByUrl("/homePage");
-
   }
-
 }

@@ -1,12 +1,10 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
-import { Car } from "../car/car";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Track } from "../track";
 import * as THREE from "three";
-
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -30,7 +28,7 @@ export class GameComponent implements AfterViewInit {
 
     public constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
         this.communicationService = new CommunicationRacingService(this.http);
-        this.renderService = new RenderService(router);
+        this.renderService = new RenderService(router, http);
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -63,7 +61,6 @@ export class GameComponent implements AfterViewInit {
         this.changeLightColor("green", 0);
         await this.delay(DELAY);
         this.changeLightColor("", 0);
-        this.disabledCar = false;
         this.renderService.initializeEventHandlerService();
         await this.delay(DELAY);
     }
@@ -76,13 +73,19 @@ export class GameComponent implements AfterViewInit {
         this.communicationService.getTrackByName(name)
             .subscribe((res: Track[]) => {
                 const track: Track = res[0];
-                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, track.points);
+                const points: THREE.Vector3[] = [];
+                for (const point of track.points) {
+                    points.push(new THREE.Vector3(point.x, point.y, point.z));
+                }
+                track.points = points;
+                this.renderService.initialize(this.containerRef.nativeElement, track);
 
             });
 
     }
 
     private play(): void {
+        this.disabledCar = false;
         this.visualSignal();
     }
 }

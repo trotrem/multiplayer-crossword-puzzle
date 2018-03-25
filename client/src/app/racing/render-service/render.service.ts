@@ -8,8 +8,8 @@ import { PositionsDefinerService } from "../PositionsDefiner.service/position-de
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
-import { RaceValidator } from "./../raceValidator/race-validator";
 import { Router } from "@angular/router";
+<<<<<<< HEAD
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
@@ -18,6 +18,25 @@ const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const CARS_MAX: number = 4;
 const LAP_MAX: number = 3;
+=======
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { RaceUtils } from "./../utils/utils";
+import { MS_TO_SECONDS, CARS_MAX } from "../constants";
+import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { HttpClient } from "@angular/common/http";
+import { Track } from "../track";
+import { RaceValidatorService } from "../race-validator/race-validator.service";
+const EXPONENT: number = 2;
+
+const FAR_CLIPPING_PLANE: number = 1000;
+const NEAR_CLIPPING_PLANE: number = 1;
+const FIELD_OF_VIEW: number = 70;
+
+const INITIAL_CAMERA_POSITION_Z: number = 70;
+const WHITE: number = 0xFFFFFF;
+const AMBIENT_LIGHT_OPACITY: number = 2;
+
+>>>>>>> master
 @Injectable()
 export class RenderService {
     private cameras: [THREE.PerspectiveCamera, OrthographicCamera] = [null, null];
@@ -28,6 +47,7 @@ export class RenderService {
     private stats: Stats;
     private lastDate: number;
     private evenHandeler: EventHandlerRenderService;
+<<<<<<< HEAD
     private cars: Car[];
     private updatedCarPosition: THREE.Vector3;
     private raceIsFinished: boolean;
@@ -44,10 +64,19 @@ export class RenderService {
         this.validIndex = 0;
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
+=======
+    private timer: number;
+    private raceValidator: RaceValidatorService;
+
+    public constructor(private router: Router, private http: HttpClient) {
+        this.raceValidator = new RaceValidatorService(router, http);
+        this.timer = 0;
+>>>>>>> master
     }
     public getScene(): THREE.Scene {
         return this.scene;
     }
+<<<<<<< HEAD
     public getUpdateCarPosition(): THREE.Vector3 {
         return this.updatedCarPosition;
     }
@@ -60,26 +89,38 @@ export class RenderService {
         }
         this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
         //this.cameras[0].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.updatedCarPosition);
+=======
+
+    public async initialize(container: HTMLDivElement, track: Track): Promise<void> {
+        if (container) {
+            this.container = container;
+        }
+        this.raceValidator.track = track;
+        this.raceValidator.track.newScores = new Array<number>();
+>>>>>>> master
         await this.createScene();
-        CarsPositionsHandler.insertCars(line, this.scene, this.cars);
+        CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
         this.initStats();
         this.startRenderingLoop();
-        this.trackMeshs = TrackDisplay.drawTrack(points);
-        for (const mesh of this.trackMeshs) {
-            this.scene.add(mesh);
-        }
     }
     public initializeEventHandlerService(): void {
-        this.evenHandeler = new EventHandlerRenderService(this.cars[0]);
+        this.evenHandeler = new EventHandlerRenderService(this.raceValidator.cars[0]);
     }
     private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
         this.container.appendChild(this.stats.dom);
     }
+<<<<<<< HEAD
     private async update(cars: Car[]): Promise<void> {
+=======
+
+    private async update(): Promise<void> {
+>>>>>>> master
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
+        this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
+<<<<<<< HEAD
             cars[i].update(timeSinceLastFrame);
         }
         await this.setUpdateCarPosition();
@@ -88,15 +129,45 @@ export class RenderService {
         /*Pour camera TOP*/
         this.cameras[1].updatePosition(this.updatedCarPosition);
         // this.cameras[0].updatePosition(this.updatedCarPosition);
+=======
+
+            this.raceValidator.cars[i].update(timeSinceLastFrame);
+            this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
+        }
+        this.lastDate = Date.now();
+>>>>>>> master
     }
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this.cars[i] = new Car();
-            await this.cars[i].init();
-            this.scene.add(this.cars[i]);
-            this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+<<<<<<< HEAD
+=======
+
+        this.camera = new THREE.PerspectiveCamera(
+            FIELD_OF_VIEW,
+            this.getAspectRatio(),
+            NEAR_CLIPPING_PLANE,
+            FAR_CLIPPING_PLANE
+        );
+
+        this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(this.raceValidator.track.points);
+        for (const mesh of trackMeshs) {
+            this.scene.add(mesh);
         }
+
+        const collisionService: WallsCollisionsService = new WallsCollisionsService();
+        collisionService.createWalls(this.raceValidator.track.points, this.scene);
+
+>>>>>>> master
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            this.raceValidator.cars[i] = new Car(collisionService);
+            await this.raceValidator.cars[i].init();
+            this.scene.add(this.raceValidator.cars[i]);
+        }
+        this.raceValidator.track.points.splice(0, 0, trackMeshs[trackMeshs.length - 1].position);
+        this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
@@ -111,8 +182,13 @@ export class RenderService {
     }
     private render(): void {
         requestAnimationFrame(() => this.render());
+<<<<<<< HEAD
         this.update(this.cars);
         this.renderer.render(this.scene, this.cameras[1]);
+=======
+        this.update();
+        this.renderer.render(this.scene, this.camera);
+>>>>>>> master
         this.stats.update();
     }
     public onResize(): void {
@@ -123,6 +199,7 @@ export class RenderService {
         this.cameras[1].updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
+<<<<<<< HEAD
     public async validateLap(index: number): Promise<boolean> {
         await this.setUpdateCarPosition();
         let isPartlyValid: Promise<boolean>;
@@ -146,6 +223,9 @@ export class RenderService {
         // console.log(this.counter);
         return isPartlyValid;
     }
+=======
+
+>>>>>>> master
 }
 
 

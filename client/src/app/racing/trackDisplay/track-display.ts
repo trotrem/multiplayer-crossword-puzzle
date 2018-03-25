@@ -35,6 +35,7 @@ export class TrackDisplay {
     public static drawTrack(points: THREE.Vector3[]): THREE.Mesh[] {
         const addToScene: THREE.Mesh[] = new Array<THREE.Mesh>();
         for (let i: number = 1; i < points.length; i++) {
+
             addToScene.push(this.setPointMeshPosition(this.SetPointFromMatrix(points[i]), new THREE.CircleGeometry(WIDTH_SPHERE)));
 
             const vector: THREE.Vector3 =

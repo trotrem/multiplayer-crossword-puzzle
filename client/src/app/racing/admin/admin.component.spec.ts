@@ -56,7 +56,7 @@ describe("AdminComponent", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      bestScores: new Array<number>()
+      newScores: new Array<number>()
     };
     component.onSelect(track);
     component.editTrack();
@@ -67,7 +67,7 @@ describe("AdminComponent", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      bestScores: new Array<number>()
+      newScores: new Array<number>()
     };
     const tracks: Track[] = new Array<Track>();
     tracks.push(track);
