@@ -104,7 +104,7 @@ export class RenderService {
 
         this.trackMeshs = TrackDisplay.drawTrack(points);
 
-        const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
+        const collisionService: WallsCollisionsService = new WallsCollisionsService();
         collisionService.createWalls(points, this.scene);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
