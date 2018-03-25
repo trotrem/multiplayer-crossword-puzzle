@@ -1,10 +1,9 @@
-import { Vector3, Matrix4, Object3D, Euler, Quaternion, Box3 } from "three";
+import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
 import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { ILine } from "../dataStructures";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -22,6 +21,8 @@ const PERCENTAGE: number = 100;
 const COEFFICIENT_DEGREE: number = 0.01;
 const COEFFICIENT_USE: number = 0.0095;
 const COEFFICIENT_USES: number = 0.005;
+const WALL_SPEED_LOSS: number = 0.5;
+const MIN_WALL_SPEED: number = 4;
 
 const WIDTH: number = 0.9741033263794181;
 const LENGTH: number = 3.3948105126565693;
@@ -211,9 +212,8 @@ export class Car extends Object3D {
       this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
     );
     this._velocity = this.getDeltaPosition(deltaTime);
-    const normals: Vector3[] = this.collisionService.getCollisionNormal(this);
-    for (const collisionNormal of normals) {
-      this._speed.setLength(Math.max(this._speed.length() - 0.5, Math.min(this._speed.length(), 4)));
+    for (const collisionNormal of this.collisionService.getCollisionNormal(this)) {
+      this._speed.setLength(Math.max(this._speed.length() - WALL_SPEED_LOSS, Math.min(this._speed.length(), MIN_WALL_SPEED)));
       this._velocity.sub(collisionNormal.clone().multiplyScalar(this._velocity.dot(collisionNormal)));
     }
     this._mesh.position.add(this._velocity);

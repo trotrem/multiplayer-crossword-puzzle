@@ -4,8 +4,6 @@ import { Car } from "../car/car";
 import * as THREE from "three";
 
 const CARS_MAX: number = 4;
-const WHITE: number = 0xFFFFFF;
-const AMBIENT_LIGHT_OPACITY: number = 0.5;
 const ROTATION_ANGLE_DIVIDER: number = 2;
 
 @Injectable()
@@ -26,6 +24,5 @@ export class CarsPositionsHandler {
   private static getRotateCarPosition(line: THREE.Line3): number {
 
       return Math.atan2(PositionsDefinerService.getDeltaLine(line).y, PositionsDefinerService.getDeltaLine(line).x) ;
-    }
-
+  }
 }

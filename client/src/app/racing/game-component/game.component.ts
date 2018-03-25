@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
-import { Car } from "../car/car";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -76,7 +75,7 @@ export class GameComponent implements AfterViewInit {
             .subscribe((res: Track[]) => {
                 const track: Track = res[0];
                 const points: THREE.Vector3[] = [];
-                for (let point of track.points) {
+                for (const point of track.points) {
                     points.push(new THREE.Vector3(point.x, point.y, point.z));
                 }
                 track.points = points;
@@ -86,7 +85,7 @@ export class GameComponent implements AfterViewInit {
 
     }
 
-    private play(): void {
+    public play(): void {
         this.visualSignal();
     }
 }
