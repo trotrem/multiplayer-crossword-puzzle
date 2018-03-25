@@ -5,8 +5,7 @@ import { RenderService } from "../render-service/render.service";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { Track } from "./../track";
-
-const CARS_MAX: number = 4;
+const DELAY: number = 1000;
 
 @Component({
   selector: "app-game-results",
@@ -31,14 +30,13 @@ export class GameResultsComponent implements OnInit {
 
   private delay(ms: number): Promise<boolean> {
     return new Promise((resolve) => setTimeout(resolve, ms));
-}
+  }
 
   private async getTrack(name: string): Promise<void> {
-    await this.delay(1000);
+    await this.delay(DELAY);
     this.communicationService.getTrackByName(name)
       .subscribe((res: Track[]) => {
         this.scores = res[0].newScores;
-        console.log("here");
       });
   }
 
