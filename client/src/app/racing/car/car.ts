@@ -221,13 +221,6 @@ export class Car extends Object3D {
         this.engine.update(this._speed.length(), this.rearWheel.radius);
         this.weightRear = this.getWeightDistribution();
         this._speed.add(this.getDeltaSpeed(deltaTime));
-<<<<<<< HEAD
-        this._speed.setLength(this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length());
-        this.mesh.position.add(this.getDeltaPosition(deltaTime));
-        this.rearWheel.update(this._speed.length());
-
-        this.updatedPosition = this.mesh.position;
-=======
         this._speed.setLength(
             this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
         );
@@ -239,7 +232,6 @@ export class Car extends Object3D {
         this._mesh.position.add(this._velocity);
         this.rearWheel.update(this.speed.length());
         this.updatedPosition = this._mesh.position;
->>>>>>> master
     }
 
     private getWeightDistribution(): number {
@@ -280,13 +272,6 @@ export class Car extends Object3D {
         const tirePressure: number = 1;
         // formula taken from: https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html
 
-<<<<<<< HEAD
-        const rollingCoefficient: number = (1 / tirePressure) * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE,
-            NUMBER_REAR_WHEELS) *
-            COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
-
-        return this.direction.multiplyScalar(rollingCoefficient * this.mass * GRAVITY);
-=======
         const rollingCoefficient: number =
             1 /
             tirePressure *
@@ -301,7 +286,6 @@ export class Car extends Object3D {
         return this.direction.multiplyScalar(
             rollingCoefficient * this.mass * GRAVITY
         );
->>>>>>> master
     }
 
     private getDragForce(): Vector3 {
