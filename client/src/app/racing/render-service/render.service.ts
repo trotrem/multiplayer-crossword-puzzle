@@ -234,7 +234,7 @@ export class RenderService {
             if (this.counter[i] < LAP_MAX) {
                 let distance: number =
                     RaceUtils.calculateDistance(this.getUpdateCarPosition()[i], this.track.points[this.validIndex[i] + 1]);
-                for (let j: number = this.validIndex[i] + 1; j < this.validIndex.length; j++) {
+                for (let j: number = this.validIndex[i] + 1; j > 0 ; j--) {
                     distance += RaceUtils.calculateDistance(this.track.points[j], this.track.points[j + 1]);
                 }
                 while (this.cars[i].getLabTimes().length !== LAP_MAX) {
