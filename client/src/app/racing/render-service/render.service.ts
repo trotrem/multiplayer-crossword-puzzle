@@ -23,7 +23,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
 const CARS_MAX: number = 4;
-const LAP_MAX: number = 3;
+const LAP_MAX: number = 1;
 
 @Injectable()
 export class RenderService {
@@ -150,7 +150,10 @@ export class RenderService {
             await this.cars[i].init();
             this.scene.add(this.cars[i]);
         }
-        this.track.points.push(trackMeshs[trackMeshs.length - 1].position);
+        this.track.points.splice(0, 0, trackMeshs[trackMeshs.length - 1].position);
+        console.log(trackMeshs[trackMeshs.length - 1].position);
+        // this.track.points.push(trackMeshs[trackMeshs.length - 1].position);
+        console.log(this.track.points);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
 
@@ -234,7 +237,7 @@ export class RenderService {
             if (this.counter[i] < LAP_MAX) {
                 let distance: number =
                     RaceUtils.calculateDistance(this.getUpdateCarPosition()[i], this.track.points[this.validIndex[i] + 1]);
-                for (let j: number = this.validIndex[i] + 1; j > 0 ; j--) {
+                for (let j: number = this.validIndex[i] + 1; j > 0; j--) {
                     distance += RaceUtils.calculateDistance(this.track.points[j], this.track.points[j + 1]);
                 }
                 while (this.cars[i].getLabTimes().length !== LAP_MAX) {
