@@ -30,7 +30,7 @@ export class EditorComponent implements OnInit {
     public constructor(private http: HttpClient, private route: ActivatedRoute) {
         this.track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-            bestScores: new Array<number>()
+            newScores: new Array<number>()
         };
         this.submitValid = false;
         this.sceneService = new SceneServices();

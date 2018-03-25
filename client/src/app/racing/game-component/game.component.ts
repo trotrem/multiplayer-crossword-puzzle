@@ -29,7 +29,7 @@ export class GameComponent implements AfterViewInit {
 
     public constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
         this.communicationService = new CommunicationRacingService(this.http);
-        this.renderService = new RenderService(router);
+        this.renderService = new RenderService(router, http);
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -75,11 +75,11 @@ export class GameComponent implements AfterViewInit {
             .subscribe((res: Track[]) => {
                 const track: Track = res[0];
                 const points: THREE.Vector3[] = [];
-                for (let point of track.points) {
+                for (const point of track.points) {
                     points.push(new THREE.Vector3(point.x, point.y, point.z));
                 }
                 track.points = points;
-                this.renderService.initialize(this.containerRef.nativeElement, track.startingZone, track.points);
+                this.renderService.initialize(this.containerRef.nativeElement, track);
 
             });
 

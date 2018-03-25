@@ -45,6 +45,10 @@ export class Car extends Object3D {
     private updatedPosition: Vector3;
     private lapTimes: number[];
 
+    public set speed(speed: Vector3) {
+        this._speed = speed;
+    }
+
     public get speed(): Vector3 {
         return this._speed.clone();
     }
@@ -343,7 +347,6 @@ export class Car extends Object3D {
     }
 
     public setLabTimes(time: number): void {
-        time /= MS_TO_SECONDS;
         for (let i: number = 1; i < this.lapTimes.length + 1; i++) {
             time -= this.lapTimes[this.lapTimes.length - i];
         }

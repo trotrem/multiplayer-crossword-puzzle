@@ -1,12 +1,12 @@
 import * as THREE from "three";
-const ADD_TO_DISTANCE: number = 100;
+const ADD_TO_DISTANCE: number = 30;
 const EXPONENT: number = 2;
 export class LapPositionsVerfiers {
     public static getLapPositionVerifiers(meshs: THREE.Mesh[]): THREE.Vector3[] {
         const positions: THREE.Vector3[] = new Array<THREE.Vector3>();
 
-        for (const mesh of meshs) {
-            positions.push(mesh.position.clone());
+        for (let i: number = meshs.length - 1; i >= 0; i--) {
+            positions.push(meshs[i].position.clone());
 
         }
 
@@ -25,7 +25,7 @@ export class LapPositionsVerfiers {
          console.log(position);*/
 
         const dist: number = Math.sqrt(Math.pow(position.x - position2.x, EXPONENT) + Math.pow(position.y - position2.y, EXPONENT));
-        console.log(dist);
+        // console.log(dist);
 
         return dist <= ADD_TO_DISTANCE/*LapPositionsVerfiers.getMaxDistance(carPosition)*/;
     }
