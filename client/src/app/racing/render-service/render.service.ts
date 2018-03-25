@@ -90,7 +90,8 @@ export class RenderService {
         this.validateLap(this.validIndex);
         this.lastDate = Date.now();
         //this.camera.rotateX(Math.PI);
-        this.camera.position.set(this.updatedCarPosition.x, this.updatedCarPosition.z, 50);
+        this.camera.position.set(this.updatedCarPosition.x, this.updatedCarPosition.z - 50, 50);
+        this.camera.rotation.z = 90 * Math.PI / 180;
         this.camera.lookAt(this.updatedCarPosition);
         this.camera.updateProjectionMatrix();
     }
