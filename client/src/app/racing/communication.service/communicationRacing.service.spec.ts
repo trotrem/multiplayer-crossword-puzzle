@@ -36,7 +36,7 @@ describe("CommunicationRacingService", () => {
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
       const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-        bestScores: new Array<number>()
+        newScores: new Array<number>()
     };
       http.post("http://localhost:3000/racing/track", JSON.stringify(track)).subscribe();
       backend.expectOne({

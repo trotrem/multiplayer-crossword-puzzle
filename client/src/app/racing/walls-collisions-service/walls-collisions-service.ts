@@ -17,7 +17,7 @@ export class WallsCollisionsService {
   private _raycaster: THREE.Raycaster = new THREE.Raycaster();
   private _intersects: THREE.Intersection[] = [];
 
-  public constructor(private _scene: THREE.Scene) {}
+  public constructor() {}
 
   public willCollide(car: Car): boolean {
     const corners: THREE.Vector3[] = car.getCorners(car.getUpdatedPosition());

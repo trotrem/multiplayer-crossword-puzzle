@@ -95,7 +95,7 @@ export class RenderService {
             this.scene.add(mesh);
         }
 
-        const collisionService: WallsCollisionsService = new WallsCollisionsService(this.scene);
+        const collisionService: WallsCollisionsService = new WallsCollisionsService();
         collisionService.createWalls(this.raceValidator.track.points, this.scene);
 
         for (let i: number = 0; i < CARS_MAX; i++) {

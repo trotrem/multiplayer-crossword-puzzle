@@ -68,7 +68,7 @@ const appRoutes: Routes = [
     providers: [
         SceneServices,
         CommunicationRacingService,
-        RenderService,
+        RenderService
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

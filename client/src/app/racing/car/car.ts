@@ -98,6 +98,10 @@ export class Car extends Object3D {
         return this._mesh;
     }
 
+    public set mesh(mesh: Object3D) {
+        this._mesh = mesh;
+    }
+
     private get direction(): Vector3 {
         const rotationMatrix: Matrix4 = new Matrix4();
         const carDirection: Vector3 = new Vector3(0, 0, -1);
