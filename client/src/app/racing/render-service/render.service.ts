@@ -22,6 +22,10 @@ const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
 
+const ZOOM_FACTOR: number = 0.05;
+const ZOOM_MAX: number = 2;
+const ZOOM_MIN: number = 0.75;
+
 const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
@@ -128,11 +132,20 @@ export class RenderService {
     }
 
     public toggleCamera(): void {
-        if (this.cameraID === 1) {
-            this.cameraID = 0;
-        } else {
-            this.cameraID = 1;
+        this.cameraID = (this.cameraID === 1) ? 0 : 1;
+    }
+
+    public zoomIn(): void {
+        for (let i: number = 0; i < 2; i++) {
+            if (this.cameras[i].zoom < ZOOM_MAX)
+                this.cameras[i].zoom += ZOOM_FACTOR;
+        }
+    }
+
+    public zoomOut(): void {
+        for (let i: number = 0; i < 2; i++) {
+            if (this.cameras[i].zoom > ZOOM_MIN)
+                this.cameras[i].zoom -= ZOOM_FACTOR;
         }
     }
 }
-
