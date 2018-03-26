@@ -101,9 +101,10 @@ describe("RenderService", () => {
             isEqual = true;
         }
         expect(isEqual).toBe(true);
-    });
+    });*/
 
-    it("should follow car with top view camera", async () => {
+    //mauvais test, pas fini
+    /*it("should follow car with top view camera", async () => {
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
