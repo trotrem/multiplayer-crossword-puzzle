@@ -42,10 +42,6 @@ describe("RaceValidatorService", () => {
     expect(service.getLapSectionvalidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
   }));
 
-  it("should return false when a car is far from a Lap's verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
-  }));
-
   it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {
     const carIndex: number = 0;
     router.navigateByUrl("/gameResults/" + carIndex);

@@ -61,30 +61,39 @@ export class RaceValidatorService {
   }
 
   public async validateLap(index: number, carIndex: number, timer: number): Promise<boolean> {
+
     await this.cars[carIndex].getUpdatedPosition();
     let isPartlyValid: Promise<boolean>;
     if (this.getLapSectionvalidator(
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
-        this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
-        this.validIndex[carIndex] = 0;
-        this.counter[carIndex] += 1;
-        if (this.counter[carIndex] === LAP_MAX) {
-          this.addScoreToTrack(carIndex);
-          if (carIndex === 0) {
-            this.estimateTime(timer / MS_TO_SECONDS);
-            await this.communicationService.updateNewScore(this.track);
-            this.navigateToGameResults();
-          }
-        }
+        this.verifieNextLap(carIndex, timer);
       }
       isPartlyValid = this.validateLap(this.validIndex[carIndex], carIndex, timer);
     }
 
     return isPartlyValid;
   }
+  private setNextLapParameters(carIndex: number, timer: number): void {
 
+    this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
+    this.validIndex[carIndex] = 0;
+    this.counter[carIndex] += 1;
+  }
+
+  private async verifieNextLap(carIndex: number, timer: number): Promise<void> {
+
+    this.setNextLapParameters(carIndex, timer);
+    if (this.counter[carIndex] === LAP_MAX) {
+      this.addScoreToTrack(carIndex);
+      if (carIndex === 0) {
+        this.estimateTime(timer / MS_TO_SECONDS);
+        await this.communicationService.updateNewScore(this.track);
+        this.navigateToGameResults();
+      }
+    }
+  }
   private navigateToGameResults(): void {
     this._router.navigateByUrl("/gameResults/" + this.track.name);
   }
