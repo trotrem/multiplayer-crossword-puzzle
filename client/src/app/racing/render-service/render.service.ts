@@ -28,7 +28,7 @@ const AMBIENT_LIGHT_OPACITY: number = 2;
 @Injectable()
 export class RenderService {
     private AXIS_HELPER: THREE.AxisHelper = new THREE.AxisHelper(6);
-    private camera: THREE.PerspectiveCamera;
+    private camera: PerspectiveCamera;
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
@@ -58,7 +58,6 @@ export class RenderService {
         this.startRenderingLoop();
         this.scene.add(this.AXIS_HELPER);
         this.camera.up.set(0, 0, 1);
-        this.camera.position.set(this.raceValidator.cars[0].getUpdatedPosition.x + 25, this.raceValidator.cars[0].getUpdatedPosition.y, 50);
     }
 
     public initializeEventHandlerService(): void {
@@ -80,28 +79,14 @@ export class RenderService {
             this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
-        if(this.raceValidator.cars[0].angle < 0){
-            console.log("TRUE");
-        }
-        this.camera.position.y =
-            this.raceValidator.cars[0].getUpdatedPosition().y +
-            Math.cos(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI))*25;
-        this.camera.position.x =
-            this.raceValidator.cars[0].getUpdatedPosition().x +
-            Math.sin(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI))*25;
-        this.camera.position.z = 50;
-        /*this.camera.position.x = this.raceValidator.cars[0].getUpdatedPosition().x + 50;
-        this.camera.position.y = this.raceValidator.cars[0].getUpdatedPosition().y;
-        this.camera.position.z = 50;*/
-        this.camera.lookAt(this.raceValidator.cars[0].getUpdatedPosition());
-        //camera.updateMatrix();
-        this.camera.updateProjectionMatrix();
+
+        this.camera.updatePosition(this.raceValidator.cars[0]);
     }
 
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
 
-        this.camera = new THREE.PerspectiveCamera(FIELD_OF_VIEW, this.getAspectRatio(), NEAR_CLIPPING_PLANE, FAR_CLIPPING_PLANE);
+        this.camera = new PerspectiveCamera();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(this.raceValidator.track.points);
         for (const mesh of trackMeshs) {
             this.scene.add(mesh);

@@ -43,16 +43,18 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
         this.lookAt(new THREE.Vector3(0, 0, 0));
     }
 
-    public updatePosition(carPosition: THREE.Vector3): void {
-        // let relativeCameraOffset = new THREE.Vector3(0, 50, 200);
-
-        // let cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
-
-        this.position.x = carPosition.x;
-        this.position.y = carPosition.z;
-        this.position.z = carPosition.y + 1000;
-        this.lookAt(carPosition);
-
+    public updatePosition(car: Car): void {
+        this.position.y =
+            car.getUpdatedPosition().y +
+            Math.cos(car.angle / 360 * (2 * Math.PI)) * 25;
+        this.position.x =
+            car.getUpdatedPosition().x +
+            Math.sin(car.angle / 360 * (2 * Math.PI)) * 25;
+        this.position.z = 50;
+        /*this.camera.position.x = this.raceValidator.cars[0].getUpdatedPosition().x + 50;
+        this.camera.position.y = this.raceValidator.cars[0].getUpdatedPosition().y;
+        this.camera.position.z = 50;*/
+        this.lookAt(car.getUpdatedPosition());
         //camera.updateMatrix();
         this.updateProjectionMatrix();
 
