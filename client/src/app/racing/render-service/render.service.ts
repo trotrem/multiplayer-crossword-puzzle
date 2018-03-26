@@ -81,7 +81,6 @@ export class RenderService {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
-
             this.raceValidator.cars[i].update(timeSinceLastFrame);
             this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
         }
