@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "./../../../utils/utils";
 import { MS_TO_SECONDS, CARS_MAX } from "../constants";
-import { CommunicationRacingService } from "../../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { Track } from "../../../track";
 import { RaceValidatorService } from "../race-validator/race-validator.service";

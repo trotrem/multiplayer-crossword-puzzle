@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { Track } from "./../../track";
 const DELAY: number = 1000;
@@ -12,11 +12,11 @@ const DELAY: number = 1000;
 })
 export class GameResultsComponent implements OnInit {
 
-  private communicationService: CommunicationRacingService;
+  private communicationService: RacingCommunicationService;
   private _scores: number[];
 
   public constructor(private route: ActivatedRoute, private http: HttpClient) {
-    this.communicationService = new CommunicationRacingService(http);
+    this.communicationService = new RacingCommunicationService(http);
     this._scores = new Array<number>();
   }
   public get scores(): number[] {

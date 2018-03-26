@@ -1,5 +1,5 @@
 
-<button (click)="play()" [ngClass] = "{'disapear': disabledCar === false }"> PLAY </button>
+<button (click)="play()" [ngClass] = "{'disapear': playButtonEnabled === false }"> PLAY </button>
 
 <div *ngFor="let light of lights" >
   <ul>
