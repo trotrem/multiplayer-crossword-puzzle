@@ -80,16 +80,16 @@ export class RenderService {
         }
         this.lastDate = Date.now();
 
-        /*this.camera.position.y =
+        this.camera.position.y =
             this.raceValidator.cars[0].getUpdatedPosition().y +
-            Math.cos(this.raceValidator.cars[0].direction.y / 360 * (2 * Math.PI));
+            Math.cos(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI));
         this.camera.position.x =
             this.raceValidator.cars[0].getUpdatedPosition().x +
-            Math.sin(this.raceValidator.cars[0].direction.y / 360 * (2 * Math.PI)) * 50;
-        this.camera.position.z = 50;*/
-        this.camera.position.x = this.raceValidator.cars[0].getUpdatedPosition().x + 50;
-        this.camera.position.y = this.raceValidator.cars[0].getUpdatedPosition().y;
+            Math.sin(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI)) * 50;
         this.camera.position.z = 50;
+        /*this.camera.position.x = this.raceValidator.cars[0].getUpdatedPosition().x + 50;
+        this.camera.position.y = this.raceValidator.cars[0].getUpdatedPosition().y;
+        this.camera.position.z = 50;*/
         this.camera.lookAt(this.raceValidator.cars[0].getUpdatedPosition());
         //camera.updateMatrix();
         this.camera.updateProjectionMatrix();
