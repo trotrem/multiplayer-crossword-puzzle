@@ -50,7 +50,6 @@ export class CrosswordGridComponent implements OnInit {
     this.communicationService = new CommunicationService(this.http);
     this.cells = new Array<Array<Cell>>();
     this.words = new Array<WordDescription>();
-    //  this.setDifficulty();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
       this.cells[i] = new Array<Cell>();
       for (let j: number = 0; j < GRID_WIDTH; j++) {
@@ -60,13 +59,6 @@ export class CrosswordGridComponent implements OnInit {
     this.gridEventService = new GridEventService(this.words, this.http, this.router);
 
   }
-  /*
-  private setDifficulty(): void {
-    this._difficulty = location.pathname === "/crossword/easy" ? "easy" :
-      location.pathname === "/crossword/medium" ? "medium" :
-        "hard";
-  }
-*/
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.gridEventService.setDifficulty(params["Difficulty"]);
