@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Car } from "./../car/car";
 import { ActivatedRoute, Router } from "@angular/router";
-import { RenderService } from "../render-service/render.service";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
-import { Track } from "./../track";
+import { Track } from "./../../track";
 const DELAY: number = 1000;
 
 @Component({
