@@ -89,6 +89,7 @@ export class RaceValidatorService {
       this.addScoreToTrack(carIndex);
       if (carIndex === 0) {
         this.estimateTime(timer / MS_TO_SECONDS);
+        this.track.usesNumber++;
         await this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
       }
