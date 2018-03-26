@@ -60,7 +60,7 @@ export class RaceValidatorService {
     return Math.sqrt(Math.pow(position.x - position2.x, EXPONENT) + Math.pow(position.y - position2.y, EXPONENT)) <= ADD_TO_DISTANCE;
   }
 
-  public async validateLap(index: number, carIndex: number, timer: number): Promise<boolean> {
+  public async validateRace(index: number, carIndex: number, timer: number): Promise<boolean> {
 
     await this.cars[carIndex].getUpdatedPosition();
     let isPartlyValid: Promise<boolean>;
@@ -70,7 +70,7 @@ export class RaceValidatorService {
       if (this.validIndex[carIndex] === this.track.points.length) {
         this.verifieNextLap(carIndex, timer);
       }
-      isPartlyValid = this.validateLap(this.validIndex[carIndex], carIndex, timer);
+      isPartlyValid = this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
     return isPartlyValid;

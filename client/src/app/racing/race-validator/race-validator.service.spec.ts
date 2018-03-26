@@ -51,7 +51,7 @@ describe("RaceValidatorService", () => {
 
   it("shouldn't validate a race when a less than 3 lap ", inject([RaceValidatorService], (service: RaceValidatorService) => {
     service.counter[0] = 2;
-    service.validateLap(0, 0, 0);
+    service.validateRace(0, 0, 0);
     expect(service.router.navigated).toBe(false);
   }));
 });
