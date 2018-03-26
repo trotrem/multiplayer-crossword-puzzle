@@ -63,7 +63,7 @@ describe("RenderService", () => {
         service.initialize(container, track);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
-        expect(service.getScene().children.length).toEqual(3);
+        expect(service.getScene().children.length).toEqual(4);
     });
     /*it("should follow car with top view camera", async () => {
         let isEqual: boolean = false;
