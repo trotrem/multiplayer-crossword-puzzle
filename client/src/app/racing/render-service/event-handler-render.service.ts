@@ -4,15 +4,16 @@ import { Car } from "../car/car";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
 import { KeyUp, KeyDown } from "../commands/key-press";
+import { RenderService } from "./render.service";
 
 @Injectable()
 export class EventHandlerRenderService {
-    // private keyboard: Keyboard;
-    public constructor(car: Car) {
-        this.initCommands(car);
+
+    public constructor(car: Car, renderService: RenderService) {
+        this.initCommands(car, renderService);
     }
 
-    public initCommands(car: Car): void {
+    public initCommands(car: Car, renderService: RenderService): void {
         // Key down commands
         KeyDown.Instance.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.AccelerationCommand(car));
         KeyDown.Instance.addCommand(KeyCode.LEFT_KEYCODE, new Command.SteerLeftCommand(car));
@@ -20,7 +21,7 @@ export class EventHandlerRenderService {
         KeyDown.Instance.addCommand(KeyCode.BRAKE_KEYCODE, new Command.BrakeCommand(car));
         KeyDown.Instance.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand());
         KeyDown.Instance.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand());
-        KeyDown.Instance.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand());
+        KeyDown.Instance.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(renderService));
         // Key up commands
         KeyUp.Instance.addCommand(KeyCode.LEFT_KEYCODE, new Command.ReleaseSteerCommand(car));
         KeyUp.Instance.addCommand(KeyCode.RIGHT_KEYCODE, new Command.ReleaseSteerCommand(car));

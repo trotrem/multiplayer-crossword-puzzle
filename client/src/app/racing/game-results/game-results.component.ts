@@ -15,12 +15,15 @@ const DELAY: number = 1000;
 export class GameResultsComponent implements OnInit {
 
   private communicationService: CommunicationRacingService;
-  private scores: number[];
+  private _scores: number[];
 
   public constructor(private route: ActivatedRoute, private http: HttpClient) {
     this.communicationService = new CommunicationRacingService(http);
+    this._scores = new Array<number>();
   }
-
+  public get scores(): number[] {
+    return this._scores;
+  }
   public ngOnInit(): void {
     const name: string = this.route.snapshot.paramMap.get("name");
     if (name !== null) {
@@ -32,11 +35,11 @@ export class GameResultsComponent implements OnInit {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  private async getTrack(name: string): Promise<void> {
+  public async getTrack(name: string): Promise<void> {
     await this.delay(DELAY);
     this.communicationService.getTrackByName(name)
       .subscribe((res: Track[]) => {
-        this.scores = res[0].newScores;
+        this._scores = res[0].newScores;
       });
   }
 
