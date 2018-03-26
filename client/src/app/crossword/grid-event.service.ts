@@ -1,4 +1,4 @@
-import { Injectable, HostListener } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
 import { IWordValidationParameters, Difficulty } from "../../../../common/communication/types";
 import { Cell } from "./cell";

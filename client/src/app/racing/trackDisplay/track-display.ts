@@ -4,7 +4,7 @@ const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
 const WIDTH_START: number = 4;
 const WIDTH_POINT: number = 0.5;
-const WHITE: number = 0xFFFFFF;
+// const WHITE: number = 0xFFFFFF;
 const GRAY: number = 0x7B8284;
 const RED: number = 0xFF0000;
 

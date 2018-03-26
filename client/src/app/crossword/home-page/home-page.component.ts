@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Difficulty } from "../../../../../common/communication/types";
+// import { Difficulty } from "../../../../../common/communication/types";
 
 @Component({
   selector: "app-home-page",

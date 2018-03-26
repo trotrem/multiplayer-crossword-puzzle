@@ -1,12 +1,12 @@
-import { TestBed, inject, async, fakeAsync, tick } from "@angular/core/testing";
+import { TestBed, inject, async } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
-import { Routes, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../game-results/game-results.component";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { Track } from "./../track";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
@@ -131,6 +131,7 @@ describe("RenderService", () => {
         }
     });
     it("should zoom in", () => {
+        service.initialize(container, track);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -138,7 +139,8 @@ describe("RenderService", () => {
         expect(initialZoom[0]).toBeLessThan(service.TopCamera.zoom);
         expect(initialZoom[1]).toBeLessThan(service.RearCamera.zoom);
     });
-    it("should not exceed a zoom of 2", () => {
+    it("zoom should not exceed a zoom of 2", () => {
+        service.initialize(container, track);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
@@ -146,6 +148,7 @@ describe("RenderService", () => {
         expect(service.RearCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
     });
     it("should zoom out", () => {
+        service.initialize(container, track);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -153,7 +156,8 @@ describe("RenderService", () => {
         expect(initialZoom[0]).toBeGreaterThan(service.TopCamera.zoom);
         expect(initialZoom[1]).toBeGreaterThan(service.RearCamera.zoom);
     });
-    it("should not go under a zoom of 0.75", () => {
+    it("should not go under a zoom of 0.75", async() => {
+        await service.initialize(container, track);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }

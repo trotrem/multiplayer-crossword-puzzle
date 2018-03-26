@@ -1,10 +1,10 @@
-import { TestBed, inject } from "@angular/core/testing";
+import { TestBed, /*inject*/ } from "@angular/core/testing";
 import { SceneServices } from "./scene.service";
 
 describe("SceneService", () => {
 
   // tslint:disable-next-line:prefer-const
-  let canvas: HTMLCanvasElement ;
+  // let canvas: HTMLCanvasElement ;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [SceneServices, HTMLCanvasElement]
