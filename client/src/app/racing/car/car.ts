@@ -71,32 +71,32 @@ export class Car extends Object3D {
     }
 
     public getCorners(pos: Vector3): Vector3[] {
-        return [
-            pos.add(this.direction.multiplyScalar(LENGTH / 2).add(
-                this.direction.cross(
-                    new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
-                )
+      return [
+        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
+              this.direction.cross(
+                new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
+              )
             )
-            ),
-            pos.add(this.direction.multiplyScalar(LENGTH / 2).sub(
-                this.direction.cross(
-                    new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
-                )
+        ),
+        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).sub(
+              this.direction.cross(
+                new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
+              )
             )
-            ),
-            pos.sub(this.direction.multiplyScalar(LENGTH / 2).add(
-                this.direction.cross(
-                    new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
-                )
+        ),
+        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).add(
+              this.direction.cross(
+                new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
+              )
             )
-            ),
-            pos.sub(this.direction.multiplyScalar(LENGTH / 2).sub(
-                this.direction.cross(
-                    new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
-                )
+        ),
+        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
+              this.direction.cross(
+                new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)
+              )
             )
-            )
-        ];
+        )
+      ];
     }
 
     public get mesh(): Object3D {
