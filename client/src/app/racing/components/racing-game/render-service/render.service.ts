@@ -1,4 +1,4 @@
-import { Injectable} from "@angular/core";
+import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
@@ -9,11 +9,11 @@ import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { Router } from "@angular/router";
 import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
-import { RaceUtils } from "./../utils/utils";
+import { RaceUtils } from "./../../../utils/utils";
 import { MS_TO_SECONDS, CARS_MAX } from "../constants";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
-import { Track } from "../track";
+import { Track } from "../../../track";
 import { RaceValidatorService } from "../race-validator/race-validator.service";
 const EXPONENT: number = 2;
 
@@ -28,10 +28,11 @@ const ZOOM_MIN: number = 0.75;
 const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
+const INITIAL_AXISHELPER: number = 6;
 
 @Injectable()
 export class RenderService {
-    private Axis_Helper = new THREE.AxisHelper(6);
+    private axisHelper: THREE.AxisHelper = new THREE.AxisHelper(INITIAL_AXISHELPER);
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
@@ -68,7 +69,7 @@ export class RenderService {
         CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
         this.initStats();
         this.startRenderingLoop();
-        this.scene.add(this.Axis_Helper);
+        this.scene.add(this.axisHelper);
         // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.cameras[0].up.set(0, 0, 1);
     }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Track } from "./../track";
+import { Track } from "./../../track";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 
 @Component({
   selector: "app-user",

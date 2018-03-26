@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils } from "../utils/utils";
+import { RaceUtils } from "../../../utils/utils";
 const HALF_CIRCLE_DEGREES: number = 180;
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
@@ -29,15 +29,12 @@ export class TrackValidator {
 
     }
     private calculateAngle(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): number {
-        return Math.acos((this.calculateDistance(position2, position3) * this.calculateDistance(position2, position3)
-            + this.calculateDistance(position2, position1) * this.calculateDistance(position2, position1)
-            - this.calculateDistance(position3, position1) * this.calculateDistance(position3, position1)) /
-            (EXPONENT * this.calculateDistance(position2, position3) * this.calculateDistance(position2, position1)));
+        return Math.acos((RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position3)
+            + RaceUtils.calculateDistance(position2, position1) * RaceUtils.calculateDistance(position2, position1)
+            - RaceUtils.calculateDistance(position3, position1) * RaceUtils.calculateDistance(position3, position1)) /
+            (EXPONENT * RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position1)));
     }
 
-    private calculateDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
-        return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
-    }
     private twoLinesIntersect(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
@@ -54,7 +51,7 @@ export class TrackValidator {
     }
 
     private lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3): void {
-        if (this.calculateDistance(position1, position2) < (MAX_LENGTH)) {
+        if (RaceUtils.calculateDistance(position1, position2) < (MAX_LENGTH)) {
             this.illegalPoints.push(new THREE.Vector3(0, 0, 0));
         }
     }

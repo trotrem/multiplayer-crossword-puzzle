@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
-import { Track } from "../track";
+import { Track } from "../../track";
 import { ActivatedRoute } from "@angular/router";
-import { SceneServices } from "./../scene.services/scene.service";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { SceneServices } from "./scene.services/scene.service";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 
 @Component({

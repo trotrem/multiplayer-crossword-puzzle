@@ -34,6 +34,7 @@ export class SceneServices {
     }
     this.createScene();
     this.animate();
+
   }
 
   public createScene(): void {

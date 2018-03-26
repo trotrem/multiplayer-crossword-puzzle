@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import { RaceUtils } from "../utils/utils";
+import { RaceUtils } from "../../../utils/utils";
 import { Car } from "../car/car";
 
+// TODO: rename or make as service
 // Sides may be inverted depending on the orientation of the track (clockwise or counter-clockwise)
 enum WallSide {
     exterior = -1,

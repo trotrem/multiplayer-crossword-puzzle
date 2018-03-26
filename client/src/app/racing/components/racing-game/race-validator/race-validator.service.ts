@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { Car } from "./../car/car";
+import { Car } from "../car/car";
 import { Router } from "@angular/router";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
-import { RaceUtils } from "./../utils/utils";
-import { Track } from "../track";
+import { RaceUtils } from "../../../utils/utils";
+import { Track } from "../../../track";
 const ADD_TO_DISTANCE: number = 30;
 const EXPONENT: number = 2;
 
