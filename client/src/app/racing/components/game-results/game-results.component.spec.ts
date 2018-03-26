@@ -7,7 +7,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Track } from "./../../track";
 import * as THREE from "three";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 describe("GameResultsComponent", () => {
   let route: ActivatedRoute;
   let http: HttpClient;
@@ -29,7 +29,7 @@ describe("GameResultsComponent", () => {
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([
           { path: "gameResults/:CarIndex", component: GameResultsComponent}])],
-      providers: [CommunicationRacingService]
+      providers: [RacingCommunicationService]
     })
       .compileComponents();
     fixture = TestBed.createComponent(GameResultsComponent);

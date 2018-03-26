@@ -5,7 +5,7 @@ import { UserComponent } from "./user.component";
 import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Track } from "../../track";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 
 import * as THREE from "three";
 import { GameComponent } from "../racing-game/game-component/game.component";
@@ -22,7 +22,7 @@ describe("UserComponent", () => {
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([{ path: "race/:name", component: GameComponent }])]
             ,
-            providers: [CommunicationRacingService]
+            providers: [RacingCommunicationService]
         })
             .compileComponents();
         fixture = TestBed.createComponent(UserComponent);
