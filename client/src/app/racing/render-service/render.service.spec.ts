@@ -63,5 +63,42 @@ describe("RenderService", () => {
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
     });
-
+    it("should toggle camera", () => {
+        for (let i: number = 0; i < 20; i++) {
+            const previousCameraId: number = service.CameraID;
+            service.toggleCamera();
+            const currentCameraId: number = service.CameraID;
+            expect(previousCameraId).not.toEqual(currentCameraId);
+        }
+    });
+    it("should zoom in", () => {
+        const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
+        for (let i: number = 0; i < 20; i++) {
+            service.zoomIn();
+        }
+        expect(initialZoom[0]).toBeLessThan(service.TopCamera.zoom);
+        expect(initialZoom[1]).toBeLessThan(service.RearCamera.zoom);
+    });
+    it("should not exceed a zoom of 2", () => {
+        for (let i: number = 0; i < 1000; i++) {
+            service.zoomIn();
+        }
+        expect(service.TopCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
+        expect(service.RearCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
+    });
+    it("should zoom out", () => {
+        const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
+        for (let i: number = 0; i < 20; i++) {
+            service.zoomOut();
+        }
+        expect(initialZoom[0]).toBeGreaterThan(service.TopCamera.zoom);
+        expect(initialZoom[1]).toBeGreaterThan(service.RearCamera.zoom);
+    });
+    it("should not go under a zoom of 0.75", () => {
+        for (let i: number = 0; i < 1000; i++) {
+            service.zoomOut();
+        }
+        expect(service.TopCamera.zoom.toFixed(2)).toBeGreaterThanOrEqual(0.75);
+        expect(service.RearCamera.zoom.toFixed(2)).toBeGreaterThanOrEqual(0.75);
+    });
 });
