@@ -4,8 +4,8 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { AdminComponent } from "./admin.component";
 import { Routes, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Track } from "../track";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { Track } from "../../track";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 import { FormsModule } from "@angular/forms";
 
 import * as THREE from "three";

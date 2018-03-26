@@ -5,9 +5,9 @@ import { GameResultsComponent } from "./game-results.component";
 import { FormsModule} from "@angular/forms";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Track } from "./../track";
+import { Track } from "./../../track";
 import * as THREE from "three";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 describe("GameResultsComponent", () => {
   let route: ActivatedRoute;
   let http: HttpClient;

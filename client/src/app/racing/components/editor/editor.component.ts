@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
+import { injectable, inject } from "inversify";
 
 @Component({
     selector: "app-editor",
@@ -21,20 +22,19 @@ export class EditorComponent implements OnInit {
     private submitValid: boolean;
     private track: Track;
     private sceneService: SceneServices;
-    private communicationService: RacingCommunicationService;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
-    public constructor(private http: HttpClient, private route: ActivatedRoute) {
+    public constructor(
+        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private route: ActivatedRoute) {
         this.track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             newScores: new Array<number>()
         };
         this.submitValid = false;
         this.sceneService = new SceneServices();
-        this.communicationService = new RacingCommunicationService(this.http);
     }
     public setTrack(track: Track): void {
         this.track = track;
