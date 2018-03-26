@@ -23,7 +23,6 @@ export class OrthographicCamera extends THREE.OrthographicCamera {
             OrthographicCamera.FAR
         );
         this.updateProjectionMatrix();
-        // this.setupOrthographicView();
     }
 
     public setStartPosition(position: THREE.Vector3, carPosition: THREE.Vector3): void {
@@ -35,22 +34,11 @@ export class OrthographicCamera extends THREE.OrthographicCamera {
     }
 
     public updatePosition(position: THREE.Vector3): void {
-        // this.position.copy(position).add(new THREE.Vector3(0, 0, OrthographicCamera.DISTANCE_TO_TARGET));
-        //console.log("Position X : " + position.x);
-        //console.log("Position Z : " + position.z);
         this.position.x = position.x;
         this.position.y = position.y;
-        this.position.z = 100;
+        this.position.z = OrthographicCamera.ORTHO_HEIGHT;
         this.lookAt(this.position);
         this.updateProjectionMatrix();
 
     }
-
-
-    private setupOrthographicView(): void {
-        this.rotation.order = "YXZ";
-        this.rotateZ(Math.PI / 2);
-        this.updateProjectionMatrix();
-    }
-
 }

@@ -28,7 +28,7 @@ const AMBIENT_LIGHT_OPACITY: number = 2;
 
 @Injectable()
 export class RenderService {
-    private cameras: [THREE.PerspectiveCamera, OrthographicCamera] = [null, null];
+    private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
@@ -37,6 +37,7 @@ export class RenderService {
     private evenHandeler: EventHandlerRenderService;
     private timer: number;
     private raceValidator: RaceValidatorService;
+    private cameraID: number;
 
     public constructor(private router: Router, private http: HttpClient) {
         this.raceValidator = new RaceValidatorService(router, http);
@@ -48,6 +49,7 @@ export class RenderService {
     }
 
     public async initialize(container: HTMLDivElement, track: Track): Promise<void> {
+        this.cameraID = 1;
         if (container) {
             this.container = container;
         }
@@ -58,6 +60,7 @@ export class RenderService {
         this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.initStats();
         this.startRenderingLoop();
+        this.cameras[0].up.set(0, 0, 1);
     }
     public initializeEventHandlerService(): void {
         this.evenHandeler = new EventHandlerRenderService(this.raceValidator.cars[0]);
@@ -77,11 +80,12 @@ export class RenderService {
             this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
+        this.cameras[0].updatePosition(this.raceValidator.cars[0]);
         this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
     }
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
-        // this.cameras[0] = new PerspectiveCamera();
+        this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(this.raceValidator.track.points);
         for (const mesh of trackMeshs) {
@@ -112,15 +116,22 @@ export class RenderService {
     private render(): void {
         requestAnimationFrame(() => this.render());
         this.update();
-        this.renderer.render(this.scene, this.cameras[1]);
+        this.renderer.render(this.scene, this.cameras[this.cameraID]);
         this.stats.update();
     }
     public onResize(): void {
+        this.cameras[0].aspect = this.getAspectRatio();
         this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
         this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
         this.cameras[1].updateProjectionMatrix();
-        // this.camera.aspect = this.getAspectRatio();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
+    }
+    private toggleCamera(): void {
+        if (this.cameraID = 1) {
+            this.cameraID = 0;
+        } else if (this.cameraID = 0) {
+            this.cameraID = 1;
+        }
     }
 }

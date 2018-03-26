@@ -107,7 +107,7 @@ export class Car extends Object3D {
         this._mesh = mesh;
     }
 
-    private get direction(): Vector3 {
+    public get direction(): Vector3 {
         const rotationMatrix: Matrix4 = new Matrix4();
         const carDirection: Vector3 = new Vector3(0, 0, -1);
 
@@ -267,6 +267,7 @@ export class Car extends Object3D {
 
         return resultingForce;
     }
+
 
     private getRollingResistance(): Vector3 {
         const tirePressure: number = 1;
