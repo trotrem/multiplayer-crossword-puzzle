@@ -47,6 +47,12 @@ export class RenderService {
     public getScene(): THREE.Scene {
         return this.scene;
     }
+    public getTopCamera(): OrthographicCamera {
+        return this.cameras[1];
+    }
+    public getRearCamera(): PerspectiveCamera {
+        return this.cameras[0];
+    }
 
     public async initialize(container: HTMLDivElement, track: Track): Promise<void> {
         this.cameraID = 1;
@@ -71,7 +77,7 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
-    private async update(): Promise<void> {
+    private update(): void {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
