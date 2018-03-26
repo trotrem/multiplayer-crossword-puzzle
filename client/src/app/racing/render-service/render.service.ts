@@ -58,6 +58,7 @@ export class RenderService {
         this.startRenderingLoop();
         this.scene.add(this.AXIS_HELPER);
         this.camera.up.set(0, 0, 1);
+        this.camera.position.set(this.raceValidator.cars[0].getUpdatedPosition.x + 25, this.raceValidator.cars[0].getUpdatedPosition.y, 50);
     }
 
     public initializeEventHandlerService(): void {
@@ -79,13 +80,15 @@ export class RenderService {
             this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
-
+        if(this.raceValidator.cars[0].angle < 0){
+            console.log("TRUE");
+        }
         this.camera.position.y =
             this.raceValidator.cars[0].getUpdatedPosition().y +
-            Math.cos(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI));
+            Math.cos(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI))*25;
         this.camera.position.x =
             this.raceValidator.cars[0].getUpdatedPosition().x +
-            Math.sin(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI)) * 50;
+            Math.sin(this.raceValidator.cars[0].angle / 360 * (2 * Math.PI))*25;
         this.camera.position.z = 50;
         /*this.camera.position.x = this.raceValidator.cars[0].getUpdatedPosition().x + 50;
         this.camera.position.y = this.raceValidator.cars[0].getUpdatedPosition().y;
