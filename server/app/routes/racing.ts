@@ -60,22 +60,21 @@ module Route {
         }
 
         public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
-            // tslint:disable-next-line:only-arrow-functions
             trackDocument.update(
-                { name: req.body.name },
-                { $set: { newScores: req.body.newScores } },
+                {name: req.body.name },
+                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber } },
                 // tslint:disable-next-line:only-arrow-functions
                 function (err: Error): void {
                     if (!err) {
-                        console.warn("update newScores");
+                        console.warn("update ");
                         res.send("update newScores");
                     } else {
+                        console.error("unable to update");
                         res.status(BAD_REQUEST_ERROR).send("unable to update");
-                    }
-                }
-            );
-        }
 
+                    }
+                });
+        }
     }
 }
 
