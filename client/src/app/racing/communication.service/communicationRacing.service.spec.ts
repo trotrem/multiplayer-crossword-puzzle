@@ -3,20 +3,20 @@ import * as THREE from "three";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Track } from "../track";
-import { CommunicationRacingService } from "./communicationRacing.service";
+import { RacingCommunicationService } from "./communicationRacing.service";
 
-describe("CommunicationRacingService", () => {
+describe("RacingCommunicationService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
         HttpClientTestingModule
       ],
-      providers: [CommunicationRacingService]
+      providers: [RacingCommunicationService]
     });
   });
 
-  it("should be created", inject([CommunicationRacingService], (service: CommunicationRacingService) => {
+  it("should be created", inject([RacingCommunicationService], (service: RacingCommunicationService) => {
     expect(service).toBeTruthy();
   }));
 
