@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, HostListener } from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
@@ -42,14 +42,13 @@ export class RenderService {
     public constructor(private router: Router, private http: HttpClient) {
         this.raceValidator = new RaceValidatorService(router, http);
         this.timer = 0;
-
+        this.cameraID = 1;
     }
     public getScene(): THREE.Scene {
         return this.scene;
     }
 
     public async initialize(container: HTMLDivElement, track: Track): Promise<void> {
-        this.cameraID = 1;
         if (container) {
             this.container = container;
         }
@@ -63,7 +62,7 @@ export class RenderService {
         this.cameras[0].up.set(0, 0, 1);
     }
     public initializeEventHandlerService(): void {
-        this.evenHandeler = new EventHandlerRenderService(this.raceValidator.cars[0]);
+        this.evenHandeler = new EventHandlerRenderService(this.raceValidator.cars[0], this);
     }
     private initStats(): void {
         this.stats = new Stats();
@@ -127,11 +126,13 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
     }
-    private toggleCamera(): void {
-        if (this.cameraID = 1) {
+
+    public toggleCamera(): void {
+        if (this.cameraID === 1) {
             this.cameraID = 0;
-        } else if (this.cameraID = 0) {
+        } else {
             this.cameraID = 1;
         }
     }
 }
+
