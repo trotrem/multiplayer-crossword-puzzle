@@ -65,8 +65,7 @@ describe("RenderService", () => {
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
     });
-    /*it("should follow car with top view camera", async () => {
-        let isEqual: boolean = false;
+    it("should follow car with top view camera", async () => {
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
@@ -76,15 +75,11 @@ describe("RenderService", () => {
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
-        if (service.getTopCamera().position.x === cars[0].getUpdatedPosition().x &&
-            service.getTopCamera().position.y === cars[0].getUpdatedPosition().y) {
-            isEqual = true;
-        }
-        expect(isEqual).toBe(true);
+        expect(service.getTopCamera().position.x === cars[0].getUpdatedPosition().x &&
+        service.getTopCamera().position.y === cars[0].getUpdatedPosition().y).toBe(true);
     });
 
     it("should rotate a rear camera with the car", async () => {
-        let isEqual: boolean = false;
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
@@ -95,16 +90,12 @@ describe("RenderService", () => {
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         const vectorCam: THREE.Vector3 = new THREE.Vector3;
-        service.getRearCamera().getWorldDirection(vectorCam);
-        if (vectorCam.x === cars[0].direction.x &&
-            vectorCam.y === cars[0].direction.y) {
-            isEqual = true;
-        }
-        expect(isEqual).toBe(true);
-    });*/
+        await service.getRearCamera().getWorldDirection(vectorCam);
+        expect(vectorCam.x === cars[0].direction.x && vectorCam.y === cars[0].direction.y).toBe(true);
+    });
 
-    //mauvais test, pas fini
-    /*it("should follow car with top view camera", async () => {
+    // mauvais test, pas fini
+   /* it("should follow car with top view camera", async () => {
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
@@ -116,6 +107,6 @@ describe("RenderService", () => {
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         const isEqual: boolean = false;
         expect(false).toEqual(true);
-    });*/
-
+    });
+*/
 });
