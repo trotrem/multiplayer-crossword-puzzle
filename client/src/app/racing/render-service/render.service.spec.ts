@@ -64,7 +64,26 @@ describe("RenderService", () => {
         expect(service.getScene().children.length).toEqual(4);
     });
     it("should toggle camera", () => {
-        
-    })
+        service.initialize(container, track);
+        for (let i: number = 0; i < 20; i++) {
+            const previousCameraId = service.CameraID;
+            service.toggleCamera();
+            const currentCameraId = service.CameraID;
+            expect(previousCameraId).not.toEqual(currentCameraId)
+        }
+    });
+    it("should zoom in", () => {
+        service.initialize(container, track);
+        //let initialZoom = service.
+    });
+    it("should not exceed a zoom of 2", () => {
+
+    });
+    it("should zoom out", () => {
+
+    });
+    it("should not go under a zoom of 0.75", () => {
+
+    });
 
 });

@@ -131,6 +131,10 @@ export class RenderService {
 
     }
 
+    public get CameraID() {
+        return this.cameraID;
+    }
+
     public toggleCamera(): void {
         this.cameraID = (this.cameraID === 1) ? 0 : 1;
     }
