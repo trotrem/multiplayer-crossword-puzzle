@@ -9,7 +9,7 @@ import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { Router } from "@angular/router";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "./../utils/utils";
 import { MS_TO_SECONDS, CARS_MAX } from "../constants";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
@@ -92,7 +92,7 @@ export class RenderService {
             this.scene.add(mesh);
         }
         const collisionService: WallsCollisionsService = new WallsCollisionsService();
-        collisionService.createWalls(this.raceValidator.track.points, this.scene);
+        this.showWalls(collisionService.createWalls(this.raceValidator.track.points));
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i] = new Car(collisionService);
@@ -132,6 +132,15 @@ export class RenderService {
             this.cameraID = 0;
         } else if (this.cameraID = 0) {
             this.cameraID = 1;
+        }
+    }
+
+    private showWalls(walls: ILine[]): void {
+        for (const line of walls) {
+            const geo: THREE.Geometry = new THREE.Geometry();
+            geo.vertices.push(line.pos1);
+            geo.vertices.push(line.pos2);
+            this.scene.add( new THREE.Line(geo, new THREE.LineBasicMaterial({ visible: false })));
         }
     }
 }
