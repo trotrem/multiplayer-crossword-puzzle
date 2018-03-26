@@ -131,8 +131,16 @@ export class RenderService {
 
     }
 
-    public get CameraID() {
+    public get CameraID(): number {
         return this.cameraID;
+    }
+
+    public get TopCamera(): OrthographicCamera {
+        return this.cameras[1];
+    }
+
+    public get RearCamera(): PerspectiveCamera {
+        return this.cameras[0];
     }
 
     public toggleCamera(): void {
@@ -141,15 +149,17 @@ export class RenderService {
 
     public zoomIn(): void {
         for (let i: number = 0; i < 2; i++) {
-            if (this.cameras[i].zoom < ZOOM_MAX)
+            if (this.cameras[i].zoom < ZOOM_MAX) {
                 this.cameras[i].zoom += ZOOM_FACTOR;
+            }
         }
     }
 
     public zoomOut(): void {
         for (let i: number = 0; i < 2; i++) {
-            if (this.cameras[i].zoom > ZOOM_MIN)
-                this.cameras[i].zoom -= ZOOM_FACTOR;
+            if (this.cameras[i].zoom > ZOOM_MIN) {
+                 this.cameras[i].zoom -= ZOOM_FACTOR;
+            }
         }
     }
 }
