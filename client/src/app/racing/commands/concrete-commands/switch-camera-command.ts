@@ -1,14 +1,13 @@
 import { ICommand } from "../command";
-// import { Car } from "../car/car";
+import { RenderService } from "../../render-service/render.service";
 
 export class SwitchCameraCommand implements ICommand {
-    // private _car: Car;
-
-    public constructor(/*car: Car*/) {
-        // this._car = car;
+    
+    public constructor(private renderService: RenderService) {
     }
 
     public execute(): void {
-        // Call camera switch function
+        console.log("toggled!")
+        this.renderService.toggleCamera();
     }
 }

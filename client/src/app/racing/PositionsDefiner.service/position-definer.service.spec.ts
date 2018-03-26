@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { PositionsDefinerService } from "./position-definer.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
-describe("RandomCarCreatorService", () => {
+describe("PositionsDefinerService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [PositionsDefinerService]
