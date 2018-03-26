@@ -32,6 +32,7 @@ const AMBIENT_LIGHT_OPACITY: number = 2;
 
 @Injectable()
 export class RenderService {
+    private Axis_Helper = new THREE.AxisHelper(6);
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
@@ -46,7 +47,7 @@ export class RenderService {
     public constructor(private router: Router, private http: HttpClient) {
         this.raceValidator = new RaceValidatorService(router, http);
         this.timer = 0;
-        this.cameraID = 1;
+        this.cameraID = 0;
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -60,9 +61,10 @@ export class RenderService {
         this.raceValidator.track.newScores = new Array<number>();
         await this.createScene();
         CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
-        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.initStats();
         this.startRenderingLoop();
+        this.scene.add(this.Axis_Helper);
+        // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.cameras[0].up.set(0, 0, 1);
     }
     public initializeEventHandlerService(): void {
@@ -83,8 +85,11 @@ export class RenderService {
             this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
-        this.cameras[0].updatePosition(this.raceValidator.cars[0]);
-        this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
+        if (this.cameraID === 0) {
+            this.cameras[0].updatePosition(this.raceValidator.cars[0]);
+        } else {
+            this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
+        }
     }
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
@@ -123,10 +128,14 @@ export class RenderService {
         this.stats.update();
     }
     public onResize(): void {
-        this.cameras[0].aspect = this.getAspectRatio();
-        this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
-        this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
-        this.cameras[1].updateProjectionMatrix();
+        if (this.cameraID === 0) {
+            this.cameras[0].aspect = this.getAspectRatio();
+            this.cameras[0].updateProjectionMatrix();
+        } else {
+            this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
+            this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
+            this.cameras[1].updateProjectionMatrix();
+        }
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
     }
