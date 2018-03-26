@@ -7,7 +7,7 @@ import { Observable } from "rxjs/Observable";
 
 export const URL_SERVER: string = "http://localhost:3000/racing/";
 @Injectable()
-export class CommunicationRacingService {
+export class RacingCommunicationService {
 
     public constructor(private http: HttpClient) {
     }

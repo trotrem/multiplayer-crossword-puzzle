@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
-import { CommunicationRacingService } from "../../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Track } from "../../../track";
@@ -21,19 +21,19 @@ export class GameComponent implements AfterViewInit {
 
     @ViewChild("container")
     private containerRef: ElementRef;
-    private communicationService: CommunicationRacingService;
+    private communicationService: RacingCommunicationService;
     private renderService: RenderService;
     private lights: string[];
-    private disabledCar: boolean;
+    private playButtonEnabled: boolean;
 
     public constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
-        this.communicationService = new CommunicationRacingService(this.http);
+        this.communicationService = new RacingCommunicationService(this.http);
         this.renderService = new RenderService(router, http);
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
         }
-        this.disabledCar = true;
+        this.playButtonEnabled = true;
     }
 
     @HostListener("window:resize", ["$event"])
@@ -46,6 +46,21 @@ export class GameComponent implements AfterViewInit {
         if (name !== null) {
             this.getTrack(name);
         }
+    }
+
+    private getTrack(name: string): void {
+        this.communicationService.getTrackByName(name)
+            .subscribe((res: Track[]) => {
+                const track: Track = res[0];
+                const points: THREE.Vector3[] = [];
+                for (const point of track.points) {
+                    points.push(new THREE.Vector3(point.x, point.y, point.z));
+                }
+                track.points = points;
+                this.renderService.initialize(this.containerRef.nativeElement, track);
+
+            });
+
     }
 
     private async changeLightColor(color: string, delay: number): Promise<void> {
@@ -69,23 +84,8 @@ export class GameComponent implements AfterViewInit {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    private getTrack(name: string): void {
-        this.communicationService.getTrackByName(name)
-            .subscribe((res: Track[]) => {
-                const track: Track = res[0];
-                const points: THREE.Vector3[] = [];
-                for (const point of track.points) {
-                    points.push(new THREE.Vector3(point.x, point.y, point.z));
-                }
-                track.points = points;
-                this.renderService.initialize(this.containerRef.nativeElement, track);
-
-            });
-
-    }
-
     private play(): void {
-        this.disabledCar = false;
+        this.playButtonEnabled = false;
         this.visualSignal();
     }
 }

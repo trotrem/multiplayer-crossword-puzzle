@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Track } from "../../track";
 import { Router } from "@angular/router";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 
 @Component({
   selector: "app-admin",
@@ -11,7 +11,7 @@ import { CommunicationRacingService } from "../../communication.service/communic
 })
 export class AdminComponent implements OnInit {
 
-  private communicationService: CommunicationRacingService;
+  private communicationService: RacingCommunicationService;
 
   private tracks: Track[];
 
@@ -20,7 +20,7 @@ export class AdminComponent implements OnInit {
   private isSelected: boolean;
 
   public constructor(private http: HttpClient, private router: Router) {
-    this.communicationService = new CommunicationRacingService(this.http);
+    this.communicationService = new RacingCommunicationService(this.http);
     this.tracks = new Array<Track>();
     this.isSelected = false;
   }
@@ -48,7 +48,7 @@ export class AdminComponent implements OnInit {
   public getHttp(): HttpClient {
     return this.http;
   }
-  public getCommunicationService(): CommunicationRacingService {
+  public getCommunicationService(): RacingCommunicationService {
     return this.communicationService;
   }
 

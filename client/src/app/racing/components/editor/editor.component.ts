@@ -4,7 +4,7 @@ import { NgForm } from "@angular/forms";
 import { Track } from "../../track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 
 @Component({
@@ -21,7 +21,7 @@ export class EditorComponent implements OnInit {
     private submitValid: boolean;
     private track: Track;
     private sceneService: SceneServices;
-    private communicationService: CommunicationRacingService;
+    private communicationService: RacingCommunicationService;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
@@ -34,7 +34,7 @@ export class EditorComponent implements OnInit {
         };
         this.submitValid = false;
         this.sceneService = new SceneServices();
-        this.communicationService = new CommunicationRacingService(this.http);
+        this.communicationService = new RacingCommunicationService(this.http);
     }
     public setTrack(track: Track): void {
         this.track = track;
