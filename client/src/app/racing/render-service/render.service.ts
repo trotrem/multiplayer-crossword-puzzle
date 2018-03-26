@@ -1,4 +1,4 @@
-import { Injectable, HostListener } from "@angular/core";
+import { Injectable} from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
@@ -98,7 +98,7 @@ export class RenderService {
             await this.raceValidator.cars[i].init();
             this.scene.add(this.raceValidator.cars[i]);
         }
-        this.raceValidator.track.points.splice(0, 0, trackMeshs[trackMeshs.length - 1].position);
+        this.raceValidator.track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
     private getAspectRatio(): number {
