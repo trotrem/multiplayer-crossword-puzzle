@@ -19,8 +19,8 @@ export class EventHandlerRenderService {
         KeyDown.Instance.addCommand(KeyCode.LEFT_KEYCODE, new Command.SteerLeftCommand(car));
         KeyDown.Instance.addCommand(KeyCode.RIGHT_KEYCODE, new Command.SteerRightCommand(car));
         KeyDown.Instance.addCommand(KeyCode.BRAKE_KEYCODE, new Command.BrakeCommand(car));
-        KeyDown.Instance.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand());
-        KeyDown.Instance.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand());
+        KeyDown.Instance.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand(renderService));
+        KeyDown.Instance.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand(renderService));
         KeyDown.Instance.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(renderService));
         // Key up commands
         KeyUp.Instance.addCommand(KeyCode.LEFT_KEYCODE, new Command.ReleaseSteerCommand(car));

@@ -1,12 +1,12 @@
 import { ICommand } from "../command";
-// import { Car } from "../car/car";
+import { RenderService } from "../../render-service/render.service";
 
 export class ZoomOutCommand implements ICommand {
 
-    public constructor() {
+    public constructor(private renderService: RenderService) {
     }
 
     public execute(): void {
-        // Call zoomOut function
+        this.renderService.zoomOut();
     }
 }

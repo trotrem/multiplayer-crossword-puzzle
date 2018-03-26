@@ -7,7 +7,6 @@ export class SwitchCameraCommand implements ICommand {
     }
 
     public execute(): void {
-        console.log("toggled!")
         this.renderService.toggleCamera();
     }
 }

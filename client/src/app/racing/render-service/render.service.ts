@@ -9,7 +9,7 @@ import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { Router } from "@angular/router";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "./../utils/utils";
 import { MS_TO_SECONDS, CARS_MAX } from "../constants";
 import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
@@ -22,12 +22,17 @@ const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;
 const FIELD_OF_VIEW: number = 70;
 
+const ZOOM_FACTOR: number = 0.05;
+const ZOOM_MAX: number = 2;
+const ZOOM_MIN: number = 0.75;
+
 const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
 
 @Injectable()
 export class RenderService {
+    private Axis_Helper = new THREE.AxisHelper(6);
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
@@ -42,7 +47,7 @@ export class RenderService {
     public constructor(private router: Router, private http: HttpClient) {
         this.raceValidator = new RaceValidatorService(router, http);
         this.timer = 0;
-        this.cameraID = 1;
+        this.cameraID = 0;
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -62,9 +67,10 @@ export class RenderService {
         this.raceValidator.track.newScores = new Array<number>();
         await this.createScene();
         CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
-        this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.initStats();
         this.startRenderingLoop();
+        this.scene.add(this.Axis_Helper);
+        // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.cameras[0].up.set(0, 0, 1);
     }
     public initializeEventHandlerService(): void {
@@ -84,8 +90,11 @@ export class RenderService {
             this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
-        this.cameras[0].updatePosition(this.raceValidator.cars[0]);
-        this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
+        if (this.cameraID === 0) {
+            this.cameras[0].updatePosition(this.raceValidator.cars[0]);
+        } else {
+            this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
+        }
     }
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
@@ -96,7 +105,7 @@ export class RenderService {
             this.scene.add(mesh);
         }
         const collisionService: WallsCollisionsService = new WallsCollisionsService();
-        collisionService.createWalls(this.raceValidator.track.points, this.scene);
+        this.showWalls(collisionService.createWalls(this.raceValidator.track.points));
 
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i] = new Car(collisionService);
@@ -124,19 +133,56 @@ export class RenderService {
         this.stats.update();
     }
     public onResize(): void {
-        this.cameras[0].aspect = this.getAspectRatio();
-        this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
-        this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
-        this.cameras[1].updateProjectionMatrix();
+        if (this.cameraID === 0) {
+            this.cameras[0].aspect = this.getAspectRatio();
+            this.cameras[0].updateProjectionMatrix();
+        } else {
+            this.cameras[1].left = this.cameras[1].bottom * (this.getAspectRatio());
+            this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
+            this.cameras[1].updateProjectionMatrix();
+        }
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
 
     }
 
+    public get CameraID(): number {
+        return this.cameraID;
+    }
+
+    public get TopCamera(): OrthographicCamera {
+        return this.cameras[1];
+    }
+
+    public get RearCamera(): PerspectiveCamera {
+        return this.cameras[0];
+    }
+
     public toggleCamera(): void {
-        if (this.cameraID === 1) {
-            this.cameraID = 0;
-        } else {
-            this.cameraID = 1;
+        this.cameraID = (this.cameraID === 1) ? 0 : 1;
+    }
+
+    public zoomIn(): void {
+        for (let i: number = 0; i < 2; i++) {
+            if (this.cameras[i].zoom < ZOOM_MAX) {
+                this.cameras[i].zoom += ZOOM_FACTOR;
+            }
+        }
+    }
+
+    public zoomOut(): void {
+        for (let i: number = 0; i < 2; i++) {
+            if (this.cameras[i].zoom > ZOOM_MIN) {
+                this.cameras[i].zoom -= ZOOM_FACTOR;
+            }
+        }
+    }
+
+    private showWalls(walls: ILine[]): void {
+        for (const line of walls) {
+            const geo: THREE.Geometry = new THREE.Geometry();
+            geo.vertices.push(line.pos1);
+            geo.vertices.push(line.pos2);
+            this.scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ visible: false })));
         }
     }
 }

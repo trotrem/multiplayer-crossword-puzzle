@@ -268,7 +268,6 @@ export class Car extends Object3D {
         return resultingForce;
     }
 
-
     private getRollingResistance(): Vector3 {
         const tirePressure: number = 1;
         // formula taken from: https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html

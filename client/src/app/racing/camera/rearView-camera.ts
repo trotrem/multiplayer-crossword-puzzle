@@ -11,7 +11,6 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
     private DEGREE: number = 360;
     private ZPOSITION: number = 50;
     private XYPOSITION: number = 25;
-    private RADIAN: number = (Math.PI * 2) * this.DEGREE;
 
     public constructor() {
         super(
@@ -25,11 +24,12 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
     public updatePosition(car: Car): void {
         this.position.y =
             car.getUpdatedPosition().y +
-            Math.cos(car.angle / this.RADIAN) * this.XYPOSITION;
+            Math.cos(car.angle / this.DEGREE * (Math.PI * 2)) * this.XYPOSITION;
         this.position.x =
             car.getUpdatedPosition().x +
-            Math.sin(car.angle / this.RADIAN) * this.XYPOSITION;
-        this.position.z = this.ZPOSITION;
+            Math.sin(car.angle / this.DEGREE * (Math.PI * 2)) * this.XYPOSITION;
+        this.position.z = this.XYPOSITION;
+
         this.lookAt(car.getUpdatedPosition());
         this.updateProjectionMatrix();
 
