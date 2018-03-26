@@ -53,8 +53,9 @@ describe("RaceValidatorService", () => {
     expect(router.url).toBe("/gameResults/" + carIndex);
   }));
 
-  it("should validate a lap when a car passes by all lap's verifiers ", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    service.counter[0] = 3;
-    expect(service.validIndex[0]).toBe(0);
+  it("shouldn't validate a race when a less than 3 lap ", inject([RaceValidatorService], (service: RaceValidatorService) => {
+    service.counter[0] = 2;
+    service.validateLap(0, 0, 0);
+    expect(service.router.navigated).toBe(false);
   }));
 });

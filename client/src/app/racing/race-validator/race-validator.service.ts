@@ -19,7 +19,7 @@ export class RaceValidatorService {
   private _track: Track;
   private _validIndex: number[];
 
-  public constructor(private router: Router, private http: HttpClient) {
+  public constructor(private _router: Router, private http: HttpClient) {
     this._cars = new Array<Car>(CARS_MAX);
     this._counter = new Array<number>();
     this.communicationService = new CommunicationRacingService(http);
@@ -32,7 +32,9 @@ export class RaceValidatorService {
   public get validIndex(): number[] {
     return this._validIndex;
   }
-
+  public get router(): Router {
+    return this._router;
+  }
   public get cars(): Car[] {
     return this._cars;
   }
@@ -84,7 +86,7 @@ export class RaceValidatorService {
   }
 
   private navigateToGameResults(): void {
-    this.router.navigateByUrl("/gameResults/" + this.track.name);
+    this._router.navigateByUrl("/gameResults/" + this.track.name);
   }
 
   private addScoreToTrack(carIndex: number): void {
