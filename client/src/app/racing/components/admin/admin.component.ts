@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Track } from "../../track";
 import { Router } from "@angular/router";
-import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { injectable, inject } from "inversify";
 
 @Component({
@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit {
 
   private isSelected: boolean;
 
-  public constructor(@inject(CommunicationRacingService) private communicationService: CommunicationRacingService, private router: Router) {
+  public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
     this.isSelected = false;
   }
@@ -43,7 +43,8 @@ export class AdminComponent implements OnInit {
   public getRouter(): Router {
     return this.router;
   }
-  public getCommunicationService(): CommunicationRacingService {
+
+  public getCommunicationService(): RacingCommunicationService {
     return this.communicationService;
   }
 

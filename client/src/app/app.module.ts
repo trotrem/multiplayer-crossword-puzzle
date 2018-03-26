@@ -12,10 +12,10 @@ import { RacingGameComponent } from "./racing/components/racing-game/racing-game
 import { CrosswordGridComponent } from "./crossword/crossword-grid/crossword-grid.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
-import {APP_BASE_HREF} from "@angular/common";
+import { APP_BASE_HREF } from "@angular/common";
 import { UserComponent } from "./racing/components/user/user.component";
-import {SceneServices} from "./racing/components/editor/scene.services/scene.service";
-import { CommunicationRacingService } from "./racing/communication.service/communicationRacing.service";
+import { SceneServices } from "./racing/components/editor/scene.services/scene.service";
+import { RacingCommunicationService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
@@ -67,7 +67,7 @@ const appRoutes: Routes = [
     ],
     providers: [
         SceneServices,
-        CommunicationRacingService,
+        RacingCommunicationService,
         RenderService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
