@@ -4,11 +4,11 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { UserComponent } from "./user.component";
 import { Routes, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Track } from "../track";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { Track } from "../../track";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 
 import * as THREE from "three";
-import { GameComponent } from "../game-component/game.component";
+import { GameComponent } from "../racing-game/game-component/game.component";
 
 describe("UserComponent", () => {
     let component: UserComponent;
