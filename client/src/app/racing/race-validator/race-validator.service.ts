@@ -13,7 +13,7 @@ const EXPONENT: number = 2;
 @Injectable()
 export class RaceValidatorService {
 
-  private counter: number[];
+  private _counter: number[];
   private communicationService: CommunicationRacingService;
   private _cars: Car[];
   private _track: Track;
@@ -21,7 +21,7 @@ export class RaceValidatorService {
 
   public constructor(private router: Router, private http: HttpClient) {
     this._cars = new Array<Car>(CARS_MAX);
-    this.counter = new Array<number>();
+    this._counter = new Array<number>();
     this.communicationService = new CommunicationRacingService(http);
     this._validIndex = new Array<number>();
     for (let i: number = 0; i < CARS_MAX; i++) {
@@ -40,9 +40,15 @@ export class RaceValidatorService {
   public get track(): Track {
     return this._track;
   }
-
   public set track(track: Track) {
     this._track = track;
+  }
+
+  public set counter(counter: number[]) {
+    this._counter = counter;
+  }
+  public get counter(): number[] {
+    return this._counter;
   }
 
   public getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
