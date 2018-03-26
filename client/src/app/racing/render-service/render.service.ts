@@ -77,7 +77,7 @@ export class RenderService {
             this.raceValidator.validateLap(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
-        this.cameras[1].updatePosition(this.raceValidator.cars[0].updatePosition);
+        this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
     }
     private async createScene(): Promise<void> {
         this.scene = new THREE.Scene();
