@@ -3,10 +3,9 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 
 export class OrthographicCamera extends THREE.OrthographicCamera {
-    private static DISTANCE_TO_TARGET: number = 50;
     private static readonly WIDTH: number = window.innerWidth;
     private static readonly HEIGHT: number = window.innerHeight;
-    private static readonly ORTHO_HEIGHT: number = 100;
+    private static readonly ORTHO_HEIGHT: number = 50;
     private static readonly ASPECT: number = OrthographicCamera.WIDTH / OrthographicCamera.HEIGHT;
     private static readonly NEAR: number = 1;
     private static readonly FAR: number = 1000;
@@ -22,7 +21,6 @@ export class OrthographicCamera extends THREE.OrthographicCamera {
             OrthographicCamera.NEAR,
             OrthographicCamera.FAR
         );
-        this.updateProjectionMatrix();
     }
 
     public setStartPosition(position: THREE.Vector3, carPosition: THREE.Vector3): void {

@@ -11,7 +11,6 @@ import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { Track } from "./../track";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
-import { OrthographicCamera } from "../camera/topView-camera";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("RenderService", () => {
@@ -64,7 +63,5 @@ describe("RenderService", () => {
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(4);
     });
-    /*it("should follow car with top-view camera"), () => {
-    });*/
 
 });
