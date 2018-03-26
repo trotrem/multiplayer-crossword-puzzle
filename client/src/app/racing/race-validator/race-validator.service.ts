@@ -13,15 +13,15 @@ const EXPONENT: number = 2;
 @Injectable()
 export class RaceValidatorService {
 
-  private counter: number[];
+  private _counter: number[];
   private communicationService: CommunicationRacingService;
   private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
 
-  public constructor(private router: Router, private http: HttpClient) {
+  public constructor(private _router: Router, private http: HttpClient) {
     this._cars = new Array<Car>(CARS_MAX);
-    this.counter = new Array<number>();
+    this._counter = new Array<number>();
     this.communicationService = new CommunicationRacingService(http);
     this._validIndex = new Array<number>();
     for (let i: number = 0; i < CARS_MAX; i++) {
@@ -32,7 +32,9 @@ export class RaceValidatorService {
   public get validIndex(): number[] {
     return this._validIndex;
   }
-
+  public get router(): Router {
+    return this._router;
+  }
   public get cars(): Car[] {
     return this._cars;
   }
@@ -40,9 +42,15 @@ export class RaceValidatorService {
   public get track(): Track {
     return this._track;
   }
-
   public set track(track: Track) {
     this._track = track;
+  }
+
+  public set counter(counter: number[]) {
+    this._counter = counter;
+  }
+  public get counter(): number[] {
+    return this._counter;
   }
 
   public getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
@@ -52,34 +60,42 @@ export class RaceValidatorService {
     return Math.sqrt(Math.pow(position.x - position2.x, EXPONENT) + Math.pow(position.y - position2.y, EXPONENT)) <= ADD_TO_DISTANCE;
   }
 
-  public async validateLap(index: number, carIndex: number, timer: number): Promise<boolean> {
+  public async validateRace(index: number, carIndex: number, timer: number): Promise<boolean> {
+
     await this.cars[carIndex].getUpdatedPosition();
     let isPartlyValid: Promise<boolean>;
     if (this.getLapSectionvalidator(
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
-        this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
-        this.validIndex[carIndex] = 0;
-        this.counter[carIndex] += 1;
-        if (this.counter[carIndex] === LAP_MAX) {
-          this.addScoreToTrack(carIndex);
-          if (carIndex === 0) {
-            this.estimateTime(timer / MS_TO_SECONDS);
-            this.track.usesNumber ++;
-            await this.communicationService.updateNewScore(this.track);
-            this.navigateToGameResults();
-          }
-        }
+        this.verifieNextLap(carIndex, timer);
       }
-      isPartlyValid = this.validateLap(this.validIndex[carIndex], carIndex, timer);
+      isPartlyValid = this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
     return isPartlyValid;
   }
+  private setNextLapParameters(carIndex: number, timer: number): void {
 
+    this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
+    this.validIndex[carIndex] = 0;
+    this.counter[carIndex] += 1;
+  }
+
+  private async verifieNextLap(carIndex: number, timer: number): Promise<void> {
+
+    this.setNextLapParameters(carIndex, timer);
+    if (this.counter[carIndex] === LAP_MAX) {
+      this.addScoreToTrack(carIndex);
+      if (carIndex === 0) {
+        this.estimateTime(timer / MS_TO_SECONDS);
+        await this.communicationService.updateNewScore(this.track);
+        this.navigateToGameResults();
+      }
+    }
+  }
   private navigateToGameResults(): void {
-    this.router.navigateByUrl("/gameResults/" + this.track.name);
+    this._router.navigateByUrl("/gameResults/" + this.track.name);
   }
 
   private addScoreToTrack(carIndex: number): void {
