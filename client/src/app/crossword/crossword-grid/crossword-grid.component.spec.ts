@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject } from "@angular/core/testing";
+import { ComponentFixture, TestBed, inject } from "@angular/core/testing";
 import { Router, ActivatedRoute } from "@angular/router";
 import { CrosswordGridComponent } from "./crossword-grid.component";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
@@ -11,8 +11,7 @@ describe("CrosswordGridComponent", () => {
   let component: CrosswordGridComponent = new CrosswordGridComponent(http, route, router);
   let fixture: ComponentFixture<CrosswordGridComponent>;
 
-  beforeEach(async(() => {
-
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [CrosswordGridComponent],
       imports: [HttpClientModule, RouterTestingModule.withRoutes([])]

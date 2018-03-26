@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { IGridData, Direction, IWordValidationParameters, Difficulty } from "../../../../../common/communication/types";
+import { HttpClient } from "@angular/common/http";
+import { IGridData, Direction, Difficulty } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
@@ -27,7 +27,8 @@ export class CrosswordGridComponent implements OnInit {
   private words: WordDescription[];
   private _difficulty: Difficulty = "easy";
   public selectedWord: WordDescription = null;
-  private TipMode: typeof TipMode = TipMode;
+  // needed so the html recognizes the enum
+  private TipMode: typeof TipMode = TipMode;// tslint:disable-line
   public tipMode: TipMode = TipMode.Definitions;
   private gridEventService: GridEventService;
 

@@ -5,33 +5,30 @@
 
 
 ul {
-    position: relative;
-    top: 40px;
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
   
- li{
+li{
     position: relative;
-    top: 40px;
     width: 64px;
     height: 64px;
     border-radius: 50%;
     border: 2px solid black;
     float:left;  
     left: 38vw; 
-    top : 6vh;
+    top : 10vh;
   }
   
-  .green {
+.green {
     background-color: rgb(55, 211, 24);
   }
   
-  .red {
+.red {
     background-color: red;
   }
 
-  .disapear {
+.disapear {
     visibility:hidden;
   }

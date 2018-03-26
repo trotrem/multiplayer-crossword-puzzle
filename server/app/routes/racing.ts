@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import "reflect-metadata";
 import { injectable, } from "inversify";
 import { trackDocument } from "../models/racingDbSchemas";
-import { Document} from "mongoose";
+import { Document } from "mongoose";
 const BAD_REQUEST_ERROR: number = 400;
 
 module Route {
@@ -47,8 +47,8 @@ module Route {
         }
 
         public getTrackByName(req: Request, res: Response, next: NextFunction): void {
-             // tslint:disable-next-line:only-arrow-functions
-            trackDocument.find({name: req.params.name}, function (err: Error, track: Document): void {
+            // tslint:disable-next-line:only-arrow-functions
+            trackDocument.find({ name: req.params.name }, function (err: Error, track: Document): void {
                 if (!err) {
                     console.warn("find ");
                     res.send(track);
@@ -58,6 +58,24 @@ module Route {
                 }
             });
         }
+
+        public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
+            // tslint:disable-next-line:only-arrow-functions
+            trackDocument.update(
+                { name: req.body.name },
+                { $set: { newScores: req.body.newScores } },
+                // tslint:disable-next-line:only-arrow-functions
+                function (err: Error): void {
+                    if (!err) {
+                        console.warn("update newScores");
+                        res.send("update newScores");
+                    } else {
+                        res.status(BAD_REQUEST_ERROR).send("unable to update");
+                    }
+                }
+            );
+        }
+
     }
 }
 

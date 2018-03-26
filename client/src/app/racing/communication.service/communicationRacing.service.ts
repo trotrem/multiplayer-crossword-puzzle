@@ -37,7 +37,18 @@ export class CommunicationRacingService {
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
 
-        this.http.delete(URL_SERVER + "deleteTrack/" + track.name , {
+        this.http.delete(URL_SERVER + "deleteTrack/" + track.name, {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
+    }
+
+    public updateNewScore(track: Track): void {
+        const headers: HttpHeaders = new HttpHeaders()
+            .set("Authorization", "my-auth-token")
+            .set("Content-Type", "application/json");
+        this.http.put(URL_SERVER + "updateNewScores", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {

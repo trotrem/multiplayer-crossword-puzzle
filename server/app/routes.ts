@@ -40,6 +40,9 @@ export class Routes {
         router.get("/racing/findOne/:name", (req: Request, res: Response, next: NextFunction) =>
             this.racing.getTrackByName(req, res, next));
 
+        router.put("/racing/updateNewScores", (req: Request, res: Response, next: NextFunction) =>
+            this.racing.updateScoresByName(req, res, next));
+
         return router;
     }
 }
