@@ -370,4 +370,3 @@ export class Car extends Object3D {
         this.lapTimes.push(time);
     }
 }
-

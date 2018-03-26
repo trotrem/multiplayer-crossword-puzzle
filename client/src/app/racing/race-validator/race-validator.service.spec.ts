@@ -6,11 +6,14 @@ import { GameResultsComponent } from "../game-results/game-results.component";
 import { FormsModule } from "@angular/forms";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
+import * as THREE from "three";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 
 describe("RaceValidatorService", () => {
   let router: Router;
+  let http: HttpClient;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [GameResultsComponent],
@@ -23,12 +26,20 @@ describe("RaceValidatorService", () => {
     });
   });
 
-  beforeEach(inject([Router], (_router: Router) => {
+  beforeEach(inject([Router, HttpClient], (_router: Router, _http: HttpClient) => {
     router = _router;
+    http = _http;
   }));
 
   it("should be created", inject([RaceValidatorService], (service: RaceValidatorService) => {
     expect(service).toBeTruthy();
+  }));
+  it("should return true when a car passed by a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
+    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 2, 0), new THREE.Vector3(1, 2, 0))).toBeTruthy();
+  }));
+
+  it("should return false when a car is far from a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
+    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
   }));
 
   it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {
@@ -36,5 +47,11 @@ describe("RaceValidatorService", () => {
     router.navigateByUrl("/gameResults/" + carIndex);
     tick(50);
     expect(router.url).toBe("/gameResults/" + carIndex);
+  }));
+
+  it("shouldn't validate a race when a less than 3 lap ", inject([RaceValidatorService], (service: RaceValidatorService) => {
+    service.counter[0] = 2;
+    service.validateRace(0, 0, 0);
+    expect(service.router.navigated).toBe(false);
   }));
 });
