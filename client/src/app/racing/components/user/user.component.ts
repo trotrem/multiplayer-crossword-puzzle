@@ -3,6 +3,7 @@ import { Track } from "./../../track";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
+import { injectable, inject } from "inversify";
 
 @Component({
   selector: "app-user",
@@ -11,14 +12,11 @@ import { CommunicationRacingService } from "../../communication.service/communic
 })
 export class UserComponent implements OnInit {
 
-  private communicationService: CommunicationRacingService;
-
   private tracks: Track[];
 
   private selectedTrack: Track;
 
-  public constructor(private http: HttpClient, private router: Router) {
-    this.communicationService = new CommunicationRacingService(this.http);
+  public constructor(@inject(CommunicationRacingService) private communicationService: CommunicationRacingService, private router: Router) {
     this.tracks = new Array<Track>();
     this.tracks = new Array<Track>();
   }
