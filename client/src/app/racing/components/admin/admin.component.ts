@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Track } from "../track";
+import { Track } from "../../track";
 import { Router } from "@angular/router";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../communication.service/communicationRacing.service";
 
 @Component({
   selector: "app-admin",

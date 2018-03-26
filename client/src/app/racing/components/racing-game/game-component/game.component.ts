@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
-import { CommunicationRacingService } from "../communication.service/communicationRacing.service";
+import { CommunicationRacingService } from "../../../communication.service/communicationRacing.service";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Track } from "../track";
+import { Track } from "../../../track";
 import * as THREE from "three";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
