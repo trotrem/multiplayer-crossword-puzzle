@@ -80,7 +80,7 @@ export class EditorComponent implements OnInit {
 
     private getTrack(name: string): void {
         this.communicationService.getTrackByName(name)
-            .subscribe((res: Track[]) => {
+            .then((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
                 this.sceneService.setIsClosed(true);
