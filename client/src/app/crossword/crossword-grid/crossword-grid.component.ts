@@ -6,6 +6,7 @@ import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GridEventService } from "../grid-event.service";
+import { injectable, inject } from "inversify";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -21,7 +22,6 @@ enum TipMode {
   styleUrls: ["./crossword-grid.component.css"],
 })
 export class CrosswordGridComponent implements OnInit {
-  private communicationService: CommunicationService;
   public cells: Cell[][];
   @Input() public nbPlayers: string;
   private words: WordDescription[];
@@ -30,7 +30,6 @@ export class CrosswordGridComponent implements OnInit {
   // needed so the html recognizes the enum
   private TipMode: typeof TipMode = TipMode;// tslint:disable-line
   public tipMode: TipMode = TipMode.Definitions;
-  private gridEventService: GridEventService;
 
   @HostListener("document:click")
   // (listens to document event so it's not called in the code)
@@ -46,8 +45,10 @@ export class CrosswordGridComponent implements OnInit {
     return this.words.filter((word) => word.direction === Direction.Vertical);
   }
 
-  public constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
-    this.communicationService = new CommunicationService(this.http);
+  public constructor(
+    @inject(CommunicationService) private communicationService: CommunicationService,
+    @inject(GridEventService) private gridEventService: GridEventService,
+    private route: ActivatedRoute, private router: Router) {
     this.cells = new Array<Array<Cell>>();
     this.words = new Array<WordDescription>();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {
@@ -56,7 +57,6 @@ export class CrosswordGridComponent implements OnInit {
         this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
       }
     }
-    this.gridEventService = new GridEventService(this.words, this.http, this.router);
 
   }
   public ngOnInit(): void {
