@@ -24,7 +24,7 @@ export class GameResultsComponent implements OnInit {
   public ngOnInit(): void {
     const name: string = this.route.snapshot.paramMap.get("name");
     if (name !== null) {
-      this.getTrack(name).catch ();
+      this.getTrack(name);
     }
   }
 

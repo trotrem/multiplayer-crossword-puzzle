@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import * as THREE from "three";
+import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 
@@ -17,7 +18,7 @@ describe("RaceValidatorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [GameResultsComponent],
-      providers: [RaceValidatorService],
+      providers: [RaceValidatorService, RacingCommunicationService],
       imports: [
         HttpClientModule,
         HttpClientTestingModule,

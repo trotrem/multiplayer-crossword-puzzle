@@ -16,7 +16,7 @@ export class EndGameComponent implements OnInit {
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this._difficulty = params["Difficulty"];
-      this.nbPlayers = params["nbPlayers"].catch(() => {});
+      this.nbPlayers = params["nbPlayers"];
     });
   }
 
