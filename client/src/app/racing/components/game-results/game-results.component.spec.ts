@@ -48,7 +48,7 @@ describe("GameResultsComponent", () => {
   });
   it("should return the track's newScores  ", async () => {
     route.snapshot.params = { params: track.name };
-    component.getTrack(track.name);
+    await component.getTrack(track.name);
     expect(component.scores === track.newScores).toBe(true);
   });
 

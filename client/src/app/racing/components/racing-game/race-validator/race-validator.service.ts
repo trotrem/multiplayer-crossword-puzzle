@@ -68,14 +68,14 @@ export class RaceValidatorService {
 
   public async validateRace(index: number, carIndex: number, timer: number): Promise<void> {
 
-    await this.cars[carIndex].getUpdatedPosition();
+    this.cars[carIndex].getUpdatedPosition();
     if (this.getLapSectionValidator(
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
         this.verifieNextLap(carIndex, timer);
       }
-      this.validateRace(this.validIndex[carIndex], carIndex, timer);
+      await this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
   }
@@ -86,7 +86,7 @@ export class RaceValidatorService {
     this.counter[carIndex] += 1;
   }
 
-  private async verifieNextLap(carIndex: number, timer: number): Promise<void> {
+  private verifieNextLap(carIndex: number, timer: number): void {
 
     this.setNextLapParameters(carIndex, timer);
     if (this.counter[carIndex] === LAP_MAX) {
@@ -94,7 +94,7 @@ export class RaceValidatorService {
       if (carIndex === 0) {
         this.estimateTime(timer / MS_TO_SECONDS);
         this.track.usesNumber++;
-        await this.communicationService.updateNewScore(this.track);
+        this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
       }
     }

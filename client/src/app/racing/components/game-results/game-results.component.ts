@@ -21,10 +21,10 @@ export class GameResultsComponent implements OnInit {
   public get scores(): number[] {
     return this._scores;
   }
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     const name: string = this.route.snapshot.paramMap.get("name");
     if (name !== null) {
-      this.getTrack(name);
+      await this.getTrack(name);
     }
   }
 

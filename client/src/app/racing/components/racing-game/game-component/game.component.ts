@@ -34,10 +34,10 @@ export class GameComponent implements AfterViewInit {
         this.gameManager.onResize();
     }
 
-    public ngAfterViewInit(): void {
+    public async ngAfterViewInit(): Promise<void> {
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-            this.gameManager.initializeGame(name, this.containerRef);
+            await this.gameManager.initializeGame(name, this.containerRef);
         }
     }
 
@@ -49,12 +49,12 @@ export class GameComponent implements AfterViewInit {
 
     }
     private async visualSignal(): Promise<void> {
-        this.changeLightColor("red", DELAY_BETWEEN_RED);
-        await this.delay(DELAY_FOR_RED).then(() => {
-            this.changeLightColor("green", 0);
+        await this.changeLightColor("red", DELAY_BETWEEN_RED);
+        await this.delay(DELAY_FOR_RED).then(async() => {
+        await this.changeLightColor("green", 0);
         });
-        await this.delay(DELAY).then(() => {
-            this.changeLightColor("", 0);
+        await this.delay(DELAY).then(async() => {
+            await this.changeLightColor("", 0);
             this.gameManager.startRace();
         });
         await this.delay(DELAY);
@@ -64,8 +64,8 @@ export class GameComponent implements AfterViewInit {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    public play(): void {
+    public async play(): Promise<void> {
         this.playButtonEnabled = false;
-        this.visualSignal();
+        await this.visualSignal();
     }
 }

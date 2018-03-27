@@ -39,13 +39,12 @@ export class EditorComponent implements OnInit {
         this.track = track;
     }
 
-    public ngOnInit(): void {
+    public async ngOnInit(): Promise<void> {
         this.sceneService.initialize(this.canvas);
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-            this.getTrack(name);
+            await this.getTrack(name);
         }
-
     }
     public onLeftClick(event: MouseEvent): void {
         this.sceneService.onLeftClick(event);
@@ -77,8 +76,8 @@ export class EditorComponent implements OnInit {
         this.submitValid = true;
     }
 
-    private getTrack(name: string): void {
-        this.communicationService.getTrackByName(name)
+    private async getTrack(name: string): Promise<void> {
+        await this.communicationService.getTrackByName(name)
             .then((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;

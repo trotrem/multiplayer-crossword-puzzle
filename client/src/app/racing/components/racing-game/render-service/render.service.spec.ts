@@ -136,7 +136,7 @@ describe("RenderService", () => {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        await service.initialize(container, track, cars, walls);
+        service.initialize(container, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -151,7 +151,7 @@ describe("RenderService", () => {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        await service.initialize(container, track, cars, walls);
+        service.initialize(container, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
@@ -165,7 +165,7 @@ describe("RenderService", () => {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        await service.initialize(container, track, cars, walls);
+        service.initialize(container, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -180,7 +180,7 @@ describe("RenderService", () => {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        await service.initialize(container, track, cars, walls);
+        service.initialize(container, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }

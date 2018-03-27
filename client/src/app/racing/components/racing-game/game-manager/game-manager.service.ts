@@ -39,7 +39,7 @@ export class GameManagerService {
                                       track,
                                       this.raceValidator.cars,
                                       collisionService.createWalls(track.points));
-        this.update();
+        await this.update();
     }
 
     public startRace(): void {
@@ -65,13 +65,13 @@ export class GameManagerService {
 
     }
 
-    private update(): void {
-        requestAnimationFrame(() => this.update());
+    private async update(): Promise<void> {
+        requestAnimationFrame(async() => this.update());
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i].update(timeSinceLastFrame);
-            this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
+            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
         }
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);

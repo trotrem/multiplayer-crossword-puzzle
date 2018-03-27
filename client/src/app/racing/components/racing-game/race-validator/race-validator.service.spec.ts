@@ -50,9 +50,9 @@ describe("RaceValidatorService", () => {
     expect(router.url).toBe("/gameResults/" + carIndex);
   }));
 
-  it("shouldn't validate a race when a less than 3 lap ", inject([RaceValidatorService], (service: RaceValidatorService) => {
+  it("shouldn't validate a race when a less than 3 lap ", inject([RaceValidatorService], async (service: RaceValidatorService) => {
     service.counter[0] = 2;
-    service.validateRace(0, 0, 0);
+    await service.validateRace(0, 0, 0);
     expect(service.router.navigated).toBe(false);
   }));
 });
