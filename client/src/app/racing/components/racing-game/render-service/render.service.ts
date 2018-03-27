@@ -46,7 +46,7 @@ export class RenderService {
     public constructor(private router: Router, private http: HttpClient) {
         this.raceValidator = new RaceValidatorService(router, http);
         this.timer = 0;
-        this.cameraID = 0;
+        this.cameraID = 1;
     }
     public getScene(): THREE.Scene {
         return this.scene;
