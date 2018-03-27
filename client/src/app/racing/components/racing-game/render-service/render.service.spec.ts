@@ -11,7 +11,7 @@ import { Track } from "./../../../track";
 import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 // "magic numbers" utilisés pour les tests
-/* tslint:disable:no-magic-numbers */
+/* tslint:disable:no-magic-numbers no-floating-promises await-promise */
 describe("RenderService", () => {
     const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();

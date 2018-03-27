@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Difficulty } from "./../../../../../common/communication/types";
 
+/* tslint:disable:no-magic-numbers no-floating-promises */
+
 @Component({
   selector: "app-end-game",
   templateUrl: "./end-game.component.html",

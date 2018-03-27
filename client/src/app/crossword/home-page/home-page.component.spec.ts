@@ -6,6 +6,8 @@ import { RouterTestingModule } from "@angular/router/testing";
 import {Difficulty} from "../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 
+/* tslint:disable:no-magic-numbers no-floating-promises */
+
 describe("HomePageComponent", () => {
   let router: Router;
   let component: HomePageComponent = new HomePageComponent(router);

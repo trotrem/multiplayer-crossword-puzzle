@@ -8,6 +8,9 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { Track } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+
+/* tslint:disable:no-magic-numbers no-floating-promises */
+
 describe("GameResultsComponent", () => {
   let component: GameResultsComponent;
   let fixture: ComponentFixture<GameResultsComponent>;

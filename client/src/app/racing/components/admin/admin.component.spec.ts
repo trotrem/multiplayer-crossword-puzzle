@@ -11,6 +11,8 @@ import { FormsModule } from "@angular/forms";
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
 
+/* tslint:disable:no-magic-numbers no-floating-promises */
+
 describe("AdminComponent", () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;

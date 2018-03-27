@@ -9,7 +9,7 @@ import { HttpClientModule, HttpClient } from "@angular/common/http";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 // "magic numbers" utilisés pour les tests
-/* tslint:disable:no-magic-numbers */
+/* tslint:disable:no-magic-numbers no-floating-promises */
 
 describe("RaceValidatorService", () => {
   let router: Router;
