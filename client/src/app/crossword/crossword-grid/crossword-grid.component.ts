@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { IGridData, Direction, Difficulty } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute} from "@angular/router";
 import { GridEventService } from "../grid-event.service";
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -48,7 +47,7 @@ export class CrosswordGridComponent implements OnInit {
   public constructor(
     @inject(CommunicationService) private communicationService: CommunicationService,
     @inject(GridEventService) private gridEventService: GridEventService,
-    private route: ActivatedRoute, private router: Router) {
+    private route: ActivatedRoute) {
     this.cells = new Array<Array<Cell>>();
     this.words = new Array<WordDescription>();
     for (let i: number = 0; i < GRID_HEIGHT; i++) {

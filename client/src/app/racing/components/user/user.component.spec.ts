@@ -1,13 +1,10 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { UserComponent } from "./user.component";
-import { Routes, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Track } from "../../track";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-
-import * as THREE from "three";
 import { GameComponent } from "../racing-game/game-component/game.component";
 
 describe("UserComponent", () => {
