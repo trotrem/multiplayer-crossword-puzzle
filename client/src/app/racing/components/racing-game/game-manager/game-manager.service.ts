@@ -71,7 +71,7 @@ export class GameManagerService {
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i].update(timeSinceLastFrame);
-            this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer);
+            this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
         }
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);

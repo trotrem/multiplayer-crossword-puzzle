@@ -1,6 +1,6 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { GameManagerService } from "./game-manager.service";
 import { RenderService } from "../render-service/render.service";
 import { RouterTestingModule } from "@angular/router/testing";

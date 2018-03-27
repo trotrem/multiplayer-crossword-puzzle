@@ -28,7 +28,7 @@ export class RenderService {
     private stats: Stats;
     private cameraID: number;
 
-    public constructor( ) {
+    public constructor() {
         this.cameraID = 0;
     }
     public getScene(): THREE.Scene {
@@ -41,7 +41,7 @@ export class RenderService {
         return this.cameras[0];
     }
 
-    public async initialize(container: HTMLDivElement, track: Track, cars: Car[], walls: ILine[]): Promise<void> {
+    public initialize(container: HTMLDivElement, track: Track, cars: Car[], walls: ILine[]): void {
         if (container) {
             this.container = container;
         }

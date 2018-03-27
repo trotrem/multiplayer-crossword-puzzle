@@ -60,11 +60,11 @@ export class GameComponent implements AfterViewInit {
         await this.delay(DELAY);
     }
 
-    private delay(ms: number): Promise<boolean> {
+    private async delay(ms: number): Promise<{}> {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    private play(): void {
+    public play(): void {
         this.playButtonEnabled = false;
         this.visualSignal();
     }

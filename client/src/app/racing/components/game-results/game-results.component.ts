@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { Track } from "./../../track";
 import { inject } from "inversify";
@@ -15,7 +15,7 @@ export class GameResultsComponent implements OnInit {
   private _scores: number[];
 
   public constructor(
-    private route: ActivatedRoute,  @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
+    private route: ActivatedRoute, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._scores = new Array<number>();
   }
   public get scores(): number[] {
@@ -24,7 +24,7 @@ export class GameResultsComponent implements OnInit {
   public ngOnInit(): void {
     const name: string = this.route.snapshot.paramMap.get("name");
     if (name !== null) {
-      this.getTrack(name);
+      this.getTrack(name).catch ();
     }
   }
 

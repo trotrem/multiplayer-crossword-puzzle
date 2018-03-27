@@ -1,18 +1,15 @@
-import { TestBed, inject, async, fakeAsync, tick } from "@angular/core/testing";
+import { TestBed, async } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
-import { Routes, Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { HttpClientModule, HttpClient } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { HttpClientModule} from "@angular/common/http";
 import { Track } from "./../../../track";
 import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
-import { OrthographicCamera } from "../camera/topView-camera";
-import { PerspectiveCamera } from "../camera/rearView-camera";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 describe("RenderService", () => {
@@ -20,7 +17,6 @@ describe("RenderService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     // tslint:disable-next-line:prefer-const
     let container: HTMLDivElement;
-    const points: THREE.Vector3[] = new Array<THREE.Vector3>();
     const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         newScores: new Array<number>()

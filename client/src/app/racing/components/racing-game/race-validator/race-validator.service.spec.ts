@@ -4,7 +4,7 @@ import { RaceValidatorService } from "./race-validator.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
 import { FormsModule } from "@angular/forms";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import * as THREE from "three";
 // "magic numbers" utilisés pour les tests

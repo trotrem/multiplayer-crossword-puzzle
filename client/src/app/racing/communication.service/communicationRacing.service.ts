@@ -23,7 +23,7 @@ export class RacingCommunicationService {
             });
     }
 
-    public getTrackByName(name: string): Promise<Track[]> {
+    public async getTrackByName(name: string): Promise<Track[]> {
         return this.http.get<Track[]>(URL_SERVER + "findOne/" + name).toPromise();
 
     }

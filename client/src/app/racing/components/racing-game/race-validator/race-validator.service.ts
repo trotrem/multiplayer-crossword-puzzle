@@ -3,11 +3,11 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { inject } from "inversify";
 const ADD_TO_DISTANCE: number = 20;
 const EXPONENT: number = 2;
 
@@ -15,15 +15,14 @@ const EXPONENT: number = 2;
 export class RaceValidatorService {
 
   private _counter: number[];
-  private communicationService: RacingCommunicationService;
   private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
 
-  public constructor(private _router: Router, private http: HttpClient) {
+  public constructor(
+    private _router: Router, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._cars = new Array<Car>(CARS_MAX);
     this._counter = new Array<number>();
-    this.communicationService = new RacingCommunicationService(http);
     this._validIndex = new Array<number>();
     for (let i: number = 0; i < CARS_MAX; i++) {
       this.counter.push(0);
@@ -54,7 +53,7 @@ export class RaceValidatorService {
     return this._counter;
   }
 
-  public async initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): Promise<void> {
+  public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
     this.track = track;
     this.track.newScores = new Array<number>();
     this._cars = cars;
@@ -85,7 +84,6 @@ export class RaceValidatorService {
     this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
     this.validIndex[carIndex] = 0;
     this.counter[carIndex] += 1;
-    console.log("tour");
   }
 
   private async verifieNextLap(carIndex: number, timer: number): Promise<void> {
