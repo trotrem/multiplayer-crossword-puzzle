@@ -23,8 +23,8 @@ export class RacingCommunicationService {
             });
     }
 
-    public getTrackByName(name: string): Observable<Track[]> {
-        return this.http.get<Track[]>(URL_SERVER + "findOne/" + name);
+    public getTrackByName(name: string): Promise<Track[]> {
+        return this.http.get<Track[]>(URL_SERVER + "findOne/" + name).toPromise();
 
     }
 
