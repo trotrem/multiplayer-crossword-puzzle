@@ -33,7 +33,6 @@ const INITIAL_AXISHELPER: number = 6;
 
 @Injectable()
 export class RenderService {
-    private axisHelper: THREE.AxisHelper = new THREE.AxisHelper(INITIAL_AXISHELPER);
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
@@ -70,7 +69,6 @@ export class RenderService {
         CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
         this.initStats();
         this.startRenderingLoop();
-        this.scene.add(this.axisHelper);
         // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
         this.cameras[0].up.set(0, 0, 1);
     }
