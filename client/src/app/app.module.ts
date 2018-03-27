@@ -19,6 +19,8 @@ import { RacingCommunicationService } from "./racing/communication.service/commu
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
+import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
+import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -69,6 +71,8 @@ const appRoutes: Routes = [
         SceneServices,
         RacingCommunicationService,
         RenderService,
+        GameManagerService,
+        RaceValidatorService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

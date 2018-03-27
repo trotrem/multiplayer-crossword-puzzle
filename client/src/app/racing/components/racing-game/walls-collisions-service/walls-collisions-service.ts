@@ -39,14 +39,16 @@ export class WallsCollisionsService {
         const exteriorWalls: ILine[] = [{ pos1: null, pos2: null }];
         const interiorWalls: ILine[] = [{ pos1: null, pos2: null }];
 
-        trackPoints.pop();
-        for (let i: number = 0; i < trackPoints.length; i++) {
-            const interiorCrossing: THREE.Vector3 = this.findWallPairIntersection(trackPoints, i, WallSide.interior);
-            const exteriorCrossing: THREE.Vector3 = this.findWallPairIntersection(trackPoints, i, WallSide.exterior);
+        const points: THREE.Vector3[] = this.copyPoints(trackPoints);
+        points.pop();
+
+        for (let i: number = 0; i < points.length; i++) {
+            const interiorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.interior);
+            const exteriorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.exterior);
 
             exteriorWalls[i].pos2 = exteriorCrossing;
             interiorWalls[i].pos2 = interiorCrossing;
-            if (i === trackPoints.length - 1) {
+            if (i === points.length - 1) {
                 exteriorWalls[0].pos1 = exteriorCrossing;
                 interiorWalls[0].pos1 = interiorCrossing;
             } else {
@@ -58,6 +60,15 @@ export class WallsCollisionsService {
         this._walls = interiorWalls.concat(exteriorWalls);
 
         return this._walls;
+    }
+
+    private copyPoints(points: THREE.Vector3[]): THREE.Vector3[] {
+        const newPoints: THREE.Vector3[] = [];
+        for (const point of points) {
+            newPoints.push(new THREE.Vector3(point.x, point.y));
+        }
+
+        return newPoints;
     }
 
     private findWallPairIntersection(trackPoints: THREE.Vector3[], i: number, wallSide: WallSide): THREE.Vector3 {

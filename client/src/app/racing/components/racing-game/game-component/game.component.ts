@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
-import { RenderService } from "../render-service/render.service";
-import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Track } from "../../../track";
-import * as THREE from "three";
+import { ActivatedRoute } from "@angular/router";
+import { inject } from "inversify";
+import { GameManagerService } from "../game-manager/game-manager.service";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -21,14 +18,10 @@ export class GameComponent implements AfterViewInit {
 
     @ViewChild("container")
     private containerRef: ElementRef;
-    private communicationService: RacingCommunicationService;
-    private renderService: RenderService;
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
-        this.communicationService = new RacingCommunicationService(this.http);
-        this.renderService = new RenderService(router, http);
+    public constructor(private route: ActivatedRoute, @inject(GameManagerService) private gameManager: GameManagerService) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -38,53 +31,40 @@ export class GameComponent implements AfterViewInit {
 
     @HostListener("window:resize", ["$event"])
     public onResize(): void {
-        this.renderService.onResize();
+        this.gameManager.onResize();
     }
 
     public ngAfterViewInit(): void {
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-            this.getTrack(name);
+            this.gameManager.initializeGame(name, this.containerRef);
         }
-    }
-
-    private getTrack(name: string): void {
-        this.communicationService.getTrackByName(name)
-            .subscribe((res: Track[]) => {
-                const track: Track = res[0];
-                const points: THREE.Vector3[] = [];
-                for (const point of track.points) {
-                    points.push(new THREE.Vector3(point.x, point.y, point.z));
-                }
-                track.points = points;
-                this.renderService.initialize(this.containerRef.nativeElement, track);
-
-            });
-
     }
 
     private async changeLightColor(color: string, delay: number): Promise<void> {
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights[i] = color;
-            await this.delay(delay);
+            await this.delay(delay).then();
         }
 
     }
     private async visualSignal(): Promise<void> {
         this.changeLightColor("red", DELAY_BETWEEN_RED);
-        await this.delay(DELAY_FOR_RED);
-        this.changeLightColor("green", 0);
-        await this.delay(DELAY);
-        this.changeLightColor("", 0);
-        this.renderService.initializeEventHandlerService();
+        await this.delay(DELAY_FOR_RED).then(() => {
+            this.changeLightColor("green", 0);
+        });
+        await this.delay(DELAY).then(() => {
+            this.changeLightColor("", 0);
+            this.gameManager.startRace();
+        });
         await this.delay(DELAY);
     }
 
-    private delay(ms: number): Promise<boolean> {
+    private async delay(ms: number): Promise<{}> {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    private play(): void {
+    public play(): void {
         this.playButtonEnabled = false;
         this.visualSignal();
     }

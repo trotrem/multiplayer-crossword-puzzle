@@ -1,5 +1,5 @@
 import { TrackDisplay } from "./track-display";
-import { TestBed, inject } from "@angular/core/testing";
+import { TestBed } from "@angular/core/testing";
 import * as THREE from "three";
 // "magic numers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */

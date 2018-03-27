@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { AdminComponent } from "./admin.component";
-import { Routes, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Track } from "../../track";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";

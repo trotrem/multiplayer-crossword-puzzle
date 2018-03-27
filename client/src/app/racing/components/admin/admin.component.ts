@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { Track } from "../../track";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 
 @Component({
   selector: "app-admin",
