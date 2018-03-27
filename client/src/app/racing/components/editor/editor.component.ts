@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { Track } from "../../track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 
 @Component({
     selector: "app-editor",

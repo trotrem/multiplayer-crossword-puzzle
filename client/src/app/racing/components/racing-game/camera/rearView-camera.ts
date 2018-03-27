@@ -9,7 +9,6 @@ export class PerspectiveCamera extends THREE.PerspectiveCamera {
     private static readonly FAR: number = 1000;
     private static readonly VIEW_ANGLE: number = 70;
     private DEGREE: number = 360;
-    private ZPOSITION: number = 50;
     private XYPOSITION: number = 25;
 
     public constructor() {

@@ -2,30 +2,18 @@ import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
-import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
-import { Router } from "@angular/router";
-import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
-import { RaceUtils } from "./../../../utils/utils";
-import { MS_TO_SECONDS, CARS_MAX } from "../constants";
-import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
+import { ILine } from "../walls-collisions-service/walls-collisions-service";
+import { CARS_MAX } from "../constants";
 import { Track } from "../../../track";
-
-const EXPONENT: number = 2;
-
-const FAR_CLIPPING_PLANE: number = 1000;
-const NEAR_CLIPPING_PLANE: number = 1;
-const FIELD_OF_VIEW: number = 70;
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
 const ZOOM_MIN: number = 0.75;
 
-const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
 const INITIAL_AXISHELPER: number = 6;
@@ -40,7 +28,7 @@ export class RenderService {
     private stats: Stats;
     private cameraID: number;
 
-    public constructor(private router: Router, private http: HttpClient) {
+    public constructor( ) {
         this.cameraID = 0;
     }
     public getScene(): THREE.Scene {

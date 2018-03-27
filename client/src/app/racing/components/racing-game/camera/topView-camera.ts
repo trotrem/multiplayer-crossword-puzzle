@@ -1,6 +1,4 @@
 import * as THREE from "three";
-// import { Object3D } from "three";
-import { Car } from "../car/car";
 
 export class OrthographicCamera extends THREE.OrthographicCamera {
     private static readonly WIDTH: number = window.innerWidth;
@@ -9,8 +7,6 @@ export class OrthographicCamera extends THREE.OrthographicCamera {
     private static readonly ASPECT: number = OrthographicCamera.WIDTH / OrthographicCamera.HEIGHT;
     private static readonly NEAR: number = 1;
     private static readonly FAR: number = 1000;
-
-    private target: THREE.Object3D;
 
     public constructor() {
         super(

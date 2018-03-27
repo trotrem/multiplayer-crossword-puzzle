@@ -1,9 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
-import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
-import { Track } from "../../../track";
-import * as THREE from "three";
 import { inject } from "inversify";
 import { GameManagerService } from "../game-manager/game-manager.service";
 const LIGHTS: number = 3;
@@ -48,17 +44,19 @@ export class GameComponent implements AfterViewInit {
     private async changeLightColor(color: string, delay: number): Promise<void> {
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights[i] = color;
-            await this.delay(delay);
+            await this.delay(delay).then();
         }
 
     }
     private async visualSignal(): Promise<void> {
         this.changeLightColor("red", DELAY_BETWEEN_RED);
-        await this.delay(DELAY_FOR_RED);
-        this.changeLightColor("green", 0);
-        await this.delay(DELAY);
-        this.changeLightColor("", 0);
-        this.gameManager.startRace();
+        await this.delay(DELAY_FOR_RED).then(() => {
+            this.changeLightColor("green", 0);
+        });
+        await this.delay(DELAY).then(() => {
+            this.changeLightColor("", 0);
+            this.gameManager.startRace();
+        });
         await this.delay(DELAY);
     }
 

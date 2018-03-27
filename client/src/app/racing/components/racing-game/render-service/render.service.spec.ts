@@ -9,7 +9,7 @@ import { GameResultsComponent } from "../../game-results/game-results.component"
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { Track } from "./../../../track";
-import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
@@ -20,14 +20,12 @@ describe("RenderService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     // tslint:disable-next-line:prefer-const
     let container: HTMLDivElement;
-    let http: HttpClient;
     const points: THREE.Vector3[] = new Array<THREE.Vector3>();
-    let router: Router;
     const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         newScores: new Array<number>()
     };
-    const service: RenderService = new RenderService(router, http);
+    const service: RenderService = new RenderService();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
@@ -41,38 +39,41 @@ describe("RenderService", () => {
 
     }));
 
-    beforeEach(inject([Router, HttpClient], (_router: Router, _http: HttpClient) => {
-        http = _http;
-        router = _router;
-    }));
-
     it("should be created", () => {
         expect(service).toBeTruthy();
     });
-    it("should be create a scene", () => {
-        service.initialize(
-            container, track);
-        expect(service.getScene()).toBeDefined();
-    });
-    it("should add four cars to the scene", async () => {
+    it("should be create a scene", async () => {
+        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track);
+        service.initialize(
+            container, track, cars, walls);
+        expect(service.getScene()).toBeDefined();
+    });
+    it("should add four cars to the scene", async () => {
+        const walls: ILine[] = new Array<ILine>();
+        const cars: Car[] = new Array<Car>();
+        for (let i: number = 0; i < 4; i++) {
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
+        }
+        service.initialize(container, track, cars, walls);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         expect(service.getScene().children.length).toEqual(3);
     });
     it("should follow car with top view camera", async () => {
+        const walls: ILine[] = new Array<ILine>();
         let isEqual: boolean = false;
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track);
+        service.initialize(container, track, cars, walls);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -84,13 +85,14 @@ describe("RenderService", () => {
     });
 
     it("should rotate a rear camera with the car", async () => {
+        const walls: ILine[] = new Array<ILine>();
         let isEqual: boolean = false;
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track);
+        service.initialize(container, track, cars, walls);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -104,12 +106,13 @@ describe("RenderService", () => {
     });
 
     it("should follow car with top view camera", async () => {
+        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(new Car(wallsCollisionsService));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track);
+        service.initialize(container, track, cars, walls);
         CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
