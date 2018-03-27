@@ -133,7 +133,14 @@ describe("RenderService", () => {
             expect(previousCameraId).not.toEqual(currentCameraId);
         }
     });
-    it("should zoom in", () => {
+    it("should zoom in", async() => {
+        const walls: ILine[] = new Array<ILine>();
+        const cars: Car[] = new Array<Car>();
+        for (let i: number = 0; i < 4; i++) {
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
+        }
+        await service.initialize(container, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -141,14 +148,28 @@ describe("RenderService", () => {
         expect(initialZoom[0]).toBeLessThan(service.TopCamera.zoom);
         expect(initialZoom[1]).toBeLessThan(service.RearCamera.zoom);
     });
-    it("should not exceed a zoom of 2", () => {
+    it("should not exceed a zoom of 2", async() => {
+        const walls: ILine[] = new Array<ILine>();
+        const cars: Car[] = new Array<Car>();
+        for (let i: number = 0; i < 4; i++) {
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
+        }
+        await service.initialize(container, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
         expect(service.TopCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
         expect(service.RearCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
     });
-    it("should zoom out", () => {
+    it("should zoom out", async() => {
+        const walls: ILine[] = new Array<ILine>();
+        const cars: Car[] = new Array<Car>();
+        for (let i: number = 0; i < 4; i++) {
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
+        }
+        await service.initialize(container, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -156,7 +177,14 @@ describe("RenderService", () => {
         expect(initialZoom[0]).toBeGreaterThan(service.TopCamera.zoom);
         expect(initialZoom[1]).toBeGreaterThan(service.RearCamera.zoom);
     });
-    it("should not go under a zoom of 0.75", () => {
+    it("should not go under a zoom of 0.75", async() => {
+        const walls: ILine[] = new Array<ILine>();
+        const cars: Car[] = new Array<Car>();
+        for (let i: number = 0; i < 4; i++) {
+            cars.push(new Car(wallsCollisionsService));
+            cars[i].mesh = await carLoader.load();
+        }
+        await service.initialize(container, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }
