@@ -61,28 +61,24 @@ export class RaceValidatorService {
   }
 
   public async validateRace(index: number, carIndex: number, timer: number): Promise<void> {
-
     await this.cars[carIndex].getUpdatedPosition();
     if (this.getLapSectionvalidator(
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
-        this.verifieNextLap(carIndex, timer);
+        this.verifyNextLap(carIndex, timer);
       }
       this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
   }
   private setNextLapParameters(carIndex: number, timer: number): void {
-
-    this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
+    this.cars[carIndex].setLapTimes(timer / MS_TO_SECONDS);
     this.validIndex[carIndex] = 0;
     this.counter[carIndex] += 1;
-    console.log("tour");
   }
 
-  private async verifieNextLap(carIndex: number, timer: number): Promise<void> {
-
+  private async verifyNextLap(carIndex: number, timer: number): Promise<void> {
     this.setNextLapParameters(carIndex, timer);
     if (this.counter[carIndex] === LAP_MAX) {
       this.addScoreToTrack(carIndex);
