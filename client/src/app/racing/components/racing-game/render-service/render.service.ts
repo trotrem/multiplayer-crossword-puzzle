@@ -2,30 +2,18 @@ import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
-import { EventHandlerRenderService } from "./event-handler-render.service";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
-import { Router } from "@angular/router";
-import { WallsCollisionsService, ILine } from "../walls-collisions-service/walls-collisions-service";
-import { RaceUtils } from "./../../../utils/utils";
-import { MS_TO_SECONDS, CARS_MAX } from "../constants";
-import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
+import { ILine } from "../walls-collisions-service/walls-collisions-service";
+import { CARS_MAX } from "../constants";
 import { Track } from "../../../track";
-import { RaceValidatorService } from "../race-validator/race-validator.service";
-const EXPONENT: number = 2;
-
-const FAR_CLIPPING_PLANE: number = 1000;
-const NEAR_CLIPPING_PLANE: number = 1;
-const FIELD_OF_VIEW: number = 70;
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
 const ZOOM_MIN: number = 0.75;
 
-const INITIAL_CAMERA_POSITION_Z: number = 70;
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
 const INITIAL_AXISHELPER: number = 6;
@@ -37,16 +25,10 @@ export class RenderService {
     private renderer: THREE.WebGLRenderer;
     private scene: THREE.Scene;
     private stats: Stats;
-    private lastDate: number;
-    private evenHandeler: EventHandlerRenderService;
-    private timer: number;
-    private raceValidator: RaceValidatorService;
     private cameraID: number;
 
-    public constructor(private router: Router, private http: HttpClient) {
-        this.raceValidator = new RaceValidatorService(router, http);
-        this.timer = 0;
-        this.cameraID = 1;
+    public constructor() {
+        this.cameraID = 0;
     }
     public getScene(): THREE.Scene {
         return this.scene;
@@ -58,75 +40,51 @@ export class RenderService {
         return this.cameras[0];
     }
 
-    public async initialize(container: HTMLDivElement, track: Track): Promise<void> {
+    public initialize(container: HTMLDivElement, track: Track, cars: Car[], walls: ILine[]): void {
         if (container) {
             this.container = container;
         }
-        this.raceValidator.track = track;
-        this.raceValidator.track.newScores = new Array<number>();
-        await this.createScene();
-        CarsPositionsHandler.insertCars(this.raceValidator.track.startingZone, this.scene, this.raceValidator.cars);
+        this.createScene(track, cars, walls);
+        CarsPositionsHandler.insertCars(track.startingZone, this.scene, cars);
         this.initStats();
-        this.startRenderingLoop();
-        // this.cameras[1].setStartPosition(new THREE.Vector3(0, 0, INITIAL_CAMERA_POSITION_Z), this.raceValidator.cars[0].position);
+
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setPixelRatio(devicePixelRatio);
+        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+        this.container.appendChild(this.renderer.domElement);
         this.cameras[0].up.set(0, 0, 1);
     }
-    public initializeEventHandlerService(): void {
-        this.evenHandeler = new EventHandlerRenderService(this.raceValidator.cars[0], this);
-    }
+
     private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
         this.container.appendChild(this.stats.dom);
     }
 
-    private update(): void {
-        const timeSinceLastFrame: number = Date.now() - this.lastDate;
-        this.timer += timeSinceLastFrame;
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this.raceValidator.cars[i].update(timeSinceLastFrame);
-            this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer);
-        }
-        this.lastDate = Date.now();
-        if (this.cameraID === 0) {
-            this.cameras[0].updatePosition(this.raceValidator.cars[0]);
-        } else {
-            this.cameras[1].updatePosition(this.raceValidator.cars[0].getUpdatedPosition());
-        }
-    }
-    private async createScene(): Promise<void> {
+    private createScene(track: Track, cars: Car[], walls: ILine[]): void {
         this.scene = new THREE.Scene();
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
-        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(this.raceValidator.track.points);
+        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(track.points);
         for (const mesh of trackMeshs) {
             this.scene.add(mesh);
         }
-        const collisionService: WallsCollisionsService = new WallsCollisionsService();
-        this.showWalls(collisionService.createWalls(this.raceValidator.track.points));
-
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this.raceValidator.cars[i] = new Car(collisionService);
-            await this.raceValidator.cars[i].init();
-            this.scene.add(this.raceValidator.cars[i]);
+            this.scene.add(cars[i]);
         }
-        this.raceValidator.track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
+        this.showWalls(walls);
+        track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
     }
-    private startRenderingLoop(): void {
-        this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setPixelRatio(devicePixelRatio);
-        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.lastDate = Date.now();
-        this.container.appendChild(this.renderer.domElement);
-        this.render();
-    }
-    private render(): void {
-        requestAnimationFrame(() => this.render());
-        this.update();
+    public render(player: Car): void {
+        if (this.cameraID === 0) {
+            this.cameras[0].updatePosition(player);
+        } else {
+            this.cameras[1].updatePosition(player.getUpdatedPosition());
+        }
         this.renderer.render(this.scene, this.cameras[this.cameraID]);
         this.stats.update();
     }

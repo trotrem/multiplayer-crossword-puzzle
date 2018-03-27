@@ -8,8 +8,6 @@ export class OrthographicCamera extends THREE.OrthographicCamera {
     private static readonly NEAR: number = 1;
     private static readonly FAR: number = 1000;
 
-    // private target: THREE.Object3D;
-
     public constructor() {
         super(
             -OrthographicCamera.ORTHO_HEIGHT / 2 * OrthographicCamera.ASPECT,

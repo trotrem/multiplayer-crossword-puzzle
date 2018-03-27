@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { HttpClient } from "@angular/common/http";
 import { Track } from "./../../track";
+import { inject } from "inversify";
 const DELAY: number = 1000;
 
 @Component({
@@ -12,11 +12,10 @@ const DELAY: number = 1000;
 })
 export class GameResultsComponent implements OnInit {
 
-  private communicationService: RacingCommunicationService;
   private _scores: number[];
 
-  public constructor(private route: ActivatedRoute, private http: HttpClient) {
-    this.communicationService = new RacingCommunicationService(http);
+  public constructor(
+    private route: ActivatedRoute, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._scores = new Array<number>();
   }
   public get scores(): number[] {
@@ -29,14 +28,14 @@ export class GameResultsComponent implements OnInit {
     }
   }
 
-  private delay(ms: number): Promise<boolean> {
+  private async delay(ms: number): Promise<{}> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   public async getTrack(name: string): Promise<void> {
     await this.delay(DELAY);
     this.communicationService.getTrackByName(name)
-      .subscribe((res: Track[]) => {
+      .then((res: Track[]) => {
         this._scores = res[0].newScores;
       });
   }

@@ -4,9 +4,10 @@ import { RaceValidatorService } from "./race-validator.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
 import { FormsModule } from "@angular/forms";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import * as THREE from "three";
+import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers */
 
@@ -17,7 +18,7 @@ describe("RaceValidatorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [GameResultsComponent],
-      providers: [RaceValidatorService],
+      providers: [RaceValidatorService, RacingCommunicationService],
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
@@ -35,11 +36,11 @@ describe("RaceValidatorService", () => {
     expect(service).toBeTruthy();
   }));
   it("should return true when a car passed by a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 2, 0), new THREE.Vector3(1, 2, 0))).toBeTruthy();
+    expect(service.getLapSectionValidator(new THREE.Vector3(1, 2, 0), new THREE.Vector3(1, 2, 0))).toBeTruthy();
   }));
 
   it("should return false when a car is far from a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
+    expect(service.getLapSectionValidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
   }));
 
   it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {

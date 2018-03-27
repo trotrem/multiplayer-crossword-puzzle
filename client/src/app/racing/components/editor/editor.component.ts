@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 import { NgForm } from "@angular/forms";
 import { Track } from "../../track";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 
 @Component({
     selector: "app-editor",
@@ -80,7 +79,7 @@ export class EditorComponent implements OnInit {
 
     private getTrack(name: string): void {
         this.communicationService.getTrackByName(name)
-            .subscribe((res: Track[]) => {
+            .then((res: Track[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
                 this.sceneService.setIsClosed(true);

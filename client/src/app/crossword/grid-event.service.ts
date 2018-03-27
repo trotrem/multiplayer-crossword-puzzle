@@ -3,8 +3,8 @@ import { WordDescription } from "./wordDescription";
 import { IWordValidationParameters, Difficulty } from "../../../../common/communication/types";
 import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
-import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { inject } from "inversify";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -18,12 +18,11 @@ export class GridEventService {
   private selectedWord: WordDescription = null;
   private words: WordDescription[];
   private id: number;
-  private communicationService: CommunicationService;
   private nbPlayers: string;
   private _difficulty: Difficulty = "easy";
 
-  public constructor(words: WordDescription[], private http: HttpClient, private router: Router) {
-    this.communicationService = new CommunicationService(this.http);
+  public constructor(
+    words: WordDescription[], @inject(CommunicationService) private communicationService: CommunicationService, private router: Router) {
     this.words = words;
   }
 
