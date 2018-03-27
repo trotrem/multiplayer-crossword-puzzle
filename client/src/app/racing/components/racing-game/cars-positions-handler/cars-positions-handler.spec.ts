@@ -1,4 +1,4 @@
-import { TestBed, inject } from "@angular/core/testing";
+import { TestBed} from "@angular/core/testing";
 import * as THREE from "three";
 import { CarsPositionsHandler } from "./cars-positions-handler";
 import { Car } from "../car/car";

@@ -20,11 +20,11 @@ export class EndGameComponent implements OnInit {
     });
   }
 
-  private playSameCongif(): void {
+  public playSameCongif(): void {
     this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 
-  private returnHome(): void {
+  public returnHome(): void {
     this.router.navigateByUrl("/homePage");
   }
 }
