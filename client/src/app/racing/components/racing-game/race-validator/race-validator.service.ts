@@ -7,6 +7,7 @@ import { HttpClient } from "@angular/common/http";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 const ADD_TO_DISTANCE: number = 30;
 const EXPONENT: number = 2;
 
@@ -51,6 +52,15 @@ export class RaceValidatorService {
   }
   public get counter(): number[] {
     return this._counter;
+  }
+
+  public async initialize(track: Track, collisionService: WallsCollisionsService): Promise<void> {
+    this.track = track;
+    this.track.newScores = new Array<number>();
+    for (let i: number = 0; i < CARS_MAX; i++) {
+      this._cars[i] = new Car(collisionService);
+      await this._cars[i].init();
+    }
   }
 
   public getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
