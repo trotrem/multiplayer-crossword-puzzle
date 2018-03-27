@@ -85,7 +85,7 @@ export class RaceValidatorService {
     this.counter[carIndex] += 1;
   }
 
-  private verifieNextLap(carIndex: number, timer: number): void {
+  private verifyNextLap(carIndex: number, timer: number): void {
 
     this.setNextLapParameters(carIndex, timer);
     if (this.counter[carIndex] === LAP_MAX) {

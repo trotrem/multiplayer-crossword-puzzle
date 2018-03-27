@@ -37,7 +37,7 @@ export class GameManagerService {
         this.renderService.initialize(container.nativeElement,
                                       track,
                                       this.raceValidator.cars,
-                                      collisionService.createWalls(track.points));
+                                      this.collisionService.createWalls(track.points));
         await this.update();
     }
 
