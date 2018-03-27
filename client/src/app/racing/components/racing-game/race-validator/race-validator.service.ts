@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
-const ADD_TO_DISTANCE: number = 30;
+const ADD_TO_DISTANCE: number = 20;
 const EXPONENT: number = 2;
 
 @Injectable()
@@ -53,7 +53,7 @@ export class RaceValidatorService {
     return this._counter;
   }
 
-  public getLapSectionvalidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
+  public getLapSectionValidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
 
     const position2: THREE.Vector3 = carPosition.clone();
 
@@ -63,7 +63,7 @@ export class RaceValidatorService {
   public async validateRace(index: number, carIndex: number, timer: number): Promise<void> {
 
     await this.cars[carIndex].getUpdatedPosition();
-    if (this.getLapSectionvalidator(
+    if (this.getLapSectionValidator(
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {

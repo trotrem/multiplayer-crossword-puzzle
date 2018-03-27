@@ -1,11 +1,10 @@
-import { Injectable, HostListener } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
 import { IWordValidationParameters, Difficulty } from "../../../../common/communication/types";
 import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
-import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { injectable, inject } from "inversify";
+import { inject } from "inversify";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;

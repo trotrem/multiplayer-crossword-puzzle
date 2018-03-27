@@ -35,11 +35,11 @@ describe("RaceValidatorService", () => {
     expect(service).toBeTruthy();
   }));
   it("should return true when a car passed by a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 2, 0), new THREE.Vector3(1, 2, 0))).toBeTruthy();
+    expect(service.getLapSectionValidator(new THREE.Vector3(1, 2, 0), new THREE.Vector3(1, 2, 0))).toBeTruthy();
   }));
 
   it("should return false when a car is far from a Lap Verifier", inject([RaceValidatorService], (service: RaceValidatorService) => {
-    expect(service.getLapSectionvalidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
+    expect(service.getLapSectionValidator(new THREE.Vector3(1, 0, 0), new THREE.Vector3(100, 20, 0))).toBe(false);
   }));
 
   it('navigate to "gameResults/:CarIndex" takes you to  ""gameResults/:CarIndex"', fakeAsync(() => {
