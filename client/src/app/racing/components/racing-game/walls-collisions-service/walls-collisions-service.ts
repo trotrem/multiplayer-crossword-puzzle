@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { RaceUtils } from "../../../utils/utils";
 import { Car } from "../car/car";
+import { Injectable } from "@angular/core";
 
-// TODO: rename or make as service
 // Sides may be inverted depending on the orientation of the track (clockwise or counter-clockwise)
 enum WallSide {
     exterior = -1,
@@ -16,6 +16,7 @@ export interface ILine {
 
 const WALL_WIDTH: number = 8;
 
+@Injectable()
 export class WallsCollisionsService {
     private _walls: ILine[] = [];
     private _corners: THREE.Vector3[] = [];
