@@ -73,15 +73,14 @@ export class RaceValidatorService {
       this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
-        this.verifieNextLap(carIndex, timer);
+        this.verifyNextLap(carIndex, timer);
       }
       await this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
   }
   private setNextLapParameters(carIndex: number, timer: number): void {
-
-    this.cars[carIndex].setLabTimes(timer / MS_TO_SECONDS);
+    this.cars[carIndex].setLapTimes(timer / MS_TO_SECONDS);
     this.validIndex[carIndex] = 0;
     this.counter[carIndex] += 1;
   }

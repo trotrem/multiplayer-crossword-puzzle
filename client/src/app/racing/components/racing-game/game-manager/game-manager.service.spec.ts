@@ -6,11 +6,12 @@ import { RenderService } from "../render-service/render.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { RaceValidatorService } from "../race-validator/race-validator.service";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 
 describe("GameManagerService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GameManagerService, RenderService, RacingCommunicationService, RaceValidatorService],
+      providers: [GameManagerService, RenderService, RacingCommunicationService, RaceValidatorService, WallsCollisionsService],
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
