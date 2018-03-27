@@ -20,7 +20,8 @@ export class GameManagerService {
 
     public constructor(@inject(RenderService) private renderService: RenderService,
                        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
-                       @inject(RaceValidatorService) private raceValidator: RaceValidatorService) {
+                       @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
+                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
                         this.timer = 0;
                     }
 
@@ -28,17 +29,15 @@ export class GameManagerService {
         this.lastDate = Date.now();
         const track: Track = await this.getTrack(trackName, container);
 
-        const collisionService: WallsCollisionsService = new WallsCollisionsService();
-
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(collisionService);
+            this._cars[i] = new Car(this.collisionService);
             await this._cars[i].init();
         }
-        this.raceValidator.initialize(track, collisionService, this._cars);
+        this.raceValidator.initialize(track, this.collisionService, this._cars);
         this.renderService.initialize(container.nativeElement,
                                       track,
                                       this.raceValidator.cars,
-                                      collisionService.createWalls(track.points));
+                                      this.collisionService.createWalls(track.points));
         this.update();
     }
 
