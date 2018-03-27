@@ -54,13 +54,10 @@ export class RaceValidatorService {
     return this._counter;
   }
 
-  public async initialize(track: Track, collisionService: WallsCollisionsService): Promise<void> {
+  public async initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): Promise<void> {
     this.track = track;
     this.track.newScores = new Array<number>();
-    for (let i: number = 0; i < CARS_MAX; i++) {
-      this._cars[i] = new Car(collisionService);
-      await this._cars[i].init();
-    }
+    this._cars = cars;
   }
 
   public getLapSectionValidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {

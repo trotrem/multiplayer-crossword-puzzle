@@ -8,13 +8,15 @@ import { RaceValidatorService } from "../race-validator/race-validator.service";
 import { CARS_MAX } from "../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { Car } from "../car/car";
 
 @injectable()
 export class GameManagerService {
 
     private timer: number;
     private lastDate: number;
-    private eventHandeler: EventHandlerRenderService;
+    private eventHandler: EventHandlerRenderService;
+    private _cars: Car[] = [];
 
     public constructor(@inject(RenderService) private renderService: RenderService,
                        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
@@ -22,22 +24,35 @@ export class GameManagerService {
                         this.timer = 0;
                     }
 
-    public initializeGame(trackName: string, container: ElementRef): void {
+    public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
         this.lastDate = Date.now();
-        this.getTrack(trackName, container);
+        const track: Track = await this.getTrack(trackName, container);
+
+        const collisionService: WallsCollisionsService = new WallsCollisionsService();
+
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            this._cars[i] = new Car(collisionService);
+            await this._cars[i].init();
+        }
+        this.raceValidator.initialize(track, collisionService, this._cars);
+        this.renderService.initialize(container.nativeElement,
+                                      track,
+                                      this.raceValidator.cars,
+                                      collisionService.createWalls(track.points));
+        this.update();
     }
 
     public startRace(): void {
-        this.eventHandeler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService);
+        this.eventHandler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService);
     }
 
     public onResize(): void {
         this.renderService.onResize();
     }
 
-    private getTrack(name: string, container: ElementRef): void {
-        this.communicationService.getTrackByName(name)
-            .subscribe(async (res: Track[]) => {
+    private async getTrack(name: string, container: ElementRef): Promise<Track> {
+        return this.communicationService.getTrackByName(name)
+            .then(async (res: Track[]): Promise<Track> => {
                 const track: Track = res[0];
                 const points: THREE.Vector3[] = [];
                 for (const point of track.points) {
@@ -45,14 +60,7 @@ export class GameManagerService {
                 }
                 track.points = points;
 
-                const collisionService: WallsCollisionsService = new WallsCollisionsService();
-
-                await this.raceValidator.initialize(track, collisionService);
-                this.renderService.initialize(container.nativeElement,
-                                              track,
-                                              this.raceValidator.cars,
-                                              collisionService.createWalls(track.points));
-                this.update();
+                return track;
             });
 
     }
