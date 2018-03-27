@@ -16,7 +16,6 @@ const ZOOM_MIN: number = 0.75;
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
-const INITIAL_AXISHELPER: number = 6;
 
 @Injectable()
 export class RenderService {
