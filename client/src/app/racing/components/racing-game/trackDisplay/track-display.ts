@@ -4,20 +4,27 @@ const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
 const WIDTH_START: number = 4;
 const WIDTH_POINT: number = 0.5;
-const GRAY: number = 0x7B8284;
-const RED: number = 0xFF0000;
+const WIDTH_SCENE: number = window.innerWidth;
+const HEIGHT_SCENE: number = window.innerHeight;
+const SCENE: number = -0.5;
+const TRACK: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/asphalte.png");
+const START: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/start.png");
+const GRASS: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/grass.png");
 
 export class TrackDisplay {
 
     private static setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
-        const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ color: GRAY }));
+        const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ map: TRACK }));
         pointMesh.position.copy(point);
 
         return pointMesh;
     }
 
-    private static setPlaneMesh(vector: THREE.Vector3, point: THREE.Vector3, scaleX: number, color: number): THREE.Mesh {
-        const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ color: color }));
+    private static setPlaneMesh(vector: THREE.Vector3,
+        point: THREE.Vector3,
+        scaleX: number,
+        texture: THREE.MeshBasicMaterial["map"]): THREE.Mesh {
+        const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ map: texture }));
         floor.position.copy(point);
         floor.scale.x = scaleX;
         floor.scale.y = WIDTH_PLANE;
@@ -42,12 +49,22 @@ export class TrackDisplay {
             const point: THREE.Vector3 =
                 new THREE.Vector3().copy(vector).multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[i - 1]));
 
-            addToScene.push(this.setPlaneMesh(vector, point, vector.length(), GRAY));
+            addToScene.push(this.setPlaneMesh(vector, point, vector.length(), TRACK));
 
         }
         addToScene.push(this.drawStartLine(points));
+        addToScene.push(this.drawBackground());
 
         return addToScene;
+    }
+
+    public static drawBackground(): THREE.Mesh {
+        const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ map: GRASS }));
+        floor.position.set(0, 0, SCENE);
+        floor.scale.x = WIDTH_SCENE;
+        floor.scale.y = HEIGHT_SCENE;
+
+        return floor;
     }
 
     private static drawStartLine(points: THREE.Vector3[]): THREE.Mesh {
@@ -56,7 +73,7 @@ export class TrackDisplay {
             new THREE.Vector3().copy(new THREE.Vector3().copy(this.SetPointFromMatrix(points[1])).
                 sub(this.SetPointFromMatrix(points[0]))).
                 multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[0])),
-            WIDTH_START, RED);
+            WIDTH_START, START);
         floor.translateX(-WIDTH_START);
 
         return floor;

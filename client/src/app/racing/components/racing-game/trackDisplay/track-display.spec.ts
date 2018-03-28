@@ -21,4 +21,16 @@ describe("TrackDisplay", () => {
         meshs = TrackDisplay.drawTrack(points);
         expect(meshs.length).toBe(9);
     });
+
+    it("should see a track in the scene", () => {
+        let meshs: THREE.Mesh[] = new Array<THREE.Mesh>();
+        const points: THREE.Vector3[] = new Array<THREE.Vector3>();
+        points.push(new THREE.Vector3(-23, 77, 0));
+        points.push(new THREE.Vector3(-7, 8, 0));
+        points.push(new THREE.Vector3(-2, 77, 0));
+        points.push(new THREE.Vector3(-1, 70, 0));
+        points.push(new THREE.Vector3(-23, 77, 0));
+        meshs = TrackDisplay.drawTrack(points);
+        expect(meshs.pop().material).not.toEqual(meshs.pop().material);
+    });
 });
