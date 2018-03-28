@@ -19,7 +19,7 @@ describe("TrackDisplay", () => {
         points.push(new THREE.Vector3(-1, 70, 0));
         points.push(new THREE.Vector3(-23, 77, 0));
         meshs = TrackDisplay.drawTrack(points);
-        expect(meshs.length).toBe(9);
+        expect(meshs.length).toBe(10);
     });
 
     it("should see a track in the scene", () => {

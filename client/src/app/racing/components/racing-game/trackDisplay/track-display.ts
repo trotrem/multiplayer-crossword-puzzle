@@ -21,9 +21,9 @@ export class TrackDisplay {
     }
 
     private static setPlaneMesh(vector: THREE.Vector3,
-        point: THREE.Vector3,
-        scaleX: number,
-        texture: THREE.MeshBasicMaterial["map"]): THREE.Mesh {
+                                point: THREE.Vector3,
+                                scaleX: number,
+                                texture: THREE.MeshBasicMaterial["map"]): THREE.Mesh {
         const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ map: texture }));
         floor.position.copy(point);
         floor.scale.x = scaleX;
