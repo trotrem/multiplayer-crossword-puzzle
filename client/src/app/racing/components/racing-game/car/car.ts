@@ -70,6 +70,10 @@ export class Car extends Object3D {
     public get checkpoint(): number {
         return this._checkpoint;
     }
+
+    public checkpointPlusPlus(): void {
+        this._checkpoint++;
+    }
     public getCorners(pos: Vector3): Vector3[] {
         return [
             pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
@@ -125,12 +129,12 @@ export class Car extends Object3D {
         this.dragCoefficient = dragCoefficient;
         this.carLoader = new CarLoader();
         this.updatedPosition = new Vector3();
-
         this.isBraking = false;
         this.steeringWheelDirection = 0;
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
+        this._checkpoint = 0;
     }
     public async init(): Promise<void> {
         this._mesh = await this.carLoader.load();

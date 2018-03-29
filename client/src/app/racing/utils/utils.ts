@@ -6,6 +6,13 @@ const PRECISION: number = 0.0001;
 
 export class RaceUtils {
 
+  public static calculateAngle(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): number {
+    return Math.acos((this.calculateDistance(position2, position3) * this.calculateDistance(position2, position3)
+      + this.calculateDistance(position2, position1) * this.calculateDistance(position2, position1)
+      - this.calculateDistance(position3, position1) * this.calculateDistance(position3, position1)) /
+      (EXPONENT * this.calculateDistance(position2, position3) * this.calculateDistance(position2, position1)));
+  }
+
   public static calculateDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
     return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
   }

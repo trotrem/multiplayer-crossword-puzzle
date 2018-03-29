@@ -23,18 +23,11 @@ export class TrackValidator {
     }
 
     private lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): void {
-        if ((HALF_CIRCLE_DEGREES * (this.calculateAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
+        if ((HALF_CIRCLE_DEGREES * (RaceUtils.calculateAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
             this.setPoints(position3, position2);
         }
 
     }
-    private calculateAngle(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): number {
-        return Math.acos((RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position3)
-            + RaceUtils.calculateDistance(position2, position1) * RaceUtils.calculateDistance(position2, position1)
-            - RaceUtils.calculateDistance(position3, position1) * RaceUtils.calculateDistance(position3, position1)) /
-            (EXPONENT * RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position1)));
-    }
-
     private twoLinesIntersect(
         position1: THREE.Vector3,
         position2: THREE.Vector3,

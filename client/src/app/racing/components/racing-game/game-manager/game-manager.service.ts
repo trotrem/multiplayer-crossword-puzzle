@@ -9,6 +9,9 @@ import { CARS_MAX } from "../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
+import { AiController } from "./../ai-controller/ai-controller";
+
+const AI_PLAYERS_MAX: number = 3;
 
 @injectable()
 export class GameManagerService {
@@ -17,13 +20,17 @@ export class GameManagerService {
     private lastDate: number;
     private eventHandler: EventHandlerRenderService;
     private _cars: Car[] = [];
+    private _aiControllers: AiController[];
+    private gameStarted: boolean = false;
 
-    public constructor(@inject(RenderService) private renderService: RenderService,
-                       @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
-                       @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
-                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
-                        this.timer = 0;
-                    }
+    public constructor(
+        @inject(RenderService) private renderService: RenderService,
+        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
+        @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
+        @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
+        this.timer = 0;
+        this._aiControllers = new Array<AiController>();
+    }
 
     public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
         this.lastDate = Date.now();
@@ -34,14 +41,17 @@ export class GameManagerService {
             await this._cars[i].init();
         }
         this.raceValidator.initialize(track, this.collisionService, this._cars);
-        this.renderService.initialize(container.nativeElement,
-                                      track,
-                                      this.raceValidator.cars,
-                                      this.collisionService.createWalls(track.points));
+        this.renderService.initialize(
+            container.nativeElement, track, this.raceValidator.cars, this.collisionService.createWalls(track.points));
         await this.update();
     }
 
     public startRace(): void {
+        this.initializeControllers();
+        this.gameStarted = true;
+        for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
+            this._aiControllers[i].isStarted = true;
+        }
         this.eventHandler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService);
     }
 
@@ -65,14 +75,26 @@ export class GameManagerService {
     }
 
     private async update(): Promise<void> {
-        requestAnimationFrame(async() => this.update());
+        requestAnimationFrame(async () => this.update());
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this.raceValidator.cars[i].update(timeSinceLastFrame);
-            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
+        if (this.gameStarted) {
+            for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
+                this._aiControllers[i].update();
+            }
+
+            for (let i: number = 0; i < CARS_MAX; i++) {
+                this.raceValidator.cars[i].update(timeSinceLastFrame);
+                await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => { });
+            }
         }
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);
+    }
+
+    private initializeControllers(): void {
+        for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
+            this._aiControllers.push(new AiController(this.raceValidator.cars[i], this.raceValidator.track.points));
+        }
     }
 }
