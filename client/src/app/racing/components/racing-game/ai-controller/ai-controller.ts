@@ -24,7 +24,7 @@ export class AiController {
 
     // Called each tick
     public async update(): Promise<void> {
-        /*if (this.isStarted) {
+        if (this.isStarted) {
             if (this._car.speed.length() < MAX_SPEED) {
                 this.moveForward();
             } else {
@@ -33,16 +33,15 @@ export class AiController {
 
             this.turn();
 
-        }*/
+        }
     }
 
     private turn(): void {
-        const angle: number = this._car.direction.cross(new Vector3(
-            this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
-            this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
-            0)).z;
         if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < MAX_DISTANCE) {
-            if (angle > 0) {
+            if (this._car.direction.cross(new Vector3(
+                this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
+                this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
+                0)).z > 0) {
                 this._car.steerRight();
             } else {
                 this._car.steerLeft();
@@ -58,7 +57,6 @@ export class AiController {
                 this._turned = false;
             }
         }
-        // this._car.checkpointPlusPlus();
 
     }
 
