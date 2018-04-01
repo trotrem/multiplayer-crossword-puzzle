@@ -7,50 +7,58 @@ import { checkAndUpdateNode } from "@angular/core/src/view/view";
 import { RaceUtils } from "../../../utils/utils";
 
 const MAX_SPEED: number = 4;
+const MAX_DISTANCE: number = 15;
 
 export class AiController {
 
     // private _car: Car;
     public isStarted: boolean = false;
     private _checkPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
-    private p: number = 9;
+    private _turned: Boolean;
 
     public constructor(private _car: Car, points: THREE.Vector3[]) {
         this._checkPoints.shift();
         this._checkPoints = points.slice().reverse();
+        this._turned = false;
     }
 
     // Called each tick
     public async update(): Promise<void> {
-        if (this.isStarted) {
+        /*if (this.isStarted) {
             if (this._car.speed.length() < MAX_SPEED) {
                 this.moveForward();
             } else {
                 this._car.isAcceleratorPressed = false;
             }
+
             this.turn();
 
-        }
+        }*/
     }
 
     private turn(): void {
-        const vector: Vector3 = new Vector3(
-             this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
-             this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
-             0);
-        if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < 10) {
-            if (this._car.direction.cross(new Vector3(
-                this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
-                this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
-                0)).z > 0) {
+        const angle: number = this._car.direction.cross(new Vector3(
+            this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
+            this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
+            0)).z;
+        if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < MAX_DISTANCE) {
+            if (angle > 0) {
                 this._car.steerRight();
-                this._car.isAcceleratorPressed = true;
             } else {
                 this._car.steerLeft();
-                this._car.isAcceleratorPressed = true;
             }
-            this._car.checkpointPlusPlus();
+            this._turned = true;
+        } else {
+            this._car.releaseSteering();
+            if (this._turned) {
+                this._car.checkpoint++;
+                if (this._car.checkpoint === this._checkPoints.length + 1) {
+                    this._car.checkpoint = 0;
+                }
+                this._turned = false;
+            }
         }
+        // this._car.checkpointPlusPlus();
 
     }
 

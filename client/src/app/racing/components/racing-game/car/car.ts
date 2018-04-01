@@ -70,10 +70,10 @@ export class Car extends Object3D {
     public get checkpoint(): number {
         return this._checkpoint;
     }
-
-    public checkpointPlusPlus(): void {
-        this._checkpoint++;
+    public set checkpoint(checkpoint: number) {
+        this._checkpoint = checkpoint;
     }
+
     public getCorners(pos: Vector3): Vector3[] {
         return [
             pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
