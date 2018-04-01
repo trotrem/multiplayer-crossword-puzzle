@@ -11,6 +11,7 @@ export class Server {
     private readonly appPort: string|number|boolean = this.normalizePort(process.env.PORT || "3000");
     private readonly baseDix: number = 10;
     private server: http.Server;
+    private io: SocketIO.Server;
 
     constructor(@inject(Types.Application) private application: Application) { }
 
@@ -22,6 +23,8 @@ export class Server {
         this.server.listen(this.appPort);
         this.server.on("error", (error: NodeJS.ErrnoException) => this.onError(error));
         this.server.on("listening", () => this.onListening());
+
+        this.io = socketIO(this.server);
     }
 
     private normalizePort(val: number | string): number | string | boolean {
