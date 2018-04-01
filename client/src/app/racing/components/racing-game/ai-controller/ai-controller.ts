@@ -6,7 +6,7 @@ import { WallsCollisionsService } from "../walls-collisions-service/walls-collis
 import { checkAndUpdateNode } from "@angular/core/src/view/view";
 import { RaceUtils } from "../../../utils/utils";
 
-const MAX_SPEED: number = 19;
+const MAX_SPEED: number = 4;
 
 export class AiController {
 
@@ -35,19 +35,21 @@ export class AiController {
 
     private turn(): void {
         const vector: Vector3 = new Vector3(
-            this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
-            this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
-            0);
-        const angle: number = this._car.direction.cross(vector).z;
+             this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
+             this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
+             0);
         if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < 10) {
-            if (angle > 0) {
+            if (this._car.direction.cross(new Vector3(
+                this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
+                this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
+                0)).z > 0) {
                 this._car.steerRight();
+                this._car.isAcceleratorPressed = true;
             } else {
                 this._car.steerLeft();
+                this._car.isAcceleratorPressed = true;
             }
-            this._car.isAcceleratorPressed = true;
             this._car.checkpointPlusPlus();
-            console.log(this._car.checkpoint);
         }
 
     }
@@ -64,6 +66,10 @@ export class AiController {
     private moveForward(): void {
         this._car.releaseBrakes();
         this._car.isAcceleratorPressed = true;
+    }
+
+    private async delay(ms: number): Promise<{}> {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
 }
