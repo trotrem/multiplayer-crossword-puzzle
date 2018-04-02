@@ -1,7 +1,7 @@
-import { IGridData, IWordInfo } from "../../../common/communication/types";
-import { IGrid, IWordContainer } from "../models/crossword/grid/dataStructures";
-import { GridUtils } from "../models/crossword/grid/gridUtils";
-import { WordDictionaryData } from "../models/crossword/lexiconAPI/gridWordInformation";
+import { IGridData, IWordInfo } from "../../../../common/communication/types";
+import { IGrid, IWordContainer } from "../models/grid/dataStructures";
+import { GridUtils } from "../models/grid/gridUtils";
+import { WordDictionaryData } from "../models/lexiconAPI/gridWordInformation";
 
 interface CacheWord {
   word: string;

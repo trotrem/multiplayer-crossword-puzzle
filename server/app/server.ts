@@ -4,6 +4,7 @@ import Types from "./types";
 import { injectable, inject } from "inversify";
 import { IServerAddress } from "./iserver.address";
 import * as socketIO from "socket.io";
+import { Message, Event } from "../../common/communication/types";
 
 @injectable()
 export class Server {
@@ -63,5 +64,17 @@ export class Server {
         const bind: string = (typeof addr === "string") ? `pipe ${addr}` : `port ${addr.port}`;
         // tslint:disable-next-line:no-console
         console.log(`Listening on ${bind}`);
+
+        this.io.on(Ev, (socket: any) => {
+            console.log("Connected client on port %s.", this.appPort);
+            socket.on("message", (m: Message) => {
+                console.log("[server](message): %s", JSON.stringify(m));
+                this.io.emit("message", m);
+            });
+
+            socket.on("disconnect", () => {
+                console.log("Client disconnected");
+            });
+        });
     }
 }

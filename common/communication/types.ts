@@ -35,3 +35,5 @@ export interface IGridData {
     blackCells: Array<IPoint>;
     wordInfos: Array<IWordInfo>;
 }
+
+export type Event = "connect" | "disconnect" | "message";
