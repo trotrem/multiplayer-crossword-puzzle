@@ -11,7 +11,6 @@ const MAX_DISTANCE: number = 15;
 
 export class AiController {
 
-    // private _car: Car;
     public isStarted: boolean = false;
     private _checkPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
     private _turned: Boolean;
@@ -59,10 +58,6 @@ export class AiController {
 
     }
 
-    /*private getAngle(x: number, y: number): number {
-        return Math.atan2(y, x) * 180 / Math.PI;
-    }*/
-
     private brake(): void {
         this._car.isAcceleratorPressed = false;
         this._car.brake();
@@ -71,10 +66,6 @@ export class AiController {
     private moveForward(): void {
         this._car.releaseBrakes();
         this._car.isAcceleratorPressed = true;
-    }
-
-    private async delay(ms: number): Promise<{}> {
-        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
 }
