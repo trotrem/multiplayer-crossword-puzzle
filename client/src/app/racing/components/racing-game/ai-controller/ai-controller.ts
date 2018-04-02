@@ -30,7 +30,9 @@ export class AiController {
             } else {
                 this._car.isAcceleratorPressed = false;
             }
-
+            if (this._car.checkpoint === this._checkPoints.length - 1) {
+                this._car.checkpoint = 0;
+            }
             this.turn();
 
         }
@@ -51,9 +53,6 @@ export class AiController {
             this._car.releaseSteering();
             if (this._turned) {
                 this._car.checkpoint++;
-                if (this._car.checkpoint === this._checkPoints.length + 1) {
-                    this._car.checkpoint = 0;
-                }
                 this._turned = false;
             }
         }
