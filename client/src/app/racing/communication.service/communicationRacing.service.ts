@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
-import { Track } from "./../track";
+
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
+import { Track } from "../track";
 
 export const URL_SERVER: string = "http://localhost:3000/racing/";
 @Injectable()

@@ -1,9 +1,23 @@
-<p>
+<h5>
   Lap Times for each car
-</p>
+</h5>
 
   <li *ngFor="let score of scores">
   <a class="name"
       >{{score}}</a>
   </li>
-
+  <h5>
+    Your car's best scores 
+  </h5>
+  <!--li *ngFor="let score of bestScores">
+    <a class="name"
+        >{{score}}</a>
+    </li>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate></form>
+    <h6> Congratulations you hit best score</h6>
+  <div>
+    Enter your name:
+    <input name="name" [(ngModel)]="track.bestScores.name" placeholder="description">
+</div>
+<button [disabled]="notReadyToSubmit()">Submit</button>
+</form-->
