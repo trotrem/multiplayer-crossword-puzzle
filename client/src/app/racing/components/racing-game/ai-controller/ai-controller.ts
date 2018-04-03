@@ -7,9 +7,9 @@ import { RaceUtils } from "../../../utils/utils";
 import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
 const MAX_SPEED: number = 50;
 const MIN_SPEED: number = 10;
-const MAX_DISTANCE: number = 15;
-const MIN_DISTANCE: number = 5;
-const MAX_ANGLE: number = 5;
+const MAX_DISTANCE: number = 20;
+const MIN_DISTANCE: number = 10;
+const MAX_ANGLE: number = 2;
 
 export class AiController {
 
@@ -59,7 +59,7 @@ export class AiController {
     }
 
     private randomIntFromInterval(min: number, max: number): number {
-        return Math.floor(Math.random() * max) + min;
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     private turn(index: number): void {
