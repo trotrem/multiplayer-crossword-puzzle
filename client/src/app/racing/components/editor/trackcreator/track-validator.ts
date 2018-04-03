@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { RaceUtils } from "../../../utils/utils";
-const HALF_CIRCLE_DEGREES: number = 180;
+import {HALF_CIRCLE_DEGREES} from "./../../../../constants";
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
 // const PRECISION: number = 0.0000001;

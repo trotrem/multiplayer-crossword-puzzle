@@ -5,7 +5,7 @@ import { Track } from "../../../track";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
 import { RaceValidatorService } from "../race-validator/race-validator.service";
-import { CARS_MAX } from "../constants";
+import { CARS_MAX } from "../../../../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
@@ -79,13 +79,14 @@ export class GameManagerService {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         if (this.gameStarted) {
-            for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
-                this._aiControllers[i].update();
-            }
 
             for (let i: number = 0; i < CARS_MAX; i++) {
                 this.raceValidator.cars[i].update(timeSinceLastFrame);
                 await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => { });
+            }
+
+            for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
+                this._aiControllers[i].update();
             }
         }
         this.lastDate = Date.now();
@@ -94,7 +95,7 @@ export class GameManagerService {
 
     private initializeControllers(): void {
         for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
-            this._aiControllers.push(new AiController(this.raceValidator.cars[i], this.raceValidator.track.points));
+            this._aiControllers.push(new AiController(this.raceValidator.cars[i], this.raceValidator.track.points, this.collisionService));
         }
     }
 }

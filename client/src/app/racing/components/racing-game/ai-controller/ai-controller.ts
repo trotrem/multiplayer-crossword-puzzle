@@ -4,54 +4,78 @@ import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { checkAndUpdateNode } from "@angular/core/src/view/view";
 import { RaceUtils } from "../../../utils/utils";
-
+import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
 const MAX_SPEED: number = 50;
 const MIN_SPEED: number = 10;
 const MAX_DISTANCE: number = 15;
+const MIN_DISTANCE: number = 5;
+const MAX_ANGLE: number = 5;
 
 export class AiController {
 
     public isStarted: boolean = false;
     private _checkPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
+    private hadTurned: boolean = false;
+    private collision: boolean = false;
+    private maxDistance: number;
 
-    public constructor(private _car: Car, points: THREE.Vector3[]) {
+    public constructor(private _car: Car, points: THREE.Vector3[], private collisionWallService: WallsCollisionsService) {
         this._checkPoints.shift();
         this._checkPoints = points.slice().reverse();
+        this.maxDistance = this.randomIntFromInterval(MIN_DISTANCE, MAX_DISTANCE);
     }
 
-    // Called each tick
     public update(): void {
-        if (this._car.speed.length() < MIN_SPEED) {
+        if (this._car.speed.length() < this.randomIntFromInterval(MIN_SPEED, MAX_SPEED)) {
             this.moveForward();
         } else {
-            // this._car.isAcceleratorPressed = false;
             this.brake();
         }
         if (this._car.checkpoint === this._checkPoints.length - 1) {
             this._car.checkpoint = 0;
         }
-        if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < MAX_DISTANCE) {
-            this.turn();
-        } else {
+        if (this.collisionWallService.getCollisionNormal(this._car).length > 0) {
+            this.turn(this._car.checkpoint);
+            this.collision = true;
+        } else if (this.calculateAngle() < MAX_ANGLE && this.collision) {
+            this._car.releaseSteering();
+            this.collision = false;
+        }
+        if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.maxDistance) {
+            this.turn(this._car.checkpoint + 1);
+            this.hadTurned = true;
+        } else if (this.hadTurned) {
             this._car.releaseSteering();
             this._car.checkpoint++;
+            this.hadTurned = false;
         }
-
     }
 
-    private maxSpeed(): number {
-        return Math.floor(Math.random() * MAX_SPEED) + MIN_SPEED;
+    private calculateAngle(): number {
+        return this._car.direction.angleTo(new Vector3(
+            this._checkPoints[this._car.checkpoint].x - this._car.mesh.position.x,
+            this._checkPoints[this._car.checkpoint].y - this._car.mesh.position.y,
+            0)) * HALF_CIRCLE_DEGREES / Math.PI;
     }
 
-    private turn(): void {
-        if (this._car.direction.cross(new Vector3(
-            this._car.mesh.position.x - this._checkPoints[this._car.checkpoint + 1].x,
-            this._car.mesh.position.y - this._checkPoints[this._car.checkpoint + 1].y,
-            0)).z > 0) {
+    private randomIntFromInterval(min: number, max: number): number {
+        return Math.floor(Math.random() * max) + min;
+    }
+
+    private turn(index: number): void {
+        if (this.calculeOrientation(index) > 0) {
             this._car.steerRight();
         } else {
             this._car.steerLeft();
         }
+        this._car.isAcceleratorPressed = true;
+    }
+
+    private calculeOrientation(index: number): number {
+        return this._car.direction.cross(new Vector3(
+            this._car.mesh.position.x - this._checkPoints[index].x,
+            this._car.mesh.position.y - this._checkPoints[index].y,
+            0)).z;
     }
 
     private brake(): void {

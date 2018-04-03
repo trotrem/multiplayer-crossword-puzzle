@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
+import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../../../../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";

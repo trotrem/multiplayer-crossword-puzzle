@@ -1,6 +1,6 @@
 import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
-import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
+import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
