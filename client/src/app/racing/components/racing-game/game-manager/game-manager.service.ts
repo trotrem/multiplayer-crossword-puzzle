@@ -9,6 +9,7 @@ import { CARS_MAX } from "../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
+import { CarsCollisionService } from "../car/cars-collision/cars-collision.service"
 
 @injectable()
 export class GameManagerService {
@@ -21,7 +22,8 @@ export class GameManagerService {
     public constructor(@inject(RenderService) private renderService: RenderService,
                        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
                        @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
-                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
+                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService,
+                       @inject(CarsCollisionService) private carsCollisionService: CarsCollisionService) {
                         this.timer = 0;
                     }
 

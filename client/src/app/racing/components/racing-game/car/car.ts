@@ -4,7 +4,6 @@ import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { CarsCollision } from "./cars-collision/cars-collision"
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -46,14 +45,10 @@ export class Car extends Object3D {
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
-    private carsCollision: CarsCollision;
 
     // temporary for tests purposes until we have the AI
     public set speed(speed: Vector3) {
         this._speed = speed;
-    }
-    public get Mass(): number {
-        return this.mass;
     }
     public get speed(): Vector3 {
         return this._speed.clone();
@@ -103,7 +98,7 @@ export class Car extends Object3D {
         private collisionService: WallsCollisionsService, engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(),
         wheelbase: number = DEFAULT_WHEELBASE, mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
-        this.carsCollision = new CarsCollision();
+       // this.carsCollision = new CarsCollision();
         if (wheelbase <= 0) {
             console.error("Wheelbase should be greater than 0.");
             wheelbase = DEFAULT_WHEELBASE;
@@ -165,7 +160,7 @@ export class Car extends Object3D {
         this._speed.applyMatrix4(rotationMatrix);
         // Physics calculations
         this.physicsUpdate(deltaTime);
-        this.carsCollision.checkCarsCollision(this);
+        // this.carsCollision.checkCarsCollision(this);
         // Move back to world coordinates
         this._speed = this.speed.applyQuaternion(rotationQuaternion.inverse());
         // Angular rotation of the car
