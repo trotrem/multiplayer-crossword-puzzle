@@ -1,14 +1,18 @@
-<h5>
+<h3>
   Lap Times for each car
-</h5>
+</h3>
 
   <li *ngFor="let score of scores">
-  <a class="name"
-      >{{score}}</a>
+ 
+      <a> Car number {{score.id}}</a>
+      <ul> Scores for the 3 laps :</ul>
+      <dl *ngFor="let score of score.scores">
+          <dd> {{score}}</dd>
+      </dl>
   </li>
-  <h5>
+  <h3>
     Your car's best scores 
-  </h5>
+  </h3>
   <!--li *ngFor="let score of bestScores">
     <a class="name"
         >{{score}}</a>

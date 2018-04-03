@@ -104,9 +104,10 @@ export class RaceValidatorService {
   }
 
   private addScoreToTrack(carIndex: number): void {
-    // this.track.newScores.push(carIndex);
+    const newScore: NewScores = {id: carIndex, scores: new Array<number>()};
+    this.track.newScores.push(newScore);
     for (const time of this.cars[carIndex].getLabTimes()) {
-      this.track.newScores.push({id: carIndex, score: time});
+      this.track.newScores[carIndex].scores.push(time);
     }
   }
 

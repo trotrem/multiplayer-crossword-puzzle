@@ -1,7 +1,7 @@
 
 export interface NewScores {
     id: number;
-    score: number;
+    scores: number[];
 }
 export interface BestScores {
     name: string;
