@@ -15,7 +15,6 @@ export class CarsCollision {
     }
 
     public checkCarsCollision(car: Car): void {
-        //console.log("checking");
         for (let vIndex: number = 0; vIndex < car.getCorners(car.getUpdatedPosition()).length; vIndex++) {
             let localVertex = car.getCorners(car.getUpdatedPosition())[vIndex];
             let globalVertex = localVertex.applyMatrix4(car.mesh.matrix);
@@ -26,6 +25,7 @@ export class CarsCollision {
                 this.raycaster.set(car.mesh.position, directionVector.clone().normalize());
                 let collisionResults = this.raycaster.intersectObjects(this.objects.children)
                 console.log("existe?")
+                console.log(collisionResults.length + " " + collisionResults[0].distance)
                 if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
                     this.handleCarsCollision(car, collisionResults[0]);
                     break;
