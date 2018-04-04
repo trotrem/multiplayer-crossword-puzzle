@@ -99,7 +99,6 @@ export class RaceValidatorService {
         this.addBestScore();
         this.track.usesNumber++;
         this.communicationService.updateNewScore(this.track);
-        // this.communicationService.updateBestScore(this.track);
         this.navigateToGameResults();
       }
     }
@@ -118,7 +117,7 @@ export class RaceValidatorService {
       }
     }
   }
-  private addBestScore(): void {
+  public addBestScore(): void {
     if (this._track.bestScores.length < 5) {
       this.track.bestScores.push({name: "Anonymous", score: this._timer});
     }
