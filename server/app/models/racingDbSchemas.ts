@@ -6,7 +6,7 @@ const trackSchema: mongoose.Schema = new mongoose.Schema({
     points: Array(mongoose.Schema.Types.Mixed),
     usesNumber: { type: Number, default: 0 },
     newScores:  Array(mongoose.Schema.Types.Mixed),
-    BestScores: Array(mongoose.Schema.Types.Mixed)
+    BestScores: Array(mongoose.Schema.Types.Mixed),
 
 });
 

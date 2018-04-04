@@ -1,23 +1,24 @@
 <h3>
   Lap Times for each car
 </h3>
-
-  <li *ngFor="let score of scores">
- 
-      <a> Car number {{score.id}}</a>
-      <ul> Scores for the 3 laps :</ul>
-      <dl *ngFor="let score of score.scores">
-          <dd> {{score}}</dd>
-      </dl>
-  </li>
+<table>
+  <tr *ngFor="let score of scores">
+      <th> Car number {{score.id}}  =></th>
+      <td> Scores for the 3 laps :</td>
+      <ul *ngFor="let score of score.scores">
+          <td> {{score}}</td>
+      </ul>
+    </tr>
   <h3>
     Your car's best scores 
   </h3>
-  <!--li *ngFor="let score of bestScores">
-    <a class="name"
-        >{{score}}</a>
+</table>
+
+  <li *ngFor="let score of bestScores">
+      <a> Player's name {{score.name}}</a>
+      <ul> Best score {{score.score}} </ul>
     </li>
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate></form>
+  <!--form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate></form>
     <h6> Congratulations you hit best score</h6>
   <div>
     Enter your name:

@@ -62,7 +62,7 @@ module Route {
         public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
             trackDocument.update(
                 {name: req.body.name },
-                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber } },
+                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber, bestScores: req.body.bestScores } },
                 // tslint:disable-next-line:only-arrow-functions
                 function (err: Error): void {
                     if (!err) {

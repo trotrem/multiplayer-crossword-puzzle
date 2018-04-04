@@ -106,9 +106,15 @@ export class RaceValidatorService {
   private addScoreToTrack(carIndex: number): void {
     const newScore: NewScores = {id: carIndex, scores: new Array<number>()};
     this.track.newScores.push(newScore);
+    let timer: number = 0;
     for (const time of this.cars[carIndex].getLabTimes()) {
       this.track.newScores[carIndex].scores.push(time);
+      timer += time;
     }
+    if (carIndex === 0 && this.track.bestScores.length < 1 ) {
+        this.track.bestScores.push({name: "Anonyme", score: timer});
+      }
+
   }
 
   private estimateTime(time: number): void {
