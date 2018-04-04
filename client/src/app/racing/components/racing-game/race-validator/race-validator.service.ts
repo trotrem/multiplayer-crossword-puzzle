@@ -59,7 +59,7 @@ export class RaceValidatorService {
   public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
     this.track = track;
     this.track.newScores = new Array<NewScores>();
-    this.track.bestScores = new Array<BestScores>();
+    this.track.bestScores = track.bestScores;
     this._cars = cars;
   }
 

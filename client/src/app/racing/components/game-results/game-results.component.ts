@@ -53,20 +53,17 @@ export class GameResultsComponent implements OnInit {
         this._bestScores = res[0].bestScores;
       });
   }
- /* public onSubmit(f: NgForm): void {
-    this._track.description = f.value.description;
-    this._track.name = f.value.name;
+  public onSubmit(f: NgForm): void {
+    this._track.bestScores.push({name: f.value.description, score: this._scores[0].scores[0]});
     // this._submitValid = true;
   }
 
-  /*public notReadyToSubmit(): boolean {
-  return !this.sceneService.getIsClosed() || !this.sceneService.getTrackValid();
+  public notReadyToSubmit(): boolean {
+  return this._bestScores.length < 5;
 
   }
   public savetrack(): void {
-  // this._track.points = this.sceneService.getPoints();
-  this._track.startingZone = new THREE.Line3(this._track.points[0], this._track.points[1]);
-  this.communicationService.deleteTrack(this._track);
-  this.communicationService.saveTrack(this._track);
-  }*/
+  this.communicationService.updateBestScore(this._track);
+
+  }
 }
