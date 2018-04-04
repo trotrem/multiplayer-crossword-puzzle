@@ -23,6 +23,7 @@ const COEFFICIENT_USE: number = 0.0095;
 const COEFFICIENT_USES: number = 0.005;
 const WALL_SPEED_LOSS: number = 0.5;
 const MIN_WALL_SPEED: number = 4;
+const COLLISION_SPEED_LOSS: number = 10;
 
 const WIDTH: number = 0.9741033263794181;
 const LENGTH: number = 3.3948105126565693;
@@ -52,6 +53,9 @@ export class Car extends Object3D {
     }
     public get speed(): Vector3 {
         return this._speed.clone();
+    }
+    public setSpeed(speed: Vector3): void {
+        this._speed = speed;
     }
     public get velocity(): Vector3 {
         return this._velocity.clone();
