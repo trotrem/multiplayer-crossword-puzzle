@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
-import { NewScores } from "../../../../../../../common/communication/interfaces";
+import { NewScores, BestScores } from "../../../../../../../common/communication/interfaces";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { inject } from "inversify";
 import { Track } from "../../../track";
@@ -19,12 +19,14 @@ export class RaceValidatorService {
   private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
+  private _timer: number;
 
   public constructor(
     private _router: Router, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._cars = new Array<Car>(CARS_MAX);
     this._counter = new Array<number>();
     this._validIndex = new Array<number>();
+    this._timer = 0;
     for (let i: number = 0; i < CARS_MAX; i++) {
       this.counter.push(0);
       this.validIndex.push(0);
@@ -57,6 +59,7 @@ export class RaceValidatorService {
   public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
     this.track = track;
     this.track.newScores = new Array<NewScores>();
+    this.track.bestScores = new Array<BestScores>();
     this._cars = cars;
   }
 
@@ -93,8 +96,10 @@ export class RaceValidatorService {
       this.addScoreToTrack(carIndex);
       if (carIndex === 0) {
         this.estimateTime(timer / MS_TO_SECONDS);
+        this.addBestScore();
         this.track.usesNumber++;
         this.communicationService.updateNewScore(this.track);
+        // this.communicationService.updateBestScore(this.track);
         this.navigateToGameResults();
       }
     }
@@ -106,17 +111,18 @@ export class RaceValidatorService {
   private addScoreToTrack(carIndex: number): void {
     const newScore: NewScores = {id: carIndex, scores: new Array<number>()};
     this.track.newScores.push(newScore);
-    let timer: number = 0;
     for (const time of this.cars[carIndex].getLabTimes()) {
       this.track.newScores[carIndex].scores.push(time);
-      timer += time;
-    }
-    if (carIndex === 0 && this.track.bestScores.length < 1 ) {
-        this.track.bestScores.push({name: "Anonyme", score: timer});
+      if (carIndex === 0) {
+        this._timer += time;
       }
-
+    }
   }
-
+  private addBestScore(): void {
+    if (this._track.bestScores.length < 5) {
+      this.track.bestScores.push({name: "Anonymous", score: this._timer});
+    }
+ }
   private estimateTime(time: number): void {
     for (let i: number = 0; i < this.cars.length; i++) {
       if (i > 0) {
