@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-
+import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { inject } from "inversify";
+import { Router } from "@angular/router";
 @Component({
   selector: "app-result-race",
   templateUrl: "./result-race.component.html",
@@ -7,9 +9,11 @@ import { Component, OnInit } from "@angular/core";
 })
 export class ResultRaceComponent implements OnInit {
 
-  public constructor() { }
+public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) { }
 
-  public ngOnInit(): void {
+public ngOnInit(): void {
   }
-
+private navigateToGameResults(): void {
+    this.router.navigateByUrl("/gameResults/" );
+  }
 }

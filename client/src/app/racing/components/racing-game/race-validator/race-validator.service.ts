@@ -11,7 +11,7 @@ import { inject } from "inversify";
 import { Track } from "../../../track";
 const ADD_TO_DISTANCE: number = 20;
 const EXPONENT: number = 2;
-
+const BEST_SCORES_MAX: number = 5;
 @Injectable()
 export class RaceValidatorService {
 
@@ -118,10 +118,27 @@ export class RaceValidatorService {
     }
   }
   public addBestScore(): void {
-    if (this._track.bestScores.length < 5) {
+    this.bestScoresSort();
+    if (this._track.bestScores.length < BEST_SCORES_MAX) {
       this.track.bestScores.push({name: "Anonymous", score: this._timer});
     }
  }
+
+  private bestScoresSort(): void {
+  this._track.bestScores = this._track.bestScores.sort((n1, n2) => {
+    return n1.score - n2.score ;
+  });
+}
+  private verifieBestScore(): boolean {
+
+    this.bestScoresSort();
+    if (this.track.bestScores.length < BEST_SCORES_MAX || this._timer < this._track.bestScores[BEST_SCORES_MAX - 1].score) {
+      return true;
+    }
+
+    return false;
+}
+
   private estimateTime(time: number): void {
     for (let i: number = 0; i < this.cars.length; i++) {
       if (i > 0) {

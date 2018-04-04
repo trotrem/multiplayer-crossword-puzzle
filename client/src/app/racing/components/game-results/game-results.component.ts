@@ -7,6 +7,7 @@ import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { Track } from "../../track";
 const DELAY: number = 1000;
+const BEST_SCORES_MAX: number = 5;
 
 @Component({
   selector: "app-game-results",
@@ -59,7 +60,7 @@ export class GameResultsComponent implements OnInit {
   }
 
   public notReadyToSubmit(): boolean {
-  return this._bestScores.length < 5;
+  return this._bestScores.length < BEST_SCORES_MAX;
 
   }
   public savetrack(): void {
