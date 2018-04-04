@@ -66,15 +66,25 @@ export class Car extends Object3D {
         return this._mesh.rotation.y * RAD_TO_DEG;
     }
     public getCorners(pos: Vector3): Vector3[] {
-      return [
-        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).sub(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).add(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
+        return [
+            pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).sub(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).add(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
+    }
+    public getNormals(): Vector3[] {
+        const corners: Vector3[] = this.getCorners(this.getUpdatedPosition().add(this.velocity));
+        const normals: Vector3[] = [];
+        for (let i: number = 1; i < corners.length - 1; i++) {
+            normals.push(corners[i + 1].clone().sub(corners[i]).cross(new Vector3(0, 0, 1)).normalize());
+        }
+        normals.push(corners[1].clone().sub(corners[corners.length - 1]).cross(new Vector3(0, 0, 1)).normalize());
+
+        return normals;
     }
     public get mesh(): Object3D {
         return this._mesh;
@@ -98,7 +108,7 @@ export class Car extends Object3D {
         private collisionService: WallsCollisionsService, engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(),
         wheelbase: number = DEFAULT_WHEELBASE, mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
-       // this.carsCollision = new CarsCollision();
+        // this.carsCollision = new CarsCollision();
         if (wheelbase <= 0) {
             console.error("Wheelbase should be greater than 0.");
             wheelbase = DEFAULT_WHEELBASE;
@@ -220,7 +230,7 @@ export class Car extends Object3D {
     private getRollingResistance(): Vector3 {
         const tirePressure: number = 1;
         const rollingCoefficient: number = 1 / tirePressure * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE, NUMBER_REAR_WHEELS) *
-                COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
+            COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
 
         return this.direction.multiplyScalar(
             rollingCoefficient * this.mass * GRAVITY
@@ -237,7 +247,7 @@ export class Car extends Object3D {
     private getTractionForce(): number {
         const force: number = this.getEngineForce();
         const maxForce: number = this.rearWheel.frictionCoefficient * this.mass * GRAVITY * this.weightRear *
-                                 NUMBER_REAR_WHEELS / NUMBER_WHEELS;
+            NUMBER_REAR_WHEELS / NUMBER_WHEELS;
 
         return -Math.min(force, maxForce);
     }

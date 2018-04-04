@@ -22,6 +22,7 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
 import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
+import { CarsCollisionService } from "./racing/components/racing-game/car/cars-collision/cars-collision.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -75,6 +76,7 @@ const appRoutes: Routes = [
         GameManagerService,
         RaceValidatorService,
         WallsCollisionsService,
+        CarsCollisionService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

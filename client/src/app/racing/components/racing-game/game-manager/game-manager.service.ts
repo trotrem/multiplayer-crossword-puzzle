@@ -23,7 +23,7 @@ export class GameManagerService {
                        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
                        @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
                        @inject(WallsCollisionsService) private collisionService: WallsCollisionsService,
-                       @inject(CarsCollisionService) private carsCollisionService: CarsCollisionService) {
+                       private carsCollisionService: CarsCollisionService) {
                         this.timer = 0;
                     }
 
@@ -40,6 +40,7 @@ export class GameManagerService {
                                       track,
                                       this.raceValidator.cars,
                                       this.collisionService.createWalls(track.points));
+        this.carsCollisionService.initializeCars(this._cars);
         await this.update();
     }
 
@@ -74,6 +75,7 @@ export class GameManagerService {
             this.raceValidator.cars[i].update(timeSinceLastFrame);
             await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
         }
+        this.carsCollisionService.checkCarsCollisions();
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);
     }
