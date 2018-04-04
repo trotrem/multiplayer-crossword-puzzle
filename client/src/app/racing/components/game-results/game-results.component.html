@@ -13,16 +13,23 @@
     Your car's best scores 
   </h3>
 </table>
-
-  <li *ngFor="let score of bestScores">
-      <a> Player's name {{score.name}}</a>
-      <ul> Best score {{score.score}} </ul>
-    </li>
-  <!-- <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <h6> Congratulations you hit best score</h6>
+<table>
+  <tr>
+      <th> Player's name:  </th>
+      <th>  </th>
+      <th> Best score:  </th>
+  </tr>
+      <tr *ngFor="let score of bestScores">
+      <td>{{score.name}} </td>
+      <td></td>
+      <td> {{score.score}}  </td>
+   </tr>
+  </table>
+   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <h6> Congratulations you hit best score</h6> 
   <div>
-    Enter your name:
-    <input name="name" [(ngModel)]="score.name" placeholder="description">
+      Name:
+       <input name ="name" [(ngModel)]="newBestScore.name" placeholder= "name"> 
 </div>
-<button [disabled]="notReadyToSubmit()">Submit</button>
-</form--> 
+<button [disabled]="isBestScore()"(click)="saveBestScore()">Submit</button>
+</form>  

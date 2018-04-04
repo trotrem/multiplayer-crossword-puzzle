@@ -96,7 +96,7 @@ export class RaceValidatorService {
       this.addScoreToTrack(carIndex);
       if (carIndex === 0) {
         this.estimateTime(timer / MS_TO_SECONDS);
-        this.addBestScore();
+        // this.addBestScore();
         this.track.usesNumber++;
         this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
@@ -117,27 +117,25 @@ export class RaceValidatorService {
       }
     }
   }
-  public addBestScore(): void {
-    this.bestScoresSort();
-    if (this._track.bestScores.length < BEST_SCORES_MAX) {
-      this.track.bestScores.push({name: "Anonymous", score: this._timer});
-    }
- }
+//   public addBestScore(): void {
+//     if (this.isBestScore) {
+//       this.track.bestScores.push({name: "Anonymous", score: this._timer});
+//     }
+//  }
 
-  private bestScoresSort(): void {
-  this._track.bestScores = this._track.bestScores.sort((n1, n2) => {
-    return n1.score - n2.score ;
-  });
-}
-  private verifieBestScore(): boolean {
+//   private bestScoresSort(): void {
+//   this._track.bestScores = this._track.bestScores.sort((n1, n2) => {
+//     return n1.score - n2.score ;
+//   });
+// }
+//   public isBestScore(): boolean {
+//     this.bestScoresSort();
+//     if (this.track.bestScores.length < BEST_SCORES_MAX || this._timer < this._track.bestScores[BEST_SCORES_MAX - 1].score) {
+//       return true;
+//     }
 
-    this.bestScoresSort();
-    if (this.track.bestScores.length < BEST_SCORES_MAX || this._timer < this._track.bestScores[BEST_SCORES_MAX - 1].score) {
-      return true;
-    }
-
-    return false;
-}
+//     return false;
+// }
 
   private estimateTime(time: number): void {
     for (let i: number = 0; i < this.cars.length; i++) {
