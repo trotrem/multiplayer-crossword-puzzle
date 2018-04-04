@@ -46,6 +46,7 @@ export class GameResultsComponent implements OnInit {
     if (name !== null) {
       await this.getTrack(name);
     }
+    // document.getElementById("congrats").style.display = "none";
   }
 
   private async delay(ms: number): Promise<{}> {
@@ -56,8 +57,11 @@ export class GameResultsComponent implements OnInit {
     await this.delay(DELAY);
     this.communicationService.getTrackByName(name)
       .then((res: Track[]) => {
+        this._track = res[0];
         this._scores = res[0].newScores;
         this._bestScores = res[0].bestScores;
+        this.bestScoresSort();
+        this.calculateHumanScore();
       });
   }
   private bestScoresSort(): void {
@@ -65,31 +69,31 @@ export class GameResultsComponent implements OnInit {
       return n1.score - n2.score ;
     });
   }
-  public isBestScore(): boolean {
+  public isNotBestScore(): boolean {
       this.bestScoresSort();
-      this.calculateHumanScore();
-      if (this._bestScores.length < BEST_SCORES_MAX || this._newBestScore.score < this._bestScores[BEST_SCORES_MAX - 1].score) {
-        return true;
+      if (this._bestScores.length < BEST_SCORES_MAX ) {
+        return false;
       }
+      if (this._newBestScore.score < this._bestScores[BEST_SCORES_MAX - 1].score) {
 
       return false;
-  }
-  private calculateHumanScore(): void {
-    let humanScore: number = 0;
-    for (const sc of this._scores[0].scores) {
-      humanScore += sc;
     }
 
-    this._newBestScore.score = humanScore;
+      return true;
+  }
+  private calculateHumanScore(): void {
+    for (const sc of this._scores[0].scores) {
+      this._newBestScore.score += sc;
+    }
   }
   public onSubmit(f: NgForm): void {
     this._track.bestScores.pop();
     this._newBestScore.name = f.value.name;
-    this._track.bestScores.push(this._newBestScore);
     this.bestScoresSort();
   }
 
   public saveBestScore(): void {
+  this._track.bestScores.push(this._newBestScore);
   this.communicationService.updateNewScore(this._track);
 
   }
