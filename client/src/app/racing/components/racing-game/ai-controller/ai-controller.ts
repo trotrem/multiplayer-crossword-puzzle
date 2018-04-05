@@ -7,7 +7,7 @@ import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
 const MAX_SPEED: number = 50;
 const MIN_SPEED: number = 30;
 const MAX_DISTANCE: number = 18;
-const MIN_DISTANCE: number = 15;
+const MIN_DISTANCE: number = 13;
 const MAX_ANGLE: number = 2;
 
 export class AiController {
@@ -31,7 +31,9 @@ export class AiController {
             this.brake();
         }
         if (this._car.checkpoint === this._checkPoints.length - 1) {
-            this._car.checkpoint = 0;
+            if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.maxDistance) {
+                this._car.checkpoint = 0;
+            }
         }
         this.verifyCollisionWall();
         this.turnCorner();
