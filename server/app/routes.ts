@@ -43,6 +43,9 @@ export class Routes {
         router.put("/racing/updateNewScores", (req: Request, res: Response, next: NextFunction) =>
             this.racing.updateScoresByName(req, res, next));
 
+        router.put("/racing/updateBestScores", (req: Request, res: Response, next: NextFunction) =>
+            this.racing.updateBestScoreByName(req, res, next));
+
         return router;
     }
 }

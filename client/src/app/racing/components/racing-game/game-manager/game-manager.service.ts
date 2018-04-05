@@ -1,7 +1,6 @@
 import { injectable, inject } from "inversify";
 import { RenderService } from "../render-service/render.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { Track } from "../../../track";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
 import { RaceValidatorService } from "../race-validator/race-validator.service";
@@ -9,6 +8,7 @@ import { CARS_MAX } from "../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
+import { Track } from "../../../track";
 
 @injectable()
 export class GameManagerService {

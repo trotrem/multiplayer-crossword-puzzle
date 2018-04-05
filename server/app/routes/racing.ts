@@ -62,7 +62,7 @@ module Route {
         public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
             trackDocument.update(
                 {name: req.body.name },
-                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber } },
+                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber , bestScores: req.body.bestScores} },
                 // tslint:disable-next-line:only-arrow-functions
                 function (err: Error): void {
                     if (!err) {
@@ -75,6 +75,22 @@ module Route {
                     }
                 });
         }
+        public updateBestScoreByName(req: Request, res: Response, next: NextFunction): void {
+            trackDocument.update(
+                {name: req.body.name },
+                { $set: {  bestScores: req.body.bestScores } },
+                // tslint:disable-next-line:only-arrow-functions
+                function (err: Error): void {
+                    if (!err) {
+                        console.warn("update ");
+                        res.send("update bestScore");
+                    } else {
+                        console.error("unable to update");
+                        res.status(BAD_REQUEST_ERROR).send("unable to update");
+
+                    }
+                });
+            }
     }
 }
 

@@ -5,12 +5,13 @@ import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
-import { Track } from "../../../track";
+import { NewScores, BestScores } from "../../../../../../../common/communication/interfaces";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { inject } from "inversify";
+import { Track } from "../../../track";
 const ADD_TO_DISTANCE: number = 20;
 const EXPONENT: number = 2;
-
+const BEST_SCORES_MAX: number = 5;
 @Injectable()
 export class RaceValidatorService {
 
@@ -55,7 +56,8 @@ export class RaceValidatorService {
 
   public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
     this.track = track;
-    this.track.newScores = new Array<number>();
+    this.track.newScores = new Array<NewScores>();
+    this.track.bestScores = track.bestScores;
     this._cars = cars;
   }
 
@@ -103,9 +105,10 @@ export class RaceValidatorService {
   }
 
   private addScoreToTrack(carIndex: number): void {
-    this.track.newScores.push(carIndex);
+    const newScore: NewScores = {id: carIndex, scores: new Array<number>()};
+    this.track.newScores.push(newScore);
     for (const time of this.cars[carIndex].getLabTimes()) {
-      this.track.newScores.push(time);
+      this.track.newScores[carIndex].scores.push(time);
     }
   }
 
