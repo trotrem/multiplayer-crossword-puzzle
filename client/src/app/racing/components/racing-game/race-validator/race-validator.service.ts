@@ -15,7 +15,7 @@ const EXPONENT: number = 2;
 export class RaceValidatorService {
 
   private _counter: number[];
-  private _cars: Car[];
+ // private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
 
