@@ -27,13 +27,13 @@
       <td> {{score.score}}  </td>
    </tr>
   </table>
-  <div id="congrats">
+  <div [hidden]="isNotBestScore()">
    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <h2> Congratulations you hit best score</h2> 
   <div>
       Name:
-       <input name ="name" [(ngModel)]="newBestScore.name" placeholder= "name"> 
+       <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.name" placeholder= "name"> 
 </div>
-<button [disabled]="isNotBestScore()"(click)="saveBestScore()">Submit</button>
+<button [disabled]="isAdded"(click)="saveBestScore()">Submit</button>
 </form>  
 </div>

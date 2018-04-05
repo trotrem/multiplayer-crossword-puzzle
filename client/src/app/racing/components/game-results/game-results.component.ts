@@ -21,6 +21,7 @@ export class GameResultsComponent implements OnInit {
   private _bestScores: BestScores[];
   private _newBestScore: BestScores;
   private _track: Track;
+  private _isAdded: boolean;
 
   public constructor(private router: Router , private route: ActivatedRoute,
                      @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
@@ -31,9 +32,13 @@ export class GameResultsComponent implements OnInit {
       name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
       newScores: new Array< NewScores>(),  bestScores: new Array< BestScores>()
   };
+    this._isAdded = false;
   }
   public get scores(): NewScores[] {
     return this._scores;
+  }
+  public get isAdded(): boolean {
+    return this._isAdded;
   }
   public get newBestScore(): BestScores {
     return this._newBestScore;
@@ -46,9 +51,7 @@ export class GameResultsComponent implements OnInit {
     if (name !== null) {
       await this.getTrack(name);
     }
-    if (this.isNotBestScore()) {
-    document.getElementById("congrats").style.display = "none";
-    }
+
   }
 
   private async delay(ms: number): Promise<{}> {
@@ -76,9 +79,9 @@ export class GameResultsComponent implements OnInit {
       if (this._bestScores.length < BEST_SCORES_MAX ) {
         return false;
       }
-      if (this._newBestScore.score < this._bestScores[BEST_SCORES_MAX - 1].score) {
+      if (this._newBestScore.score < this._bestScores[this._bestScores.length - 1].score) {
 
-      return false;
+        return false;
     }
 
       return true;
@@ -89,9 +92,7 @@ export class GameResultsComponent implements OnInit {
     }
   }
   public onSubmit(f: NgForm): void {
-    if (this._bestScores.length >= BEST_SCORES_MAX ) {
-      this._track.bestScores.pop();
-    }
+
     this._newBestScore.name = f.value.name;
 
   }
@@ -103,6 +104,10 @@ export class GameResultsComponent implements OnInit {
   }
 
   public saveBestScore(): void {
+  if (this._bestScores.length >= BEST_SCORES_MAX ) {
+      this._track.bestScores.pop();
+    }
+  this._isAdded = true;
   this._track.bestScores.push(this._newBestScore);
   this.bestScoresSort();
   this.communicationService.updateNewScore(this._track);
