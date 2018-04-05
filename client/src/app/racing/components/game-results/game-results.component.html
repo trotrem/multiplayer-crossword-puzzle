@@ -1,20 +1,24 @@
 <button (click)="replay()">Replay</button>
 <button (click)="returnToMain()">Retrun to Main Page</button>
-<h3>
-  Lap Times for each car
-</h3>
+
+<div class="Left">
+    <h3>
+        Lap Times for each car
+      </h3>
 <table>
   <tr *ngFor="let score of scores">
       <th> Car number {{score.id}}  =></th>
-      <td> Scores for each lap :</td>
+      <th> Scores for each lap :</th>
       <ul *ngFor="let score of score.scores">
           <td> {{score}}</td>
       </ul>
     </tr>
-  <h3>
-    Your car's best scores 
-  </h3>
 </table>
+</div>
+<div class="Right">
+    <h3>
+        Your car's best scores 
+      </h3>
 <table>
   <tr>
       <th> Player's name:  </th>
@@ -27,9 +31,11 @@
       <td> {{score.score}}  </td>
    </tr>
   </table>
+</div>
   <div [hidden]="isNotBestScore()">
    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <h2> Congratulations you hit best score</h2> 
+    <h1> !! Congratulations !! </h1>
+      <h1> ! You hit best score !</h1> 
   <div>
       Name:
        <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.name" placeholder= "name"> 

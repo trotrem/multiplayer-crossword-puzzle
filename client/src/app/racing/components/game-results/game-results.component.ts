@@ -78,8 +78,7 @@ export class GameResultsComponent implements OnInit {
       this.bestScoresSort();
       if (this._bestScores.length < BEST_SCORES_MAX ) {
         return false;
-      }
-      if (this._newBestScore.score < this._bestScores[this._bestScores.length - 1].score) {
+      } else if (this._newBestScore.score < this._bestScores[this._bestScores.length - 1].score) {
 
         return false;
     }
