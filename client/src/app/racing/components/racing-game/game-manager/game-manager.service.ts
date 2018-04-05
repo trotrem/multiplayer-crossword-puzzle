@@ -9,6 +9,7 @@ import { EventHandlerRenderService } from "../render-service/event-handler-rende
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
 import { Track } from "../../../track";
+import {NewScores} from "./../../../../../../../common/communication/interfaces";
 
 @injectable()
 export class GameManagerService {
@@ -30,6 +31,7 @@ export class GameManagerService {
         this.lastDate = Date.now();
         const track: Track = await this.getTrack(trackName, container);
         this._cars = new Array<Car>();
+        track.newScores = new Array<NewScores>();
         for (let i: number = 0; i < CARS_MAX; i++) {
             this._cars[i] = new Car(this.collisionService);
             await this._cars[i].init();
@@ -69,7 +71,7 @@ export class GameManagerService {
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i].update(timeSinceLastFrame);
-            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => { });
+            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer);
         }
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);

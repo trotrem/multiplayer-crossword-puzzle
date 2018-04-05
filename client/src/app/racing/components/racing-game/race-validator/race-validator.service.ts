@@ -22,7 +22,6 @@ export class RaceValidatorService {
 
   public constructor(
     private _router: Router, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
-    this._cars = new Array<Car>(CARS_MAX);
     this._counter = new Array<number>();
     this._validIndex = new Array<number>();
     for (let i: number = 0; i < CARS_MAX; i++) {
@@ -53,7 +52,6 @@ export class RaceValidatorService {
   public get counter(): number[] {
     return this._counter;
   }
-
   public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
     this.track = track;
     this.track.newScores = new Array<NewScores>();
@@ -61,23 +59,15 @@ export class RaceValidatorService {
     this._cars = cars;
   }
 
-  public getLapSectionValidator(carPosition: THREE.Vector3, position: THREE.Vector3): boolean {
-
-    const position2: THREE.Vector3 = carPosition.clone();
-
-    return Math.sqrt(Math.pow(position.x - position2.x, EXPONENT) + Math.pow(position.y - position2.y, EXPONENT)) <= ADD_TO_DISTANCE;
-  }
-
-  public async validateRace(index: number, carIndex: number, timer: number): Promise<void> {
+  public validateRace(index: number, carIndex: number, timer: number): void {
 
     this.cars[carIndex].getUpdatedPosition();
-    if (this.getLapSectionValidator(
-      this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])) {
+    if (RaceUtils.calculateDistance(this.cars[carIndex].getUpdatedPosition(), this.track.points[this.track.points.length - index - 1])
+      <= ADD_TO_DISTANCE) {
       this.validIndex[carIndex] += 1;
       if (this.validIndex[carIndex] === this.track.points.length) {
         this.verifyNextLap(carIndex, timer);
       }
-      await this.validateRace(this.validIndex[carIndex], carIndex, timer);
     }
 
   }
