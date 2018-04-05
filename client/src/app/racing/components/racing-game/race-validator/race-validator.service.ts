@@ -16,7 +16,7 @@ const BEST_SCORES_MAX: number = 5;
 export class RaceValidatorService {
 
   private _counter: number[];
- // private _cars: Car[];
+  private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
 
@@ -105,7 +105,7 @@ export class RaceValidatorService {
   }
 
   private addScoreToTrack(carIndex: number): void {
-    const newScore: NewScores = {id: carIndex, scores: new Array<number>()};
+    const newScore: NewScores = { id: carIndex, scores: new Array<number>() };
     this.track.newScores.push(newScore);
     for (const time of this.cars[carIndex].getLabTimes()) {
       this.track.newScores[carIndex].scores.push(time);

@@ -18,26 +18,25 @@ export class GameManagerService {
     private eventHandler: EventHandlerRenderService;
     private _cars: Car[] = [];
 
-    public constructor(@inject(RenderService) private renderService: RenderService,
-                       @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
-                       @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
-                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
-                        this.timer = 0;
-                    }
+    public constructor(
+        @inject(RenderService) private renderService: RenderService,
+        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
+        @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
+        @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
+        this.timer = 0;
+    }
 
     public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
         this.lastDate = Date.now();
         const track: Track = await this.getTrack(trackName, container);
-
+        this._cars = new Array<Car>();
         for (let i: number = 0; i < CARS_MAX; i++) {
             this._cars[i] = new Car(this.collisionService);
             await this._cars[i].init();
         }
         this.raceValidator.initialize(track, this.collisionService, this._cars);
-        this.renderService.initialize(container.nativeElement,
-                                      track,
-                                      this.raceValidator.cars,
-                                      this.collisionService.createWalls(track.points));
+        this.renderService.initialize(
+            container.nativeElement, track, this.raceValidator.cars, this.collisionService.createWalls(track.points));
         await this.update();
     }
 
@@ -65,12 +64,12 @@ export class GameManagerService {
     }
 
     private async update(): Promise<void> {
-        requestAnimationFrame(async() => this.update());
+        requestAnimationFrame(async () => this.update());
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.raceValidator.cars[i].update(timeSinceLastFrame);
-            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => {});
+            await this.raceValidator.validateRace(this.raceValidator.validIndex[i], i, this.timer).then(() => { });
         }
         this.lastDate = Date.now();
         this.renderService.render(this.raceValidator.cars[0]);
