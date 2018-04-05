@@ -22,7 +22,6 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
 import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
-import { ResultRaceComponent } from './racing/components/result-race/result-race.component';
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -58,7 +57,6 @@ const appRoutes: Routes = [
         HomePageComponent,
         EndGameComponent,
         GameResultsComponent,
-        ResultRaceComponent,
     ],
     imports: [
         BrowserModule,

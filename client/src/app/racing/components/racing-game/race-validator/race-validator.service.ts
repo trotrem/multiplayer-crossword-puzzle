@@ -19,14 +19,12 @@ export class RaceValidatorService {
   private _cars: Car[];
   private _track: Track;
   private _validIndex: number[];
-  private _timer: number;
 
   public constructor(
     private _router: Router, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._cars = new Array<Car>(CARS_MAX);
     this._counter = new Array<number>();
     this._validIndex = new Array<number>();
-    this._timer = 0;
     for (let i: number = 0; i < CARS_MAX; i++) {
       this.counter.push(0);
       this.validIndex.push(0);
@@ -96,7 +94,6 @@ export class RaceValidatorService {
       this.addScoreToTrack(carIndex);
       if (carIndex === 0) {
         this.estimateTime(timer / MS_TO_SECONDS);
-        // this.addBestScore();
         this.track.usesNumber++;
         this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
@@ -112,30 +109,8 @@ export class RaceValidatorService {
     this.track.newScores.push(newScore);
     for (const time of this.cars[carIndex].getLabTimes()) {
       this.track.newScores[carIndex].scores.push(time);
-      if (carIndex === 0) {
-        this._timer += time;
-      }
     }
   }
-//   public addBestScore(): void {
-//     if (this.isBestScore) {
-//       this.track.bestScores.push({name: "Anonymous", score: this._timer});
-//     }
-//  }
-
-//   private bestScoresSort(): void {
-//   this._track.bestScores = this._track.bestScores.sort((n1, n2) => {
-//     return n1.score - n2.score ;
-//   });
-// }
-//   public isBestScore(): boolean {
-//     this.bestScoresSort();
-//     if (this.track.bestScores.length < BEST_SCORES_MAX || this._timer < this._track.bestScores[BEST_SCORES_MAX - 1].score) {
-//       return true;
-//     }
-
-//     return false;
-// }
 
   private estimateTime(time: number): void {
     for (let i: number = 0; i < this.cars.length; i++) {

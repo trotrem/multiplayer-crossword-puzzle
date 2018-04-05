@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { NewScores, BestScores} from "../../../../../../common/communication/interfaces";
 import { inject } from "inversify";
@@ -22,8 +22,8 @@ export class GameResultsComponent implements OnInit {
   private _newBestScore: BestScores;
   private _track: Track;
 
-  public constructor(
-    private route: ActivatedRoute, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
+  public constructor(private router: Router , private route: ActivatedRoute,
+                     @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._scores = new Array< NewScores>();
     this._bestScores = new Array<BestScores>();
     this._newBestScore = {name: "", score: 0};
@@ -46,7 +46,9 @@ export class GameResultsComponent implements OnInit {
     if (name !== null) {
       await this.getTrack(name);
     }
-    // document.getElementById("congrats").style.display = "none";
+    if (this.isNotBestScore()) {
+    document.getElementById("congrats").style.display = "none";
+    }
   }
 
   private async delay(ms: number): Promise<{}> {
@@ -87,13 +89,22 @@ export class GameResultsComponent implements OnInit {
     }
   }
   public onSubmit(f: NgForm): void {
-    this._track.bestScores.pop();
+    if (this._bestScores.length >= BEST_SCORES_MAX ) {
+      this._track.bestScores.pop();
+    }
     this._newBestScore.name = f.value.name;
-    this.bestScoresSort();
+
+  }
+  private replay(): void {
+    this.router.navigateByUrl("/race/" + this._track.name);
+  }
+  private returnToMain(): void {
+    this.router.navigateByUrl("/");
   }
 
   public saveBestScore(): void {
   this._track.bestScores.push(this._newBestScore);
+  this.bestScoresSort();
   this.communicationService.updateNewScore(this._track);
 
   }
