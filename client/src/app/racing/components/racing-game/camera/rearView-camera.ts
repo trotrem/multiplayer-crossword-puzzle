@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { Car } from "../car/car";
 
-const Z_POSITION: number = 2;
-const XY_POSITION: number = 4;
+const Z_POSITION: number = 10;
+const XY_POSITION: number = 100;
 
 export class PerspectiveCamera extends THREE.PerspectiveCamera {
     private static readonly NEAR: number = 1;

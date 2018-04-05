@@ -62,6 +62,62 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
+    private createSkyBox(): void {
+        /* const loader: THREE.CubeTextureLoader = new THREE.CubeTextureLoader();
+         const path: string = "../../assets/camero/clouds/";
+         const format: string = ".png";
+         const urls: string[] = [
+             path + "posx" + format,
+             path + "negx" + format,
+             path + "posy" + format,
+             path + "negy" + format,
+             path + "posz" + format,
+             path + "negz" + format
+         ];
+         const textureSky: THREE.CubeTexture = loader.load(urls);
+         const skyMaterial: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+             color: 0xffffff,
+             envMap: textureSky,
+             side: THREE.BackSide
+         });
+ 
+         const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(300, 200, 100);
+         const skyMesh: THREE.Mesh = new THREE.Mesh(skyGeometry, skyMaterial);
+         this.scene.add(skyMesh);*/
+        const skyMaterials: THREE.MeshBasicMaterial[] = [
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/front.jpg"),
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/back.jpg"),
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/top.jpg"),
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/bottom.jpg"),
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/right.jpg"),
+                side: THREE.DoubleSide
+            }),
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/left.jpg"),
+                side: THREE.DoubleSide
+            })];
+        const skyMaterial: THREE.MeshFaceMaterial = new THREE.MeshFaceMaterial(skyMaterials);
+        const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
+        const skyMesh: THREE.Mesh = new THREE.Mesh(skyGeometry, skyMaterial);
+        skyMesh.rotateZ(Math.PI / 2);
+        skyMesh.rotateX(Math.PI / 2);
+        skyMesh.translate(20, new THREE.Vector3(0, 1, 0));
+        this.scene.add(skyMesh);
+    }
+
     private createScene(track: Track, cars: Car[], walls: ILine[]): void {
         this.scene = new THREE.Scene();
         this.cameras[0] = new PerspectiveCamera();
@@ -76,6 +132,7 @@ export class RenderService {
         this.showWalls(walls);
         track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+        this.createSkyBox();
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
