@@ -2,7 +2,6 @@ import { Car } from "../car/car";
 import THREE = require("three");
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { checkAndUpdateNode } from "@angular/core/src/view/view";
 import { RaceUtils } from "../../../utils/utils";
 import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
 const MAX_SPEED: number = 50;
