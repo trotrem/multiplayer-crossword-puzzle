@@ -2,10 +2,9 @@
 <button (click)="returnToMain()">Retrun to Main Page</button>
 
 <div class="Left">
-    <h3>
-        Lap Times for each car
-      </h3>
+
 <table>
+    <caption>Lap Times for each car</caption>
   <tr *ngFor="let score of scores">
       <th> Car number {{score.id}}  =></th>
       <th> Scores for each lap :</th>
@@ -16,10 +15,9 @@
 </table>
 </div>
 <div class="Right">
-    <h3>
-        Your car's best scores 
-      </h3>
+  
 <table>
+    <caption>Your car's best scores</caption>
   <tr>
       <th> Player's name:  </th>
       <th>  </th>
