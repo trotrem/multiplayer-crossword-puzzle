@@ -3,7 +3,7 @@ import * as THREE from "three";
 export class OrthographicCamera extends THREE.OrthographicCamera {
     private static readonly WIDTH: number = window.innerWidth;
     private static readonly HEIGHT: number = window.innerHeight;
-    private static readonly ORTHO_HEIGHT: number = 150;
+    private static readonly ORTHO_HEIGHT: number = 50;
     private static readonly ASPECT: number = OrthographicCamera.WIDTH / OrthographicCamera.HEIGHT;
     private static readonly NEAR: number = 1;
     private static readonly FAR: number = 1000;

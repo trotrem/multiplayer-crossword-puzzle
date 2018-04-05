@@ -6,9 +6,9 @@ import { checkAndUpdateNode } from "@angular/core/src/view/view";
 import { RaceUtils } from "../../../utils/utils";
 import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
 const MAX_SPEED: number = 50;
-const MIN_SPEED: number = 10;
-const MAX_DISTANCE: number = 20;
-const MIN_DISTANCE: number = 10;
+const MIN_SPEED: number = 30;
+const MAX_DISTANCE: number = 18;
+const MIN_DISTANCE: number = 15;
 const MAX_ANGLE: number = 2;
 
 export class AiController {
@@ -34,13 +34,11 @@ export class AiController {
         if (this._car.checkpoint === this._checkPoints.length - 1) {
             this._car.checkpoint = 0;
         }
-        if (this.collisionWallService.getCollisionNormal(this._car).length > 0) {
-            this.turn(this._car.checkpoint);
-            this.collision = true;
-        } else if (this.calculateAngle() < MAX_ANGLE && this.collision) {
-            this._car.releaseSteering();
-            this.collision = false;
-        }
+        this.verifyCollisionWall();
+        this.turnCorner();
+    }
+
+    private turnCorner(): void {
         if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.maxDistance) {
             this.turn(this._car.checkpoint + 1);
             this.hadTurned = true;
@@ -51,10 +49,20 @@ export class AiController {
         }
     }
 
-    private calculateAngle(): number {
+    private verifyCollisionWall(): void {
+        if (this.collisionWallService.getCollisionNormal(this._car).length > 0) {
+            this.turn(this._car.checkpoint);
+            this.collision = true;
+        } else if (this.calculateAngle(this._car.checkpoint) < MAX_ANGLE && this.collision) {
+            this._car.releaseSteering();
+            this.collision = false;
+        }
+    }
+
+    private calculateAngle(index: number): number {
         return this._car.direction.angleTo(new Vector3(
-            this._checkPoints[this._car.checkpoint].x - this._car.mesh.position.x,
-            this._checkPoints[this._car.checkpoint].y - this._car.mesh.position.y,
+            this._checkPoints[index].x - this._car.mesh.position.x,
+            this._checkPoints[index].y - this._car.mesh.position.y,
             0)) * HALF_CIRCLE_DEGREES / Math.PI;
     }
 
