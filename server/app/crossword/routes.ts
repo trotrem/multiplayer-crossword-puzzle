@@ -8,85 +8,90 @@ import { IGrid } from "./models/grid/dataStructures";
 import { Document } from "mongoose";
 import { crosswordDocument } from "./models/crosswordDbSchemas";
 import { Utils } from "../utils";
+import { MultiplayerGamesCache } from "./cache/multiplayerGamesCache";
 // TODO: create import index
 const MAX_SAME_DIFFICULTY_DB_GRIDS: number = 10;
 
 namespace Route {
-  @injectable()
-  export class CrosswordHandler {
-    public getGrid(req: Request, res: Response, next: NextFunction): void {
-      const newGrid: Promise<IGrid> = GenerateWords.generateGrid(req.params.difficulty);
-      crosswordDocument.find(
-        { difficulty: req.params.difficulty },
-        async (err: Error, allGrids: Document[]): Promise<void> => {
-          if (!err && allGrids.length > 0) {
-            console.warn("fetched grids");
-            const fetchedGrid: Document =
-              allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)];
-            res.send(GridCache.Instance.addGrid(fetchedGrid["grid"]));
-            if ((await newGrid) !== null) {
-              this.saveGrid(await newGrid, req.params.difficulty, fetchedGrid._id);
-            }
-          } else {
-            console.error("unable to fetch grids");
-            if ((await newGrid) !== null) {
-              res.send(GridCache.Instance.addGrid(await newGrid));
-              this.saveGrid(await newGrid, req.params.difficulty, null);
-            }
-          }
+    @injectable()
+    export class CrosswordHandler {
+        public getGrid(req: Request, res: Response, next: NextFunction): void {
+            const newGrid: Promise<IGrid> = GenerateWords.generateGrid(req.params.difficulty);
+            crosswordDocument.find(
+                { difficulty: req.params.difficulty },
+                async (err: Error, allGrids: Document[]): Promise<void> => {
+                    if (!err && allGrids.length > 0) {
+                        console.warn("fetched grids");
+                        const fetchedGrid: Document =
+                            allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)];
+                        res.send(GridCache.Instance.addGrid(fetchedGrid["grid"]));
+                        if ((await newGrid) !== null) {
+                            this.saveGrid(await newGrid, req.params.difficulty, fetchedGrid._id);
+                        }
+                    } else {
+                        console.error("unable to fetch grids");
+                        if ((await newGrid) !== null) {
+                            res.send(GridCache.Instance.addGrid(await newGrid));
+                            this.saveGrid(await newGrid, req.params.difficulty, null);
+                        }
+                    }
+                }
+            );
         }
-      );
-    }
 
-    public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
-      res.send(GridCache.Instance.getWords(req.params.gridId));
-    }
+        public getOpenGamesList(req: Request, res: Response, next: NextFunction): void {
+            res.send(MultiplayerGamesCache.Instance.getOpenGames(req.params.difficulty));
+        }
 
-    public validateWord(req: Request, res: Response, next: NextFunction): void {
-      const words: string[] = GridCache.Instance.getWords(req.body.gridId);
-      if (words.length > req.body.wordIndex && words[req.body.wordIndex] === req.body.word) {
-        GridCache.Instance.validateWord(req.body.gridId, req.body.wordIndex);
-        res.send(true);
-      } else {
-        res.send(false);
-      }
-    }
+        public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
+            res.send(GridCache.Instance.getWords(req.params.gridId));
+        }
 
-    private saveGrid(grid: IGrid, difficulty: Difficulty, overwriteId: number): void {
-      const newGrid: Document = new crosswordDocument({ grid, difficulty });
-      newGrid
-        .save()
-        .then(async (item: Document) => {
-          console.warn("Created and saved new grid");
-          if (overwriteId !== null && await this.shouldDeleteGrid(difficulty)) {
-            this.deleteGrid(difficulty, overwriteId);
-          }
-        })
-        .catch((err: Error) => {
-          console.warn("Unable to save to database");
-        });
-    }
+        public validateWord(req: Request, res: Response, next: NextFunction): void {
+            const words: string[] = GridCache.Instance.getWords(req.body.gridId);
+            if (words.length > req.body.wordIndex && words[req.body.wordIndex] === req.body.word) {
+                GridCache.Instance.validateWord(req.body.gridId, req.body.wordIndex);
+                res.send(true);
+            } else {
+                res.send(false);
+            }
+        }
 
-    private async shouldDeleteGrid(difficulty: Difficulty): Promise<boolean> {
-      return crosswordDocument
-        .count({ difficulty: difficulty })
-        .then((count: number) => {
-          return count > MAX_SAME_DIFFICULTY_DB_GRIDS;
-        })
-        .catch(() => false);
-    }
+        private saveGrid(grid: IGrid, difficulty: Difficulty, overwriteId: number): void {
+            const newGrid: Document = new crosswordDocument({ grid, difficulty });
+            newGrid
+                .save()
+                .then(async (item: Document) => {
+                    console.warn("Created and saved new grid");
+                    if (overwriteId !== null && await this.shouldDeleteGrid(difficulty)) {
+                        this.deleteGrid(difficulty, overwriteId);
+                    }
+                })
+                .catch((err: Error) => {
+                    console.warn("Unable to save to database");
+                });
+        }
 
-    private deleteGrid(difficulty: Difficulty, overwriteId: number): void {
-      crosswordDocument
-        .deleteOne({ _id: overwriteId })
-        .then(() => {
-          console.warn("Deleted fetched grid");
-        })
-        .catch(() => {
-          console.warn("Unable to delete from database");
-        });
+        private async shouldDeleteGrid(difficulty: Difficulty): Promise<boolean> {
+            return crosswordDocument
+                .count({ difficulty: difficulty })
+                .then((count: number) => {
+                    return count > MAX_SAME_DIFFICULTY_DB_GRIDS;
+                })
+                .catch(() => false);
+        }
+
+        private deleteGrid(difficulty: Difficulty, overwriteId: number): void {
+            crosswordDocument
+                .deleteOne({ _id: overwriteId })
+                .then(() => {
+                    console.warn("Deleted fetched grid");
+                })
+                .catch(() => {
+                    console.warn("Unable to delete from database");
+                });
+        }
     }
-  }
 }
 
 export = Route;

@@ -3,8 +3,7 @@ import * as http from "http";
 import Types from "./types";
 import { injectable, inject } from "inversify";
 import { IServerAddress } from "./iserver.address";
-import * as socketIO from "socket.io";
-import { Message, Event } from "../../common/communication/types";
+import { SocketsHandler } from "./crossword/socketsHandler";
 
 @injectable()
 export class Server {
@@ -12,9 +11,9 @@ export class Server {
     private readonly appPort: string|number|boolean = this.normalizePort(process.env.PORT || "3000");
     private readonly baseDix: number = 10;
     private server: http.Server;
-    private io: SocketIO.Server;
 
-    constructor(@inject(Types.Application) private application: Application) { }
+    constructor(@inject(Types.Application) private application: Application,
+                @inject(Types.SocketsHandler) private socketsHandler: SocketsHandler) { }
 
     public init(): void {
         this.application.app.set("port", this.appPort);
@@ -25,7 +24,7 @@ export class Server {
         this.server.on("error", (error: NodeJS.ErrnoException) => this.onError(error));
         this.server.on("listening", () => this.onListening());
 
-        this.io = socketIO(this.server);
+        this.socketsHandler.initialize(this.server);
     }
 
     private normalizePort(val: number | string): number | string | boolean {
@@ -64,17 +63,5 @@ export class Server {
         const bind: string = (typeof addr === "string") ? `pipe ${addr}` : `port ${addr.port}`;
         // tslint:disable-next-line:no-console
         console.log(`Listening on ${bind}`);
-
-        this.io.on(Ev, (socket: any) => {
-            console.log("Connected client on port %s.", this.appPort);
-            socket.on("message", (m: Message) => {
-                console.log("[server](message): %s", JSON.stringify(m));
-                this.io.emit("message", m);
-            });
-
-            socket.on("disconnect", () => {
-                console.log("Client disconnected");
-            });
-        });
     }
 }

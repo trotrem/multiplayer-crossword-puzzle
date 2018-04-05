@@ -16,6 +16,8 @@ export interface IWordValidationParameters {
 
 export type Difficulty = "easy" | "medium" | "hard";
 
+export type NbPlayers = "one" | "two";
+
 export interface IWordInfo {
     id: number;
     direction: Direction;
@@ -37,3 +39,8 @@ export interface IGridData {
 }
 
 export type Event = "connect" | "disconnect" | "message";
+
+export interface ICrosswordSettings {
+    difficulty: Difficulty;
+    nbPlayers: NbPlayers;
+}

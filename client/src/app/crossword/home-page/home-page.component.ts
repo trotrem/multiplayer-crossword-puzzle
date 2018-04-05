@@ -24,7 +24,7 @@ export class HomePageComponent implements OnInit {
 
         this.socketsService.onEvent("message")
             .subscribe((message: Message) => {
-                console.log(JSON.stringify(message));
+                console.log(message);
             });
 
         this.socketsService.onEvent("connect")
@@ -36,6 +36,6 @@ export class HomePageComponent implements OnInit {
             .subscribe(() => {
                 console.log('disconnected');
             });
-        this.socketsService.send({ title: "such", body: "wows" });
+        this.socketsService.sendMessage({ title: "such", body: "wows" });
     }
 }

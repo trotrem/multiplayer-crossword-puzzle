@@ -1,6 +1,7 @@
 export default  {
-        Server: Symbol("Server"),
-        Application: Symbol("Application"),
-        Routes: Symbol("Routes"),
-        Index: Symbol("Index")
+    Server: Symbol("Server"),
+    Application: Symbol("Application"),
+    Routes: Symbol("Routes"),
+    Index: Symbol("Index"),
+    SocketsHandler: Symbol("Sockets"),
 };

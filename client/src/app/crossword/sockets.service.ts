@@ -14,13 +14,19 @@ export class SocketsService {
         this.socket = socketIo(SERVER_URL);
     }
 
-    public send(message: Message): void {
+    public sendMessage(message: Message): void {
         this.socket.emit("message", message);
     }
 
+    public sendEvent(event: Event, payload: object = null): void {
+        this.socket.emit(event, payload);
+    }
+
     public onEvent(event: Event): Observable<any> {
-        return new Observable<Event>(observer => {
-            this.socket.on(event, () => observer.next());
+        return new Observable<Event>((observer) => {
+            this.socket.on(event, (pd: any) => {
+                observer.next(pd);
+            });
         });
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
-import { IWordValidationParameters, Difficulty } from "../../../../common/communication/types";
+import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers } from "../../../../common/communication/types";
 import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
@@ -16,166 +16,166 @@ const LOWER_Z: number = 122;
 
 @Injectable()
 export class GridEventService {
-  private selectedWord: WordDescription = null;
-  private words: WordDescription[];
-  private id: number;
-  private nbPlayers: string;
-  private _difficulty: Difficulty = "easy";
+    private _selectedWord: WordDescription = null;
+    private _words: WordDescription[];
+    private _id: number;
+    private _crosswordSetings: ICrosswordSettings;
 
-  public constructor(
-    @inject(CommunicationService) private communicationService: CommunicationService,
-    private router: Router) {
-  }
-
-  public initialize(words: WordDescription[]): void {
-    this.words = words;
-  }
-
-  public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
-    if (this.selectedWord === word) {
-      return null;
-    }
-    if (this.selectedWord !== null) {
-      this.setWordSelectedState(this.selectedWord, false);
-      this.selectedWord = null;
-    }
-    if (word !== null && selected) {
-      this.setWordSelectedState(word, true);
-      this.selectedWord = word;
+    public constructor(
+        @inject(CommunicationService) private communicationService: CommunicationService,
+        private router: Router) {
+        this._crosswordSetings = {difficulty: "easy", nbPlayers: "one"};
     }
 
-    return this.selectedWord;
-  }
-
-  private setWordSelectedState(word: WordDescription, selected: boolean): void {
-    for (const cell of word.cells) {
-      cell.selected = selected;
-    }
-  }
-
-  public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {
-    if (cell.letterFound) {
-      return null;
-    }
-    event.stopPropagation();
-    for (const word of this.words) {
-      if (word.cells[0] === cell && word !== this.selectedWord) {
-
-        return this.setSelectedWord(word, true);
-      }
-    }
-    for (const word of this.words) {
-      if (word.cells.indexOf(cell) !== -1 && word !== this.selectedWord) {
-
-        return this.setSelectedWord(word, true);
-      }
+    public initialize(words: WordDescription[]): void {
+        this._words = words;
     }
 
-    return this.selectedWord;
-  }
-
-  public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {
-    if (word.found) {
-      return null;
-    }
-    event.stopPropagation();
-
-    return this.setSelectedWord(word, true);
-  }
-
-  public onKeyPress(event: KeyboardEvent): void {
-    if (this.selectedWord !== null) {
-      if (event.keyCode >= UPPER_A &&
-        event.keyCode <= UPPER_Z ||
-        event.keyCode >= LOWER_A &&
-        event.keyCode <= LOWER_Z) {
-        this.write(String.fromCharCode(event.keyCode).toUpperCase(), this.selectedWord);
-      }
-      if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
-        this.erase(this.selectedWord);
-      }
-    }
-  }
-
-  private write(char: string, word: WordDescription): void {
-    for (const cell of word.cells) {
-      if (cell.content === "") {
-        cell.content = char;
-        this.validate(word);
-        this.wordFoundByOtherWord();
-
-        return;
-      }
-    }
-  }
-
-  private erase(word: WordDescription): void {
-    let i: number;
-    for (i = word.cells.length - 1; i >= 0; i--) {
-      if (word.cells[i].content !== "" && !word.cells[i].letterFound) {
-        word.cells[i].content = "";
-
-        return;
-      }
-    }
-  }
-
-  private validate(word: WordDescription): void {
-
-    const parameters: IWordValidationParameters = {
-      gridId: this.id,
-      wordIndex: word.id,
-      word: word.cells.map((elem) => elem.content).join("")
-    };
-    this.communicationService.validate(parameters)
-      .subscribe((data) => {
-        if (data) {
-          for (const cell of word.cells) {
-            cell.letterFound = true;
-          }
-          word.found = true;
+    public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
+        if (this._selectedWord === word) {
+            return null;
+        }
+        if (this._selectedWord !== null) {
+            this.setWordSelectedState(this._selectedWord, false);
+            this._selectedWord = null;
+        }
+        if (word !== null && selected) {
+            this.setWordSelectedState(word, true);
+            this._selectedWord = word;
         }
 
-        this.validateGrid();
-      });
-  }
-
-  private wordFoundByOtherWord(): void {
-    for (const word of this.words) {
-      this.validate(word);
+        return this._selectedWord;
     }
-  }
 
-  private validateGrid(): void {
-    for (const word of this.words) {
-      if (!word.found) {
-        return;
-      }
+    private setWordSelectedState(word: WordDescription, selected: boolean): void {
+        for (const cell of word.cells) {
+            cell.selected = selected;
+        }
     }
-    this.openEndGame();
-  }
 
-  private openEndGame(): void {
-    this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
-  }
+    public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {
+        if (cell.letterFound) {
+            return null;
+        }
+        event.stopPropagation();
+        for (const word of this._words) {
+            if (word.cells[0] === cell && word !== this._selectedWord) {
 
-  public setNbPlayers(nbPlayers: string): void {
-    this.nbPlayers = nbPlayers;
-  }
+                return this.setSelectedWord(word, true);
+            }
+        }
+        for (const word of this._words) {
+            if (word.cells.indexOf(cell) !== -1 && word !== this._selectedWord) {
 
-  public setDifficulty(difficulty: Difficulty): void {
-    this._difficulty = difficulty;
-  }
+                return this.setSelectedWord(word, true);
+            }
+        }
 
-  public getDifficulty(): Difficulty {
-    return this._difficulty;
-  }
+        return this._selectedWord;
+    }
 
-  public setId(id: number): void {
-    this.id = id;
-  }
+    public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {
+        if (word.found) {
+            return null;
+        }
+        event.stopPropagation();
 
-  public getId(): number {
-    return this.id;
-  }
+        return this.setSelectedWord(word, true);
+    }
+
+    public onKeyPress(event: KeyboardEvent): void {
+        if (this._selectedWord !== null) {
+            if (event.keyCode >= UPPER_A &&
+                event.keyCode <= UPPER_Z ||
+                event.keyCode >= LOWER_A &&
+                event.keyCode <= LOWER_Z) {
+                this.write(String.fromCharCode(event.keyCode).toUpperCase(), this._selectedWord);
+            }
+            if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
+                this.erase(this._selectedWord);
+            }
+        }
+    }
+
+    private write(char: string, word: WordDescription): void {
+        for (const cell of word.cells) {
+            if (cell.content === "") {
+                cell.content = char;
+                this.validate(word);
+                this.wordFoundByOtherWord();
+
+                return;
+            }
+        }
+    }
+
+    private erase(word: WordDescription): void {
+        let i: number;
+        for (i = word.cells.length - 1; i >= 0; i--) {
+            if (word.cells[i].content !== "" && !word.cells[i].letterFound) {
+                word.cells[i].content = "";
+
+                return;
+            }
+        }
+    }
+
+    private validate(word: WordDescription): void {
+
+        const parameters: IWordValidationParameters = {
+            gridId: this._id,
+            wordIndex: word.id,
+            word: word.cells.map((elem) => elem.content).join("")
+        };
+        this.communicationService.validate(parameters)
+            .subscribe((data) => {
+                if (data) {
+                    for (const cell of word.cells) {
+                        cell.letterFound = true;
+                    }
+                    word.found = true;
+                }
+
+                this.validateGrid();
+            });
+    }
+
+    private wordFoundByOtherWord(): void {
+        for (const word of this._words) {
+            this.validate(word);
+        }
+    }
+
+    private validateGrid(): void {
+        for (const word of this._words) {
+            if (!word.found) {
+                return;
+            }
+        }
+        this.openEndGame();
+    }
+
+    private openEndGame(): void {
+        this.router.navigate(["/endGame/" + this._crosswordSetings.nbPlayers + "/", { Difficulty: this._crosswordSetings.difficulty }]);
+    }
+
+    public setNbPlayers(nbPlayers: NbPlayers): void {
+        this._crosswordSetings.nbPlayers = nbPlayers;
+    }
+
+    public setDifficulty(difficulty: Difficulty): void {
+        this._crosswordSetings.difficulty = difficulty;
+    }
+
+    public getDifficulty(): Difficulty {
+        return this._crosswordSetings.difficulty;
+    }
+
+    public setId(id: number): void {
+        this._id = id;
+    }
+
+    public getId(): number {
+        return this._id;
+    }
 }
