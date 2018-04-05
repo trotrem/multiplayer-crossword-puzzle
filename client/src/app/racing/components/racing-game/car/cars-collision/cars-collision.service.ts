@@ -14,13 +14,16 @@ export interface IMTV {
     distance: number;
 }
 
+const CAR_1_MOMENTUM_FACTOR: number = 2.1;
+const CAR_2_MOMENTUM_FACTOR: number = 1.9;
+
 @Injectable()
 export class CarsCollisionService {
 
     private cars: Car[];
     private overlap: number = 100000;
     private smallest: THREE.Vector3 = null;
-    private mtv: IMTV;
+    private mtv: IMTV = { direction: null, distance: null };
 
     public constructor() {
     }
@@ -47,13 +50,13 @@ export class CarsCollisionService {
         const resultS2: IProjection = this.getMinMax(vecCar2, normals2[0]);
 
         const separateP: boolean = resultP1.maxProj < resultP2.minProj || resultP2.maxProj < resultP1.minProj;
-        if (separateP) { this.overlaping(resultP1, resultP2, normals1[1]); }
+        if (!separateP) { this.overlaping(resultP1, resultP2, normals1[1]); }
         const separateQ: boolean = resultQ1.maxProj < resultQ2.minProj || resultQ2.maxProj < resultQ1.minProj;
-        if (separateQ) { this.overlaping(resultQ1, resultQ2, normals1[0]); }
+        if (!separateQ) { this.overlaping(resultQ1, resultQ2, normals1[0]); }
         const separateR: boolean = resultR1.maxProj < resultR2.minProj || resultR2.maxProj < resultR1.minProj;
-        if (separateR) { this.overlaping(resultR1, resultR2, normals2[1]); }
+        if (!separateR) { this.overlaping(resultR1, resultR2, normals2[1]); }
         const separateS: boolean = resultS1.maxProj < resultS2.minProj || resultS2.maxProj < resultS1.minProj;
-        if (separateS) { this.overlaping(resultS1, resultS2, normals2[0]); }
+        if (!separateS) { this.overlaping(resultS1, resultS2, normals2[0]); }
 
         const isSeparate: boolean = separateP || separateQ || separateR || separateS;
         if (!isSeparate) {
@@ -120,6 +123,34 @@ export class CarsCollisionService {
     }
 
     private handleCollisions(car1: Car, car2: Car): void {
+        /*
+        *   STEP 1: Quoi modifier? Velocity!?
+        *   STEP 2: On veut modifier la velocite pour aller en direction inverse au vecteur collision (vecteurCollision => this.mtv)
+        *   STEP 3: En théorie, la collision est faite
+        */
         
+       // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
+
+        const speed1: THREE.Vector3 = car1.speed;
+        const speed2: THREE.Vector3 = car2.speed;
+
+        const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
+
+        const newSpeed1: THREE.Vector3 = new THREE.Vector3( totalMomentum.x / car1.Mass / CAR_1_MOMENTUM_FACTOR,
+                                                            totalMomentum.y / car1.Mass / CAR_1_MOMENTUM_FACTOR,
+                                                            totalMomentum.z / car1.Mass / CAR_1_MOMENTUM_FACTOR);
+        let newSpeed2: THREE.Vector3 = new THREE.Vector3( totalMomentum.x / car2.Mass / CAR_2_MOMENTUM_FACTOR,
+                                                            totalMomentum.y / car2.Mass / CAR_2_MOMENTUM_FACTOR,
+                                                            totalMomentum.z / car2.Mass / CAR_2_MOMENTUM_FACTOR);
+    
+        if(newSpeed2 > newSpeed1) {
+            newSpeed2.negate();
+        }
+
+        car1.speed = newSpeed1;
+        car2.speed = newSpeed2;
+
+
+
     }
 }

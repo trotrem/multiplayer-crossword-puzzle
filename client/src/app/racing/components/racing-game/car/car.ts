@@ -54,6 +54,9 @@ export class Car extends Object3D {
     public get speed(): Vector3 {
         return this._speed.clone();
     }
+    public get Mass(): number {
+        return this.mass;
+    }
     public setSpeed(speed: Vector3): void {
         this._speed = speed;
     }
