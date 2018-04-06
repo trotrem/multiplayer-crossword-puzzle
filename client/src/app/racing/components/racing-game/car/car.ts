@@ -127,7 +127,6 @@ export class Car extends Object3D {
             console.error("Drag coefficient should be greater than 0.");
             dragCoefficient = DEFAULT_DRAG_COEFFICIENT;
         }
-
         this.engine = engine;
         this.rearWheel = rearWheel;
         this.wheelbase = wheelbase;
@@ -135,12 +134,13 @@ export class Car extends Object3D {
         this.dragCoefficient = dragCoefficient;
         this.carLoader = new CarLoader();
         this.updatedPosition = new Vector3();
-
         this.isBraking = false;
         this.steeringWheelDirection = 0;
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
+        this.checkpoint = 0;
+        this._counterLap = 0;
     }
     public async init(): Promise<void> {
         this._mesh = await this.carLoader.load();

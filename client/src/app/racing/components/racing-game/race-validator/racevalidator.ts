@@ -1,60 +1,25 @@
 import * as THREE from "three";
 import { Car } from "../car/car";
-import { MS_TO_SECONDS, LAP_MAX, CARS_MAX } from "./../constants";
+import { MS_TO_SECONDS, LAP_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
-import { inject } from "inversify";
 import { Track } from "../../../track";
+import { NewScores } from "./../../../../../../../common/communication/interfaces";
 const ADD_TO_DISTANCE: number = 20;
 
 export class RaceValidator {
 
-   // private _counter: number[];
-    // private _cars: Car[];
-    // private _track: Track;
-    // private _validIndex: number[];
-
-    /* public constructor(
-         private _router: Router, @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
-         this._counter = new Array<number>();
-         this._validIndex = new Array<number>();
-         for (let i: number = 0; i < CARS_MAX; i++) {
-             this.counter.push(0);
-             this.validIndex.push(0);
-         }
-     }*/
-    /*  public get validIndex(): number[] {
-          return this._validIndex;
-      }
-      public get router(): Router {
-          return this._router;
-      }
-      public get cars(): Car[] {
-          return this._cars;
-      }
-      public set counter(counter: number[]) {
-          this._counter = counter;
-      }
-      public get counter(): number[] {
-          return this._counter;
-      }*/
-
-    /* public initialize(track: Track, collisionService: WallsCollisionsService, cars: Car[]): void {
-           this.track = track;
-           this.track.newScores = new Array<NewScores>();
-           this.track.bestScores = track.bestScores;
-         this._cars = cars;
- }*/
-
-    public static validateRace(index: number, car: Car, timer: number, track: Track): void {
+    public static validateRace(car: Car, timer: number, track: Track): number[] {
 
         car.getUpdatedPosition();
-        if (RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[car.checkpoint])
+        if (RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[track.points.length - car.checkpoint - 1])
             <= ADD_TO_DISTANCE) {
             car.checkpoint += 1;
             if (car.checkpoint === track.points.length) {
-                this.verifyNextLap(car, timer);
+                return this.verifyNextLap(car, timer);
             }
         }
+
+        return new Array<number>();
 
     }
     private static setNextLapParameters(car: Car, timer: number): void {
@@ -63,17 +28,37 @@ export class RaceValidator {
         car.counterLap += 1;
     }
 
-    private static verifyNextLap(car: Car, timer: number): void {
+    private static verifyNextLap(car: Car, timer: number): number[] {
 
         this.setNextLapParameters(car, timer);
         if (car.counterLap === LAP_MAX) {
-            /* this.addScoreToTrack(carIndex);
-             if (carIndex === 0) {
-                 this.estimateTime(timer / MS_TO_SECONDS);
-                 this.track.usesNumber++;
-                 this.communicationService.updateNewScore(this.track);
-                 this.navigateToGameResults();
-             }*/
+            return car.getLabTimes();
         }
+
+        return new Array<number>();
+    }
+
+    public static addScoreToTrack(car: Car, track: Track, carIndex: number): void {
+        const newScore: NewScores = { id: carIndex, scores: new Array<number>() };
+        track.newScores.push(newScore);
+        for (const time of car.getLabTimes()) {
+            track.newScores[carIndex].scores.push(time);
+        }
+    }
+
+    public static estimateTime(time: number, car: Car, track: Track): void {
+        // tslint:disable-next-line:no-magic-numbers
+        car.speed = new THREE.Vector3(12, 0, 6);
+        if (car.counterLap < LAP_MAX) {
+            let distance: number =
+                RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[car.checkpoint + 1]);
+            for (let j: number = car.checkpoint + 1; j > 0; j--) {
+                distance += RaceUtils.calculateDistance(track.points[j], track.points[j + 1]);
+            }
+            while (car.getLabTimes().length !== LAP_MAX) {
+                car.getLabTimes().push((distance / car.speed.length()) + time);
+            }
+        }
+
     }
 }
