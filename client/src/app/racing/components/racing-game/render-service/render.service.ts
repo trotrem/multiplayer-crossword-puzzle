@@ -86,31 +86,31 @@ export class RenderService {
          this.scene.add(skyMesh);*/
         const skyMaterials: THREE.MeshBasicMaterial[] = [
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/front.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Front.jpg"),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/back.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Back.jpg"),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/top.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Ceilling.jpg"),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/bottom.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Bottom.jpg"),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/right.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Right.jpg"),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/camero/clouds/left.jpg"),
+                map: new THREE.TextureLoader().load("./../../assets/models/Day-Left.jpg"),
                 side: THREE.DoubleSide
             })];
         const skyMaterial: THREE.MeshFaceMaterial = new THREE.MeshFaceMaterial(skyMaterials);
-        const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1000, 1000, 1000);
+        const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(100000, 100000, 100000);
         const skyMesh: THREE.Mesh = new THREE.Mesh(skyGeometry, skyMaterial);
         skyMesh.rotateZ(Math.PI / 2);
         skyMesh.rotateX(Math.PI / 2);
