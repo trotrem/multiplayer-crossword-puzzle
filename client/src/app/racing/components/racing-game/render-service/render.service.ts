@@ -7,7 +7,7 @@ import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
-import { CARS_MAX } from "../constants";
+import { CARS_MAX } from "../../../../constants";
 import { Track } from "../../../track";
 
 const ZOOM_FACTOR: number = 0.05;

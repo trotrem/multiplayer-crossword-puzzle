@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Car } from "../car/car";
-import { MS_TO_SECONDS, LAP_MAX } from "./../constants";
+import { MS_TO_SECONDS, LAP_MAX } from "./../../../../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";

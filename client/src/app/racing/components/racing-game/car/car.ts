@@ -1,6 +1,6 @@
 import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
-import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
+import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
@@ -80,6 +80,7 @@ export class Car extends Object3D {
     public get angle(): number {
         return this._mesh.rotation.y * RAD_TO_DEG;
     }
+
     public getCorners(pos: Vector3): Vector3[] {
         return [
             pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
@@ -139,7 +140,7 @@ export class Car extends Object3D {
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
-        this.checkpoint = 0;
+        this._checkpoint = 0;
         this._counterLap = 0;
     }
     public async init(): Promise<void> {

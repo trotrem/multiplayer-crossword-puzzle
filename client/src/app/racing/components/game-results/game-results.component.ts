@@ -6,7 +6,7 @@ import { inject } from "inversify";
 import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { Track } from "../../track";
-import {LAP_MAX} from "../racing-game/constants";
+import {LAP_MAX} from "../../../constants";
 const DELAY: number = 1000;
 const BEST_SCORES_MAX: number = 5;
 

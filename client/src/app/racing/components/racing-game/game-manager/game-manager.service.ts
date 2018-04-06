@@ -3,14 +3,17 @@ import { RenderService } from "../render-service/render.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
-import { CARS_MAX, LAP_MAX, MS_TO_SECONDS } from "../constants";
-import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { Car } from "../car/car";
 import { Track } from "../../../track";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";
 import { RaceValidator } from "../race-validator/racevalidator";
 import { Router } from "@angular/router";
+import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
+import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
+import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { Car } from "../car/car";
+import { AiController } from "./../ai-controller/ai-controller";
+
+const AI_PLAYERS_MAX: number = 3;
 
 @injectable()
 export class GameManagerService {
@@ -19,19 +22,19 @@ export class GameManagerService {
     private lastDate: number;
     private eventHandler: EventHandlerRenderService;
     private _cars: Car[] = [];
-    private isStarted: boolean;
     private track: Track;
+    private _aiControllers: AiController[];
+    private gameStarted: boolean = false;
 
     public constructor(
         @inject(RenderService) private renderService: RenderService,
         @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
-        @inject(WallsCollisionsService) private collisionService: WallsCollisionsService,
-        private router: Router) {
+        @inject(WallsCollisionsService) private collisionService: WallsCollisionsService, private router: Router) {
         this.timer = 0;
+        this._aiControllers = new Array<AiController>();
     }
 
     public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
-        this.isStarted = false;
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName, container);
@@ -51,7 +54,8 @@ export class GameManagerService {
     }
 
     public startRace(): void {
-        this.isStarted = true;
+        this.initializeControllers();
+        this.gameStarted = true;
         this.eventHandler = new EventHandlerRenderService(this._cars[0], this.renderService);
     }
 
@@ -78,12 +82,15 @@ export class GameManagerService {
         requestAnimationFrame(async () => this.update());
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
-        if (this.isStarted) {
+        if (this.gameStarted) {
             for (let i: number = 0; i < CARS_MAX - 1; i++) {
                 this._cars[i].update(timeSinceLastFrame);
             }
             if (RaceValidator.validateRace(this._cars[0], this.timer, this.track).length === LAP_MAX) {
                 this.updateScores();
+            }
+            for (let i: number = 1; i < AI_PLAYERS_MAX; i++) {
+                this._aiControllers[i].update();
             }
         } else {
             this._cars[0].update(timeSinceLastFrame);
@@ -105,5 +112,11 @@ export class GameManagerService {
 
     private navigateToGameResults(): void {
         this.router.navigateByUrl("/gameResults/" + this.track.name);
+    }
+
+    private initializeControllers(): void {
+        for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
+            this._aiControllers.push(new AiController(this._cars[i], this.track.points, this.collisionService));
+        }
     }
 }
