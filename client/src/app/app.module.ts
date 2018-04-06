@@ -20,7 +20,6 @@ import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
-import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 
 const appRoutes: Routes = [
@@ -73,7 +72,6 @@ const appRoutes: Routes = [
         RacingCommunicationService,
         RenderService,
         GameManagerService,
-        RaceValidatorService,
         WallsCollisionsService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],

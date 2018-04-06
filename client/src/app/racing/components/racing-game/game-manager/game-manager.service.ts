@@ -75,24 +75,25 @@ export class GameManagerService {
         const timeSinceLastFrame: number = Date.now() - this.lastDate;
         this.timer += timeSinceLastFrame;
         if (this.isStarted) {
-            for (let i: number = 0; i < CARS_MAX; i++) {
+            for (let i: number = 0; i < CARS_MAX - 1; i++) {
                 this._cars[i].update(timeSinceLastFrame);
             }
             if (RaceValidator.validateRace(this._cars[0], this.timer, this.track).length === LAP_MAX) {
                 this.updateScores();
             }
-        }
+        } else { }
         this.renderService.render(this._cars[0]);
         this.lastDate = Date.now();
     }
 
     private updateScores(): void {
         RaceValidator.addScoreToTrack(this._cars[0], this.track, 0);
-        for (let i: number = 0; i < CARS_MAX; i++) {
+        for (let i: number = 1; i < CARS_MAX; i++) {
             RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track);
             RaceValidator.addScoreToTrack(this._cars[i], this.track, i);
         }
         this.track.usesNumber++;
+        console.log(this.track.INewScores);
         this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
     }
