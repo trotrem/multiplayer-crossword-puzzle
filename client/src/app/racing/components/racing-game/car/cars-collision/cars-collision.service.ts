@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { Car } from "../Car";
 import { Injectable } from "@angular/core";
-import { sep } from "path";
 
 export interface IProjection {
     minProj: number;
@@ -14,8 +13,8 @@ export interface IMTV {
     distance: number;
 }
 
-const CAR_1_MOMENTUM_FACTOR: number = 2.1;
-const CAR_2_MOMENTUM_FACTOR: number = 1.9;
+const CAR_1_MOMENTUM_FACTOR: number = 2;
+const CAR_2_MOMENTUM_FACTOR: number = 2;
 
 @Injectable()
 export class CarsCollisionService {
@@ -128,24 +127,20 @@ export class CarsCollisionService {
         *   STEP 2: On veut modifier la velocite pour aller en direction inverse au vecteur collision (vecteurCollision => this.mtv)
         *   STEP 3: En théorie, la collision est faite
         */
-        
-       // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
+
+        // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
 
         const speed1: THREE.Vector3 = car1.speed;
         const speed2: THREE.Vector3 = car2.speed;
 
         const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
 
-        const newSpeed1: THREE.Vector3 = new THREE.Vector3( totalMomentum.x / car1.Mass / CAR_1_MOMENTUM_FACTOR,
-                                                            totalMomentum.y / car1.Mass / CAR_1_MOMENTUM_FACTOR,
-                                                            totalMomentum.z / car1.Mass / CAR_1_MOMENTUM_FACTOR);
-        let newSpeed2: THREE.Vector3 = new THREE.Vector3( totalMomentum.x / car2.Mass / CAR_2_MOMENTUM_FACTOR,
-                                                            totalMomentum.y / car2.Mass / CAR_2_MOMENTUM_FACTOR,
-                                                            totalMomentum.z / car2.Mass / CAR_2_MOMENTUM_FACTOR);
-    
-        if(newSpeed2 > newSpeed1) {
-            newSpeed2.negate();
-        }
+        const newSpeed1: THREE.Vector3 = new THREE.Vector3(totalMomentum.x / car1.Mass / CAR_1_MOMENTUM_FACTOR,
+            totalMomentum.y / car1.Mass / CAR_1_MOMENTUM_FACTOR,
+            totalMomentum.z / car1.Mass / CAR_1_MOMENTUM_FACTOR);
+        let newSpeed2: THREE.Vector3 = new THREE.Vector3(totalMomentum.x / car2.Mass / CAR_2_MOMENTUM_FACTOR,
+            totalMomentum.y / car2.Mass / CAR_2_MOMENTUM_FACTOR,
+            totalMomentum.z / car2.Mass / CAR_2_MOMENTUM_FACTOR);
 
         car1.speed = newSpeed1;
         car2.speed = newSpeed2;
