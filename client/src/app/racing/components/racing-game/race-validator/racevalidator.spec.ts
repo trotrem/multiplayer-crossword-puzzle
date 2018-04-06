@@ -8,7 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { Car } from "../car/car";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Track } from "../../../track";
-import { NewScores, BestScores } from "../../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers no-floating-promises */
@@ -41,7 +41,7 @@ describe("Racevalidator", () => {
         (inject([WallsCollisionsService], async (service: WallsCollisionsService) => {
             const track: Track = {
                 name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-                newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
+                INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
             };
             const car: Car = new Car(service);
             car.counterLap = 0;
@@ -52,7 +52,7 @@ describe("Racevalidator", () => {
   /*  it("should validate a race when a car did 3 lap ", (inject([WallsCollisionsService], async (service: WallsCollisionsService) => {
         const track: Track = {
             name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-            newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
+            INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         const car: Car = new Car(service);
         car.counterLap = 3;

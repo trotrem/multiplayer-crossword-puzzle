@@ -1,9 +1,9 @@
 
-export interface NewScores {
+export interface INewScores {
     id: number;
     scores: number[];
 }
-export interface BestScores {
+export interface IBestScores {
     name: string;
     score: number;
 }

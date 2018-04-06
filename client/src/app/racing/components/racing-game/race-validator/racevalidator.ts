@@ -3,7 +3,7 @@ import { Car } from "../car/car";
 import { MS_TO_SECONDS, LAP_MAX } from "./../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
-import { NewScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores } from "./../../../../../../../common/communication/interfaces";
 const ADD_TO_DISTANCE: number = 20;
 
 export class RaceValidator {
@@ -39,10 +39,10 @@ export class RaceValidator {
     }
 
     public static addScoreToTrack(car: Car, track: Track, carIndex: number): void {
-        const newScore: NewScores = { id: carIndex, scores: new Array<number>() };
-        track.newScores.push(newScore);
+        const newScore: INewScores = { id: carIndex, scores: new Array<number>() };
+        track.INewScores.push(newScore);
         for (const time of car.getLabTimes()) {
-            track.newScores[carIndex].scores.push(time);
+            track.INewScores[carIndex].scores.push(time);
         }
     }
 

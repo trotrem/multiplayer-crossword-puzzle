@@ -8,7 +8,7 @@ import { EventHandlerRenderService } from "../render-service/event-handler-rende
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
 import { Track } from "../../../track";
-import { NewScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores } from "./../../../../../../../common/communication/interfaces";
 import { RaceValidator } from "../race-validator/racevalidator";
 import { Router } from "@angular/router";
 
@@ -35,7 +35,7 @@ export class GameManagerService {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName, container);
-        this.track.newScores = new Array<NewScores>();
+        this.track.INewScores = new Array<INewScores>();
         for (let i: number = 0; i < CARS_MAX; i++) {
             this._cars[i] = new Car(this.collisionService);
             await this._cars[i].init();

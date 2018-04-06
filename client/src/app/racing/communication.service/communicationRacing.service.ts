@@ -49,17 +49,17 @@ export class RacingCommunicationService {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateNewScores", JSON.stringify(track), {
+        this.http.put(URL_SERVER + "updateINewScores", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {
             });
     }
-    public updateBestScore(track: Track): void {
+    public updateIBestScore(track: Track): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateBestScore", JSON.stringify(track), {
+        this.http.put(URL_SERVER + "updateIBestScore", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import {  NewScores, BestScores } from "../../../../../../common/communication/interfaces";
+import {  INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
@@ -31,7 +31,7 @@ export class EditorComponent implements OnInit {
         @inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private route: ActivatedRoute) {
         this.track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-            newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
+            INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this.submitValid = false;
         this.sceneService = new SceneServices();
