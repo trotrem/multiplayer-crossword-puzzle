@@ -19,7 +19,7 @@ export class RaceValidator {
             }
         }
 
-        return new Array<number>();
+        return undefined;
 
     }
     private static setNextLapParameters(car: Car, timer: number): void {
@@ -35,7 +35,7 @@ export class RaceValidator {
             return car.getLabTimes();
         }
 
-        return new Array<number>();
+        return undefined;
     }
 
     public static addScoreToTrack(car: Car, track: Track, carIndex: number): void {

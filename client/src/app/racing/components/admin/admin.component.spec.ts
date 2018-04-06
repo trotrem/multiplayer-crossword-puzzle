@@ -10,6 +10,7 @@ import { FormsModule } from "@angular/forms";
 
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
+import { NewScores, BestScores } from "../../../../../../common/communication/interfaces";
 
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
@@ -58,7 +59,7 @@ describe("AdminComponent", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      newScores: new Array<number>()
+      newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
     };
     component.onSelect(track);
     component.editTrack();
@@ -69,7 +70,7 @@ describe("AdminComponent", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      newScores: new Array<number>()
+      newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
     };
     const tracks: Track[] = new Array<Track>();
     tracks.push(track);

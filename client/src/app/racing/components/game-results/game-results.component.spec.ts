@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { Track } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { NewScores, BestScores } from "../../../../../../common/communication/interfaces";
 
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
@@ -17,7 +18,7 @@ describe("GameResultsComponent", () => {
   let route: ActivatedRoute;
   const track: Track = {
     name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-    newScores: new Array<number>()
+    newScores: new Array<NewScores>(), bestScores: new Array<BestScores>()
   };
 
   beforeEach(async(() => {
