@@ -25,11 +25,13 @@ export class AiController {
     }
 
     public update(): void {
+        // TODO : Extraire dans une methode updateSpeed (méthode moins de 10 lignes)
         if (this._car.speed.length() < this.randomIntFromInterval(MIN_SPEED, MAX_SPEED)) {
             this.moveForward();
         } else {
             this.brake();
         }
+        // TODO : Extraire le if dans une autre méthode (méthode moins de 10 lignes)
         if (this._car.checkpoint === this._checkPoints.length - 1) {
             if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.maxDistance) {
                 this._car.checkpoint = 0;
