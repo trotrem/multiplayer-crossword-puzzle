@@ -82,7 +82,7 @@ export class AiController {
     }
 
     private turn(index: number): void {
-        if (this.calculateOrientation(index) > 0) {
+        if (this.getOrientation(index) > 0) {
             this._car.steerRight();
         } else {
             this._car.steerLeft();
@@ -90,7 +90,7 @@ export class AiController {
         this._car.isAcceleratorPressed = true;
     }
 
-    private calculateOrientation(index: number): number {
+    private getOrientation(index: number): number {
         return this._car.direction.cross(new Vector3(
             this._car.mesh.position.x - this._checkPoints[index].x,
             this._car.mesh.position.y - this._checkPoints[index].y,
