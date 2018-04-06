@@ -36,14 +36,18 @@ export class GameManagerService {
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName, container);
         this.track.INewScores = new Array<INewScores>();
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService);
-            await this._cars[i].init();
-        }
+        await this.initializeCars();
         this.renderService.initialize(
             container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
-        await this.update();
+        this.update();
 
+    }
+
+    private async initializeCars(): Promise<void> {
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            this._cars[i] = new Car(this.collisionService);
+            await this._cars[i].init().then(() => { });
+        }
     }
 
     public startRace(): void {
@@ -81,7 +85,9 @@ export class GameManagerService {
             if (RaceValidator.validateRace(this._cars[0], this.timer, this.track).length === LAP_MAX) {
                 this.updateScores();
             }
-        } else { }
+        } else {
+            this._cars[0].update(timeSinceLastFrame);
+        }
         this.renderService.render(this._cars[0]);
         this.lastDate = Date.now();
     }
@@ -93,7 +99,6 @@ export class GameManagerService {
             RaceValidator.addScoreToTrack(this._cars[i], this.track, i);
         }
         this.track.usesNumber++;
-        console.log(this.track.INewScores);
         this.communicationService.updateNewScore(this.track);
         this.navigateToGameResults();
     }
