@@ -128,21 +128,23 @@ export class CarsCollisionService {
         /* 2 Dimension avec angle */
         /* Axes semblent etre X et Z */
         const masseTotale: number = car1.Mass + car2.Mass;
-
         const speedLength1: number = car1.speed.length();
         const speedLength2: number = car2.speed.length();
-
         const phi: number = car1.getUpdatedPosition().angleTo(car2.getUpdatedPosition());
         const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1): 0;
         const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2): 0;
 
-        const newSpeedX1: number = (((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.cos(phi)) - (speedLength1 * Math.sin(theta1 - phi) * Math.sin(phi));
-        const newSpeedY1: number = (((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.sin(phi)) + (speedLength1 * Math.sin(theta1 - phi) * Math.cos(phi));
+        /* temp just pour tester plus facilement */
+        let temp1 = (2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale;
+        let temp2 = speedLength1 * Math.sin(theta1 - phi);
+        const newSpeedX1: number = (temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi));
+        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi));
 
-        const newSpeedX2: number = (((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.cos(phi)) - (speedLength2 * Math.sin(theta2 - phi) * Math.sin(phi));
-        const newSpeedY2: number = (((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.sin(phi)) + (speedLength2 * Math.sin(theta2 - phi) * Math.cos(phi));
+        let temp3 = (2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale;
+        let temp4 = (speedLength2 * Math.sin(theta2 - phi));
+        const newSpeedX2: number = (temp3 * Math.cos(phi)) - (temp4 * Math.sin(phi));
+        const newSpeedY2: number = (temp3 * Math.sin(phi)) - (temp4 * Math.cos(phi));;
 
-       // car1.speed.z = 0;
         //console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
         car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
         car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
