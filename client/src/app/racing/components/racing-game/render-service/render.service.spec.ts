@@ -10,18 +10,20 @@ import { HttpClientModule} from "@angular/common/http";
 import { Track } from "./../../../track";
 import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
+import { KeyboardService } from "../commands/keyboard.service";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers no-floating-promises await-promise */
 describe("RenderService", () => {
     const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
+    const keyboard: KeyboardService = new KeyboardService;
     // tslint:disable-next-line:prefer-const
     let container: HTMLDivElement;
     const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         newScores: new Array<number>()
     };
-    const service: RenderService = new RenderService();
+    const service: RenderService = new RenderService(keyboard);
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
@@ -30,7 +32,7 @@ describe("RenderService", () => {
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([{ path: "gameResults/:CarIndex", component: GameResultsComponent }])]
             ,
-            providers: [RenderService]
+            providers: [RenderService, KeyboardService]
         });
 
     }));
@@ -42,7 +44,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(
@@ -53,7 +55,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -66,7 +68,7 @@ describe("RenderService", () => {
         let isEqual: boolean = false;
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -85,7 +87,7 @@ describe("RenderService", () => {
         let isEqual: boolean = false;
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -105,7 +107,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -133,7 +135,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -148,7 +150,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -162,7 +164,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
@@ -177,7 +179,7 @@ describe("RenderService", () => {
         const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
