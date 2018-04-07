@@ -124,29 +124,28 @@ export class CarsCollisionService {
 
     private handleCollisions(car1: Car, car2: Car): void {
         
+
         /* 2 Dimension avec angle */
-        /* Je suis plus sur des axes de vitesses... Je regarde ca demain. Le x semble etre tjr a 0. */
+        /* Axes semblent etre X et Z */
         const masseTotale: number = car1.Mass + car2.Mass;
 
         const speedLength1: number = car1.speed.length();
         const speedLength2: number = car2.speed.length();
 
-        const phi: number = (speedLength1 === 0 || speedLength2 ===0) ? 0 : car1.speed.angleTo(car2.speed);
-        const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.y / speedLength1): 0;
-        const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.y / speedLength2): 0;
+        const phi: number = car1.getUpdatedPosition().angleTo(car2.getUpdatedPosition());
+        const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1): 0;
+        const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2): 0;
 
-        const newSpeedX1: number = ((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.cos(phi) - speedLength1 * Math.sin(theta1 - phi) * Math.sin(phi);
-        const newSpeedY1: number = ((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.sin(phi) + speedLength1 * Math.sin(theta1 - phi) * Math.cos(phi);
+        const newSpeedX1: number = (((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.cos(phi)) - (speedLength1 * Math.sin(theta1 - phi) * Math.sin(phi));
+        const newSpeedY1: number = (((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.sin(phi)) + (speedLength1 * Math.sin(theta1 - phi) * Math.cos(phi));
 
-        const newSpeedX2: number = ((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.cos(phi) - speedLength2 * Math.sin(theta2 - phi) * Math.sin(phi);
-        const newSpeedY2: number = ((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.sin(phi) + speedLength2 * Math.sin(theta2 - phi) * Math.cos(phi);
+        const newSpeedX2: number = (((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.cos(phi)) - (speedLength2 * Math.sin(theta2 - phi) * Math.sin(phi));
+        const newSpeedY2: number = (((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.sin(phi)) + (speedLength2 * Math.sin(theta2 - phi) * Math.cos(phi));
 
-        car1.speed.y = newSpeedX1;
-        car1.speed.z = newSpeedY1;
        // car1.speed.z = 0;
-        console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
-
-        car2.speed = new THREE.Vector3(0, newSpeedX2, newSpeedY2);
+        //console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
+        car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
+        car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
 
         /* console.log("newSpeed1: " + newSpeedX1 + " " + newSpeedY1)
         console.log("NewSpped2: " + newSpeedX2 + " " + newSpeedY2)
