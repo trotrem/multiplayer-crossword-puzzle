@@ -130,17 +130,14 @@ export class CarsCollisionService {
 
         // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
 
-        const speed1: THREE.Vector3 = car1.speed;
-        const speed2: THREE.Vector3 = car2.speed;
+        const velocity1: THREE.Vector3 = car1.velocity;
+        const velocity2: THREE.Vector3 = car2.velocity;
 
-        const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
+        //const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
 
-        const newSpeed1: THREE.Vector3 = new THREE.Vector3(totalMomentum.x / car1.Mass / CAR_1_MOMENTUM_FACTOR,
-            totalMomentum.y / car1.Mass / CAR_1_MOMENTUM_FACTOR,
-            totalMomentum.z / car1.Mass / CAR_1_MOMENTUM_FACTOR);
-        let newSpeed2: THREE.Vector3 = new THREE.Vector3(totalMomentum.x / car2.Mass / CAR_2_MOMENTUM_FACTOR,
-            totalMomentum.y / car2.Mass / CAR_2_MOMENTUM_FACTOR,
-            totalMomentum.z / car2.Mass / CAR_2_MOMENTUM_FACTOR);
+        const newVelocity1: THREE.Vector3 = (velocity2.multiplyScalar(car2.Mass * 2)).divideScalar(car1.Mass + car2.Mass);
+        const newVelocity2: THREE.Vector3 = (velocity1.multiplyScalar(car1.Mass * 2)).divideScalar(car1.Mass + car2.Mass);
+
 
         car1.speed = newSpeed1;
         car2.speed = newSpeed2;
