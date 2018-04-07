@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Car } from "../Car";
 import { Injectable } from "@angular/core";
+import { Vector3 } from "three";
 
 export interface IProjection {
     minProj: number;
@@ -59,7 +60,7 @@ export class CarsCollisionService {
 
         const isSeparate: boolean = separateP || separateQ || separateR || separateS;
         if (!isSeparate) {
-            this.mtv.direction = this.smallest;
+            this.mtv.direction = new Vector3(2, 2, 0);
             this.mtv.distance = this.overlap;
         }
 
@@ -122,25 +123,78 @@ export class CarsCollisionService {
     }
 
     private handleCollisions(car1: Car, car2: Car): void {
-        /*
-        *   STEP 1: Quoi modifier? Velocity!?
-        *   STEP 2: On veut modifier la velocite pour aller en direction inverse au vecteur collision (vecteurCollision => this.mtv)
-        *   STEP 3: En théorie, la collision est faite
-        */
+        
+        /* 2 Dimension avec angle */
+        /* Je suis plus sur des axes de vitesses... Je regarde ca demain. Le x semble etre tjr a 0. */
+        const masseTotale: number = car1.Mass + car2.Mass;
 
+        const speedLength1: number = car1.speed.length();
+        const speedLength2: number = car2.speed.length();
+
+        const phi: number = (speedLength1 === 0 || speedLength2 ===0) ? 0 : car1.speed.angleTo(car2.speed);
+        const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.y / speedLength1): 0;
+        const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.y / speedLength2): 0;
+
+        const newSpeedX1: number = ((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.cos(phi) - speedLength1 * Math.sin(theta1 - phi) * Math.sin(phi);
+        const newSpeedY1: number = ((2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale) * Math.sin(phi) + speedLength1 * Math.sin(theta1 - phi) * Math.cos(phi);
+
+        const newSpeedX2: number = ((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.cos(phi) - speedLength2 * Math.sin(theta2 - phi) * Math.sin(phi);
+        const newSpeedY2: number = ((2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale) * Math.sin(phi) + speedLength2 * Math.sin(theta2 - phi) * Math.cos(phi);
+
+        car1.speed.y = newSpeedX1;
+        car1.speed.z = newSpeedY1;
+       // car1.speed.z = 0;
+        console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
+
+        car2.speed = new THREE.Vector3(0, newSpeedX2, newSpeedY2);
+
+        /* console.log("newSpeed1: " + newSpeedX1 + " " + newSpeedY1)
+        console.log("NewSpped2: " + newSpeedX2 + " " + newSpeedY2)
+        
+        console.log("Masse totale: " + masseTotale)
+        console.log("1: " + car1.speed.x)
+        console.log("2: " + car2.speed.x)
+
+        console.log("phi: " + phi)
+        console.log("theta1: " + theta1)
+        console.log("theta2: " + theta2)
+        console.log("speedLenght1: " + speedLength1)
+        console.log("speedLenght2: " + speedLength2)
+
+        console.log("z: " + car1.speed.z)*/
+
+
+
+        /* 2 Dimension sans angle */
+       /* const m = car1.Mass + car2.Mass;
+        const v = car1.speed.sub(car2.speed);
+
+        const u1 = v.multiplyScalar(car2.Mass / m)
+        const u2 = v.multiplyScalar(-car1.Mass / m)
+
+        let n = this.mtv.direction.normalize();
+
+        let w1 = n.multiplyScalar(u1.length());
+        let w2 = n.multiplyScalar(u2.length());
+
+
+        car1.speed = w1;
+        car2.speed = w2;*/
+
+        /* 1 Dimension */
         // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
 
-        const velocity1: THREE.Vector3 = car1.velocity;
-        const velocity2: THREE.Vector3 = car2.velocity;
+       /* const velocity1: THREE.Vector3 = car1.speed;
+        const velocity2: THREE.Vector3 = car2.speed;
 
         //const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
 
-        const newVelocity1: THREE.Vector3 = (velocity2.multiplyScalar(car2.Mass * 2)).divideScalar(car1.Mass + car2.Mass);
-        const newVelocity2: THREE.Vector3 = (velocity1.multiplyScalar(car1.Mass * 2)).divideScalar(car1.Mass + car2.Mass);
+        const newVelocity1: THREE.Vector3 = (velocity2.multiplyScalar(2 * car1.Mass)).divideScalar(car1.Mass + car2.Mass);
+        const newVelocity2: THREE.Vector3 = (velocity1.multiplyScalar(2 * car2.Mass)).divideScalar(car2.Mass + car1.Mass);
 
 
-        car1.speed = newSpeed1;
-        car2.speed = newSpeed2;
+        car1.speed = newVelocity1;
+        car2.speed = newVelocity2;*/
 
 
 
