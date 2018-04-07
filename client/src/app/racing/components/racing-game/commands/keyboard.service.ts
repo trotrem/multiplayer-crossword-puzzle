@@ -1,10 +1,10 @@
-// Invoker of command pattern
+// Invoker of command pattern, handle events
 import { Injectable } from "@angular/core";
 import { ICommand, IMap } from "./command";
 
 @Injectable()
-export class Keyboard {
-    protected _commands: IMap<Array<ICommand>>;
+export class KeyboardService {
+    private _commands: IMap<Array<ICommand>>;
 
     public constructor() {
         this._commands = {};

@@ -4,6 +4,9 @@ import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { KeyboardService } from "../commands/keyboard.service";
+import * as Command from "../commands/concrete-commands/headers";
+import * as KeyCode from "../commands/key-code";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -46,7 +49,6 @@ export class Car extends Object3D {
     private updatedPosition: Vector3;
     private lapTimes: number[];
 
-    // temporary for tests purposes until we have the AI
     public set speed(speed: Vector3) {
         this._speed = speed;
     }
@@ -95,8 +97,9 @@ export class Car extends Object3D {
         return this.updatedPosition;
     }
     public constructor(
-        private collisionService: WallsCollisionsService, engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(),
-        wheelbase: number = DEFAULT_WHEELBASE, mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
+        private collisionService: WallsCollisionsService, private keyboard: KeyboardService,
+        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
+        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
 
         if (wheelbase <= 0) {
@@ -127,6 +130,7 @@ export class Car extends Object3D {
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
     }
+
     public async init(): Promise<void> {
         this._mesh = await this.carLoader.load();
         this._mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
@@ -281,5 +285,15 @@ export class Car extends Object3D {
             time -= this.lapTimes[this.lapTimes.length - i];
         }
         this.lapTimes.push(time);
+    }
+    public initCommands(): void {
+        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.AccelerationCommand(this));
+        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.SteerLeftCommand(this));
+        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.SteerRightCommand(this));
+        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.BrakeCommand(this));
+        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.ReleaseSteerCommand(this));
+        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.ReleaseSteerCommand(this));
+        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.DecelerateCommand(this));
+        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.ReleaseBrakesCommand(this));
     }
 }

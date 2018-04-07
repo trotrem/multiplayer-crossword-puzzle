@@ -6,24 +6,22 @@ import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
 import { RaceValidatorService } from "../race-validator/race-validator.service";
 import { CARS_MAX } from "../constants";
-import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
-import { Keyboard } from "../commands/keyboard";
+import { KeyboardService } from "../commands/keyboard.service";
 
 @Injectable()
 export class GameManagerService {
 
     private timer: number;
     private lastDate: number;
-    private eventHandler: EventHandlerRenderService;
     private _cars: Car[] = [];
 
     public constructor(private renderService: RenderService,
                        private communicationService: RacingCommunicationService,
                        private raceValidator: RaceValidatorService,
                        private collisionService: WallsCollisionsService,
-                       private keyboard: Keyboard ) {
+                       private keyboard: KeyboardService ) {
                         this.timer = 0;
                     }
 
@@ -32,7 +30,7 @@ export class GameManagerService {
         const track: Track = await this.getTrack(trackName, container);
 
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService);
+            this._cars[i] = new Car(this.collisionService, this.keyboard);
             await this._cars[i].init();
         }
         this.raceValidator.initialize(track, this.collisionService, this._cars);
@@ -44,7 +42,7 @@ export class GameManagerService {
     }
 
     public startRace(): void {
-        this.eventHandler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService, this.keyboard);
+        this._cars[0].initCommands();
     }
 
     public onResize(): void {
