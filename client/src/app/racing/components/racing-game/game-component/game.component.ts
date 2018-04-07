@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { inject } from "inversify";
 import { GameManagerService } from "../game-manager/game-manager.service";
+import { Keyboard } from "../commands/keyboard";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -21,7 +21,7 @@ export class GameComponent implements AfterViewInit {
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, @inject(GameManagerService) private gameManager: GameManagerService) {
+    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: Keyboard ) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -32,6 +32,16 @@ export class GameComponent implements AfterViewInit {
     @HostListener("window:resize", ["$event"])
     public onResize(): void {
         this.gameManager.onResize();
+    }
+
+    @HostListener("document:keydown", ["$event"])
+    public onKeyPressed(event: KeyboardEvent): void {
+        this.keyboard.executeKeyUpCommands(event.keyCode);
+    }
+
+    @HostListener("document:keyup", ["$event"])
+    public onKeyReleased(event: KeyboardEvent): void {
+        this.keyboard.executeKeyDownCommands(event.keyCode);
     }
 
     public async ngAfterViewInit(): Promise<void> {

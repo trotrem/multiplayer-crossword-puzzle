@@ -1,4 +1,4 @@
-import { injectable, inject } from "inversify";
+import { Injectable } from "@angular/core";
 import { RenderService } from "../render-service/render.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import { Track } from "../../../track";
@@ -9,8 +9,9 @@ import { CARS_MAX } from "../constants";
 import { EventHandlerRenderService } from "../render-service/event-handler-render.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
+import { Keyboard } from "../commands/keyboard";
 
-@injectable()
+@Injectable()
 export class GameManagerService {
 
     private timer: number;
@@ -18,10 +19,11 @@ export class GameManagerService {
     private eventHandler: EventHandlerRenderService;
     private _cars: Car[] = [];
 
-    public constructor(@inject(RenderService) private renderService: RenderService,
-                       @inject(RacingCommunicationService) private communicationService: RacingCommunicationService,
-                       @inject(RaceValidatorService) private raceValidator: RaceValidatorService,
-                       @inject(WallsCollisionsService) private collisionService: WallsCollisionsService) {
+    public constructor(private renderService: RenderService,
+                       private communicationService: RacingCommunicationService,
+                       private raceValidator: RaceValidatorService,
+                       private collisionService: WallsCollisionsService,
+                       private keyboard: Keyboard ) {
                         this.timer = 0;
                     }
 
@@ -42,7 +44,7 @@ export class GameManagerService {
     }
 
     public startRace(): void {
-        this.eventHandler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService);
+        this.eventHandler = new EventHandlerRenderService(this.raceValidator.cars[0], this.renderService, this.keyboard);
     }
 
     public onResize(): void {
