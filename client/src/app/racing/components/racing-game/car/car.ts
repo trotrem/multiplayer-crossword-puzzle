@@ -197,6 +197,9 @@ export class Car extends Object3D {
         this.engine.update(this._speed.length(), this.rearWheel.radius);
         this.weightRear = this.getWeightDistribution();
         this._speed.add(this.getDeltaSpeed(deltaTime));
+        /*console.log("x: " + this._speed.x)
+        console.log("y: " + this._speed.y)
+        console.log("z: " + this._speed.z)*/
         this._speed.setLength(
             this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
         );

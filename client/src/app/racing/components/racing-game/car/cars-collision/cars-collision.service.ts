@@ -124,30 +124,33 @@ export class CarsCollisionService {
 
     private handleCollisions(car1: Car, car2: Car): void {
         
+        // Masse
+        const totalMass: number = car1.Mass + car2.Mass;
 
-        /* 2 Dimension avec angle */
-        /* Axes semblent etre X et Z */
-        const masseTotale: number = car1.Mass + car2.Mass;
+        // Magnitude of speeds
         const speedLength1: number = car1.speed.length();
         const speedLength2: number = car2.speed.length();
+
+        // Angles
         const phi: number = car1.getUpdatedPosition().angleTo(car2.getUpdatedPosition());
         const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1): 0;
         const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2): 0;
 
-        /* temp just pour tester plus facilement */
-        let temp1 = (2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale;
+        // Random temps
+        let temp1 = (2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / totalMass;
         let temp2 = speedLength1 * Math.sin(theta1 - phi);
-        const newSpeedX1: number = (temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi));
-        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi));
-
-        let temp3 = (2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / masseTotale;
+        let temp3 = (2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / totalMass;
         let temp4 = (speedLength2 * Math.sin(theta2 - phi));
+
+        // New speeds
+        const newSpeedX1: number = ((temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi))) / 2;
+        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi));
         const newSpeedX2: number = (temp3 * Math.cos(phi)) - (temp4 * Math.sin(phi));
-        const newSpeedY2: number = (temp3 * Math.sin(phi)) - (temp4 * Math.cos(phi));;
+        const newSpeedY2: number = (temp3 * Math.sin(phi)) + (temp4 * Math.cos(phi));;
 
         //console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
-        car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
-        car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
+        car1.speed = new THREE.Vector3(newSpeedX1, newSpeedY1, 0);
+        car2.speed = new THREE.Vector3(newSpeedX2, newSpeedY2, 0);
 
         /* console.log("newSpeed1: " + newSpeedX1 + " " + newSpeedY1)
         console.log("NewSpped2: " + newSpeedX2 + " " + newSpeedY2)
@@ -164,23 +167,6 @@ export class CarsCollisionService {
 
         console.log("z: " + car1.speed.z)*/
 
-
-
-        /* 2 Dimension sans angle */
-       /* const m = car1.Mass + car2.Mass;
-        const v = car1.speed.sub(car2.speed);
-
-        const u1 = v.multiplyScalar(car2.Mass / m)
-        const u2 = v.multiplyScalar(-car1.Mass / m)
-
-        let n = this.mtv.direction.normalize();
-
-        let w1 = n.multiplyScalar(u1.length());
-        let w2 = n.multiplyScalar(u2.length());
-
-
-        car1.speed = w1;
-        car2.speed = w2;*/
 
         /* 1 Dimension */
         // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
