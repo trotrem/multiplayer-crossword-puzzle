@@ -3,9 +3,9 @@ import THREE = require("three");
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "../../../utils/utils";
-import { HALF_CIRCLE_DEGREES } from "./../../../../constants";
-const MAX_SPEED: number = 50;
-const MIN_SPEED: number = 30;
+import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
+const MAX_SPEED: number = 10;
+const MIN_SPEED: number = 4;
 const MAX_DISTANCE: number = 18;
 const MIN_DISTANCE: number = 13;
 const MAX_ANGLE: number = 2;
@@ -24,11 +24,13 @@ export class AiController {
         this.distanceToCorner = this.randomIntFromInterval(MIN_DISTANCE, MAX_DISTANCE);
     }
 
-    public update(): void {
+    public update(): boolean {
         this.updateSpeed();
-        this.updateCheckPoint();
+        const lap: boolean = this.updateCheckPoint();
         this.verifyCollisionWall();
         this.turnCorner();
+
+        return lap;
     }
 
     private updateSpeed(): void {
@@ -39,12 +41,17 @@ export class AiController {
         }
     }
 
-    private updateCheckPoint(): void {
+    private updateCheckPoint(): boolean {
         if (this._car.checkpoint === this._checkPoints.length - 1) {
             if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
                 this._car.checkpoint = 0;
+                if (this._car.getLabTimes().length < LAP_MAX) {
+                    return true;
+                }
             }
         }
+
+        return false;
     }
 
     private turnCorner(): void {

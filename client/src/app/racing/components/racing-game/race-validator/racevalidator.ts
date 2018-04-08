@@ -42,22 +42,22 @@ export class RaceValidator {
         const newScore: INewScores = { id: carIndex, scores: new Array<number>() };
         track.INewScores.push(newScore);
         for (const time of car.getLabTimes()) {
-            track.INewScores[carIndex].scores.push(time);
+            track.INewScores[track.INewScores.length - 1].scores.push(time);
         }
     }
 
-    public static estimateTime(time: number, car: Car, track: Track): void {
-        // tslint:disable-next-line:no-magic-numbers
-        car.speed = new THREE.Vector3(12, 0, 6);
-        if (car.counterLap < LAP_MAX) {
-            let distance: number =
-                RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[car.checkpoint + 1]);
-            for (let j: number = car.checkpoint + 1; j > 0; j--) {
-                distance += RaceUtils.calculateDistance(track.points[j], track.points[j + 1]);
-            }
-            while (car.getLabTimes().length !== LAP_MAX) {
-                car.getLabTimes().push((distance / car.speed.length()) + time);
-            }
+    public static estimateTime(timeNow: number, car: Car, track: Track): void {
+        /*// tslint:disable-next-line:no-magic-numbers
+        car.speed = new THREE.Vector3(12, 0, 6);*/
+
+        let distance: number =
+            RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[car.checkpoint + 1]);
+        for (let j: number = car.checkpoint + 1; j > 0; j--) {
+            distance += RaceUtils.calculateDistance(track.points[j], track.points[j + 1]);
+        }
+        const time: number = car.setLapTimes((distance / car.speed.length()) + timeNow);
+        while (car.getLabTimes().length !== LAP_MAX) {
+            car.getLabTimes().push(time);
         }
 
     }
