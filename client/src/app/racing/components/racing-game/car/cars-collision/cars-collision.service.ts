@@ -102,7 +102,7 @@ export class CarsCollisionService {
 
     }
 
-    private handleCollisions(car1: Car, car2: Car): void {      
+    private handleCollisions(car1: Car, car2: Car): void {
         // Masse
         const totalMass: number = car1.Mass + car2.Mass;
         // Magnitude of speeds
@@ -125,5 +125,6 @@ export class CarsCollisionService {
 
         car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
         car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
+        // Deuxieme vitesse displacementSpeed : vitesse donner par la collision, additionner a la vrai speed, faire decrementer la vitesse, stop a zero
     }
 }
