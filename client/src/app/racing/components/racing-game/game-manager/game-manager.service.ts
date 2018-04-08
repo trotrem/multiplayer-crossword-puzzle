@@ -112,7 +112,7 @@ export class GameManagerService {
         RaceValidator.addScoreToTrack(this._cars[0], this.track, 0);
         for (let i: number = 1; i < CARS_MAX; i++) {
             if (this._cars[i].getLabTimes().length < LAP_MAX) {
-                RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track);
+                RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track.points);
                 RaceValidator.addScoreToTrack(this._cars[i], this.track, i);
             }
         }

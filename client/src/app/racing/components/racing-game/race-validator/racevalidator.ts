@@ -46,14 +46,12 @@ export class RaceValidator {
         }
     }
 
-    public static estimateTime(timeNow: number, car: Car, track: Track): void {
-        /*// tslint:disable-next-line:no-magic-numbers
-        car.speed = new THREE.Vector3(12, 0, 6);*/
+    public static estimateTime(timeNow: number, car: Car, points: THREE.Vector3[]): void {
 
         let distance: number =
-            RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[car.checkpoint + 1]);
-        for (let j: number = car.checkpoint + 1; j > 0; j--) {
-            distance += RaceUtils.calculateDistance(track.points[j], track.points[j + 1]);
+            RaceUtils.calculateDistance(car.getUpdatedPosition(), points[car.checkpoint]);
+        for (let j: number = car.checkpoint; j > 0; j--) {
+            distance += RaceUtils.calculateDistance(points[j], points[j + 1]);
         }
         const time: number = car.setLapTimes((distance / car.speed.length()) + timeNow);
         while (car.getLabTimes().length !== LAP_MAX) {
