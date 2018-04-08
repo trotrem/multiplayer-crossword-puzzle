@@ -33,6 +33,7 @@ export class Skybox {
     private skyMaterial: THREE.MeshFaceMaterial = null;
     private skyGeometry: THREE.BoxGeometry = null;
 
+    // TODO: initialiser skyMaterials dans contructeur
     public constructor() {
         this.skyMaterial = new THREE.MeshFaceMaterial(this.skyMaterials);
         this.skyGeometry = new THREE.BoxGeometry(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
