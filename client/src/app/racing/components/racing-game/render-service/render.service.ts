@@ -7,8 +7,11 @@ import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
-import { CARS_MAX } from "../constants";
+import { CARS_MAX } from "../../../../constants";
 import { Track } from "../../../track";
+import { KeyboardService } from "../commands/keyboard.service";
+import * as Command from "../commands/concrete-commands/headers";
+import * as KeyCode from "../commands/key-code";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
@@ -27,7 +30,7 @@ export class RenderService {
     private stats: Stats;
     private cameraID: number;
 
-    public constructor() {
+    public constructor(private keyboard: KeyboardService) {
         this.cameraID = 0;
     }
     public getScene(): THREE.Scene {
@@ -53,6 +56,7 @@ export class RenderService {
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.container.appendChild(this.renderer.domElement);
         this.cameras[0].up.set(0, 0, 1);
+        this.initCameraCommands();
     }
 
     private initStats(): void {
@@ -141,4 +145,10 @@ export class RenderService {
             this.scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ visible: false })));
         }
     }
+    public initCameraCommands(): void {
+        this.keyboard.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand(this));
+        this.keyboard.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand(this));
+        this.keyboard.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(this));
+    }
+
 }

@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { Track } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
@@ -17,7 +18,7 @@ describe("GameResultsComponent", () => {
   let route: ActivatedRoute;
   const track: Track = {
     name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-    newScores: new Array<number>()
+    INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
   };
 
   beforeEach(async(() => {
@@ -49,10 +50,10 @@ describe("GameResultsComponent", () => {
   it("should get a track by name", async () => {
     expect(component.getTrack(track.name)).toBeDefined();
   });
-  it("should return the track's newScores  ", async () => {
+  it("should return the track's INewScores  ", async () => {
     route.snapshot.params = { params: track.name };
     await component.getTrack(track.name);
-    expect(component.scores === track.newScores).toBe(true);
+    expect(component.scores === track.INewScores).toBe(true);
   });
 
 });

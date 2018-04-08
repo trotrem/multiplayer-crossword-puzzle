@@ -13,7 +13,7 @@ describe("GridEventService", () => {
   let router: Router;
   const communicationService: CommunicationService = new CommunicationService(http);
 
-  const service: GridEventService = new GridEventService(words, communicationService, router);
+  const service: GridEventService = new GridEventService( communicationService, router);
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [

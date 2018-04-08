@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { IGrid } from "./dataStructures";
 import { GridUtils } from "./gridUtils";
 import { Direction } from "../../../../../common/communication/types";
-import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
+import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
 
 describe("getText", () => {
     it("Should return the text from the grid", async () => {

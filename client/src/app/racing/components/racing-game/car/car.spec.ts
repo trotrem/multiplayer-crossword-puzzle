@@ -3,6 +3,7 @@ import { Engine } from "./engine";
 import { Wheel } from "./wheel";
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
+import { KeyboardService } from "../commands/keyboard.service";
 
 const MS_BETWEEN_FRAMES: number = 16.6667;
 
@@ -14,12 +15,13 @@ class MockEngine extends Engine {
 }
 
 const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
+const keyboard: KeyboardService = new KeyboardService;
 
 describe("Car", () => {
     let car: Car;
 
     beforeEach(async (done: () => void) => {
-        car = new Car(wallsCollisionsService, new MockEngine());
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine());
         await car.init();
 
         car.isAcceleratorPressed = true;
@@ -29,7 +31,7 @@ describe("Car", () => {
     });
 
     it("should be instantiable using default constructor", () => {
-        car = new Car(wallsCollisionsService, new MockEngine());
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine());
         expect(car).toBeDefined();
         expect(car.speed.length()).toBe(0);
     });
@@ -97,27 +99,27 @@ describe("Car", () => {
     });
 
     it("should use default engine parameter when none is provided", () => {
-        car = new Car(undefined);
+        car = new Car(wallsCollisionsService, keyboard, undefined);
         expect(car["engine"]).toBeDefined();
     });
 
     it("should use default Wheel parameter when none is provided", () => {
-        car = new Car(wallsCollisionsService, new MockEngine(), undefined);
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine(), undefined);
         expect(car["rearWheel"]).toBeDefined();
     });
 
     it("should check validity of wheelbase parameter", () => {
-        car = new Car(wallsCollisionsService, new MockEngine(), new Wheel(), 0);
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine(), new Wheel(), 0);
         expect(car["wheelbase"]).toBe(DEFAULT_WHEELBASE);
     });
 
     it("should check validity of mass parameter", () => {
-        car = new Car(wallsCollisionsService, new MockEngine(), new Wheel(), DEFAULT_WHEELBASE, 0);
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine(), new Wheel(), DEFAULT_WHEELBASE, 0);
         expect(car["mass"]).toBe(DEFAULT_MASS);
     });
 
     it("should check validity of dragCoefficient parameter", () => {
-        car = new Car(wallsCollisionsService, new MockEngine(), new Wheel(), DEFAULT_WHEELBASE, DEFAULT_MASS, -10);
+        car = new Car(wallsCollisionsService, keyboard, new MockEngine(), new Wheel(), DEFAULT_WHEELBASE, DEFAULT_MASS, -10);
         expect(car["dragCoefficient"]).toBe(DEFAULT_DRAG_COEFFICIENT);
     });
 });

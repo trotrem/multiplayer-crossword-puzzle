@@ -4,6 +4,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Track } from "../track";
 import { RacingCommunicationService } from "./communicationRacing.service";
+import { INewScores, IBestScores } from "../../../../../common/communication/interfaces";
 
 describe("RacingCommunicationService", () => {
   beforeEach(() => {
@@ -36,7 +37,7 @@ describe("RacingCommunicationService", () => {
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
       const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-        newScores: new Array<number>()
+        INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
       http.post("http://localhost:3000/racing/track", JSON.stringify(track)).subscribe();
       backend.expectOne({

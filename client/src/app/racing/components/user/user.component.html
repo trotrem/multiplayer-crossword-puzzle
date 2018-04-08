@@ -12,7 +12,9 @@
     <dt> track number of uses: </dt>
     <span class="badge">{{track.usesNumber}}</span>
     <dt> track best scores: </dt>
-    <span class="badge">{{track.bestScores}}</span>
+    <ul *ngFor="let best of track.IBestScores">
+    <span class="badge">{{best.name}} => {{best.score}} <br></span>
+    </ul>
     <button [class.selected]="track === selectedTrack"
     (click)="showTrack(track)"> Show this Track</button>
 </li>
