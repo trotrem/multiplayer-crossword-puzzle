@@ -17,7 +17,6 @@ const ZOOM_MIN: number = 0.75;
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
-// const INITIAL_AXISHELPER: number = 6;
 const RED: number = 0xFF0000;
 
 @Injectable()
@@ -64,11 +63,6 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
-    /*private createSkyBox(): void {
-
-        this.scene.add(skyMesh);
-    }*/
-
     private createScene(track: Track, cars: Car[], walls: ILine[]): void {
         this.scene = new THREE.Scene();
         this.skyBox = new Skybox();
@@ -85,12 +79,7 @@ export class RenderService {
         track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         this.scene.add(this.skyBox.createSkybox());
-        /*const loader: THREE.TextureLoader = new THREE.TextureLoader();
-        const bgTexture: THREE.Texture = loader.load("./../../assets/models/Day-Front.jpg"
-        );
-        this.scene.background = bgTexture;
-        bgTexture.wrapS = THREE.MirroredRepeatWrapping;
-        bgTexture.wrapT = THREE.MirroredRepeatWrapping;*/
+
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
