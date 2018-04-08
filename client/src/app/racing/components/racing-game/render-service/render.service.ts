@@ -9,6 +9,7 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
 import { CARS_MAX } from "../constants";
 import { Track } from "../../../track";
+import { Skybox } from "./skybox";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
@@ -16,7 +17,6 @@ const ZOOM_MIN: number = 0.75;
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
-// const INITIAL_AXISHELPER: number = 6;
 const RED: number = 0xFF0000;
 
 @Injectable()
@@ -27,6 +27,7 @@ export class RenderService {
     private scene: THREE.Scene;
     private stats: Stats;
     private cameraID: number;
+    private skyBox: Skybox;
 
     public constructor() {
         this.cameraID = 0;
@@ -64,6 +65,7 @@ export class RenderService {
 
     private createScene(track: Track, cars: Car[], walls: ILine[]): void {
         this.scene = new THREE.Scene();
+        this.skyBox = new Skybox();
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(track.points);
@@ -76,6 +78,8 @@ export class RenderService {
         this.showWalls(walls);
         track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+        this.scene.add(this.skyBox.createSkybox());
+
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
