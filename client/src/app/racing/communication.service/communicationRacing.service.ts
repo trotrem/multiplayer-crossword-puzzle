@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
-import { Track } from "./../track";
+
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
+import { Track } from "../track";
 
 export const URL_SERVER: string = "http://localhost:3000/racing/";
 @Injectable()
@@ -48,7 +49,17 @@ export class RacingCommunicationService {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateNewScores", JSON.stringify(track), {
+        this.http.put(URL_SERVER + "updateINewScores", JSON.stringify(track), {
+            headers: headers
+        })
+            .subscribe((data: Response) => {
+            });
+    }
+    public updateIBestScore(track: Track): void {
+        const headers: HttpHeaders = new HttpHeaders()
+            .set("Authorization", "my-auth-token")
+            .set("Content-Type", "application/json");
+        this.http.put(URL_SERVER + "updateIBestScore", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {

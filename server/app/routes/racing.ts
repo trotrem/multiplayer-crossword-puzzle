@@ -62,12 +62,12 @@ module Route {
         public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
             trackDocument.update(
                 {name: req.body.name },
-                { $set: {  newScores: req.body.newScores, usesNumber: req.body.usesNumber } },
+                { $set: {  INewScores: req.body.INewScores, usesNumber: req.body.usesNumber , IBestScores: req.body.IBestScores} },
                 // tslint:disable-next-line:only-arrow-functions
                 function (err: Error): void {
                     if (!err) {
                         console.warn("update ");
-                        res.send("update newScores");
+                        res.send("update INewScores");
                     } else {
                         console.error("unable to update");
                         res.status(BAD_REQUEST_ERROR).send("unable to update");
@@ -75,6 +75,22 @@ module Route {
                     }
                 });
         }
+        public updateIBestScoreByName(req: Request, res: Response, next: NextFunction): void {
+            trackDocument.update(
+                {name: req.body.name },
+                { $set: {  IBestScores: req.body.IBestScores } },
+                // tslint:disable-next-line:only-arrow-functions
+                function (err: Error): void {
+                    if (!err) {
+                        console.warn("update ");
+                        res.send("update IBestScore");
+                    } else {
+                        console.error("unable to update");
+                        res.status(BAD_REQUEST_ERROR).send("unable to update");
+
+                    }
+                });
+            }
     }
 }
 

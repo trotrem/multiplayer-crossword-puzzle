@@ -1,6 +1,6 @@
 import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
-import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../constants";
+import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
@@ -48,7 +48,23 @@ export class Car extends Object3D {
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
+    private _counterLap: number;
+    private _checkpoint: number;
 
+    public set checkpoint(checkpoint: number) {
+        this._checkpoint = checkpoint;
+    }
+    public get checkpoint(): number {
+        return this._checkpoint;
+    }
+
+    public set counterLap(counterLap: number) {
+        this._counterLap = counterLap;
+    }
+    public get counterLap(): number {
+        return this._counterLap;
+    }
+    // temporary for tests purposes until we have the AI
     public set speed(speed: Vector3) {
         this._speed = speed;
     }
@@ -67,16 +83,17 @@ export class Car extends Object3D {
     public get angle(): number {
         return this._mesh.rotation.y * RAD_TO_DEG;
     }
+
     public getCorners(pos: Vector3): Vector3[] {
-      return [
-        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).sub(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).add(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
-        pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
-              this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
+        return [
+            pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).sub(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).add(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2)))),
+            pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
+                this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
     }
     public get mesh(): Object3D {
         return this._mesh;
@@ -115,7 +132,6 @@ export class Car extends Object3D {
             console.error("Drag coefficient should be greater than 0.");
             dragCoefficient = DEFAULT_DRAG_COEFFICIENT;
         }
-
         this.engine = engine;
         this.rearWheel = rearWheel;
         this.wheelbase = wheelbase;
@@ -123,12 +139,13 @@ export class Car extends Object3D {
         this.dragCoefficient = dragCoefficient;
         this.carLoader = new CarLoader();
         this.updatedPosition = new Vector3();
-
         this.isBraking = false;
         this.steeringWheelDirection = 0;
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
+        this._checkpoint = 0;
+        this._counterLap = 0;
     }
 
     public async init(): Promise<void> {
@@ -223,7 +240,7 @@ export class Car extends Object3D {
     private getRollingResistance(): Vector3 {
         const tirePressure: number = 1;
         const rollingCoefficient: number = 1 / tirePressure * (Math.pow(this.speed.length() * RADIUS / PERCENTAGE, NUMBER_REAR_WHEELS) *
-                COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
+            COEFFICIENT_USE + COEFFICIENT_DEGREE) + COEFFICIENT_USES;
 
         return this.direction.multiplyScalar(
             rollingCoefficient * this.mass * GRAVITY
@@ -240,7 +257,7 @@ export class Car extends Object3D {
     private getTractionForce(): number {
         const force: number = this.getEngineForce();
         const maxForce: number = this.rearWheel.frictionCoefficient * this.mass * GRAVITY * this.weightRear *
-                                 NUMBER_REAR_WHEELS / NUMBER_WHEELS;
+            NUMBER_REAR_WHEELS / NUMBER_WHEELS;
 
         return -Math.min(force, maxForce);
     }
@@ -280,11 +297,13 @@ export class Car extends Object3D {
     public getLabTimes(): number[] {
         return this.lapTimes;
     }
-    public setLapTimes(time: number): void {
+    public setLapTimes(time: number): number {
         for (let i: number = 1; i < this.lapTimes.length + 1; i++) {
             time -= this.lapTimes[this.lapTimes.length - i];
         }
         this.lapTimes.push(time);
+
+        return time;
     }
     public initCommands(): void {
         this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.AccelerationCommand(this));

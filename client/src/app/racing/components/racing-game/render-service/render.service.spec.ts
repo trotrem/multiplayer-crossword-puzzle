@@ -11,6 +11,7 @@ import { Track } from "./../../../track";
 import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 import { KeyboardService } from "../commands/keyboard.service";
+import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers no-floating-promises await-promise */
 describe("RenderService", () => {
@@ -21,7 +22,7 @@ describe("RenderService", () => {
     let container: HTMLDivElement;
     const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-        newScores: new Array<number>()
+        INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     const service: RenderService = new RenderService(keyboard);
     beforeEach(async(() => {
