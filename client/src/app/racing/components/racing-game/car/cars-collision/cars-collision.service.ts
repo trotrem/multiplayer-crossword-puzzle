@@ -1,17 +1,12 @@
 import * as THREE from "three";
 import { Car } from "../Car";
 import { Injectable } from "@angular/core";
-import { Vector3 } from "three";
 
 export interface IProjection {
     minProj: number;
     maxProj: number;
     minDot: number;
     maxDot: number;
-}
-export interface IMTV {
-    direction: THREE.Vector3;
-    distance: number;
 }
 
 const CAR_1_MOMENTUM_FACTOR: number = 2;
@@ -23,7 +18,6 @@ export class CarsCollisionService {
     private cars: Car[];
     private overlap: number = 100000;
     private smallest: THREE.Vector3 = null;
-    private mtv: IMTV;
     private normals1: THREE.Vector3[];
     private normals2: THREE.Vector3[];
     private vecCar1: THREE.Vector3[];
@@ -31,7 +25,6 @@ export class CarsCollisionService {
 
     public constructor() {
         this.smallest = null;
-        this.mtv = { direction: null, distance: null };
         this.normals1 = [];
         this.normals2 = [];
         this.vecCar1 = [];
@@ -65,38 +58,16 @@ export class CarsCollisionService {
         const resultS2: IProjection = this.getMinMax(this.vecCar2, this.normals2[0]);
 
         const separateP: boolean = resultP1.maxProj < resultP2.minProj || resultP2.maxProj < resultP1.minProj;
-        // if (!separateP) { this.overlaping(resultP1, resultP2, this.normals1[1]); }
         const separateQ: boolean = resultQ1.maxProj < resultQ2.minProj || resultQ2.maxProj < resultQ1.minProj;
-        // if (!separateQ) { this.overlaping(resultQ1, resultQ2, this.normals1[0]); }
         const separateR: boolean = resultR1.maxProj < resultR2.minProj || resultR2.maxProj < resultR1.minProj;
-        // if (!separateR) { this.overlaping(resultR1, resultR2, this.normals2[1]); }
         const separateS: boolean = resultS1.maxProj < resultS2.minProj || resultS2.maxProj < resultS1.minProj;
-        // if (!separateS) { this.overlaping(resultS1, resultS2, this.normals2[0]); }
-
-        /*const isSeparate: boolean = separateP || separateQ || separateR || separateS;
-        if (!isSeparate) {
-            this.mtv.direction = new Vector3(2, 2, 0);
-            this.mtv.distance = this.overlap;
-        }*/
 
         return !(separateP || separateQ || separateR || separateS);
     }
 
-    /*private overlaping(result1: IProjection, result2: IProjection, axis: THREE.Vector3): void {
-        let temp: number = this.getOverlap(result1, result2);
-        if (temp < this.overlap) {
-            this.overlap = temp;
-            this.smallest = axis;
-        }
-    }*/
-
     private prepareShape(car: Car): THREE.Vector3[] {
         return car.getCorners(car.getUpdatedPosition().add(car.velocity));
     }
-
-    /*public getOverlap(p1: IProjection, p2: IProjection): number {
-        return (p1.maxProj < p2.maxProj) ? p1.maxProj - p2.minProj : p2.maxProj - p1.minProj;
-    }*/
 
     private getMinMax(vecCar: THREE.Vector3[], axis: THREE.Vector3): IProjection {
         const points: IProjection = {
@@ -132,7 +103,7 @@ export class CarsCollisionService {
     }
 
     private handleCollisions(car1: Car, car2: Car): void {
-        
+
         // Masse
         const totalMass: number = car1.Mass + car2.Mass;
 
@@ -152,10 +123,10 @@ export class CarsCollisionService {
         let temp4 = (speedLength2 * Math.sin(theta2 - phi));
 
 
-        console.log("temp1: " +temp1);
-        console.log("temp2 : " +temp2);
-        console.log("temp3: " +temp3);
-        console.log("temp4 : " +temp4);
+        console.log("temp1: " + temp1);
+        console.log("temp2 : " + temp2);
+        console.log("temp3: " + temp3);
+        console.log("temp4 : " + temp4);
         console.log("cosphi: " + Math.cos(phi))
         console.log("sinphi: " + Math.sin(phi))
         // New speeds
