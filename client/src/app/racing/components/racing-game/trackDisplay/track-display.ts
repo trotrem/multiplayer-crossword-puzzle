@@ -4,12 +4,12 @@ const WIDTH_SPHERE: number = 8;
 const WIDTH_PLANE: number = 16;
 const WIDTH_START: number = 4;
 const WIDTH_POINT: number = 0.5;
-const WIDTH_SCENE: number = 300;
-const HEIGHT_SCENE: number = 300;
+const WIDTH_SCENE: number = 1000;
+const HEIGHT_SCENE: number = 1000;
 const SCENE: number = -0.5;
 const TRACK: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/asphalte.png");
 const START: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/start.png");
-const GRASS: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/grass.png");
+const GRASS: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/bottom.JPG");
 
 export class TrackDisplay {
 

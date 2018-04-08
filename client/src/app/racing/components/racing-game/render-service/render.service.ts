@@ -9,6 +9,7 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
 import { CARS_MAX } from "../constants";
 import { Track } from "../../../track";
+import { Skybox } from "./skybox";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
@@ -27,6 +28,7 @@ export class RenderService {
     private scene: THREE.Scene;
     private stats: Stats;
     private cameraID: number;
+    private skyBox: Skybox;
 
     public constructor() {
         this.cameraID = 0;
@@ -62,64 +64,14 @@ export class RenderService {
         this.container.appendChild(this.stats.dom);
     }
 
-    private createSkyBox(): void {
-        /* const loader: THREE.CubeTextureLoader = new THREE.CubeTextureLoader();
-         const path: string = "../../assets/camero/clouds/";
-         const format: string = ".png";
-         const urls: string[] = [
-             path + "posx" + format,
-             path + "negx" + format,
-             path + "posy" + format,
-             path + "negy" + format,
-             path + "posz" + format,
-             path + "negz" + format
-         ];
-         const textureSky: THREE.CubeTexture = loader.load(urls);
-         const skyMaterial: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
-             color: 0xffffff,
-             envMap: textureSky,
-             side: THREE.BackSide
-         });
- 
-         const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(300, 200, 100);
-         const skyMesh: THREE.Mesh = new THREE.Mesh(skyGeometry, skyMaterial);
-         this.scene.add(skyMesh);*/
-        const skyMaterials: THREE.MeshBasicMaterial[] = [
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Front.jpg"),
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Back.jpg"),
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Ceilling.jpg"),
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Bottom.jpg"),
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Right.jpg"),
-                side: THREE.DoubleSide
-            }),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Day-Left.jpg"),
-                side: THREE.DoubleSide
-            })];
-        const skyMaterial: THREE.MeshFaceMaterial = new THREE.MeshFaceMaterial(skyMaterials);
-        const skyGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(100000, 100000, 100000);
-        const skyMesh: THREE.Mesh = new THREE.Mesh(skyGeometry, skyMaterial);
-        skyMesh.rotateZ(Math.PI / 2);
-        skyMesh.rotateX(Math.PI / 2);
-        skyMesh.translate(20, new THREE.Vector3(0, 1, 0));
+    /*private createSkyBox(): void {
+
         this.scene.add(skyMesh);
-    }
+    }*/
 
     private createScene(track: Track, cars: Car[], walls: ILine[]): void {
         this.scene = new THREE.Scene();
+        this.skyBox = new Skybox();
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(track.points);
@@ -132,7 +84,13 @@ export class RenderService {
         this.showWalls(walls);
         track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
-        this.createSkyBox();
+        this.scene.add(this.skyBox.createSkybox());
+        /*const loader: THREE.TextureLoader = new THREE.TextureLoader();
+        const bgTexture: THREE.Texture = loader.load("./../../assets/models/Day-Front.jpg"
+        );
+        this.scene.background = bgTexture;
+        bgTexture.wrapS = THREE.MirroredRepeatWrapping;
+        bgTexture.wrapT = THREE.MirroredRepeatWrapping;*/
     }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;

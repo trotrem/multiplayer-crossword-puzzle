@@ -6,7 +6,7 @@ const XY_POSITION: number = 10;
 
 export class PerspectiveCamera extends THREE.PerspectiveCamera {
     private static readonly NEAR: number = 1;
-    private static readonly FAR: number = 100000000;
+    private static readonly FAR: number = 5000;
     private static readonly VIEW_ANGLE: number = 70;
 
     public constructor() {
