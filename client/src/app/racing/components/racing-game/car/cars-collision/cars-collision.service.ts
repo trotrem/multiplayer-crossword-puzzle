@@ -142,15 +142,23 @@ export class CarsCollisionService {
         let temp3 = (2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / totalMass;
         let temp4 = (speedLength2 * Math.sin(theta2 - phi));
 
+
+        console.log("temp1: " +temp1);
+        console.log("temp2 : " +temp2);
+        console.log("temp3: " +temp3);
+        console.log("temp4 : " +temp4);
+        console.log("cosphi: " + Math.cos(phi))
+        console.log("sinphi: " + Math.sin(phi))
         // New speeds
-        const newSpeedX1: number = ((temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi))) / 2;
-        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi));
+        const newSpeedX1: number = ((temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi))) / 20;
+        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi)) / 20;
+
         const newSpeedX2: number = (temp3 * Math.cos(phi)) - (temp4 * Math.sin(phi));
         const newSpeedY2: number = (temp3 * Math.sin(phi)) + (temp4 * Math.cos(phi));;
 
         //console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
-        car1.speed = new THREE.Vector3(newSpeedX1, newSpeedY1, 0);
-        car2.speed = new THREE.Vector3(newSpeedX2, newSpeedY2, 0);
+        car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
+        car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
 
         /* console.log("newSpeed1: " + newSpeedX1 + " " + newSpeedY1)
         console.log("NewSpped2: " + newSpeedX2 + " " + newSpeedY2)
