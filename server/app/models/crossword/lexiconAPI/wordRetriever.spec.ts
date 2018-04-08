@@ -1,4 +1,4 @@
-import { WordDictionaryData } from "./gridWordInformation";
+import { WordDictionaryData } from "./word-dictionnary-data";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 import { expect } from "chai";

@@ -1,4 +1,4 @@
-import { WordDictionaryData } from "./gridWordInformation";
+import { WordDictionaryData } from "./word-dictionnary-data";
 import { ExternalApiService } from "./externalApi.service";
 import { Difficulty } from "../../../../../common/communication/types";
 import { DatamuseObject } from "./datamuse-object";
