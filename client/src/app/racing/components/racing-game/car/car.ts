@@ -138,7 +138,6 @@ export class Car extends Object3D {
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
         mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
-        // this.carsCollision = new CarsCollision();
         if (wheelbase <= 0) {
             console.error("Wheelbase should be greater than 0.");
             wheelbase = DEFAULT_WHEELBASE;
@@ -163,6 +162,7 @@ export class Car extends Object3D {
         this.steeringWheelDirection = 0;
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
+        this._velocity = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
         this._checkpoint = 0;
         this._counterLap = 0;
@@ -201,7 +201,6 @@ export class Car extends Object3D {
         this._speed.applyMatrix4(rotationMatrix);
         // Physics calculations
         this.physicsUpdate(deltaTime);
-        // this.carsCollision.checkCarsCollision(this);
         // Move back to world coordinates
         this._speed = this.speed.applyQuaternion(rotationQuaternion.inverse());
         // Angular rotation of the car
@@ -218,9 +217,6 @@ export class Car extends Object3D {
         this.engine.update(this._speed.length(), this.rearWheel.radius);
         this.weightRear = this.getWeightDistribution();
         this._speed.add(this.getDeltaSpeed(deltaTime));
-        /*console.log("x: " + this._speed.x)
-        console.log("y: " + this._speed.y)
-        console.log("z: " + this._speed.z)*/
         this._speed.setLength(
             this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
         );

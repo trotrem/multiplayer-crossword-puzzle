@@ -43,6 +43,7 @@ export class GameManagerService {
         this.track = await this.getTrack(trackName, container);
         this.track.INewScores = new Array<INewScores>();
         await this.initializeCars();
+        this.carsCollisionService.initializeCars(this._cars);
         this.renderService.initialize(
             container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
         this.update();
