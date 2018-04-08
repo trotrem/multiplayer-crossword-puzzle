@@ -23,65 +23,80 @@ export class CarsCollisionService {
     private cars: Car[];
     private overlap: number = 100000;
     private smallest: THREE.Vector3 = null;
-    private mtv: IMTV = { direction: null, distance: null };
+    private mtv: IMTV;
+    private normals1: THREE.Vector3[];
+    private normals2: THREE.Vector3[];
+    private vecCar1: THREE.Vector3[];
+    private vecCar2: THREE.Vector3[];
 
     public constructor() {
+        this.smallest = null;
+        this.mtv = { direction: null, distance: null };
+        this.normals1 = [];
+        this.normals2 = [];
+        this.vecCar1 = [];
+        this.vecCar2 = [];
+
     }
 
     public initializeCars(cars: Car[]): void {
         this.cars = cars;
     }
 
+    private shapeAroundCar(car1: Car, car2: Car): void {
+        this.normals1 = car1.getNormals();
+        this.normals2 = car2.getNormals();
+
+        this.vecCar1 = this.prepareShape(car1);
+        this.vecCar2 = this.prepareShape(car2);
+    }
+
     private detectCollision(car1: Car, car2: Car): boolean {
-        const normals1: THREE.Vector3[] = car1.getNormals();
-        const normals2: THREE.Vector3[] = car2.getNormals();
+        this.shapeAroundCar(car1, car2);
 
-        const vecCar1: THREE.Vector3[] = this.prepareShape(car1);
-        const vecCar2: THREE.Vector3[] = this.prepareShape(car2);
+        const resultP1: IProjection = this.getMinMax(this.vecCar1, this.normals1[1]);
+        const resultP2: IProjection = this.getMinMax(this.vecCar2, this.normals1[1]);
+        const resultQ1: IProjection = this.getMinMax(this.vecCar1, this.normals1[0]);
+        const resultQ2: IProjection = this.getMinMax(this.vecCar2, this.normals1[0]);
 
-        const resultP1: IProjection = this.getMinMax(vecCar1, normals1[1]);
-        const resultP2: IProjection = this.getMinMax(vecCar2, normals1[1]);
-        const resultQ1: IProjection = this.getMinMax(vecCar1, normals1[0]);
-        const resultQ2: IProjection = this.getMinMax(vecCar2, normals1[0]);
-
-        const resultR1: IProjection = this.getMinMax(vecCar1, normals2[1]);
-        const resultR2: IProjection = this.getMinMax(vecCar2, normals2[1]);
-        const resultS1: IProjection = this.getMinMax(vecCar1, normals2[0]);
-        const resultS2: IProjection = this.getMinMax(vecCar2, normals2[0]);
+        const resultR1: IProjection = this.getMinMax(this.vecCar1, this.normals2[1]);
+        const resultR2: IProjection = this.getMinMax(this.vecCar2, this.normals2[1]);
+        const resultS1: IProjection = this.getMinMax(this.vecCar1, this.normals2[0]);
+        const resultS2: IProjection = this.getMinMax(this.vecCar2, this.normals2[0]);
 
         const separateP: boolean = resultP1.maxProj < resultP2.minProj || resultP2.maxProj < resultP1.minProj;
-        if (!separateP) { this.overlaping(resultP1, resultP2, normals1[1]); }
+        // if (!separateP) { this.overlaping(resultP1, resultP2, this.normals1[1]); }
         const separateQ: boolean = resultQ1.maxProj < resultQ2.minProj || resultQ2.maxProj < resultQ1.minProj;
-        if (!separateQ) { this.overlaping(resultQ1, resultQ2, normals1[0]); }
+        // if (!separateQ) { this.overlaping(resultQ1, resultQ2, this.normals1[0]); }
         const separateR: boolean = resultR1.maxProj < resultR2.minProj || resultR2.maxProj < resultR1.minProj;
-        if (!separateR) { this.overlaping(resultR1, resultR2, normals2[1]); }
+        // if (!separateR) { this.overlaping(resultR1, resultR2, this.normals2[1]); }
         const separateS: boolean = resultS1.maxProj < resultS2.minProj || resultS2.maxProj < resultS1.minProj;
-        if (!separateS) { this.overlaping(resultS1, resultS2, normals2[0]); }
+        // if (!separateS) { this.overlaping(resultS1, resultS2, this.normals2[0]); }
 
-        const isSeparate: boolean = separateP || separateQ || separateR || separateS;
+        /*const isSeparate: boolean = separateP || separateQ || separateR || separateS;
         if (!isSeparate) {
             this.mtv.direction = new Vector3(2, 2, 0);
             this.mtv.distance = this.overlap;
-        }
+        }*/
 
-        return isSeparate;
+        return !(separateP || separateQ || separateR || separateS);
     }
 
-    private overlaping(result1: IProjection, result2: IProjection, axis: THREE.Vector3): void {
+    /*private overlaping(result1: IProjection, result2: IProjection, axis: THREE.Vector3): void {
         let temp: number = this.getOverlap(result1, result2);
         if (temp < this.overlap) {
             this.overlap = temp;
             this.smallest = axis;
         }
-    }
+    }*/
 
     private prepareShape(car: Car): THREE.Vector3[] {
         return car.getCorners(car.getUpdatedPosition().add(car.velocity));
     }
 
-    public getOverlap(p1: IProjection, p2: IProjection): number {
+    /*public getOverlap(p1: IProjection, p2: IProjection): number {
         return (p1.maxProj < p2.maxProj) ? p1.maxProj - p2.minProj : p2.maxProj - p1.minProj;
-    }
+    }*/
 
     private getMinMax(vecCar: THREE.Vector3[], axis: THREE.Vector3): IProjection {
         const points: IProjection = {
@@ -106,15 +121,9 @@ export class CarsCollisionService {
     }
 
     public checkCarsCollisions(): void {
-        /*
-        *   Step 1: Get the shape of each car
-        *   Step 2: Get those normals
-        *   Step 3: Check for overlaps for each axes
-        *   Step 4: If overlapped, do physics stuff
-        */
         for (let i: number = 0; i < this.cars.length - 1; i++) {
             for (let j: number = i + 1; j < this.cars.length; j++) {
-                if (!this.detectCollision(this.cars[i], this.cars[j])) {
+                if (this.detectCollision(this.cars[i], this.cars[j])) {
                     this.handleCollisions(this.cars[i], this.cars[j]);
                 }
             }
@@ -123,7 +132,7 @@ export class CarsCollisionService {
     }
 
     private handleCollisions(car1: Car, car2: Car): void {
-        
+
 
         /* 2 Dimension avec angle */
         /* Axes semblent etre X et Z */
@@ -131,8 +140,8 @@ export class CarsCollisionService {
         const speedLength1: number = car1.speed.length();
         const speedLength2: number = car2.speed.length();
         const phi: number = car1.getUpdatedPosition().angleTo(car2.getUpdatedPosition());
-        const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1): 0;
-        const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2): 0;
+        const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1) : 0;
+        const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2) : 0;
 
         /* temp just pour tester plus facilement */
         let temp1 = (2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / masseTotale;
@@ -167,35 +176,35 @@ export class CarsCollisionService {
 
 
         /* 2 Dimension sans angle */
-       /* const m = car1.Mass + car2.Mass;
-        const v = car1.speed.sub(car2.speed);
-
-        const u1 = v.multiplyScalar(car2.Mass / m)
-        const u2 = v.multiplyScalar(-car1.Mass / m)
-
-        let n = this.mtv.direction.normalize();
-
-        let w1 = n.multiplyScalar(u1.length());
-        let w2 = n.multiplyScalar(u2.length());
-
-
-        car1.speed = w1;
-        car2.speed = w2;*/
+        /* const m = car1.Mass + car2.Mass;
+         const v = car1.speed.sub(car2.speed);
+ 
+         const u1 = v.multiplyScalar(car2.Mass / m)
+         const u2 = v.multiplyScalar(-car1.Mass / m)
+ 
+         let n = this.mtv.direction.normalize();
+ 
+         let w1 = n.multiplyScalar(u1.length());
+         let w2 = n.multiplyScalar(u2.length());
+ 
+ 
+         car1.speed = w1;
+         car2.speed = w2;*/
 
         /* 1 Dimension */
         // console.log(car1.speed.x + " " + car1.speed.y + " " + car1.speed.z)
 
-       /* const velocity1: THREE.Vector3 = car1.speed;
-        const velocity2: THREE.Vector3 = car2.speed;
-
-        //const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
-
-        const newVelocity1: THREE.Vector3 = (velocity2.multiplyScalar(2 * car1.Mass)).divideScalar(car1.Mass + car2.Mass);
-        const newVelocity2: THREE.Vector3 = (velocity1.multiplyScalar(2 * car2.Mass)).divideScalar(car2.Mass + car1.Mass);
-
-
-        car1.speed = newVelocity1;
-        car2.speed = newVelocity2;*/
+        /* const velocity1: THREE.Vector3 = car1.speed;
+         const velocity2: THREE.Vector3 = car2.speed;
+ 
+         //const totalMomentum: THREE.Vector3 = speed1.multiplyScalar(car1.Mass).add(speed2.multiplyScalar(car2.Mass));
+ 
+         const newVelocity1: THREE.Vector3 = (velocity2.multiplyScalar(2 * car1.Mass)).divideScalar(car1.Mass + car2.Mass);
+         const newVelocity2: THREE.Vector3 = (velocity1.multiplyScalar(2 * car2.Mass)).divideScalar(car2.Mass + car1.Mass);
+ 
+ 
+         car1.speed = newVelocity1;
+         car2.speed = newVelocity2;*/
 
 
 
