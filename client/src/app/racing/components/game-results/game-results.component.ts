@@ -75,7 +75,11 @@ export class GameResultsComponent implements OnInit {
     });
   }
   public isNotIBestScore(): boolean {
+
       this.IBestScoresSort();
+      if ( this._scores[0].id !== 0) {
+        return true;
+      }
       if (this._IBestScores.length < BEST_SCORES_MAX ) {
         return false;
       } else if (this._newIBestScore.score < this._IBestScores[this._IBestScores.length - 1].score) {
