@@ -11,12 +11,12 @@ export interface IProjection {
 
 const CAR_1_MOMENTUM_FACTOR: number = 1.9;
 const CAR_2_MOMENTUM_FACTOR: number = 2.1;
+const MINIMUM_SPEED: number = 1;
 
 @Injectable()
 export class CarsCollisionService {
 
     private cars: Car[];
-    private overlap: number = 100000;
     private smallest: THREE.Vector3 = null;
     private normals1: THREE.Vector3[];
     private normals2: THREE.Vector3[];
@@ -103,28 +103,41 @@ export class CarsCollisionService {
     }
 
     private handleCollisions(car1: Car, car2: Car): void {
-        // Masse
         const totalMass: number = car1.Mass + car2.Mass;
-        // Magnitude of speeds
         const speedLength1: number = car1.speed.length();
         const speedLength2: number = car2.speed.length();
-        // Angles
         const phi: number = car1.getUpdatedPosition().angleTo(car2.getUpdatedPosition());
         const theta1: number = speedLength1 !== 0 ? Math.acos(car1.speed.x / speedLength1) : 0;
         const theta2: number = speedLength2 !== 0 ? Math.acos(car2.speed.x / speedLength2) : 0;
-        // Random temps
-        let temp1 = (2 * car2.Mass * speedLength2 * Math.cos(theta2 - phi)) / totalMass;
-        let temp2 = speedLength1 * Math.sin(theta1 - phi);
-        let temp3 = (2 * car1.Mass * speedLength1 * Math.cos(theta1 - phi)) / totalMass;
-        let temp4 = (speedLength2 * Math.sin(theta2 - phi));
-        // New speeds
-        const newSpeedX1: number = ((temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi))) / CAR_1_MOMENTUM_FACTOR;
-        const newSpeedY1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi)) / CAR_1_MOMENTUM_FACTOR;
-        const newSpeedX2: number = (temp3 * Math.cos(phi)) - (temp4 * Math.sin(phi)) / CAR_2_MOMENTUM_FACTOR;
-        const newSpeedY2: number = (temp3 * Math.sin(phi)) + (temp4 * Math.cos(phi)) / CAR_2_MOMENTUM_FACTOR;
 
-        car1.speed = new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
-        car2.speed = new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
-        // Deuxieme vitesse displacementSpeed : vitesse donner par la collision, additionner a la vrai speed, faire decrementer la vitesse, stop a zero
+        const temp1: number = (car2.Mass * speedLength2 * Math.cos(theta2 - phi) * 2) / totalMass;
+        const temp2: number = speedLength1 * Math.sin(theta1 - phi);
+        const temp3: number = (car1.Mass * speedLength1 * Math.cos(theta1 - phi) * 2) / totalMass;
+        const temp4: number = (speedLength2 * Math.sin(theta2 - phi));
+        /* TO DO
+        * STEP 1 - Set une vitesse de deplacement donner par la collision (newSpeed)  -> displacementSpeed
+        * STEP 2 - l'additionner à  car.speed...
+        * STEP 3 - Décrémenter la vitesse jusqu'à 0...
+        */
+
+        // Step 1
+        const newSpeedX1: number = ((temp1 * Math.cos(phi)) - (temp2 * Math.sin(phi))) / CAR_1_MOMENTUM_FACTOR;
+        const newSpeedZ1: number = (temp1 * Math.sin(phi)) + (temp2 * Math.cos(phi)) / CAR_1_MOMENTUM_FACTOR;
+        const newSpeedX2: number = (temp3 * Math.cos(phi)) - (temp4 * Math.sin(phi)) / CAR_2_MOMENTUM_FACTOR;
+        const newSpeedZ2: number = (temp3 * Math.sin(phi)) + (temp4 * Math.cos(phi)) / CAR_2_MOMENTUM_FACTOR;
+
+        // Step 2
+        car1.speed = car1.speed.length() !== 0 ? car1.speed.set(newSpeedX1, 0, newSpeedZ1) : car1.speed;
+        car2.speed = car1.speed.length() !== 0 ?  car2.speed.set(newSpeedX2, 0, newSpeedZ2): car2.speed;
+
+        // Step 3
+        //car1.speed = car1.speed.se
+
+        //while (this.detectCollision(car1, car2)) {
+            //car1.speed = car1.speed.addScalar(0.00001)
+         //}
+
+        // car1.speed = car1.speed.set(newSpeedX1 + 0.1, 0, newSpeedY1 + 0.1); // new THREE.Vector3(newSpeedX1, 0, newSpeedY1);
+        // car2.speed = car2.speed.set(newSpeedX2 + 0.1, 0, newSpeedY2 + 0.1); // new THREE.Vector3(newSpeedX2, 0, newSpeedY2);
     }
 }
