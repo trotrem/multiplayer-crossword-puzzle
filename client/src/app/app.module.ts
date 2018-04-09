@@ -22,6 +22,7 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { KeyboardService } from "./racing/components/racing-game/commands/keyboard.service";
+import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -70,6 +71,7 @@ const appRoutes: Routes = [
     ],
     providers: [
         SceneService,
+        SceneGameService,
         RacingCommunicationService,
         RenderService,
         GameManagerService,
