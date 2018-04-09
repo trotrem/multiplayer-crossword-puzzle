@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
-import { CarsCollisionService } from "../car/cars-collision/cars-collision.service"
+import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 import { AiController } from "./../ai-controller/ai-controller";
 
 const AI_PLAYERS_MAX: number = 3;

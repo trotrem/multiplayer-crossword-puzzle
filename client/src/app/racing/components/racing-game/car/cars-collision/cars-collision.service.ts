@@ -44,7 +44,7 @@ export class CarsCollisionService {
         this.vecCar2 = this.prepareShape(car2);
     }
 
-    private detectCollision(car1: Car, car2: Car): boolean {
+    public detectCollision(car1: Car, car2: Car): boolean {
         this.shapeAroundCar(car1, car2);
 
         const resultP1: IProjection = this.getMinMax(this.vecCar1, this.normals1[1]);
