@@ -1,2 +1,2 @@
 <h1>Open Games</h1>
-<h2 *ngFor="let game of games">{{game.creator}}</h2>
+<h2 *ngFor="let game of lobbyGames" (click)="joinGame(game)">{{game.creator}}</h2>

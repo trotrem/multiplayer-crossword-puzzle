@@ -11,14 +11,21 @@ import { CrosswordEvents, CrosswordLobbyGame } from "../../../../../common/commu
 export class MultiplayerLobbyComponent implements OnInit {
 
     public lobbyGames: CrosswordLobbyGame[];
+    private _playerName: string;
 
     constructor(private socketsService: SocketsService, private route: ActivatedRoute) {
         this.lobbyGames = [];
     }
 
     ngOnInit() {
-        this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first().subscribe((games: CrosswordLobbyGame[]) => { this.lobbyGames = games; });
-        this.route.params.subscribe((params) => { this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, params["Difficulty"]); });
+        this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first().subscribe((games: CrosswordLobbyGame[]) => {console.log(games);this.lobbyGames = games; });
+        this.route.params.subscribe((params) => {
+            this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, params["Difficulty"]);
+            this._playerName = params["playerName"];
+                                                });
     }
 
+    public joinGame(game: CrosswordLobbyGame) {
+        this.socketsService.sendEvent(CrosswordEvents.JoinGame, {name: this._playerName, gridId: game.gameId});
+    }
 }

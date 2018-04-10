@@ -36,13 +36,13 @@ export class HomePageComponent implements OnInit {
 
     public play(form: NgForm): void {
         if (this.oneTwo === 1) {
-            this.router.navigate(["/crossword/" + form.value.EasyMediumHard]);
+            this.router.navigate(["/crossword/game/" + form.value.EasyMediumHard]);
         } else {
-            this.router.navigate(["/crossword/" + form.value.EasyMediumHard + "/", { playerName: form.value.playerName }]);
+            this.router.navigate(["/crossword/game/" + form.value.EasyMediumHard + "/", { playerName: form.value.playerName }]);
         }
     }
 
     public joinExisting(form: NgForm): void {
-        this.router.navigate(["/crossword/lobby/" + form.value.EasyMediumHard, { playerName: form.value.playerName }]);
+        this.router.navigate(["/crossword/lobby/" + form.value.EasyMediumHard + "/", { playerName: form.value.playerName }]);
     }
 }

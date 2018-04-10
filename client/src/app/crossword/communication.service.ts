@@ -15,9 +15,9 @@ export class CommunicationService {
         return this.http.get<string[]>("http://localhost:3000/crossword/cheatwords/" + id);
     }
 
-    public createSinglePlayerGame(difficulty: Difficulty): Observable<IGridData> {
+    public createGame(difficulty: Difficulty, playerName: string): Observable<IGridData> {
         const grid = this.socketsService.onEvent(CrosswordEvents.GridFetched);
-        this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty});
+        this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty, playerName: playerName});
 
         return grid;
     }

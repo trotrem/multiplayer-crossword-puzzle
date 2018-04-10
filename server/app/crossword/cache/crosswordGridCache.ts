@@ -41,7 +41,7 @@ export class GridCache {
     public getOpenMultiplayerGames(difficulty: Difficulty) {
         console.log(Object.keys(this._grids[difficulty]).map((index: string) => this._grids[difficulty][index]))
 
-        return Object.keys(this._grids[difficulty]).map((index: string) => this._grids[difficulty][index]).filter((grid: ICacheGrid) => grid.maxPlayers === 2 && grid.players.length === 1).map((grid: ICacheGrid) => {grid.players[0], grid.gridData.id});
+        return Object.keys(this._grids[difficulty]).map((index: string) => { return {grid: this._grids[difficulty][index], id: index}}).filter((grid) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1).map((grid) => { return {creator: grid.grid.players[0].name, gameId: grid.id});
     }
 
     public getGridData(id: number): IGridData {

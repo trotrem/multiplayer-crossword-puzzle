@@ -30,6 +30,7 @@ export class CrosswordGridComponent implements OnInit {
     public nbPlayers: NbPlayers;
     private words: WordDescription[];
     private _difficulty: Difficulty = Difficulty.Easy;
+    private _playerName: string;
     public selectedWord: WordDescription = null;
     // needed so the html recognizes the enum
     private TipMode: typeof TipMode = TipMode;// tslint:disable-line
@@ -82,14 +83,15 @@ export class CrosswordGridComponent implements OnInit {
         this.route.params.subscribe((params) => {
             this.gridEventService.setDifficulty(params["Difficulty"]);
             this._difficulty = params["Difficulty"];
-            this.nbPlayers = params["playerName"] === undefined  ? 1 : 2;
+            this._playerName = params["playerName"];
+            this.nbPlayers = this._playerName === undefined  ? 1 : 2;
             this.gridEventService.setNbPlayers(this.nbPlayers);
             this.fetchGrid();
         });
     }
 
     private fetchGrid(): void {
-        this.communicationService.createSinglePlayerGame(this._difficulty)
+        this.communicationService.createGame(this._difficulty, this._playerName)
             .first().subscribe((data) => {
                 const gridData: IGridData = data as IGridData;
                 this.gridEventService.setId(gridData.id);
