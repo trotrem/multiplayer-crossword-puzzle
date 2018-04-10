@@ -1,12 +1,12 @@
 import { TestBed } from "@angular/core/testing";
-import { SceneServices } from "./scene.service";
+import { SceneService } from "./scene.service";
 
 describe("SceneService", () => {
 
   // tslint:disable-next-line:prefer-const
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SceneServices, HTMLCanvasElement]
+      providers: [SceneService, HTMLCanvasElement]
     });
   });
 

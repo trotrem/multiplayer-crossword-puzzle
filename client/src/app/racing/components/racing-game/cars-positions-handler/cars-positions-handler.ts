@@ -9,7 +9,7 @@ const ROTATION_ANGLE_DIVIDER: number = 2;
 @Injectable()
 export class CarsPositionsHandler {
 
-  public static insertCars(line: THREE.Line3, scene: THREE.Scene, cars: Car[]): void {
+  public static insertCars(line: THREE.Line3, cars: Car[]): Car[] {
 
     const positions: THREE.Vector3[] = PositionsDefiner.getCarsPositions(line);
     for (let i: number = 0; i < CARS_MAX; i++) {
@@ -18,11 +18,12 @@ export class CarsPositionsHandler {
       cars[i].mesh.rotateY(this.getRotateCarPosition(line));
       cars[i].mesh.position.set(randomPosition.x, randomPosition.y, 0);
       positions.splice(positions.indexOf(randomPosition), 1);
-      scene.add(cars[i]);
     }
+
+    return cars;
   }
   private static getRotateCarPosition(line: THREE.Line3): number {
 
-      return Math.atan2(PositionsDefiner.getDeltaLine(line).y, PositionsDefiner.getDeltaLine(line).x) ;
+    return Math.atan2(PositionsDefiner.getDeltaLine(line).y, PositionsDefiner.getDeltaLine(line).x);
   }
 }

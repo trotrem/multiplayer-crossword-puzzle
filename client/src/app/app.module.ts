@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { APP_BASE_HREF } from "@angular/common";
 import { UserComponent } from "./racing/components/user/user.component";
-import { SceneServices } from "./racing/components/editor/scene.services/scene.service";
+import { SceneService } from "./racing/components/editor/scene.service/scene.service";
 import { RacingCommunicationService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
@@ -23,6 +23,7 @@ import { GameManagerService } from "./racing/components/racing-game/game-manager
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { CarsCollisionService } from "./racing/components/racing-game/car/cars-collision/cars-collision.service";
 import { KeyboardService } from "./racing/components/racing-game/commands/keyboard.service";
+import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
           )
     ],
     providers: [
-        SceneServices,
+        SceneService,
+        SceneGameService,
         RacingCommunicationService,
         RenderService,
         GameManagerService,
