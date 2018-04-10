@@ -9,6 +9,9 @@ import { Car } from "../car/car";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Track } from "../../../track";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
+import { Engine } from "../car/engine";
+import { Wheel } from "../car/wheel";
+import { KeyboardService } from "../commands/keyboard.service";
 
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers no-floating-promises */
@@ -43,20 +46,20 @@ describe("Racevalidator", () => {
                 name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
                 INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
             };
-            const car: Car = new Car(service);
+            const car: Car = new Car(service, new KeyboardService());
             car.counterLap = 0;
             const score: number[] = RaceValidator.validateRace(car, 1000, track);
             expect(score.length).toEqual(1);
         })));
 
-  /*  it("should validate a race when a car did 3 lap ", (inject([WallsCollisionsService], async (service: WallsCollisionsService) => {
+    it("should validate a race when a car did 3 lap ", (inject([WallsCollisionsService], async (service: WallsCollisionsService) => {
         const track: Track = {
             name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
-        const car: Car = new Car(service);
+        const car: Car = new Car(service, new KeyboardService());
         car.counterLap = 3;
         expect((RaceValidator.validateRace(car, 2000, track).length)).toBeDefined();
-    })));*/
+    })));
 
 });

@@ -7,6 +7,7 @@ import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { Track } from "../../track";
 import {LAP_MAX} from "../../../constants";
+import { RaceValidator } from "../racing-game/race-validator/racevalidator";
 const DELAY: number = 1000;
 const BEST_SCORES_MAX: number = 5;
 
@@ -18,16 +19,17 @@ const BEST_SCORES_MAX: number = 5;
 export class GameResultsComponent implements OnInit {
 
   private _scores: INewScores[];
-  private _IBestScores: IBestScores[];
-  private _newIBestScore: IBestScores;
+  private _bestScores: IBestScores[];
+  private _newBestScore: IBestScores;
   private _track: Track;
   private _isAdded: boolean;
 
   public constructor(private router: Router , private route: ActivatedRoute,
                      @inject(RacingCommunicationService) private communicationService: RacingCommunicationService) {
     this._scores = new Array< INewScores>();
-    this._IBestScores = new Array<IBestScores>();
-    this._newIBestScore = {name: "", score: 0};
+    this._scores.push({id: 0, scores: new Array<number>()});
+    this._bestScores = new Array<IBestScores>();
+    this._newBestScore = {name: "", score: 0};
     this._track  = {
       name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
       INewScores: new Array< INewScores>(),  IBestScores: new Array< IBestScores>()
@@ -40,11 +42,11 @@ export class GameResultsComponent implements OnInit {
   public get isAdded(): boolean {
     return this._isAdded;
   }
-  public get newIBestScore(): IBestScores {
-    return this._newIBestScore;
+  public get newBestScore(): IBestScores {
+    return this._newBestScore;
   }
-  public get IBestScores(): IBestScores[] {
-    return this._IBestScores;
+  public get bestScores(): IBestScores[] {
+    return this._bestScores;
   }
   public async ngOnInit(): Promise<void> {
     const name: string = this.route.snapshot.paramMap.get("name");
@@ -64,39 +66,27 @@ export class GameResultsComponent implements OnInit {
       .then((res: Track[]) => {
         this._track = res[0];
         this._scores = res[0].INewScores;
-        this._IBestScores = res[0].IBestScores;
-        this.IBestScoresSort();
-        this.calculateHumanScore();
+        this._bestScores = res[0].IBestScores;
+        RaceValidator.bestScoresSort(this._bestScores);
+        RaceValidator.calculateHumanScore(this._scores, this._newBestScore);
       });
   }
-  private IBestScoresSort(): void {
-    this._IBestScores = this._IBestScores.sort((n1, n2) => {
-      return n1.score - n2.score ;
-    });
-  }
-  public isNotIBestScore(): boolean {
-
-      this.IBestScoresSort();
+  public  isNotBestScore(): boolean {
       if ( this._scores[0].id !== 0) {
         return true;
       }
-      if (this._IBestScores.length < BEST_SCORES_MAX ) {
+      if (this._bestScores.length < BEST_SCORES_MAX ) {
         return false;
-      } else if (this._newIBestScore.score < this._IBestScores[this._IBestScores.length - 1].score) {
+      } else if (this._newBestScore.score < this._bestScores[this._bestScores.length - 1].score) {
 
         return false;
     }
 
       return true;
   }
-  private calculateHumanScore(): void {
-    for (const sc of this._scores[0].scores) {
-      this._newIBestScore.score += sc;
-    }
-  }
   public onSubmit(f: NgForm): void {
 
-    this._newIBestScore.name = f.value.name;
+    this._newBestScore.name = f.value.name;
 
   }
   private replay(): void {
@@ -106,13 +96,13 @@ export class GameResultsComponent implements OnInit {
     this.router.navigateByUrl("/");
   }
 
-  public saveIBestScore(): void {
-  if (this._IBestScores.length >= BEST_SCORES_MAX ) {
+  public saveBestScore(): void {
+  if (this._bestScores.length >= BEST_SCORES_MAX ) {
       this._track.IBestScores.pop();
     }
   this._isAdded = true;
-  this._track.IBestScores.push(this._newIBestScore);
-  this.IBestScoresSort();
+  this._track.IBestScores.push(this._newBestScore);
+  RaceValidator.bestScoresSort(this._bestScores);
   this.communicationService.updateNewScore(this._track);
 
   }
