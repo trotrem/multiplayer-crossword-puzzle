@@ -23,6 +23,7 @@ import { GameManagerService } from "./racing/components/racing-game/game-manager
 import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { MultiplayerLobbyComponent } from './crossword/multiplayer-lobby/multiplayer-lobby.component';
+import { SocketsService } from "./crossword/sockets.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -32,10 +33,9 @@ const appRoutes: Routes = [
     { path: "endGame/:nbPlayers", component: EndGameComponent},
     { path: "endGame/:nbPlayers/:Difficulty", component: EndGameComponent},
     { path: "homePage", component: HomePageComponent },
-    { path: "crossword", component: CrosswordGridComponent },
-    { path: "crossword/lobby/:Difficulty", component: MultiplayerLobbyComponent },
-    { path: "crossword/:nbPlayers", component: CrosswordGridComponent },
-    { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent },
+    { path: "crossword/lobby/:Difficulty/:playerName", component: MultiplayerLobbyComponent },
+    { path: "crossword/:Difficulty", component: CrosswordGridComponent },
+    { path: "crossword/:Difficulty/:playerName", component: CrosswordGridComponent },
     { path: "editor", component: EditorComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
@@ -78,6 +78,7 @@ const appRoutes: Routes = [
         GameManagerService,
         RaceValidatorService,
         WallsCollisionsService,
+        SocketsService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

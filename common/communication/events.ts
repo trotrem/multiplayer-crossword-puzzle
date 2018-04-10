@@ -9,3 +9,10 @@ export enum CrosswordEvents {
     GetOpenGames = "get-open-games",
     FetchedOpenGames = "fetched-open-games"
 }
+
+export interface EventPayload {}
+
+export interface CrosswordLobbyGame {
+    creator: string;
+    gameId: number;
+}

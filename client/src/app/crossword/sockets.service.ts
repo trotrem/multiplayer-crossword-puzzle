@@ -11,7 +11,7 @@ const SERVER_URL = "http://localhost:3000";
 export class SocketsService {
     private socket: SocketIOClient.Socket;
 
-    public initSocket(): void {
+    public constructor() {
         this.socket = socketIo(SERVER_URL);
     }
 

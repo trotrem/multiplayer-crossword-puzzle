@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { SocketsService } from "../sockets.service";
 import { inject } from "inversify";
 import { CrosswordEvents } from "../../../../../common/communication/events";
+import { Difficulty } from "../../../../../common/communication/types";
 
 @Component({
     selector: "app-home-page",
@@ -12,16 +13,32 @@ import { CrosswordEvents } from "../../../../../common/communication/events";
 })
 export class HomePageComponent implements OnInit {
 
-    public constructor(private router: Router) { }
+    public oneTwo: number;
+    public EasyMediumHard: Difficulty;
+    public playerName: string;
+
+    public constructor(private router: Router) {
+        this.oneTwo = 2;
+        this.EasyMediumHard = 0;
+        this.playerName = "";
+    }
 
     public ngOnInit(): void {
     }
 
+    public disablePlayButton(): boolean {
+        return this.oneTwo === 2 && this.playerName.length === 0;
+    }
+
+    public disableJoinButton(): boolean {
+        return this.oneTwo === 1 || this.playerName.length === 0;
+    }
+
     public play(form: NgForm): void {
-        this.router.navigate(["/crossword/" + form.value.oneTwo + "/", { Difficulty: form.value.EasyMediumHard }]);
+        this.router.navigate(["/crossword/" + form.value.Difficulty + "/", { playerName: form.value.playerName }]);
     }
 
     public joinExisting(form: NgForm): void {
-        this.router.navigate(["/crossword/lobby/" + form.value.EasyMediumHard ]);
+        this.router.navigate(["/crossword/lobby/" + form.value.EasyMediumHard, { playerName: form.value.playerName }]);
     }
 }

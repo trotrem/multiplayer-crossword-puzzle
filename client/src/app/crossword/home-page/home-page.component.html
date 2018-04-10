@@ -6,19 +6,19 @@
 <div class="form-group">
   <div class="radio">
       <label>
-          <input type="radio" name="EasyMediumHard" value=0 [(ngModel)] ="EasyMediumHard">
+          <input type="radio" name="EasyMediumHard" [value]=0 [(ngModel)] ="EasyMediumHard">
           Easy
       </label>
   </div>
   <div class="radio">
       <label>
-          <input type="radio" name="EasyMediumHard" value=1 [(ngModel)] ="EasyMediumHard">
+          <input type="radio" name="EasyMediumHard" [value]=1 [(ngModel)] ="EasyMediumHard">
           Medium
       </label>
   </div>
   <div class="radio">
     <label>
-        <input type="radio" name="EasyMediumHard" value=2 [(ngModel)] ="EasyMediumHard">
+        <input type="radio" name="EasyMediumHard" [value]=2 [(ngModel)] ="EasyMediumHard">
         Hard
     </label>
   </div>
@@ -28,17 +28,18 @@
 <div class="form-group">
   <div class="radio">
       <label>
-          <input type="radio" name="oneTwo" value=1 [(ngModel)] = "oneTwo">
+          <input type="radio" name="oneTwo" [value]=1 [(ngModel)] = "oneTwo">
           One
       </label>
   </div>
   <div class="radio">
       <label>
-          <input type="radio" name="oneTwo" value=2 [(ngModel)] = "oneTwo">
+          <input type="radio" name="oneTwo" [value]=2 [(ngModel)] = "oneTwo">
           Two
       </label>
   </div>
 </div>
-<button type="submit" >Play</button>
-<button [disabled]="oneTwo != 2" (click)="joinExisting(form)" >Join Existing</button>
+<button [disabled]="disablePlayButton()" type="submit" >Play</button>
+<button [disabled]="disableJoinButton()" (click)="joinExisting(form)" >Join Existing</button>
+<input type="text" name="playerName" [(ngModel)]="playerName" />
 </form>

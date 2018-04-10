@@ -21,7 +21,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [CommunicationService, GridEventService, SocketsService]
+    providers: [CommunicationService, GridEventService]
 })
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
@@ -64,7 +64,6 @@ export class CrosswordGridComponent implements OnInit {
         }
 
         this.gridEventService.initialize(this.words, this.nbPlayers);
-        this.socketsService.initSocket();
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
