@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import "rxjs/Rx";
+import "rxjs/add/operator/first";
 import { Observer } from "rxjs/Observer";
-import { CrosswordEvents } from "../../../../common/communication/events"
+import { CrosswordEvents, IEventPayload } from "../../../../common/communication/events";
 import * as socketIo from "socket.io-client";
 
-const SERVER_URL = "http://localhost:3000";
+const SERVER_URL: string = "http://localhost:3000";
 
 @Injectable()
 export class SocketsService {
@@ -15,15 +15,15 @@ export class SocketsService {
         this.socket = socketIo(SERVER_URL);
     }
 
-    public sendEvent(event: CrosswordEvents, payload: object = null): void {
+    public sendEvent(event: CrosswordEvents, payload: IEventPayload = null): void {
         this.socket.emit(event, payload);
     }
 
-    public onEvent(event: CrosswordEvents): Observable<any> {
-        return new Observable<any>((observer) => {
-            this.socket.on(event, (pd: any) => {
+    public onEvent(event: CrosswordEvents): Observable<IEventPayload> {
+        return new Observable<IEventPayload>((observer: Observer<IEventPayload>) => {
+            this.socket.on(event, (pd: IEventPayload) => {
                 observer.next(pd);
             });
-        })
+        });
     }
 }

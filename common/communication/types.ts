@@ -39,12 +39,6 @@ export class Message {
     public body: string;
 }
 
-export interface IGridData {
-    id: number;
-    blackCells: Array<IPoint>;
-    wordInfos: Array<IWordInfo>;
-}
-
 export interface ICrosswordSettings {
     difficulty: Difficulty;
     nbPlayers: NbPlayers;

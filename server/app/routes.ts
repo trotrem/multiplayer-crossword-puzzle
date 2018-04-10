@@ -1,8 +1,6 @@
 import { injectable } from "inversify";
 import { Router, Request, Response, NextFunction } from "express";
 
-//TODO: rename crossword route file (and racing)
-
 import { Racing } from "./racing/routes";
 
 @injectable()

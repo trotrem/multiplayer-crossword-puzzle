@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
-import { IGridData, Direction, Difficulty, NbPlayers } from "../../../../../common/communication/types";
+import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
@@ -7,7 +7,7 @@ import { ActivatedRoute } from "@angular/router";
 import { GridEventService } from "../grid-event.service";
 import { inject } from "inversify";
 import { SocketsService } from "../sockets.service";
-import { CrosswordEvents } from "../../../../../common/communication/events";
+import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -95,7 +95,7 @@ export class CrosswordGridComponent implements OnInit {
             .first().subscribe((data) => {
                 const gridData: IGridData = data as IGridData;
                 this.gridEventService.setId(gridData.id);
-                gridData.blackCells.forEach((cell) => {
+                gridData.blackCells.forEach((cell: IPoint) => {
                     this.cells[cell.y][cell.x].isBlack = true;
                 });
                 this.fillWords(gridData);
@@ -103,7 +103,7 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private fillWords(gridData: IGridData): void {
-        gridData.wordInfos.forEach((word, index) => {
+        gridData.wordInfos.forEach((word: IWordInfo, index: number) => {
             const cells: Cell[] = new Array<Cell>();
             for (let i: number = 0; i < word.length; i++) {
                 if (word.direction === Direction.Horizontal) {

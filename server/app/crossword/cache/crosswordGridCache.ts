@@ -2,6 +2,7 @@ import { IGridData, IWordInfo, Difficulty } from "../../../../common/communicati
 import { IGrid, IWordContainer } from "../models/grid/dataStructures";
 import { GridUtils } from "../models/grid/gridUtils";
 import { WordDictionaryData } from "../models/lexiconAPI/gridWordInformation";
+import { CrosswordLobbyGame } from "../../../../common/communication/events";
 
 interface ICacheWord {
     word: string;
@@ -22,7 +23,7 @@ interface ICacheGrid {
 }
 
 interface IGridDictionary {
-    [id: number]: ICacheGrid;
+    [id: string]: ICacheGrid;
 }
 
 export class GridCache {
@@ -38,14 +39,15 @@ export class GridCache {
         return this._instance || (this._instance = new this());
     }
 
-    public getOpenMultiplayerGames(difficulty: Difficulty) {
-        console.log(Object.keys(this._grids[difficulty]).map((index: string) => this._grids[difficulty][index]))
-
-        return Object.keys(this._grids[difficulty]).map((index: string) => { return {grid: this._grids[difficulty][index], id: index}}).filter((grid) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1).map((grid) => { return {creator: grid.grid.players[0].name, gameId: grid.id});
+    public getOpenMultiplayerGames(difficulty: Difficulty): CrosswordLobbyGame[] {
+        return Object.keys(this._grids[difficulty])
+            .map((index: string) => ({ grid: this._grids[difficulty][index], id: index }))
+            .filter((grid: { grid: ICacheGrid, id: string }) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1)
+            .map((grid: { grid: ICacheGrid, id: string }) => ({ creator: grid.grid.players[0].name, gameId: grid.id }));
     }
 
     public getGridData(id: number): IGridData {
-        let grid: ICacheGrid = this.getGrid(id);
+        const grid: ICacheGrid = this.getGrid(id);
 
         return {
             id: grid.gridData.id,
@@ -69,20 +71,20 @@ export class GridCache {
         };
 
         return id;
-   }
+    }
 
     public joinGame(id: number, player: IPlayer): void {
         this.getGrid(id).players.push(player);
     }
 
     public addGrid(grid: IGrid, id: number): IGridData {
-        let cacheGrid: ICacheGrid = this.getGrid(id);
+        const cacheGrid: ICacheGrid = this.getGrid(id);
         cacheGrid.gridData = this.convertIGridToGridData(grid, id);
         cacheGrid.words = grid.words.map((w: IWordContainer): ICacheWord => {
-                return {
-                    word: GridUtils.getText(w, grid).toUpperCase(),
-                    validated: false
-                };
+            return {
+                word: GridUtils.getText(w, grid).toUpperCase(),
+                validated: false
+            };
         });
 
         return cacheGrid.gridData;

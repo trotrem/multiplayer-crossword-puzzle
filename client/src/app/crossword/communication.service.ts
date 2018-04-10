@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
-import { Difficulty, IGridData, IWordValidationParameters } from "../../../../common/communication/types";
+import { Difficulty, IWordValidationParameters } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
-import { CrosswordEvents } from "../../../../common/communication/events";
+import { CrosswordEvents, IGridData } from "../../../../common/communication/events";
 
 @Injectable()
 export class CommunicationService {
@@ -16,7 +16,7 @@ export class CommunicationService {
     }
 
     public createGame(difficulty: Difficulty, playerName: string): Observable<IGridData> {
-        const grid = this.socketsService.onEvent(CrosswordEvents.GridFetched);
+        const grid = this.socketsService.onEvent(CrosswordEvents.GridFetched) as Observable<IGridData>;
         this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty, playerName: playerName});
 
         return grid;

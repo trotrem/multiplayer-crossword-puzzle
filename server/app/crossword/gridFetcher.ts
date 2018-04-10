@@ -4,8 +4,9 @@ import { IGrid } from "./models/grid/dataStructures";
 import { Document } from "mongoose";
 import { crosswordDocument } from "./models/crosswordDbSchemas";
 import { Utils } from "../utils";
-// TODO: create import index
+
 const MAX_SAME_DIFFICULTY_DB_GRIDS: number = 10;
+const NO_GRIDS_FOUND_EXCEPTION: string = "no grids found";
 
 namespace Route {
     export class GridFetcher {
@@ -15,7 +16,7 @@ namespace Route {
             return crosswordDocument.find({ difficulty: difficulty }).then(
                 async (allGrids: Document[]): Promise<void> => {
                     if (allGrids.length === 0) {
-                        throw "no grids found";
+                        throw NO_GRIDS_FOUND_EXCEPTION;
                     }
                     const fetchedGrid: Document =
                         allGrids[Utils.randomIntFromInterval(0, allGrids.length - 1)];

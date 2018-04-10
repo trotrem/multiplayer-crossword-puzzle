@@ -1,3 +1,5 @@
+import { IPoint, IWordInfo } from "./types";
+
 export enum CrosswordEvents {
     Connected = "connection",
     Disconnected = "disconnect",
@@ -10,9 +12,15 @@ export enum CrosswordEvents {
     FetchedOpenGames = "fetched-open-games"
 }
 
-export interface EventPayload {}
+export interface IEventPayload {}
 
-export interface CrosswordLobbyGame {
+export interface CrosswordLobbyGame extends IEventPayload {
     creator: string;
-    gameId: number;
+    gameId: string;
+}
+
+export interface IGridData extends IEventPayload {
+    id: number;
+    blackCells: Array<IPoint>;
+    wordInfos: Array<IWordInfo>;
 }
