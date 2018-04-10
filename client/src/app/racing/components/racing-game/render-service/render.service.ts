@@ -6,7 +6,6 @@ import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
 import { Track } from "../../../track";
-import { Skybox } from "./skybox";
 import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
@@ -23,7 +22,6 @@ export class RenderService {
     private renderer: THREE.WebGLRenderer;
     private stats: Stats;
     private cameraID: number;
-    private skyBox: Skybox;
 
     public constructor(private keyboard: KeyboardService, private sceneGameService: SceneGameService) {
         this.cameraID = 0;

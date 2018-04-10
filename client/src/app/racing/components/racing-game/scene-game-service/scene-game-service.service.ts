@@ -6,6 +6,7 @@ import { Car } from "./../car/car";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { CARS_MAX } from "../../../../constants";
 import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
+import {Skybox} from "./skybox";
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
@@ -14,9 +15,11 @@ const AMBIENT_LIGHT_OPACITY: number = 2;
 export class SceneGameService {
 
     private _scene: THREE.Scene;
+    private skyBox: Skybox;
 
     public constructor() {
         this._scene = new THREE.Scene;
+        this.skyBox = new Skybox();
     }
 
     public get scene(): THREE.Scene {
@@ -50,6 +53,7 @@ export class SceneGameService {
         this.showWalls(walls);
         track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
+        this.scene.add(this.skyBox.createSkybox());
     }
 
 }
