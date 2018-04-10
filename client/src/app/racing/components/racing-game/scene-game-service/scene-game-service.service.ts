@@ -24,8 +24,9 @@ export class SceneGameService {
     }
     public initialize(track: Track, cars: Car[], walls: ILine[]): void {
         this.createScene(track, cars, walls);
-        CarsPositionsHandler.insertCars(track.startingZone, this.scene, cars);
-
+        for (const car of CarsPositionsHandler.insertCars(track.startingZone, cars)) {
+            this.scene.add(car);
+        }
     }
 
     private showWalls(walls: ILine[]): void {

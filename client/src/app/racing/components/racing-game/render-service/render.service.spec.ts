@@ -2,7 +2,6 @@ import { TestBed, async } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderService } from "./render.service";
-import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -43,29 +42,6 @@ describe("RenderService", () => {
     it("should be created", () => {
         expect(service).toBeTruthy();
     });
-    it("should be create a scene", async () => {
-        const walls: ILine[] = new Array<ILine>();
-        const cars: Car[] = new Array<Car>();
-        for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService, keyboard));
-            cars[i].mesh = await carLoader.load();
-        }
-        service.initialize(
-            container, track, cars, walls);
-        expect(service.getScene()).toBeDefined();
-    });
-    it("should add four cars to the scene", async () => {
-        const walls: ILine[] = new Array<ILine>();
-        const cars: Car[] = new Array<Car>();
-        for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService, keyboard));
-            cars[i].mesh = await carLoader.load();
-        }
-        service.initialize(container, track, cars, walls);
-        CarsPositionsHandler.insertCars(
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
-        expect(service.getScene().children.length).toEqual(3);
-    });
     it("should follow car with top view camera", async () => {
         const walls: ILine[] = new Array<ILine>();
         let isEqual: boolean = false;
@@ -75,8 +51,8 @@ describe("RenderService", () => {
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
-        CarsPositionsHandler.insertCars(
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
+      /*  CarsPositionsHandler.insertCars(
+            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         if (service.getTopCamera().position.x === cars[0].getUpdatedPosition().x &&
             service.getTopCamera().position.y === cars[0].getUpdatedPosition().y) {
@@ -94,8 +70,8 @@ describe("RenderService", () => {
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
-        CarsPositionsHandler.insertCars(
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
+        /*CarsPositionsHandler.insertCars(
+            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         const vectorCam: THREE.Vector3 = new THREE.Vector3;
         service.getRearCamera().getWorldDirection(vectorCam);
@@ -114,8 +90,8 @@ describe("RenderService", () => {
             cars[i].mesh = await carLoader.load();
         }
         service.initialize(container, track, cars, walls);
-        CarsPositionsHandler.insertCars(
-            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);
+      /*  CarsPositionsHandler.insertCars(
+            new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         let isEqual: boolean = false;
         const vectorCam: THREE.Vector3 = new THREE.Vector3;
