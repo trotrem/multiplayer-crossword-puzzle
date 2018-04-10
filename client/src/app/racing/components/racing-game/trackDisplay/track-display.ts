@@ -7,6 +7,7 @@ const WIDTH_POINT: number = 0.5;
 const WIDTH_SCENE: number = 1000;
 const HEIGHT_SCENE: number = 1000;
 const SCENE: number = -0.5;
+const START_LINE: number = 0.5;
 const TRACK: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/asphalte.png");
 const START: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/start.png");
 const GRASS: THREE.Texture = new THREE.TextureLoader().load("../../assets/models/bottom.JPG");
@@ -73,7 +74,7 @@ export class TrackDisplay {
                 multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[0])),
             WIDTH_START, START);
         floor.translateX(-WIDTH_START);
-        floor.translateZ(0.05);
+        floor.translateZ(START_LINE);
 
         return floor;
     }

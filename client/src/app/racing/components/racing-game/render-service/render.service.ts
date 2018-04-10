@@ -9,13 +9,10 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
 import { CARS_MAX } from "../../../../constants";
 import { Track } from "../../../track";
-<<<<<<< HEAD
 import { Skybox } from "./skybox";
-=======
 import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
->>>>>>> master
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
