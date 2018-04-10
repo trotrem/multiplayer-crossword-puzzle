@@ -22,7 +22,6 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
 import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
-import { SocketsService } from "./crossword/sockets.service";
 import { MultiplayerLobbyComponent } from './crossword/multiplayer-lobby/multiplayer-lobby.component';
 
 const appRoutes: Routes = [
@@ -34,6 +33,7 @@ const appRoutes: Routes = [
     { path: "endGame/:nbPlayers/:Difficulty", component: EndGameComponent},
     { path: "homePage", component: HomePageComponent },
     { path: "crossword", component: CrosswordGridComponent },
+    { path: "crossword/lobby/:Difficulty", component: MultiplayerLobbyComponent },
     { path: "crossword/:nbPlayers", component: CrosswordGridComponent },
     { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent },
     { path: "editor", component: EditorComponent },
@@ -78,7 +78,6 @@ const appRoutes: Routes = [
         GameManagerService,
         RaceValidatorService,
         WallsCollisionsService,
-        SocketsService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
     bootstrap: [AppComponent]

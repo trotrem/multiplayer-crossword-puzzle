@@ -19,17 +19,17 @@ export class GridEventService {
     private _selectedWord: WordDescription = null;
     private _words: WordDescription[];
     private _id: number;
-    private _crosswordSetings: ICrosswordSettings;
+    private _crosswordSettings: ICrosswordSettings;
 
     public constructor(
         @inject(CommunicationService) private communicationService: CommunicationService,
         private router: Router) {
-        this._crosswordSetings = {difficulty: "easy", nbPlayers: "one"};
     }
 
-    public initialize(words: WordDescription[]): void {
+    public initialize(words: WordDescription[], nbPlayers: NbPlayers): void {
         this._words = words;
-    }
+        this._crosswordSettings = {difficulty: Difficulty.Easy, nbPlayers: nbPlayers};
+}
 
     public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         if (this._selectedWord === word) {
@@ -156,19 +156,19 @@ export class GridEventService {
     }
 
     private openEndGame(): void {
-        this.router.navigate(["/endGame/" + this._crosswordSetings.nbPlayers + "/", { Difficulty: this._crosswordSetings.difficulty }]);
+        this.router.navigate(["/endGame/" + this._crosswordSettings.nbPlayers + "/", { Difficulty: this._crosswordSettings.difficulty }]);
     }
 
     public setNbPlayers(nbPlayers: NbPlayers): void {
-        this._crosswordSetings.nbPlayers = nbPlayers;
+        this._crosswordSettings.nbPlayers = nbPlayers;
     }
 
     public setDifficulty(difficulty: Difficulty): void {
-        this._crosswordSetings.difficulty = difficulty;
+        this._crosswordSettings.difficulty = difficulty;
     }
 
     public getDifficulty(): Difficulty {
-        return this._crosswordSetings.difficulty;
+        return this._crosswordSettings.difficulty;
     }
 
     public setId(id: number): void {

@@ -3,7 +3,7 @@ import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { SocketsService } from "../sockets.service";
 import { inject } from "inversify";
-import { Message, Event } from "../../../../../common/communication/types";
+import { CrosswordEvents } from "../../../../../common/communication/events";
 
 @Component({
     selector: "app-home-page",
@@ -12,30 +12,16 @@ import { Message, Event } from "../../../../../common/communication/types";
 })
 export class HomePageComponent implements OnInit {
 
-    public constructor(private router: Router, @inject(SocketsService) private socketsService: SocketsService) { }
+    public constructor(private router: Router) { }
 
     public ngOnInit(): void {
     }
 
     public play(form: NgForm): void {
         this.router.navigate(["/crossword/" + form.value.oneTwo + "/", { Difficulty: form.value.EasyMediumHard }]);
+    }
 
-        this.socketsService.initSocket();
-
-        this.socketsService.onEvent("message")
-            .subscribe((message: Message) => {
-                console.log(message);
-            });
-
-        this.socketsService.onEvent("connect")
-            .subscribe(() => {
-                console.log('connected');
-            });
-
-        this.socketsService.onEvent("disconnect")
-            .subscribe(() => {
-                console.log('disconnected');
-            });
-        this.socketsService.sendMessage({ title: "such", body: "wows" });
+    public joinExisting(form: NgForm): void {
+        this.router.navigate(["/crossword/lobby/" + form.value.EasyMediumHard ]);
     }
 }

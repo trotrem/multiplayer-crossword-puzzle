@@ -10,7 +10,7 @@ import { Difficulty } from "./../../../../../common/communication/types";
   styleUrls: ["./end-game.component.css"]
 })
 export class EndGameComponent implements OnInit {
-  private _difficulty: Difficulty = "easy";
+  private _difficulty: Difficulty = Difficulty.Easy;
   private nbPlayers: string;
 
   public constructor(private route: ActivatedRoute, private router: Router) { }

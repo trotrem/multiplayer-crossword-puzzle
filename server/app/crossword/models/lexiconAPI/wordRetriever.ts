@@ -15,9 +15,9 @@ export class WordRetriever {
   }
 
   public async getWordsWithDefinitions(word: string, difficulty: Difficulty): Promise<WordDictionaryData[]> {
-    if (difficulty === "easy") {
+      if (difficulty === Difficulty.Easy) {
       return this.getEasyWordList(word);
-    } else if (difficulty === "medium") {
+    } else if (difficulty === Difficulty.Medium) {
       return this.getMediumWordList(word);
     } else {
       return this.getHardWordList(word);

@@ -3,30 +3,34 @@ import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import { Difficulty, IGridData, IWordValidationParameters } from "../../../../common/communication/types";
+import { SocketsService } from "./sockets.service";
+import { CrosswordEvents } from "../../../../common/communication/events";
 
 @Injectable()
 export class CommunicationService {
 
-  public constructor(private http: HttpClient) { }
+    public constructor(private http: HttpClient, private socketsService: SocketsService) { }
 
-  public fetchCheatModeWords(id: number): Observable<string[]> {
-    return this.http.get<string[]>("http://localhost:3000/crossword/cheatwords/" + id);
-  }
+    public fetchCheatModeWords(id: number): Observable<string[]> {
+        return this.http.get<string[]>("http://localhost:3000/crossword/cheatwords/" + id);
+    }
 
-  public fetchGrid(difficulty: Difficulty): Observable<IGridData> {
-    return this.http.get<IGridData>("http://localhost:3000/crossword/grid/" + difficulty.valueOf());
+    public createSinglePlayerGame(difficulty: Difficulty): Observable<IGridData> {
+        const grid = this.socketsService.onEvent(CrosswordEvents.GridFetched);
+        this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty});
 
-  }
+        return grid;
+    }
 
-  public validate(parameters: IWordValidationParameters): Observable<boolean> {
-    const headers: HttpHeaders = new HttpHeaders()
-      .set("Authorization", "my-auth-token")
-      .set("Content-Type", "application/json");
+    public validate(parameters: IWordValidationParameters): Observable<boolean> {
+        const headers: HttpHeaders = new HttpHeaders()
+            .set("Authorization", "my-auth-token")
+            .set("Content-Type", "application/json");
 
-    return this.http.post<boolean>(
-      "http://localhost:3000/crossword/validate",
-      JSON.stringify(parameters),
-      { headers: headers });
-  }
+        return this.http.post<boolean>(
+            "http://localhost:3000/crossword/validate",
+            JSON.stringify(parameters),
+            { headers: headers });
+    }
 
 }

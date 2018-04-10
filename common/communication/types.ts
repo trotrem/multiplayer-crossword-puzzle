@@ -14,9 +14,16 @@ export interface IWordValidationParameters {
     wordIndex: number;
 }
 
-export type Difficulty = "easy" | "medium" | "hard";
+export enum Difficulty {
+    Easy,
+    Medium,
+    Hard
+}
 
-export type NbPlayers = "one" | "two";
+export enum NbPlayers {
+    One = 1,
+    Two = 2
+}
 
 export interface IWordInfo {
     id: number;
@@ -38,9 +45,8 @@ export interface IGridData {
     wordInfos: Array<IWordInfo>;
 }
 
-export type Event = "connect" | "disconnect" | "message";
-
 export interface ICrosswordSettings {
     difficulty: Difficulty;
     nbPlayers: NbPlayers;
+    playerName?: string;
 }
