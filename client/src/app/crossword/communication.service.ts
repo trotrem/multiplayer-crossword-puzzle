@@ -16,7 +16,7 @@ export class CommunicationService {
     }
 
     public createGame(difficulty: Difficulty, playerName: string): Observable<IGridData> {
-        const grid = this.socketsService.onEvent(CrosswordEvents.GridFetched) as Observable<IGridData>;
+        const grid: Observable<IGridData> = this.socketsService.onEvent(CrosswordEvents.GridFetched) as Observable<IGridData>;
         this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty, playerName: playerName});
 
         return grid;
