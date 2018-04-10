@@ -14,7 +14,7 @@ import { Difficulty } from "../../../../../common/communication/types";
 export class HomePageComponent implements OnInit {
 
     public oneTwo: number;
-    public EasyMediumHard: Difficulty;
+    public EasyMediumHard: number;
     public playerName: string;
 
     public constructor(private router: Router) {
@@ -35,7 +35,11 @@ export class HomePageComponent implements OnInit {
     }
 
     public play(form: NgForm): void {
-        this.router.navigate(["/crossword/" + form.value.Difficulty + "/", { playerName: form.value.playerName }]);
+        if (this.oneTwo === 1) {
+            this.router.navigate(["/crossword/" + form.value.EasyMediumHard]);
+        } else {
+            this.router.navigate(["/crossword/" + form.value.EasyMediumHard + "/", { playerName: form.value.playerName }]);
+        }
     }
 
     public joinExisting(form: NgForm): void {

@@ -82,8 +82,8 @@ export class CrosswordGridComponent implements OnInit {
         this.route.params.subscribe((params) => {
             this.gridEventService.setDifficulty(params["Difficulty"]);
             this._difficulty = params["Difficulty"];
-            this.gridEventService.setNbPlayers(params["nbPlayers"]);
-            this.nbPlayers = params["nbPlayers"];
+            this.nbPlayers = params["playerName"] === undefined  ? 1 : 2;
+            this.gridEventService.setNbPlayers(this.nbPlayers);
             this.fetchGrid();
         });
     }
