@@ -14,7 +14,7 @@ export class SocketsHandler {
 
     public initialize(server: http.Server): void {
         this.io = socketIo(server);
-        this.io.on("connection", (socket: SocketIO.Socket) => {
+        this.io.on(CrosswordEvents.Connected, (socket: SocketIO.Socket) => {
             socket.emit(CrosswordEvents.Connected);
             this.onCreateGame(socket);
             this.onGetGamesList(socket);
