@@ -17,7 +17,7 @@
   </div>
   <div>
     <h2>horizontal</h2>
-    <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)" 
+    <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)"
     [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.found === true}">
     {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
   </div>

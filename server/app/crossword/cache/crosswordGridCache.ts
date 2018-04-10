@@ -1,8 +1,8 @@
-import { IGridData, IWordInfo, Difficulty } from "../../../../common/communication/types";
+import { IWordInfo, Difficulty } from "../../../../common/communication/types";
 import { IGrid, IWordContainer } from "../models/grid/dataStructures";
 import { GridUtils } from "../models/grid/gridUtils";
 import { WordDictionaryData } from "../models/lexiconAPI/gridWordInformation";
-import { CrosswordLobbyGame } from "../../../../common/communication/events";
+import { IGridData, CrosswordLobbyGame } from "../../../../common/communication/events";
 
 interface ICacheWord {
     word: string;
