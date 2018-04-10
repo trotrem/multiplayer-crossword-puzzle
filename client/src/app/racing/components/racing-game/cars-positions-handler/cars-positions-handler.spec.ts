@@ -26,7 +26,7 @@ describe("CarsPositionsHandler", () => {
       cars[i].mesh = await carLoader.load();
 
     }
-    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars);
+    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), cars);
     for (let i: number = 0; i < 4; i++) {
       expect(cars[i].mesh.position === new THREE.Vector3()).toBeFalsy();
     }
@@ -41,7 +41,7 @@ describe("CarsPositionsHandler", () => {
     }
     const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
     const position2: THREE.Vector3 = new THREE.Vector3(-12, 9, 0);
-    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars);
+    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), cars);
     for (let i: number = 0; i < 4; i++) {
       for (let j: number = 0; j < 4; j++) {
         if (i === j) {
@@ -66,8 +66,8 @@ describe("CarsPositionsHandler", () => {
     }
     const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
     const position2: THREE.Vector3 = new THREE.Vector3(-12, 9, 0);
-    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars1);
-    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), new THREE.Scene(), cars2);
+    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), cars1);
+    CarsPositionsHandler.insertCars(new THREE.Line3(position1, position2), cars2);
     for (let i: number = 0; i < 4; i++) {
       expect(cars1[i].position === cars2[i].position).toBeFalsy();
     }

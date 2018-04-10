@@ -2,41 +2,31 @@ import { Injectable } from "@angular/core";
 import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
-import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
-import { TrackDisplay } from "./../trackDisplay/track-display";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
-import { CARS_MAX } from "../../../../constants";
 import { Track } from "../../../track";
 import { Skybox } from "./skybox";
 import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
+import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
 const ZOOM_MIN: number = 0.75;
-
-const WHITE: number = 0xFFFFFF;
-const AMBIENT_LIGHT_OPACITY: number = 2;
-const RED: number = 0xFF0000;
 
 @Injectable()
 export class RenderService {
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private container: HTMLDivElement;
     private renderer: THREE.WebGLRenderer;
-    private scene: THREE.Scene;
     private stats: Stats;
     private cameraID: number;
     private skyBox: Skybox;
 
-    public constructor(private keyboard: KeyboardService) {
+    public constructor(private keyboard: KeyboardService, private sceneGameService: SceneGameService) {
         this.cameraID = 0;
-    }
-    public getScene(): THREE.Scene {
-        return this.scene;
     }
     public getTopCamera(): OrthographicCamera {
         return this.cameras[1];
@@ -49,10 +39,11 @@ export class RenderService {
         if (container) {
             this.container = container;
         }
-        this.createScene(track, cars, walls);
-        CarsPositionsHandler.insertCars(track.startingZone, this.scene, cars);
-        this.initStats();
+        this.sceneGameService.initialize(track, cars, walls);
 
+        this.initStats();
+        this.cameras[0] = new PerspectiveCamera();
+        this.cameras[1] = new OrthographicCamera();
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setPixelRatio(devicePixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
@@ -66,25 +57,6 @@ export class RenderService {
         this.stats.dom.style.position = "absolute";
         this.container.appendChild(this.stats.dom);
     }
-
-    private createScene(track: Track, cars: Car[], walls: ILine[]): void {
-        this.scene = new THREE.Scene();
-        this.skyBox = new Skybox();
-        this.cameras[0] = new PerspectiveCamera();
-        this.cameras[1] = new OrthographicCamera();
-        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(track.points);
-        for (const mesh of trackMeshs) {
-            this.scene.add(mesh);
-        }
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this.scene.add(cars[i]);
-        }
-        this.showWalls(walls);
-        track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
-        this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
-        this.scene.add(this.skyBox.createSkybox());
-
-    }
     private getAspectRatio(): number {
         return this.container.clientWidth / this.container.clientHeight;
     }
@@ -94,7 +66,7 @@ export class RenderService {
         } else {
             this.cameras[1].updatePosition(player.getUpdatedPosition());
         }
-        this.renderer.render(this.scene, this.cameras[this.cameraID]);
+        this.renderer.render(this.sceneGameService.scene, this.cameras[this.cameraID]);
         this.stats.update();
     }
     public onResize(): void {
@@ -139,15 +111,6 @@ export class RenderService {
             if (this.cameras[i].zoom > ZOOM_MIN) {
                 this.cameras[i].zoom -= ZOOM_FACTOR;
             }
-        }
-    }
-
-    private showWalls(walls: ILine[]): void {
-        for (const line of walls) {
-            const geo: THREE.Geometry = new THREE.Geometry();
-            geo.vertices.push(line.pos1);
-            geo.vertices.push(line.pos2);
-            this.scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ visible: false })));
         }
     }
     public initCameraCommands(): void {

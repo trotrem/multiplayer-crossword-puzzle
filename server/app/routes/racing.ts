@@ -22,8 +22,7 @@ module Route {
         }
 
         public getAlltracks(req: Request, res: Response, next: NextFunction): void {
-            // tslint:disable-next-line:only-arrow-functions
-            trackDocument.find({}, function (err: Error, allTracks: Document[]): void {
+            trackDocument.find({}, (err: Error, allTracks: Document[]): void => {
                 if (!err) {
                     console.warn("find all");
                     res.send(allTracks);
@@ -35,8 +34,7 @@ module Route {
         }
 
         public deleteTrack(req: Request, res: Response, next: NextFunction): void {
-            // tslint:disable-next-line:only-arrow-functions
-            trackDocument.remove({ name: req.params.name }, function (err: Error): void {
+            trackDocument.remove({ name: req.params.name }, (err: Error): void => {
                 if (!err) {
                     console.warn("delete one");
                     res.send("track delete");
@@ -47,8 +45,7 @@ module Route {
         }
 
         public getTrackByName(req: Request, res: Response, next: NextFunction): void {
-            // tslint:disable-next-line:only-arrow-functions
-            trackDocument.find({ name: req.params.name }, function (err: Error, track: Document): void {
+            trackDocument.find({ name: req.params.name }, (err: Error, track: Document): void => {
                 if (!err) {
                     console.warn("find ");
                     res.send(track);
@@ -61,10 +58,9 @@ module Route {
 
         public updateScoresByName(req: Request, res: Response, next: NextFunction): void {
             trackDocument.update(
-                {name: req.body.name },
-                { $set: {  INewScores: req.body.INewScores, usesNumber: req.body.usesNumber , IBestScores: req.body.IBestScores} },
-                // tslint:disable-next-line:only-arrow-functions
-                function (err: Error): void {
+                { name: req.body.name },
+                { $set: { INewScores: req.body.INewScores, usesNumber: req.body.usesNumber, IBestScores: req.body.IBestScores } },
+                (err: Error): void => {
                     if (!err) {
                         console.warn("update ");
                         res.send("update INewScores");
@@ -77,10 +73,9 @@ module Route {
         }
         public updateIBestScoreByName(req: Request, res: Response, next: NextFunction): void {
             trackDocument.update(
-                {name: req.body.name },
-                { $set: {  IBestScores: req.body.IBestScores } },
-                // tslint:disable-next-line:only-arrow-functions
-                function (err: Error): void {
+                { name: req.body.name },
+                { $set: { IBestScores: req.body.IBestScores } },
+                (err: Error): void => {
                     if (!err) {
                         console.warn("update ");
                         res.send("update IBestScore");
@@ -90,7 +85,7 @@ module Route {
 
                     }
                 });
-            }
+        }
     }
 }
 

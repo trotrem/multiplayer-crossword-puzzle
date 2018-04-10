@@ -10,7 +10,7 @@ const FIELD_OF_VIEW: number = 70;
 const INITIAL_CAMERA_POSITION_Z: number = 100;
 
 @Injectable()
-export class SceneServices {
+export class SceneService {
   private camera: THREE.PerspectiveCamera;
 
   private scene: THREE.Scene;
