@@ -5,7 +5,7 @@ import { WordsPositionsHelper } from "./wordsPositionsHelper";
 import { IGrid } from "./dataStructures";
 import { GridUtils } from "./gridUtils";
 import { Direction } from "../../../../../common/communication/types";
-import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
+import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
 
 describe("addWord", () => {
 

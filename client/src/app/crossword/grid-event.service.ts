@@ -5,6 +5,7 @@ import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { inject } from "inversify";
+import { HttpClient } from "@angular/common/http";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -22,7 +23,11 @@ export class GridEventService {
   private _difficulty: Difficulty = "easy";
 
   public constructor(
-    words: WordDescription[], @inject(CommunicationService) private communicationService: CommunicationService, private router: Router) {
+    @inject(CommunicationService) private communicationService: CommunicationService,
+    private router: Router) {
+  }
+
+  public initialize(words: WordDescription[]): void {
     this.words = words;
   }
 

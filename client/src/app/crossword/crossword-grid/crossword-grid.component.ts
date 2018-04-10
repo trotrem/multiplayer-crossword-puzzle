@@ -19,6 +19,7 @@ enum TipMode {
   selector: "app-crossword-grid",
   templateUrl: "./crossword-grid.component.html",
   styleUrls: ["./crossword-grid.component.css"],
+  providers: [CommunicationService, GridEventService]
 })
 export class CrosswordGridComponent implements OnInit {
   public cells: Cell[][];
@@ -57,6 +58,7 @@ export class CrosswordGridComponent implements OnInit {
       }
     }
 
+    this.gridEventService.initialize(this.words);
   }
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {

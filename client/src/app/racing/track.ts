@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import {INewScores, IBestScores} from "../../../../common/communication/interfaces";
 
 export interface Track {
     name: string;
@@ -6,5 +7,6 @@ export interface Track {
     startingZone: THREE.Line3;
     points: THREE.Vector3[];
     usesNumber: number;
-    newScores: number[];
+    INewScores: INewScores[];
+    IBestScores: IBestScores[];
 }
