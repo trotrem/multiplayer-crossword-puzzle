@@ -20,6 +20,14 @@ describe("GameResultsComponent", () => {
     name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
     INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
   };
+  track.INewScores.push({id: 2, scores: new Array<number>()});
+  track.INewScores.push({id: 1, scores: new Array<number>()});
+  track.INewScores.push({id: 0, scores: new Array<number>()});
+  track.IBestScores.push({name: "Amal", score: 10});
+  track.IBestScores.push({name: "Amal", score: 10});
+  track.IBestScores.push({name: "Amal", score: 10});
+  track.IBestScores.push({name: "Amal", score: 10});
+  track.IBestScores.push({name: "Amal", score: 30});
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,10 +58,26 @@ describe("GameResultsComponent", () => {
   it("should get a track by name", async () => {
     expect(component.getTrack(track.name)).toBeDefined();
   });
-  it("should return the track's INewScores  ", async () => {
+  it("should return the track's newScores  ", async () => {
     route.snapshot.params = { params: track.name };
     await component.getTrack(track.name);
     expect(component.scores === track.INewScores).toBe(true);
+  });
+
+  it("should return the track's BestScores  ", async () => {
+    route.snapshot.params = { params: track.name };
+    await component.getTrack(track.name);
+    expect(component.bestScores === track.IBestScores).toBe(true);
+  });
+
+  it(" IsNotBestScore() return true when the human car is not in first position   ", () => {
+    component.getTrack(track.name);
+    expect(component.isNotBestScore()).toBeFalsy();
+  });
+  it(" IsNotBestScore() return false when the human car is in first position and have the best score  ", () => {
+    component.newBestScore = {name: "Amal", score: 10};
+    component.getTrack(track.name);
+    expect(component.isNotBestScore()).toBeFalsy();
   });
 
 });
