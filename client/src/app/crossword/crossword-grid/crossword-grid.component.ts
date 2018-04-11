@@ -3,7 +3,7 @@ import { IGridData, Direction, Difficulty } from "../../../../../common/communic
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
-import { ActivatedRoute} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { GridEventService } from "../grid-event.service";
 import { inject } from "inversify";
 
@@ -32,16 +32,16 @@ export class CrosswordGridComponent implements OnInit {
   public tipMode: TipMode = TipMode.Definitions;
 
   @HostListener("document:click")
-  // (listens to document event so it's not called in the code)
+  // (listens to document event so it's not caled in the code)
   private onBackgroundClick(): void {  // tslint:disable-line
     this.selectedWord = this.gridEventService.setSelectedWord(null, false);
   }
 
-  public get horizontalWords(): WordDescription[] {
+  public getHorizontalWords(): WordDescription[] {
     return this.words.filter((word) => word.direction === Direction.Horizontal);
   }
 
-  public get verticalWords(): WordDescription[] {
+  public getVerticalWords(): WordDescription[] {
     return this.words.filter((word) => word.direction === Direction.Vertical);
   }
 
@@ -62,7 +62,7 @@ export class CrosswordGridComponent implements OnInit {
   }
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.gridEventService.setDifficulty(params["Difficulty"]);
+      this.gridEventService.difficulty = params["Difficulty"];
       this._difficulty = params["Difficulty"];
       this.gridEventService.setNbPlayers(params["nbPlayers"]);
       this.nbPlayers = params["nbPlayers"];
@@ -97,7 +97,7 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   public toggleTipMode(): void {
-    if (this.horizontalWords[0].word === undefined) {
+    if (this.getHorizontalWords()[0].word === undefined) {
       this.fetchCheatModeWords();
     }
     this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions;
@@ -117,11 +117,11 @@ export class CrosswordGridComponent implements OnInit {
   }
 
   private fetchCheatModeWords(): void {
-    this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
+    this.communicationService.fetchCheatModeWords(this.gridEventService.Id)
       .subscribe((data: string[]) => {
         const words: string[] = data as string[];
         let i: number = 0;
-        for (const word of this.horizontalWords.concat(this.verticalWords)) {
+        for (const word of this.getHorizontalWords().concat(this.getVerticalWords())) {
           word.word = words[i];
           i++;
         }

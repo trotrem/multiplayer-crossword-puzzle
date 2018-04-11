@@ -31,27 +31,21 @@ export class AdminComponent implements OnInit {
   public setIsSelected(bool: boolean): void {
     this.isSelected = bool;
   }
-  public getSelectedTrack(): Track {
+  public get SelectedTrack(): Track {
     return this.selectedTrack;
   }
-  public getTracksList(): Track[] {
+  public get TracksList(): Track[] {
     return this.tracks;
   }
-  public getisSelected(): boolean {
+  public get IsSelected(): boolean {
     return this.isSelected;
-  }
-  public getRouter(): Router {
-    return this.router;
-  }
-
-  public getCommunicationService(): RacingCommunicationService {
-    return this.communicationService;
   }
 
   public ngOnInit(): void {
     this.getTracks();
   }
 
+  // TODO changer le nom de getTracks ici (il y a une autre dans communicationService)
   private getTracks(): void {
     this.communicationService.getTracks()
       .subscribe((res: Array<Track>) => {

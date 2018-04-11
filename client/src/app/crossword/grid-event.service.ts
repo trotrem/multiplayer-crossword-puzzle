@@ -163,19 +163,15 @@ export class GridEventService {
     this.nbPlayers = nbPlayers;
   }
 
-  public setDifficulty(difficulty: Difficulty): void {
+  public set difficulty(difficulty: Difficulty) {
     this._difficulty = difficulty;
-  }
-
-  public getDifficulty(): Difficulty {
-    return this._difficulty;
   }
 
   public setId(id: number): void {
     this.id = id;
   }
 
-  public getId(): number {
+  public get Id(): number {
     return this.id;
   }
 }

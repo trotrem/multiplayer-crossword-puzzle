@@ -23,6 +23,8 @@ export class UserComponent implements OnInit {
   public ngOnInit(): void {
     this.getTracks();
   }
+
+  // TODO : possible de mettre ensemble ??
   private getTracks(): void {
     this.communicationService.getTracks()
       .subscribe((res: Array<Track>) => {
