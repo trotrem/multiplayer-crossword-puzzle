@@ -3,7 +3,7 @@ import { Car } from "../car/car";
 import { MS_TO_SECONDS, LAP_MAX } from "./../../../../constants";
 import { RaceUtils } from "../../../utils/utils";
 import { Track } from "../../../track";
-import { INewScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "./../../../../../../../common/communication/interfaces";
 const ADD_TO_DISTANCE: number = 20;
 
 export class RaceValidator {
@@ -59,4 +59,15 @@ export class RaceValidator {
         }
 
     }
+    public static calculateHumanScore(scores: INewScores[], bestScore: IBestScores): void {
+        for (const sc of scores[0].scores) {
+          bestScore.score += sc;
+        }
+      }
+
+    public static bestScoresSort(bestScores: IBestScores[]): void {
+        bestScores = bestScores.sort((n1, n2) => {
+          return n1.score - n2.score ;
+        });
+      }
 }
