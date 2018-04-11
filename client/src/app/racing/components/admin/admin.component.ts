@@ -22,14 +22,8 @@ export class AdminComponent implements OnInit {
     this.tracks = new Array<Track>();
     this.isSelected = false;
   }
-  public setTracks(tracks: Track[]): void {
+  public set Tracks(tracks: Track[]) {
     this.tracks = tracks;
-  }
-  public setSelectedTrack(track: Track): void {
-    this.selectedTrack = track;
-  }
-  public setIsSelected(bool: boolean): void {
-    this.isSelected = bool;
   }
   public get SelectedTrack(): Track {
     return this.selectedTrack;

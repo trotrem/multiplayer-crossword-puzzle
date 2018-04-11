@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import {  INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { ActivatedRoute } from "@angular/router";
 import { SceneServices } from "./scene.services/scene.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
@@ -35,9 +35,6 @@ export class EditorComponent implements OnInit {
         };
         this.submitValid = false;
         this.sceneService = new SceneServices();
-    }
-    public setTrack(track: Track): void {
-        this.track = track;
     }
 
     public async ngOnInit(): Promise<void> {

@@ -64,7 +64,7 @@ export class CrosswordGridComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.gridEventService.difficulty = params["Difficulty"];
       this._difficulty = params["Difficulty"];
-      this.gridEventService.setNbPlayers(params["nbPlayers"]);
+      this.gridEventService.NbPlayers = params["nbPlayers"];
       this.nbPlayers = params["nbPlayers"];
       this.fetchGrid();
     });
@@ -74,7 +74,7 @@ export class CrosswordGridComponent implements OnInit {
     this.communicationService.fetchGrid(this._difficulty)
       .subscribe((data) => {
         const gridData: IGridData = data as IGridData;
-        this.gridEventService.setId(gridData.id);
+        this.gridEventService.Id = gridData.id;
         gridData.blackCells.forEach((cell) => {
           this.cells[cell.y][cell.x].isBlack = true;
         });

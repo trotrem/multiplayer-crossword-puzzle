@@ -159,7 +159,7 @@ export class GridEventService {
     this.router.navigate(["/endGame/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
   }
 
-  public setNbPlayers(nbPlayers: string): void {
+  public set NbPlayers(nbPlayers: string) {
     this.nbPlayers = nbPlayers;
   }
 
@@ -167,7 +167,8 @@ export class GridEventService {
     this._difficulty = difficulty;
   }
 
-  public setId(id: number): void {
+  // TODO : public ??
+  public set Id(id: number) {
     this.id = id;
   }
 
