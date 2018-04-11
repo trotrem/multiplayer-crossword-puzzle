@@ -58,6 +58,7 @@ export class Car extends Object3D {
         return this._checkpoint;
     }
 
+    // TODO : mettre public
     public set counterLap(counterLap: number) {
         this._counterLap = counterLap;
     }
@@ -97,9 +98,6 @@ export class Car extends Object3D {
     }
     public get mesh(): Object3D {
         return this._mesh;
-    }
-    public set mesh(mesh: Object3D) {
-        this._mesh = mesh;
     }
     public get direction(): Vector3 {
         const rotationMatrix: Matrix4 = new Matrix4();

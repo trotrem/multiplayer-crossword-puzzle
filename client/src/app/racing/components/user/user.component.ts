@@ -40,15 +40,8 @@ export class UserComponent implements OnInit {
     return this.tracks;
   }
 
-  public setTracks(track: Track[]): void {
-    this.tracks = track;
-  }
   public getSelectedTrack(): Track {
     return this.selectedTrack;
-  }
-
-  public setSelectedTrack(track: Track): void {
-    this.selectedTrack = track;
   }
 
   public getTracksList(): Track[] {
