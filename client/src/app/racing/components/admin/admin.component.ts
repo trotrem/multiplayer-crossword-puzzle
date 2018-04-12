@@ -12,40 +12,15 @@ import { Track } from "../../track";
 })
 export class AdminComponent implements OnInit {
 
-  private tracks: Track[];
+  public tracks: Track[];
 
-  private selectedTrack: Track;
+  public selectedTrack: Track;
 
-  private isSelected: boolean;
+  public isSelected: boolean;
 
   public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
     this.isSelected = false;
-  }
-  public setTracks(tracks: Track[]): void {
-    this.tracks = tracks;
-  }
-  public setSelectedTrack(track: Track): void {
-    this.selectedTrack = track;
-  }
-  public setIsSelected(bool: boolean): void {
-    this.isSelected = bool;
-  }
-  public getSelectedTrack(): Track {
-    return this.selectedTrack;
-  }
-  public getTracksList(): Track[] {
-    return this.tracks;
-  }
-  public getisSelected(): boolean {
-    return this.isSelected;
-  }
-  public getRouter(): Router {
-    return this.router;
-  }
-
-  public getCommunicationService(): RacingCommunicationService {
-    return this.communicationService;
   }
 
   public ngOnInit(): void {
@@ -62,7 +37,7 @@ export class AdminComponent implements OnInit {
   public onSelect(track: Track): void {
     this.selectedTrack = track;
     this.isSelected = true;
-    console.warn(this.selectedTrack);
+
   }
 
   public editTrack(): Track {
@@ -75,10 +50,6 @@ export class AdminComponent implements OnInit {
     this.communicationService.deleteTrack(this.selectedTrack);
 
     return this.selectedTrack;
-  }
-
-  public notReadyToModify(): boolean {
-    return !this.isSelected;
   }
 
 }
