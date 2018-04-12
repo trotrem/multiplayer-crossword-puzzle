@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { SceneEditorService } from "./../scene-editor.service/scene-editor.service";
 import * as THREE from "three";
 const MAX_SELECTION: number = 2;
 const FAR_CLIPPING_PLANE: number = 1000;
