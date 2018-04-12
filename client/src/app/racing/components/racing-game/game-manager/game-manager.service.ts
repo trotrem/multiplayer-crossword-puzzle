@@ -3,7 +3,6 @@ import { RenderGameService } from "../render-game-service/render-game.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
-import { KeyboardService } from "../commands/keyboard.service";
 import { Track } from "../../../track";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";
 import { RaceValidator } from "../race-validator/racevalidator";
@@ -12,6 +11,7 @@ import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
 import { AiController } from "./../ai-controller/ai-controller";
+import { KeyboardService } from "../commands/keyboard.service";
 
 const AI_PLAYERS_MAX: number = 3;
 
@@ -29,28 +29,27 @@ export class GameManagerService {
         private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
-        private keyboard: KeyboardService,
         private router: Router) {
         this.timer = 0;
         this._aiControllers = new Array<AiController>();
     }
 
-    public async initializeGame(trackName: string, canvas: ElementRef): Promise<void> {
+    public async initializeGame(trackName: string, canvas: ElementRef, keyboard: KeyboardService): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName);
         this.track.INewScores = new Array<INewScores>();
-        this.initializeCars().then(() => {
+        this.initializeCars(keyboard).then(() => {
             this.renderService.initialize(
                 canvas.nativeElement, this.track.points, this.track.startingZone,
-                this._cars, this.collisionService.createWalls(this.track.points));
+                this._cars, this.collisionService.createWalls(this.track.points), keyboard);
             this.update();
         });
     }
 
-    private async initializeCars(): Promise<void> {
+    private async initializeCars(keyboard: KeyboardService): Promise<void> {
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService, this.keyboard);
+            this._cars[i] = new Car(this.collisionService, keyboard);
             await this._cars[i].init().then(() => { });
         }
     }
