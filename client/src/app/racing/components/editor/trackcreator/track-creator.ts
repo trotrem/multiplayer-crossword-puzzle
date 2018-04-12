@@ -3,6 +3,8 @@ import { TrackValidator } from "./track-validator";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
+const FIRST_POINT_COUNTOUR_SIZE: number = 5;
+const POINT_SIZE: number = 3;
 
 export class TrackCreator {
 
@@ -22,22 +24,22 @@ export class TrackCreator {
         this.isClosed = false;
     }
 
-    public convertToWorldPosition(event: MouseEvent, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
+    public convertToWorldPosition(positionEvent: THREE.Vector3, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
         const canvasRectangle: ClientRect = canvas.getBoundingClientRect();
-        const canvasPosition: THREE.Vector3 = new THREE.Vector3(event.x - canvasRectangle.left, event.y - canvasRectangle.top);
+        const canvasPosition: THREE.Vector3 =
+            new THREE.Vector3(positionEvent.x - canvasRectangle.left, positionEvent.y - canvasRectangle.top);
         const canvasVector: THREE.Vector3 = new THREE.Vector3(
             (canvasPosition.x / canvas.width) * MAX_SELECTION - 1,
             -(canvasPosition.y / canvas.height) * MAX_SELECTION + 1,
             0);
         canvasVector.unproject(camera);
         const direction: THREE.Vector3 = canvasVector.sub(camera.position);
-        const distance: number = - camera.position.z / direction.z;
 
-        return camera.position.clone().add(direction.multiplyScalar(distance));
+        return camera.position.clone().add(direction.multiplyScalar(- camera.position.z / direction.z));
     }
 
-    public getPlacementPosition(event: MouseEvent, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
-        let position: THREE.Vector3 = this.convertToWorldPosition(event, canvas, camera);
+    public getPlacementPosition(positionEvent: THREE.Vector3, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
+        let position: THREE.Vector3 = this.convertToWorldPosition(positionEvent, canvas, camera);
 
         if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
             position = this.points[0];
@@ -50,7 +52,7 @@ export class TrackCreator {
     public createFirstPointContour(position: THREE.Vector3): THREE.Points {
         const geometryPoint: THREE.Geometry = new THREE.Geometry();
         geometryPoint.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });
+        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: FIRST_POINT_COUNTOUR_SIZE, color: 0xFAA61A });
 
         return new THREE.Points(geometryPoint, material);
     }
@@ -58,7 +60,7 @@ export class TrackCreator {
     public createPoint(position: THREE.Vector3): THREE.Points {
         const pointGeometry: THREE.Geometry = new THREE.Geometry();
         pointGeometry.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
+        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: POINT_SIZE, color: 0xFF00A7 });
 
         return new THREE.Points(pointGeometry, material);
     }
@@ -82,7 +84,7 @@ export class TrackCreator {
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
         lineGeometry.vertices.push(lastPos);
         lineGeometry.vertices.push(newPos);
-        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, color }));
+        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ /*"linewidth": 6,*/ color }));
         lines.push(line);
         this.trackValidator.emptyPoints();
 

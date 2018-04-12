@@ -36,14 +36,14 @@ export class SceneService {
     this.animate();
 
   }
-
+  // scene.service
   public createScene(): void {
     this.camera = new THREE.PerspectiveCamera(
       FIELD_OF_VIEW,
       this.getAspectRatio(),
       NEAR_CLIPPING_PLANE,
       FAR_CLIPPING_PLANE
-  );
+    );
 
     this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -54,7 +54,7 @@ export class SceneService {
   }
   private getAspectRatio(): number {
     return this.canvas.clientWidth / this.canvas.clientHeight;
-}
+  }
 
   public animate(): void {
     requestAnimationFrame(() => this.animate());
@@ -64,7 +64,7 @@ export class SceneService {
     if (this.trackCreator.isClosed) {
       return null;
     }
-    const position: THREE.Vector3 = this.trackCreator.getPlacementPosition(event, this.canvas, this.camera);
+    const position: THREE.Vector3 = this.trackCreator.getPlacementPosition(new THREE.Vector3(event.x, event.y), this.canvas, this.camera);
     if (this.trackCreator.points.length === 0) {
       this.scene.add(this.trackCreator.createFirstPointContour(position));
     }
@@ -101,7 +101,7 @@ export class SceneService {
     const newPoints: THREE.Vector3[] = this.trackCreator.points;
     this.trackCreator.points = [];
 
-    const position: THREE.Vector3 = this.trackCreator.convertToWorldPosition(event, this.canvas, this.camera);
+    const position: THREE.Vector3 = this.trackCreator.convertToWorldPosition(new THREE.Vector3(event.x, event.y), this.canvas, this.camera);
     newPoints[this.dragIndex] = position;
     if (this.dragIndex === newPoints.length - 1 && this.trackCreator.isClosed) {
       newPoints[0] = position;
@@ -114,7 +114,7 @@ export class SceneService {
   }
 
   public getDraggedPointIndex(event: MouseEvent): void {
-    const position: THREE.Vector3 = this.trackCreator.convertToWorldPosition(event, this.canvas, this.camera);
+    const position: THREE.Vector3 = this.trackCreator.convertToWorldPosition(new THREE.Vector3(event.x, event.y), this.canvas, this.camera);
     let index: number = -1;
     this.trackCreator.points.forEach((point, i) => {
       if (position.distanceTo(point) < MAX_SELECTION) {
