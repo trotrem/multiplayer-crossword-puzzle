@@ -104,7 +104,6 @@ export class CrosswordGridComponent implements OnInit {
 
     private subscribeToValidation(): void {
         this.communicationService.onValidation().subscribe((data) => {
-            console.log("ah");
             this.gridEventService.onWordValidated(data);
         });
     }
