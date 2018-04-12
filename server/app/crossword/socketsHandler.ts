@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import * as socketIo from "socket.io";
 import * as http from "http";
-import { ICrosswordSettings, Difficulty } from "../../../common/communication/types";
+import { ICrosswordSettings, Difficulty, IWordValidationParameters } from "../../../common/communication/types";
 import { GridFetcher } from "./gridFetcher";
 import { GridCache } from "./cache/crosswordGridCache";
 import { CrosswordEvents, IEventPayload } from "../../../common/communication/events";
@@ -19,6 +19,7 @@ export class SocketsHandler {
             this.onCreateGame(socket);
             this.onGetGamesList(socket);
             this.onJoinGame(socket);
+            this.onValidateWord(socket);
         });
     }
 
@@ -34,8 +35,8 @@ export class SocketsHandler {
 
             if (creationParameters.playerName === undefined) {
                 GridFetcher.fetchGrid(creationParameters.difficulty,
-                                      (grid: IGrid) => socket.emit(CrosswordEvents.GridFetched,
-                                                                   GridCache.Instance.addGrid(grid, gameId)))
+                    (grid: IGrid) => socket.emit(CrosswordEvents.GridFetched,
+                        GridCache.Instance.addGrid(grid, gameId)))
                     .catch(() => console.warn("error in grid fetching"));
             }
         });
@@ -56,4 +57,17 @@ export class SocketsHandler {
             socket.emit(CrosswordEvents.FetchedOpenGames, GridCache.Instance.getOpenMultiplayerGames(difficulty));
         });
     }
+
+    private onValidateWord(socket: SocketIO.Socket): void {
+        socket.on(CrosswordEvents.ValidateWord, (parameters: IWordValidationParameters) => {
+            let isValid: boolean = false;
+            const words: string[] = GridCache.Instance.getWords(parameters.gridId);
+            if (words.length > parameters.wordIndex && words[parameters.wordIndex] === parameters.word) {
+                GridCache.Instance.validateWord(parameters.gridId, parameters.wordIndex);
+                isValid = true;
+            }
+            socket.emit(CrosswordEvents.WordValidated, isValid);
+        });
+    }
+
 }

@@ -1,4 +1,4 @@
-import { injectable, inject } from "inversify";
+import { injectable } from "inversify";
 import { Router, Request, Response, NextFunction } from "express";
 import { CrosswordHandler } from "./crossword/crossword-handler";
 import { Racing } from "./racing/routes";

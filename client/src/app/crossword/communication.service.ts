@@ -6,31 +6,29 @@ import { Difficulty, IWordValidationParameters } from "../../../../common/commun
 import { SocketsService } from "./sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../common/communication/events";
 
+const SERVER_URL: string = "http://localhost:3000"
+
 @Injectable()
 export class CommunicationService {
 
-    public constructor(private http: HttpClient, private socketsService: SocketsService) { }
+    public constructor(private http: HttpClient, private socketsService: SocketsService) {
+    }
 
     public fetchCheatModeWords(id: number): Observable<string[]> {
-        return this.http.get<string[]>("http://localhost:3000/crossword/cheatwords/" + id);
+        return this.http.get<string[]>(SERVER_URL + "/crossword/cheatwords/" + id);
     }
 
     public createGame(difficulty: Difficulty, playerName: string): Observable<IGridData> {
         const grid: Observable<IGridData> = this.socketsService.onEvent(CrosswordEvents.GridFetched) as Observable<IGridData>;
-        this.socketsService.sendEvent(CrosswordEvents.NewGame, {difficulty: difficulty, playerName: playerName});
+        this.socketsService.sendEvent(CrosswordEvents.NewGame, { difficulty: difficulty, playerName: playerName });
 
         return grid;
     }
 
     public validate(parameters: IWordValidationParameters): Observable<boolean> {
-        const headers: HttpHeaders = new HttpHeaders()
-            .set("Authorization", "my-auth-token")
-            .set("Content-Type", "application/json");
+        this.socketsService.sendEvent(CrosswordEvents.ValidateWord, parameters);
 
-        return this.http.post<boolean>(
-            "http://localhost:3000/crossword/validate",
-            JSON.stringify(parameters),
-            { headers: headers });
+        return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<boolean>;
     }
 
 }

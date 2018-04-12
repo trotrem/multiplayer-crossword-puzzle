@@ -6,6 +6,7 @@ import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { inject } from "inversify";
 import { HttpClient } from "@angular/common/http";
+import { Subscription } from "rxjs/Subscription";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -135,7 +136,6 @@ export class GridEventService {
                     }
                     word.found = true;
                 }
-
                 this.validateGrid();
             });
     }

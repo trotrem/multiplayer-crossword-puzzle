@@ -68,12 +68,12 @@ export class CrosswordGridComponent implements OnInit {
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
-                console.log('connected');
+                console.warn('connected');
             });
 
         this.socketsService.onEvent(CrosswordEvents.Disconnected)
             .subscribe(() => {
-                console.log('disconnected');
+                console.warn('disconnected');
             });
 
 
