@@ -42,7 +42,8 @@ export class GameManagerService {
         this.track.INewScores = new Array<INewScores>();
         this.initializeCars().then(() => {
             this.renderService.initialize(
-                canvas.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
+                canvas.nativeElement, this.track.points, this.track.startingZone,
+                this._cars, this.collisionService.createWalls(this.track.points));
             this.update();
         });
     }
@@ -87,7 +88,7 @@ export class GameManagerService {
             for (let i: number = 0; i < CARS_MAX; i++) {
                 this._cars[i].update(timeSinceLastFrame);
             }
-            if (RaceValidator.validateRace(this._cars[0], this.timer, this.track).length === LAP_MAX) {
+            if (RaceValidator.validateRace(this._cars[0], this.timer, this.track.points).length === LAP_MAX) {
                 this.updateScores();
             }
             for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
@@ -105,16 +106,16 @@ export class GameManagerService {
     private updateLapTimeAI(carIndex: number): void {
         this._cars[carIndex].setLapTimes(this.timer / MS_TO_SECONDS);
         if (this._cars[carIndex].getLabTimes().length === LAP_MAX) {
-            RaceValidator.addScoreToTrack(this._cars[carIndex], this.track, carIndex);
+            RaceValidator.addScoreToTrack(this._cars[carIndex], this.track.INewScores, carIndex);
         }
     }
 
     private updateScores(): void {
-        RaceValidator.addScoreToTrack(this._cars[0], this.track, 0);
+        RaceValidator.addScoreToTrack(this._cars[0], this.track.INewScores, 0);
         for (let i: number = 1; i < CARS_MAX; i++) {
             if (this._cars[i].getLabTimes().length < LAP_MAX) {
                 RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track.points);
-                RaceValidator.addScoreToTrack(this._cars[i], this.track, i);
+                RaceValidator.addScoreToTrack(this._cars[i], this.track.INewScores, i);
             }
         }
         this.track.usesNumber++;

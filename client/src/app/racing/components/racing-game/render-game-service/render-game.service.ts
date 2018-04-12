@@ -5,7 +5,6 @@ import { Car } from "../car/car";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
 import { ILine } from "../walls-collisions-service/walls-collisions-service";
-import { Track } from "../../../track";
 import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
@@ -33,9 +32,9 @@ export class RenderGameService extends RenderService {
         return this.cameras[0];
     }
 
-    public initialize(canvas: HTMLCanvasElement, track: Track, cars: Car[], walls: ILine[]): void {
+    public initialize(canvas: HTMLCanvasElement, points: THREE.Vector3[], startingZone: THREE.Line3, cars: Car[], walls: ILine[]): void {
         super.initializeSuper(canvas);
-        this.sceneGameService.initialize(track, cars, walls);
+        this.sceneGameService.initialize(points, startingZone, cars, walls);
 
         this.initStats();
         this.initializeCamera();

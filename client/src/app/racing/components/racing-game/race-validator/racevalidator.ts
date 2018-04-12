@@ -2,19 +2,18 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { MS_TO_SECONDS, LAP_MAX } from "./../../../../constants";
 import { RaceUtils } from "../../../utils/utils";
-import { Track } from "../../../track";
-import { INewScores, IBestScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores } from "./../../../../../../../common/communication/interfaces";
 const ADD_TO_DISTANCE: number = 20;
 
 export class RaceValidator {
 
-    public static validateRace(car: Car, timer: number, track: Track): number[] {
+    public static validateRace(car: Car, timer: number, points: THREE.Vector3[]): number[] {
 
         car.getUpdatedPosition();
-        if (RaceUtils.calculateDistance(car.getUpdatedPosition(), track.points[track.points.length - car.checkpoint - 1])
+        if (RaceUtils.calculateDistance(car.getUpdatedPosition(), points[points.length - car.checkpoint - 1])
             <= ADD_TO_DISTANCE) {
             car.checkpoint += 1;
-            if (car.checkpoint === track.points.length) {
+            if (car.checkpoint === points.length) {
                 return this.verifyNextLap(car, timer);
             }
         }
@@ -38,11 +37,11 @@ export class RaceValidator {
         return new Array<number>();
     }
 
-    public static addScoreToTrack(car: Car, track: Track, carIndex: number): void {
+    public static addScoreToTrack(car: Car, scores: INewScores[], carIndex: number): void {
         const newScore: INewScores = { id: carIndex, scores: new Array<number>() };
-        track.INewScores.push(newScore);
+        scores.push(newScore);
         for (const time of car.getLabTimes()) {
-            track.INewScores[track.INewScores.length - 1].scores.push(time);
+            scores[scores.length - 1].scores.push(time);
         }
     }
 
