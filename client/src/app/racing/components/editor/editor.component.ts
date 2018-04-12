@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import {  INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { ActivatedRoute } from "@angular/router";
-import { SceneService } from "./scene.service/scene.service";
+import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
-import { inject } from "inversify";
 import { Track } from "../../track";
+import { RenderEditorService } from "./render-editor.service/render-editor.service";
 
 @Component({
     selector: "app-editor",
@@ -21,27 +21,26 @@ export class EditorComponent implements OnInit {
     private canvasRef: ElementRef;
     private submitValid: boolean;
     private track: Track;
-    private sceneService: SceneService;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
     public constructor(
-        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private route: ActivatedRoute) {
+        private communicationService: RacingCommunicationService, private renderService: RenderEditorService,
+        private route: ActivatedRoute, private sceneService: SceneEditorService) {
         this.track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this.submitValid = false;
-        this.sceneService = new SceneService();
     }
     public setTrack(track: Track): void {
         this.track = track;
     }
 
     public async ngOnInit(): Promise<void> {
-        this.sceneService.initialize(this.canvas);
+        this.renderService.initialize(this.canvas, this.sceneService.scene);
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
             await this.getTrack(name);

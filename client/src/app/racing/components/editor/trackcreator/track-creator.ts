@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { TrackValidator } from "./track-validator";
+import { RenderEditorService } from "../render-editor.service/render-editor.service";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
@@ -16,30 +17,16 @@ export class TrackCreator {
 
     public trackValid: boolean;
 
-    public constructor() {
+    public constructor(private renderService: RenderEditorService) {
         this.trackValidator = new TrackValidator();
         this.points = new Array<THREE.Vector3>();
-        this.trackValid = true;
+
         this.trackValid = false;
         this.isClosed = false;
     }
 
-    public convertToWorldPosition(positionEvent: THREE.Vector3, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
-        const canvasRectangle: ClientRect = canvas.getBoundingClientRect();
-        const canvasPosition: THREE.Vector3 =
-            new THREE.Vector3(positionEvent.x - canvasRectangle.left, positionEvent.y - canvasRectangle.top);
-        const canvasVector: THREE.Vector3 = new THREE.Vector3(
-            (canvasPosition.x / canvas.width) * MAX_SELECTION - 1,
-            -(canvasPosition.y / canvas.height) * MAX_SELECTION + 1,
-            0);
-        canvasVector.unproject(camera);
-        const direction: THREE.Vector3 = canvasVector.sub(camera.position);
-
-        return camera.position.clone().add(direction.multiplyScalar(- camera.position.z / direction.z));
-    }
-
-    public getPlacementPosition(positionEvent: THREE.Vector3, canvas: HTMLCanvasElement, camera: THREE.PerspectiveCamera): THREE.Vector3 {
-        let position: THREE.Vector3 = this.convertToWorldPosition(positionEvent, canvas, camera);
+    public getPlacementPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
+        let position: THREE.Vector3 = this.renderService.convertToWorldPosition(positionEvent);
 
         if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
             position = this.points[0];
