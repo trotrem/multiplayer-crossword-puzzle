@@ -5,7 +5,6 @@ import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
 import { ActivatedRoute } from "@angular/router";
 import { GridEventService } from "../grid-event.service";
-import { inject } from "inversify";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 
@@ -51,8 +50,8 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public constructor(
-        @inject(CommunicationService) private communicationService: CommunicationService,
-        @inject(GridEventService) private gridEventService: GridEventService,
+        private communicationService: CommunicationService,
+        private gridEventService: GridEventService,
         private route: ActivatedRoute,
         private socketsService: SocketsService) {
         this.cells = new Array<Array<Cell>>();
@@ -87,12 +86,13 @@ export class CrosswordGridComponent implements OnInit {
             this.nbPlayers = this._playerName === undefined ? 1 : 2;
             this.gridEventService.setNbPlayers(this.nbPlayers);
             this.fetchGrid();
+            this.subscribeToValidation();
         });
     }
 
     private fetchGrid(): void {
         this.communicationService.createGame(this._difficulty, this._playerName)
-            .first().subscribe((data) => {
+            .subscribe((data) => {
                 const gridData: IGridData = data as IGridData;
                 this.gridEventService.setId(gridData.id);
                 gridData.blackCells.forEach((cell: IPoint) => {
@@ -100,6 +100,13 @@ export class CrosswordGridComponent implements OnInit {
                 });
                 this.fillWords(gridData);
             });
+    }
+
+    private subscribeToValidation(): void {
+        this.communicationService.onValidation().subscribe((data) => {
+            console.log("ah");
+            this.gridEventService.onWordValidated(data);
+        });
     }
 
     private fillWords(gridData: IGridData): void {

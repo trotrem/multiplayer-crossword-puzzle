@@ -4,7 +4,6 @@ import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers } 
 import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
-import { inject } from "inversify";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
 
@@ -23,14 +22,14 @@ export class GridEventService {
     private _crosswordSettings: ICrosswordSettings;
 
     public constructor(
-        @inject(CommunicationService) private communicationService: CommunicationService,
+        private communicationService: CommunicationService,
         private router: Router) {
     }
 
     public initialize(words: WordDescription[], nbPlayers: NbPlayers): void {
         this._words = words;
-        this._crosswordSettings = {difficulty: Difficulty.Easy, nbPlayers: nbPlayers};
-}
+        this._crosswordSettings = { difficulty: Difficulty.Easy, nbPlayers: nbPlayers };
+    }
 
     public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         if (this._selectedWord === word) {
@@ -122,22 +121,23 @@ export class GridEventService {
     }
 
     private validate(word: WordDescription): void {
-
         const parameters: IWordValidationParameters = {
             gridId: this._id,
             wordIndex: word.id,
             word: word.cells.map((elem) => elem.content).join("")
         };
-        this.communicationService.validate(parameters)
-            .subscribe((data) => {
-                if (data) {
-                    for (const cell of word.cells) {
-                        cell.letterFound = true;
-                    }
-                    word.found = true;
-                }
-                this.validateGrid();
-            });
+        this.communicationService.validate(parameters);
+    }
+
+    public onWordValidated(data: IWordValidationParameters): void {
+        const word: WordDescription = this._words[data.wordIndex];
+        if (data) {
+            for (const cell of word.cells) {
+                cell.letterFound = true;
+            }
+            word.found = true;
+        }
+        this.validateGrid();
     }
 
     private wordFoundByOtherWord(): void {

@@ -62,11 +62,15 @@ export class SocketsHandler {
         socket.on(CrosswordEvents.ValidateWord, (parameters: IWordValidationParameters) => {
             let isValid: boolean = false;
             const words: string[] = GridCache.Instance.getWords(parameters.gridId);
+            // TODO checker si le mot est déjà valide?
             if (words.length > parameters.wordIndex && words[parameters.wordIndex] === parameters.word) {
                 GridCache.Instance.validateWord(parameters.gridId, parameters.wordIndex);
                 isValid = true;
             }
-            socket.emit(CrosswordEvents.WordValidated, isValid);
+
+            if (isValid) {
+                socket.emit(CrosswordEvents.WordValidated, parameters);
+            }
         });
     }
 

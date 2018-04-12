@@ -11,19 +11,17 @@ import { Difficulty } from "./../../../../../common/communication/types";
 })
 export class EndGameComponent implements OnInit {
   private _difficulty: Difficulty = Difficulty.Easy;
-  private nbPlayers: string;
 
   public constructor(private route: ActivatedRoute, private router: Router) { }
 
   public ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this._difficulty = params["Difficulty"];
-      this.nbPlayers = params["nbPlayers"];
     });
   }
 
   public playSameCongif(): void {
-    this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
+    this.router.navigate(["/crossword/game/" + this._difficulty]);
   }
 
   public returnHome(): void {

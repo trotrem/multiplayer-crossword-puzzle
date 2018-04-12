@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/map";
+import "rxjs/add/operator/take";
 import { Difficulty, IWordValidationParameters } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../common/communication/events";
@@ -19,16 +19,18 @@ export class CommunicationService {
     }
 
     public createGame(difficulty: Difficulty, playerName: string): Observable<IGridData> {
-        const grid: Observable<IGridData> = this.socketsService.onEvent(CrosswordEvents.GridFetched) as Observable<IGridData>;
+        const grid: Observable<IGridData> = this.socketsService.onEvent(CrosswordEvents.GridFetched).take(1) as Observable<IGridData>;
         this.socketsService.sendEvent(CrosswordEvents.NewGame, { difficulty: difficulty, playerName: playerName });
 
         return grid;
     }
 
-    public validate(parameters: IWordValidationParameters): Observable<boolean> {
+    public validate(parameters: IWordValidationParameters): void {
         this.socketsService.sendEvent(CrosswordEvents.ValidateWord, parameters);
+    }
 
-        return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<boolean>;
+    public onValidation(): Observable<IWordValidationParameters> {
+        return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<IWordValidationParameters>;
     }
 
 }
