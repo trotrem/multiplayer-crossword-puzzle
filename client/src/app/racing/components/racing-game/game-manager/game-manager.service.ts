@@ -40,11 +40,11 @@ export class GameManagerService {
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName, container);
         this.track.INewScores = new Array<INewScores>();
-        await this.initializeCars();
-        this.renderService.initialize(
-            container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
-        this.update();
-
+        this.initializeCars().then(() => {
+            this.renderService.initialize(
+                container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
+            this.update();
+        });
     }
 
     private async initializeCars(): Promise<void> {
