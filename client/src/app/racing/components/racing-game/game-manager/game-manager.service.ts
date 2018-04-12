@@ -38,7 +38,7 @@ export class GameManagerService {
     public async initializeGame(trackName: string, canvas: ElementRef): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
-        this.track = await this.getTrack(trackName, canvas);
+        this.track = await this.getTrack(trackName);
         this.track.INewScores = new Array<INewScores>();
         this.initializeCars().then(() => {
             this.renderService.initialize(
@@ -64,7 +64,7 @@ export class GameManagerService {
         this.renderService.onResize();
     }
 
-    private async getTrack(name: string, container: ElementRef): Promise<Track> {
+    private async getTrack(name: string): Promise<Track> {
         return this.communicationService.getTrackByName(name)
             .then(async (res: Track[]): Promise<Track> => {
                 const track: Track = res[0];

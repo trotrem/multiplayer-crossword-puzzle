@@ -79,7 +79,7 @@ export class RenderGameService {
             this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
             this.cameras[1].updateProjectionMatrix();
         }
-        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
+        this.renderer.setSize(window.innerWidth,  window.innerHeight);
 
     }
 

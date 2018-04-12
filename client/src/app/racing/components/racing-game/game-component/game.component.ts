@@ -17,7 +17,7 @@ const DELAY_FOR_RED: number = 1500;
 export class GameComponent implements AfterViewInit {
 
     @ViewChild("canvas")
-    private containerRef: ElementRef;
+    private canvasRef: ElementRef;
     private lights: string[];
     private playButtonEnabled: boolean;
 
@@ -47,7 +47,7 @@ export class GameComponent implements AfterViewInit {
     public async ngAfterViewInit(): Promise<void> {
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-            await this.gameManager.initializeGame(name, this.containerRef);
+            await this.gameManager.initializeGame(name, this.canvasRef);
         }
     }
 
