@@ -20,7 +20,7 @@ describe("RenderGameService", () => {
     const keyboard: KeyboardService = new KeyboardService;
     const sceneService: SceneGameService = new SceneGameService();
     // tslint:disable-next-line:prefer-const
-    let container: HTMLDivElement;
+    let canvas: HTMLCanvasElement;
     const track: Track = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
@@ -50,7 +50,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
       /*  CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -69,7 +69,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
         /*CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -89,7 +89,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
       /*  CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -117,7 +117,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -132,7 +132,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
@@ -146,7 +146,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -161,7 +161,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(container, track, cars, walls);
+        service.initialize(canvas, track, cars, walls);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }

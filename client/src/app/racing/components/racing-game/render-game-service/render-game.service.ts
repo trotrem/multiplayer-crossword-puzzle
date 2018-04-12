@@ -18,7 +18,7 @@ const ZOOM_MIN: number = 0.75;
 @Injectable()
 export class RenderGameService {
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
-    private container: HTMLDivElement;
+    private canvas: HTMLCanvasElement;
     private renderer: THREE.WebGLRenderer;
     private stats: Stats;
     private cameraID: number;
@@ -33,30 +33,33 @@ export class RenderGameService {
         return this.cameras[0];
     }
 
-    public initialize(container: HTMLDivElement, track: Track, cars: Car[], walls: ILine[]): void {
-        if (container) {
-            this.container = container;
+    public initialize(canvas: HTMLCanvasElement, track: Track, cars: Car[], walls: ILine[]): void {
+        if (canvas) {
+            this.canvas = canvas;
         }
         this.sceneGameService.initialize(track, cars, walls);
 
         this.initStats();
+        this.initalizeCamera();
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+        this.renderer.setPixelRatio(devicePixelRatio);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.initCameraCommands();
+    }
+
+    private initalizeCamera(): void {
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
-        this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setPixelRatio(devicePixelRatio);
-        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-        this.container.appendChild(this.renderer.domElement);
         this.cameras[0].up.set(0, 0, 1);
-        this.initCameraCommands();
     }
 
     private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
-        this.container.appendChild(this.stats.dom);
+        this.canvas.appendChild(this.stats.dom);
     }
     private getAspectRatio(): number {
-        return this.container.clientWidth / this.container.clientHeight;
+        return this.canvas.clientWidth / this.canvas.clientHeight;
     }
     public render(player: Car): void {
         if (this.cameraID === 0) {
@@ -76,7 +79,7 @@ export class RenderGameService {
             this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
             this.cameras[1].updateProjectionMatrix();
         }
-        this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+        this.renderer.setSize(this.canvas.clientWidth, this.canvas.clientHeight);
 
     }
 

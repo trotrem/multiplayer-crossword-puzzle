@@ -16,7 +16,7 @@ const DELAY_FOR_RED: number = 1500;
 
 export class GameComponent implements AfterViewInit {
 
-    @ViewChild("container")
+    @ViewChild("canvas")
     private containerRef: ElementRef;
     private lights: string[];
     private playButtonEnabled: boolean;

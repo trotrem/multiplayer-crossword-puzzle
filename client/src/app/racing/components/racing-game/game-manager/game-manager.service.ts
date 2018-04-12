@@ -35,14 +35,14 @@ export class GameManagerService {
         this._aiControllers = new Array<AiController>();
     }
 
-    public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
+    public async initializeGame(trackName: string, canvas: ElementRef): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
-        this.track = await this.getTrack(trackName, container);
+        this.track = await this.getTrack(trackName, canvas);
         this.track.INewScores = new Array<INewScores>();
         this.initializeCars().then(() => {
             this.renderService.initialize(
-                container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
+                canvas.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
             this.update();
         });
     }
