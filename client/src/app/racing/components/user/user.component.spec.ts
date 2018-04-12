@@ -40,7 +40,7 @@ describe("UserComponent", () => {
     });
 
     it("should containts a tracks's list", () => {
-        expect(component.getTracksList()).toBeDefined();
+        expect(component.tracks).toBeDefined();
     });
 
     it('navigate to "race/name" takes you to  "race/name"', fakeAsync(() => {
@@ -50,5 +50,8 @@ describe("UserComponent", () => {
         tick(50);
         expect(router.url).toBe("/race/" + name);
     }));
-
+    it("each track containts a name ", () => {
+        expect(component.tracks).toBeDefined();
+    });
+    
 });
