@@ -22,7 +22,7 @@ export class RenderGameService extends RenderService {
     private stats: Stats;
     private cameraID: number;
 
-    public constructor(private keyboard: KeyboardService, private sceneGameService: SceneGameService) {
+    public constructor( private sceneGameService: SceneGameService) {
         super();
         this.cameraID = 0;
     }
@@ -33,13 +33,12 @@ export class RenderGameService extends RenderService {
         return this.cameras[0];
     }
 
-    public initialize(canvas: HTMLCanvasElement, track: Track, cars: Car[], walls: ILine[]): void {
+    public initialize(canvas: HTMLCanvasElement, track: Track, cars: Car[], walls: ILine[], keyboard: KeyboardService): void {
         super.initializeSuper(canvas);
         this.sceneGameService.initialize(track, cars, walls);
-
         this.initStats();
         this.initializeCamera();
-        this.initCameraCommands();
+        this.initCameraCommands(keyboard);
     }
 
     private initializeCamera(): void {
@@ -107,10 +106,10 @@ export class RenderGameService extends RenderService {
             }
         }
     }
-    public initCameraCommands(): void {
-        this.keyboard.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand(this));
-        this.keyboard.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand(this));
-        this.keyboard.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(this));
+    public initCameraCommands(keyboard: KeyboardService): void {
+        keyboard.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand(this));
+        keyboard.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand(this));
+        keyboard.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(this));
     }
 
 }
