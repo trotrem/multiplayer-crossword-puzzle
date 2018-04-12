@@ -20,7 +20,7 @@ export class EditorComponent implements OnInit {
 
     private canvasRef: ElementRef;
     private submitValid: boolean;
-    private track: Track;
+    public track: Track;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
@@ -34,9 +34,6 @@ export class EditorComponent implements OnInit {
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this.submitValid = false;
-    }
-    public setTrack(track: Track): void {
-        this.track = track;
     }
 
     public async ngOnInit(): Promise<void> {
@@ -78,7 +75,7 @@ export class EditorComponent implements OnInit {
         this.submitValid = true;
     }
 
-    private async getTrack(name: string): Promise<void> {
+    public async getTrack(name: string): Promise<void> {
         await this.communicationService.getTrackByName(name)
             .then((res: Track[]) => {
                 this.track = res[0];
