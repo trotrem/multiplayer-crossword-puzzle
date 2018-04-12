@@ -153,6 +153,7 @@ export class Car extends Object3D {
         this._mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this._mesh);
     }
+    // A mettre dans classe car controller
     public steerLeft(): void {
         this.steeringWheelDirection = MAXIMUM_STEERING_ANGLE;
     }
@@ -168,22 +169,34 @@ export class Car extends Object3D {
     public brake(): void {
         this.isBraking = true;
     }
+    //
     public getUpdatedPosition(): Vector3 {
         return this.updatedPosition.clone();
     }
     public update(deltaTime: number): void {
         deltaTime = deltaTime / MS_TO_SECONDS;
-        // Move to car coordinates
-        const rotationMatrix: Matrix4 = new Matrix4();
-        rotationMatrix.extractRotation(this._mesh.matrix);
-        const rotationQuaternion: Quaternion = new Quaternion();
-        rotationQuaternion.setFromRotationMatrix(rotationMatrix);
-        this._speed.applyMatrix4(rotationMatrix);
+        // Move to car coordinates (extract)
+        this._speed.applyMatrix4(this.setRotationMatrix());
         // Physics calculations
         this.physicsUpdate(deltaTime);
         // Move back to world coordinates
-        this._speed = this.speed.applyQuaternion(rotationQuaternion.inverse());
+        this._speed = this.speed.applyQuaternion(this.setRotationQuaternion().inverse());
         // Angular rotation of the car
+        this.setAngularRotation(deltaTime);
+    }
+    private setRotationMatrix(): Matrix4 {
+        const rotationMatrix: Matrix4 = new Matrix4();
+        rotationMatrix.extractRotation(this._mesh.matrix);
+
+        return rotationMatrix;
+    }
+    private setRotationQuaternion(): Quaternion {
+        const rotationQuaternion: Quaternion = new Quaternion();
+        rotationQuaternion.setFromRotationMatrix(this.setRotationMatrix());
+
+        return rotationQuaternion;
+    }
+    private setAngularRotation(deltaTime: number): void {
         const R: number =
             DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
         const omega: number = this._speed.length() / R;
