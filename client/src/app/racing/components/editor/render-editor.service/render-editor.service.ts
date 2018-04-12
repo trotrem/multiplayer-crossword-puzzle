@@ -8,6 +8,7 @@ const INITIAL_CAMERA_POSITION_Z: number = 100;
 
 @Injectable()
 export class RenderEditorService {
+    
 
     private camera: THREE.PerspectiveCamera;
     private renderer: THREE.WebGLRenderer;

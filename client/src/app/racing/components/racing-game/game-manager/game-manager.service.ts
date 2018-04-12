@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { RenderService } from "../render-service/render.service";
+import { RenderGameService } from "../render-game-service/render-game.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
@@ -26,7 +26,7 @@ export class GameManagerService {
     private gameStarted: boolean = false;
 
     public constructor(
-        private renderService: RenderService,
+        private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
         private keyboard: KeyboardService,

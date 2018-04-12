@@ -4,7 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { GameComponent } from "./racing/components/racing-game/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
-import { RenderService } from "./racing/components/racing-game/render-service/render.service";
+import { RenderGameService } from "./racing/components/racing-game/render-game-service/render-game.service";
 import { EditorComponent } from "./racing/components/editor/editor.component";
 import { AdminComponent } from "./racing/components/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -75,7 +75,7 @@ const appRoutes: Routes = [
         SceneGameService,
         RacingCommunicationService,
         RenderEditorService,
-        RenderService,
+        RenderGameService,
         GameManagerService,
         WallsCollisionsService,
         KeyboardService,
