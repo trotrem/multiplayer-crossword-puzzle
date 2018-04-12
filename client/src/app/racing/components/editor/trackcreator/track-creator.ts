@@ -71,7 +71,7 @@ export class TrackCreator {
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
         lineGeometry.vertices.push(lastPos);
         lineGeometry.vertices.push(newPos);
-        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ /*"linewidth": 6,*/ color }));
+        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
         lines.push(line);
         this.trackValidator.emptyPoints();
 
@@ -84,7 +84,7 @@ export class TrackCreator {
             const lineGeometry: THREE.Geometry = new THREE.Geometry;
             lineGeometry.vertices.push(illegalPoints[i]);
             lineGeometry.vertices.push(illegalPoints[i + 1]);
-            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "linewidth": 6, "color": RED_COLOR }));
+            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "color": RED_COLOR }));
             lines.push(line);
         }
 

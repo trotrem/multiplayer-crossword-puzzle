@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { RenderService } from "../render-service/render.service";
+import { RenderGameService } from "../render-game-service/render-game.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
@@ -26,7 +26,7 @@ export class GameManagerService {
     private gameStarted: boolean = false;
 
     public constructor(
-        private renderService: RenderService,
+        private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
         private keyboard: KeyboardService,
@@ -35,14 +35,14 @@ export class GameManagerService {
         this._aiControllers = new Array<AiController>();
     }
 
-    public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
+    public async initializeGame(trackName: string, canvas: ElementRef): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
-        this.track = await this.getTrack(trackName, container);
+        this.track = await this.getTrack(trackName);
         this.track.INewScores = new Array<INewScores>();
         this.initializeCars().then(() => {
             this.renderService.initialize(
-                container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
+                canvas.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
             this.update();
         });
     }
@@ -64,7 +64,7 @@ export class GameManagerService {
         this.renderService.onResize();
     }
 
-    private async getTrack(name: string, container: ElementRef): Promise<Track> {
+    private async getTrack(name: string): Promise<Track> {
         return this.communicationService.getTrackByName(name)
             .then(async (res: Track[]): Promise<Track> => {
                 const track: Track = res[0];
