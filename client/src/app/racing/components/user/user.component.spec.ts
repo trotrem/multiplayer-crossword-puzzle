@@ -51,7 +51,24 @@ describe("UserComponent", () => {
         expect(router.url).toBe("/race/" + name);
     }));
     it("each track containts a name ", () => {
-        expect(component.tracks).toBeDefined();
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.name).toBeDefined();
+    });
+    it("each track containts a description ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.description).toBeDefined();
+    });
+    it("each track containts a number of uses ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.usesNumber).toBeDefined();
+    });
+    it("each track containts a best scores table ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.IBestScores).toBeDefined();
     });
     
 });
