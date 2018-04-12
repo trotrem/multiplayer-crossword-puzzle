@@ -10,20 +10,20 @@ import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
+import { RenderService } from "../../render.service/render.service";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
 const ZOOM_MIN: number = 0.75;
 
 @Injectable()
-export class RenderGameService {
+export class RenderGameService extends RenderService {
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
-    private canvas: HTMLCanvasElement;
-    private renderer: THREE.WebGLRenderer;
     private stats: Stats;
     private cameraID: number;
 
     public constructor(private keyboard: KeyboardService, private sceneGameService: SceneGameService) {
+        super();
         this.cameraID = 0;
     }
     public getTopCamera(): OrthographicCamera {
@@ -34,20 +34,15 @@ export class RenderGameService {
     }
 
     public initialize(canvas: HTMLCanvasElement, track: Track, cars: Car[], walls: ILine[]): void {
-        if (canvas) {
-            this.canvas = canvas;
-        }
+        super.initializeSuper(canvas);
         this.sceneGameService.initialize(track, cars, walls);
 
         this.initStats();
-        this.initalizeCamera();
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-        this.renderer.setPixelRatio(devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.initializeCamera();
         this.initCameraCommands();
     }
 
-    private initalizeCamera(): void {
+    private initializeCamera(): void {
         this.cameras[0] = new PerspectiveCamera();
         this.cameras[1] = new OrthographicCamera();
         this.cameras[0].up.set(0, 0, 1);
@@ -58,9 +53,7 @@ export class RenderGameService {
         this.stats.dom.style.position = "absolute";
         this.canvas.appendChild(this.stats.dom);
     }
-    private getAspectRatio(): number {
-        return this.canvas.clientWidth / this.canvas.clientHeight;
-    }
+
     public render(player: Car): void {
         if (this.cameraID === 0) {
             this.cameras[0].updatePosition(player);
@@ -79,7 +72,7 @@ export class RenderGameService {
             this.cameras[1].right = this.cameras[1].top * (this.getAspectRatio());
             this.cameras[1].updateProjectionMatrix();
         }
-        this.renderer.setSize(window.innerWidth,  window.innerHeight);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
 
