@@ -43,7 +43,7 @@ export class SceneService {
       this.getAspectRatio(),
       NEAR_CLIPPING_PLANE,
       FAR_CLIPPING_PLANE
-  );
+    );
 
     this.camera.position.set(0, 0, INITIAL_CAMERA_POSITION_Z);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -54,7 +54,7 @@ export class SceneService {
   }
   private getAspectRatio(): number {
     return this.canvas.clientWidth / this.canvas.clientHeight;
-}
+  }
 
   public animate(): void {
     requestAnimationFrame(() => this.animate());
@@ -166,49 +166,5 @@ export class SceneService {
 
   public setIsClosed(isClosed: boolean): void {
     this.trackCreator.isClosed = isClosed;
-  }
-
-  public getCamera(): THREE.PerspectiveCamera {
-    return this.camera;
-  }
-  public setCamera(camera: THREE.PerspectiveCamera): void {
-    this.camera = camera;
-  }
-  public getScene(): THREE.Scene {
-    return this.scene;
-  }
-  public setScene(scene: THREE.Scene): void {
-    this.scene = scene;
-  }
-
-  public getRenderer(): THREE.Renderer {
-    return this.renderer;
-  }
-
-  public setRenderer(renderer: THREE.Renderer): void {
-    this.renderer = renderer;
-  }
-
-  public getLines(): Array<THREE.Line> {
-    return this.lines;
-  }
-
-  public setLines(lines: Array<THREE.Line>): void {
-    this.lines = lines;
-  }
-
-  public getDragIndex(): number {
-    return this.dragIndex;
-  }
-
-  public setDragIndex(dragIndex: number): void {
-    this.dragIndex = dragIndex;
-  }
-
-  public getCanvas(): HTMLCanvasElement {
-    return this.canvas;
-  }
-  public setCanvas(canvas: HTMLCanvasElement): void {
-    this.canvas = canvas;
   }
 }

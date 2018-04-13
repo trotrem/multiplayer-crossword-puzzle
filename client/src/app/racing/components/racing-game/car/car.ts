@@ -48,23 +48,9 @@ export class Car extends Object3D {
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
-    private _counterLap: number;
-    private _checkpoint: number;
+    public counterLap: number;
+    public checkpoint: number;
 
-    public set checkpoint(checkpoint: number) {
-        this._checkpoint = checkpoint;
-    }
-    public get checkpoint(): number {
-        return this._checkpoint;
-    }
-
-    // TODO : mettre public
-    public set counterLap(counterLap: number) {
-        this._counterLap = counterLap;
-    }
-    public get counterLap(): number {
-        return this._counterLap;
-    }
     // temporary for tests purposes until we have the AI
     public set speed(speed: Vector3) {
         this._speed = speed;
@@ -142,8 +128,8 @@ export class Car extends Object3D {
         this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
-        this._checkpoint = 0;
-        this._counterLap = 0;
+        this.checkpoint = 0;
+        this.counterLap = 0;
     }
 
     public async init(): Promise<void> {

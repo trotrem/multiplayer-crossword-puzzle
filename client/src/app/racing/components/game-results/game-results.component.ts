@@ -39,21 +39,13 @@ export class GameResultsComponent implements OnInit {
   public get scores(): INewScores[] {
     return this._scores;
   }
-  public get isAdded(): boolean {
-    return this._isAdded;
-  }
-  public get newBestScore(): IBestScores {
-    return this._newBestScore;
-  }
   public set newBestScore(score: IBestScores ) {
     this._newBestScore = score;
   }
   public get bestScores(): IBestScores[] {
     return this._bestScores;
   }
-  public set bestScores(bestScores: IBestScores[] ) {
-    this._bestScores = bestScores;
-  }
+
   public async ngOnInit(): Promise<void> {
     const name: string = this.route.snapshot.paramMap.get("name");
     if (name !== null) {

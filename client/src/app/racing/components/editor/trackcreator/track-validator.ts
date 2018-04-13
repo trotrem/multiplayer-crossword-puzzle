@@ -14,10 +14,6 @@ export class TrackValidator {
         this.illegalPoints = new Array<THREE.Vector3>();
     }
 
-    public getIllegalPoints(): Array<THREE.Vector3> {
-        return this.illegalPoints;
-    }
-
     private lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): void {
         if ((HALF_CIRCLE_DEGREES * (RaceUtils.calculateAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
             this.setPoints(position3, position2);
