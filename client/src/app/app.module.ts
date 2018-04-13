@@ -4,7 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { GameComponent } from "./racing/components/racing-game/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
-import { RenderService } from "./racing/components/racing-game/render-service/render.service";
+import { RenderService } from "./racing/components/render.service/render.service";
 import { EditorComponent } from "./racing/components/editor/editor.component";
 import { AdminComponent } from "./racing/components/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -14,19 +14,19 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { APP_BASE_HREF } from "@angular/common";
 import { UserComponent } from "./racing/components/user/user.component";
-import { SceneServices } from "./racing/components/editor/scene.services/scene.service";
 import { RacingCommunicationService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
-import { RaceValidatorService } from "./racing/components/racing-game/race-validator/race-validator.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { MultiplayerLobbyComponent } from "./crossword/multiplayer-lobby/multiplayer-lobby.component";
 import { SocketsService } from "./crossword/sockets.service";
 import { WaitingRoomComponent } from "./crossword/waiting-room/waiting-room.component";
 import { CommunicationService } from "./crossword/communication.service";
 import { GameConfigurationService } from "./crossword/game-configuration.service";
+import { RenderGameService } from "./racing/components/racing-game/render-game-service/render-game.service";
+import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -73,15 +73,15 @@ const appRoutes: Routes = [
             appRoutes
         )],
     providers: [
-        SceneServices,
         RacingCommunicationService,
         RenderService,
         GameManagerService,
-        RaceValidatorService,
         WallsCollisionsService,
         SocketsService,
         CommunicationService,
         GameConfigurationService,
+        RenderGameService,
+        SceneGameService,
         { provide: APP_BASE_HREF, useValue: "/" }
     ],
     bootstrap: [AppComponent]

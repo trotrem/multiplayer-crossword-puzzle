@@ -1,10 +1,8 @@
 import * as THREE from "three";
 import { RaceUtils } from "../../../utils/utils";
-const HALF_CIRCLE_DEGREES: number = 180;
+import {HALF_CIRCLE_DEGREES} from "./../../../../constants";
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
-// const PRECISION: number = 0.0000001;
-const EXPONENT: number = 2;
 
 export class TrackValidator {
 
@@ -23,18 +21,11 @@ export class TrackValidator {
     }
 
     private lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): void {
-        if ((HALF_CIRCLE_DEGREES * (this.calculateAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
+        if ((HALF_CIRCLE_DEGREES * (RaceUtils.calculateAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
             this.setPoints(position3, position2);
         }
 
     }
-    private calculateAngle(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3): number {
-        return Math.acos((RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position3)
-            + RaceUtils.calculateDistance(position2, position1) * RaceUtils.calculateDistance(position2, position1)
-            - RaceUtils.calculateDistance(position3, position1) * RaceUtils.calculateDistance(position3, position1)) /
-            (EXPONENT * RaceUtils.calculateDistance(position2, position3) * RaceUtils.calculateDistance(position2, position1)));
-    }
-
     private twoLinesIntersect(
         position1: THREE.Vector3,
         position2: THREE.Vector3,

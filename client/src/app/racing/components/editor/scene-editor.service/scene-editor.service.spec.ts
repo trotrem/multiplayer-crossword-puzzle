@@ -1,41 +1,39 @@
-import { TestBed } from "@angular/core/testing";
-import { SceneServices } from "./scene.service";
+import { TestBed, inject } from "@angular/core/testing";
+import { SceneEditorService } from "./scene-editor.service";
+import { RenderEditorService } from "../render-editor.service/render-editor.service";
 
-describe("SceneService", () => {
-
-  // tslint:disable-next-line:prefer-const
+describe("SceneEditorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SceneServices, HTMLCanvasElement]
+      providers: [SceneEditorService, RenderEditorService]
     });
   });
 
-  /*it("should be created", inject([SceneServices], (service: SceneServices) => {
-    service.initialize(canvas);
-    expect(service).toBeDefined();
+  it("should be created", inject([SceneEditorService], (service: SceneEditorService) => {
+    expect(service).toBeTruthy();
   }));
 
-  it("should create a point when leftClick ", inject([SceneServices], (service: SceneServices) => {
+  it("should create a point when leftClick ", inject([SceneEditorService], (service: SceneEditorService) => {
     spyOn(service, "onLeftClick");
     const event: MouseEvent = new MouseEvent("click");
     // tslint:disable-next-line:no-magic-numbers
     event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 2, false, false, false, false, 0, null);
-    service.initialize(canvas);
     service.onLeftClick(event);
-    expect(service.getScene().children).toBeTruthy();
+    expect(service.scene.children).toBeTruthy();
   }));
-  it("should delete a point when rightClick ", inject([SceneServices], (service: SceneServices) => {
+
+  it("should delete a point when rightClick ", inject([SceneEditorService], (service: SceneEditorService) => {
     spyOn(service, "onRightClick");
     spyOn(service, "onLeftClick");
     const event: MouseEvent = new MouseEvent("click");
     // tslint:disable-next-line:no-magic-numbers
     event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 2, false, false, false, false, 0, null);
-    service.initialize(canvas);
     service.onLeftClick(event);
     service.onRightClick(event);
-    expect(service.getScene().children.length).toBe(0);
+    expect(service.scene.children.length).toBe(0);
   }));
-  it("should drag a point when Drag ", inject([SceneServices], (service: SceneServices) => {
+
+  it("should drag a point when Drag ", inject([SceneEditorService], (service: SceneEditorService) => {
     spyOn(service, "onDrag");
     spyOn(service, "redrawTrack");
     spyOn(service, "onLeftClick");
@@ -45,10 +43,8 @@ describe("SceneService", () => {
     const event2: MouseEvent = new MouseEvent("drag");
     // tslint:disable-next-line:no-magic-numbers
     event2.initMouseEvent("drag", true, true, window, 0, 0, 0, 2, 2, false, false, false, false, 0, null);
-    service.initialize(canvas);
     service.onLeftClick(event1);
     service.onDrag(event2, true);
     expect(service.redrawTrack).toBeTruthy();
-  }));*/
-
+  }));
 });

@@ -1,4 +1,4 @@
-import { WordDictionaryData } from "../lexiconAPI/gridWordInformation";
+import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
 import { Direction, IPoint } from "../../../../../common/communication/types";
 
 export interface ICell {

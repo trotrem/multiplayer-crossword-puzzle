@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Track } from "./../../track";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { inject } from "inversify";
 
 @Component({
   selector: "app-user",
@@ -11,11 +10,11 @@ import { inject } from "inversify";
 })
 export class UserComponent implements OnInit {
 
-  private tracks: Track[];
+  public tracks: Track[];
 
-  private selectedTrack: Track;
+  public selectedTrack: Track;
 
-  public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) {
+  public constructor(private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
     this.tracks = new Array<Track>();
   }
@@ -32,24 +31,5 @@ export class UserComponent implements OnInit {
   public showTrack(track: Track): void {
     this.selectedTrack = track;
     this.router.navigateByUrl("/race/" + this.selectedTrack.name);
-  }
-
-  public getAttributTracks(): Track[] {
-    return this.tracks;
-  }
-
-  public setTracks(track: Track[]): void {
-    this.tracks = track;
-  }
-  public getSelectedTrack(): Track {
-    return this.selectedTrack;
-  }
-
-  public setSelectedTrack(track: Track): void {
-    this.selectedTrack = track;
-  }
-
-  public getTracksList(): Track[] {
-    return this.tracks;
   }
 }

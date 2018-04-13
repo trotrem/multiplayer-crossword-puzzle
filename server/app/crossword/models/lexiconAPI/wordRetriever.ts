@@ -1,14 +1,27 @@
-import { WordDictionaryData } from "./gridWordInformation";
+import { WordDictionaryData } from "./word-dictionnary-data";
 import { ExternalApiService } from "./externalApi.service";
 import { Difficulty } from "../../../../../common/communication/types";
+import { DatamuseObject } from "./datamuse-object";
 
-const OFFSET_FREQUENCY: number = 2; // Tag format : f:xxxx
+export interface IWord {
+
+}
+
+const OFFSET_FREQUENCY: number = 2;		// Tag format : f:xxxx
 const NUMERICAL_VALUES: RegExp = /d/;
 
 export class WordRetriever {
+<<<<<<< variant A
   private static _instance: WordRetriever;
+>>>>>>> variant B
+	private static _instance: WordRetriever;
+======= end
 
+<<<<<<< variant A
   private constructor() {}
+>>>>>>> variant B
+	private constructor() { }
+======= end
 
   public static get instance(): WordRetriever {
     return this._instance || (this._instance = new this());

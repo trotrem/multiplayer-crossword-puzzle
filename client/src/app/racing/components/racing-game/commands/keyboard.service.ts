@@ -1,10 +1,14 @@
-// Invoker of command pattern
+// Invoker of command pattern, handle events
 import { Injectable } from "@angular/core";
 import { ICommand, IMap } from "./command";
 
 @Injectable()
-export class Keyboard {
-    protected _commands: IMap<Array<ICommand>>;
+export class KeyboardService {
+    private _commands: IMap<Array<ICommand>>;
+
+    public constructor() {
+        this._commands = {};
+    }
 
     public addCommand(keyCode: number, cmd: ICommand): void {
         if (!this.hasCommand(keyCode)) {
@@ -21,12 +25,18 @@ export class Keyboard {
         return this._commands[keyCode.toString()] || null;
     }
 
-    public executeCommands(keyCode: number): void {
+    public executeKeyUpCommands(keyCode: number): void {
         if (this.hasCommand(keyCode)) {
             const commands: Array<ICommand> = this.getCommands(keyCode);
+            commands[0].execute();
+        }
+    }
 
-            for (const command of commands) {
-                command.execute();
+    public executeKeyDownCommands(keyCode: number): void {
+        if (this.hasCommand(keyCode)) {
+            const commands: Array<ICommand> = this.getCommands(keyCode);
+            if (commands.length > 1) {
+                commands[1].execute();
             }
         }
     }

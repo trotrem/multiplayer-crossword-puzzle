@@ -10,6 +10,7 @@ import { FormsModule } from "@angular/forms";
 
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
@@ -45,20 +46,20 @@ describe("AdminComponent", () => {
     expect(component).toBeTruthy();
   });
   it("should containts a tracks's list", () => {
-    expect(component.getTracksList()).toBeDefined();
+    expect(component.tracks).toBeDefined();
   });
   it("should select a track from track's list", () => {
     // tslint:disable-next-line:prefer-const
     let track: Track;
     component.onSelect(track);
-    expect(component.getisSelected()).toBe(true);
-    expect(component.getSelectedTrack()).toBe(track);
+    // expect(component.getisSelected()).toBe(true);
+    expect(component.selectedTrack).toBe(track);
   });
   it("should edit a track from track's list when selected", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      newScores: new Array<number>()
+      INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     component.onSelect(track);
     component.editTrack();
@@ -69,11 +70,11 @@ describe("AdminComponent", () => {
     // tslint:disable-next-line:prefer-const
     const track: Track = {
       name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      newScores: new Array<number>()
+      INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     const tracks: Track[] = new Array<Track>();
     tracks.push(track);
-    component.setTracks(tracks);
+    component.tracks = tracks;
     component.onSelect(track);
     component.deleteTrack();
     expect(component.deleteTrack()).toBe(track);

@@ -1,5 +1,4 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { WordDescription } from "./wordDescription";
 import { GridEventService } from "./grid-event.service";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -8,7 +7,6 @@ import { Router } from "@angular/router";
 import { CommunicationService } from "./communication.service";
 
 describe("GridEventService", () => {
-  const words: WordDescription[] = new Array<WordDescription>();
   let http: HttpClient;
   let router: Router;
   const communicationService: CommunicationService = new CommunicationService(http);

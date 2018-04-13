@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { Track } from "../../track";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { ActivatedRoute } from "@angular/router";
-import { SceneServices } from "./scene.services/scene.service";
+import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
-import { inject } from "inversify";
+import { Track } from "../../track";
+import { RenderEditorService } from "./render-editor.service/render-editor.service";
 
 @Component({
     selector: "app-editor",
@@ -19,28 +20,24 @@ export class EditorComponent implements OnInit {
 
     private canvasRef: ElementRef;
     private submitValid: boolean;
-    private track: Track;
-    private sceneService: SceneServices;
+    public track: Track;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
     }
 
     public constructor(
-        @inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private route: ActivatedRoute) {
+        private communicationService: RacingCommunicationService, private renderService: RenderEditorService,
+        private route: ActivatedRoute, private sceneService: SceneEditorService) {
         this.track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-            newScores: new Array<number>()
+            INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this.submitValid = false;
-        this.sceneService = new SceneServices();
-    }
-    public setTrack(track: Track): void {
-        this.track = track;
     }
 
     public async ngOnInit(): Promise<void> {
-        this.sceneService.initialize(this.canvas);
+        this.renderService.initialize(this.canvas, this.sceneService.scene);
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
             await this.getTrack(name);
@@ -64,11 +61,13 @@ export class EditorComponent implements OnInit {
     public notReadyToSave(): boolean {
         return this.notReadyToSubmit() || !this.submitValid;
     }
-    public savetrack(): void {
+    public async savetrack(): Promise<void> {
         this.track.points = this.sceneService.getPoints();
         this.track.startingZone = new THREE.Line3(this.track.points[0], this.track.points[1]);
-        this.communicationService.deleteTrack(this.track);
-        this.communicationService.saveTrack(this.track);
+        this.communicationService.deleteTrack(this.track).then(() => {
+            this.communicationService.saveTrack(this.track);
+        });
+
     }
     public onSubmit(f: NgForm): void {
         this.track.description = f.value.description;
@@ -76,7 +75,7 @@ export class EditorComponent implements OnInit {
         this.submitValid = true;
     }
 
-    private async getTrack(name: string): Promise<void> {
+    public async getTrack(name: string): Promise<void> {
         await this.communicationService.getTrackByName(name)
             .then((res: Track[]) => {
                 this.track = res[0];
