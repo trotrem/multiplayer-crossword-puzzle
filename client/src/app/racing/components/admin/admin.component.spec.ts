@@ -46,14 +46,14 @@ describe("AdminComponent", () => {
     expect(component).toBeTruthy();
   });
   it("should containts a tracks's list", () => {
-    expect(component.getTracksList()).toBeDefined();
+    expect(component.tracks).toBeDefined();
   });
   it("should select a track from track's list", () => {
     // tslint:disable-next-line:prefer-const
     let track: Track;
     component.onSelect(track);
-    expect(component.getisSelected()).toBe(true);
-    expect(component.getSelectedTrack()).toBe(track);
+    // expect(component.getisSelected()).toBe(true);
+    expect(component.selectedTrack).toBe(track);
   });
   it("should edit a track from track's list when selected", () => {
     // tslint:disable-next-line:prefer-const
@@ -74,7 +74,7 @@ describe("AdminComponent", () => {
     };
     const tracks: Track[] = new Array<Track>();
     tracks.push(track);
-    component.setTracks(tracks);
+    component.tracks = tracks;
     component.onSelect(track);
     component.deleteTrack();
     expect(component.deleteTrack()).toBe(track);

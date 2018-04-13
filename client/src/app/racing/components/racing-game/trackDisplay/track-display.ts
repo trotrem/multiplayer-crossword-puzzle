@@ -51,8 +51,8 @@ export class TrackDisplay {
             addToScene.push(this.setPlaneMesh(vector, point, vector.length(), TRACK));
 
         }
-        addToScene.push(this.drawStartLine(points));
         addToScene.push(this.drawBackground());
+        addToScene.push(this.drawStartLine(points));
 
         return addToScene;
     }

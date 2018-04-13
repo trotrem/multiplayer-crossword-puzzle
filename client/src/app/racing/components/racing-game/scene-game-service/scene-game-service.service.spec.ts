@@ -6,7 +6,6 @@ import { KeyboardService } from "../commands/keyboard.service";
 import { Car } from "./../car/car";
 import { ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
-import { Track } from "./../../../track";
 import { IBestScores, INewScores } from "./../../../../../../../common/communication/interfaces";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 // "magic numbers" utilisés pour les tests
@@ -15,10 +14,8 @@ describe("SceneGameService", () => {
     const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     const keyboard: KeyboardService = new KeyboardService;
-    const track: Track = {
-        name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-        INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
-    };
+    const points: THREE.Vector3[] =  new Array<THREE.Vector3>();
+    const startingZone: THREE.Line3 = new THREE.Line3;
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [SceneGameService, WallsCollisionsService, KeyboardService]
@@ -36,7 +33,7 @@ describe("SceneGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(track, cars, walls);
+        service.initialize(points, startingZone, cars, walls);
         expect(service.scene).toBeDefined();
     }));
     it("should add four cars to the scene", inject([SceneGameService], async (service: SceneGameService) => {
@@ -46,7 +43,7 @@ describe("SceneGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             await cars[i].init().then(() => { });
         }
-        service.initialize(track, cars, walls);
+        service.initialize(points, startingZone, cars, walls);
         /*for (const car of CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), cars)) {
             service.scene.add(car);

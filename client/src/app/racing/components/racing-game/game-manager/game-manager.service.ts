@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { RenderService } from "../render-service/render.service";
+import { RenderGameService } from "../render-game-service/render-game.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
-import { KeyboardService } from "../commands/keyboard.service";
 import { Track } from "../../../track";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";
 import { RaceValidator } from "../race-validator/racevalidator";
@@ -12,6 +11,7 @@ import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { Car } from "../car/car";
 import { AiController } from "./../ai-controller/ai-controller";
+import { KeyboardService } from "../commands/keyboard.service";
 
 const AI_PLAYERS_MAX: number = 3;
 
@@ -26,30 +26,30 @@ export class GameManagerService {
     private gameStarted: boolean = false;
 
     public constructor(
-        private renderService: RenderService,
+        private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
-        private keyboard: KeyboardService,
         private router: Router) {
         this.timer = 0;
         this._aiControllers = new Array<AiController>();
     }
 
-    public async initializeGame(trackName: string, container: ElementRef): Promise<void> {
+    public async initializeGame(trackName: string, canvas: ElementRef, keyboard: KeyboardService): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
-        this.track = await this.getTrack(trackName, container);
+        this.track = await this.getTrack(trackName);
         this.track.INewScores = new Array<INewScores>();
-        await this.initializeCars();
-        this.renderService.initialize(
-            container.nativeElement, this.track, this._cars, this.collisionService.createWalls(this.track.points));
-        this.update();
-
+        this.initializeCars(keyboard).then(() => {
+            this.renderService.initialize(
+                canvas.nativeElement, this.track.points, this.track.startingZone,
+                this._cars, this.collisionService.createWalls(this.track.points), keyboard);
+            this.update();
+        });
     }
 
-    private async initializeCars(): Promise<void> {
+    private async initializeCars(keyboard: KeyboardService): Promise<void> {
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService, this.keyboard);
+            this._cars[i] = new Car(this.collisionService, keyboard);
             await this._cars[i].init().then(() => { });
         }
     }
@@ -64,7 +64,7 @@ export class GameManagerService {
         this.renderService.onResize();
     }
 
-    private async getTrack(name: string, container: ElementRef): Promise<Track> {
+    private async getTrack(name: string): Promise<Track> {
         return this.communicationService.getTrackByName(name)
             .then(async (res: Track[]): Promise<Track> => {
                 const track: Track = res[0];
@@ -87,7 +87,7 @@ export class GameManagerService {
             for (let i: number = 0; i < CARS_MAX; i++) {
                 this._cars[i].update(timeSinceLastFrame);
             }
-            if (RaceValidator.validateRace(this._cars[0], this.timer, this.track).length === LAP_MAX) {
+            if (RaceValidator.validateRace(this._cars[0], this.timer, this.track.points).length === LAP_MAX) {
                 this.updateScores();
             }
             for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
@@ -105,16 +105,16 @@ export class GameManagerService {
     private updateLapTimeAI(carIndex: number): void {
         this._cars[carIndex].setLapTimes(this.timer / MS_TO_SECONDS);
         if (this._cars[carIndex].getLabTimes().length === LAP_MAX) {
-            RaceValidator.addScoreToTrack(this._cars[carIndex], this.track, carIndex);
+            RaceValidator.addScoreToTrack(this._cars[carIndex], this.track.INewScores, carIndex);
         }
     }
 
     private updateScores(): void {
-        RaceValidator.addScoreToTrack(this._cars[0], this.track, 0);
+        RaceValidator.addScoreToTrack(this._cars[0], this.track.INewScores, 0);
         for (let i: number = 1; i < CARS_MAX; i++) {
             if (this._cars[i].getLabTimes().length < LAP_MAX) {
                 RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track.points);
-                RaceValidator.addScoreToTrack(this._cars[i], this.track, i);
+                RaceValidator.addScoreToTrack(this._cars[i], this.track.INewScores, i);
             }
         }
         this.track.usesNumber++;

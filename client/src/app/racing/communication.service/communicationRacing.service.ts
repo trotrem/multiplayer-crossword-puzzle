@@ -33,7 +33,7 @@ export class RacingCommunicationService {
         return this.http.get<Track[]>(URL_SERVER + "admin");
     }
 
-    public deleteTrack(track: Track): void {
+    public async deleteTrack(track: Track): Promise<void> {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");

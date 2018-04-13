@@ -6,7 +6,7 @@ const SKYBOX_SIZE: number = 5000;
 export class Skybox {
     private skyMaterials: THREE.MeshBasicMaterial[];
     private skyMesh: THREE.Mesh;
-    private skyMaterial: THREE.MeshFaceMaterial;
+    private skyMaterial: THREE.MultiMaterial;
     private skyGeometry: THREE.BoxGeometry;
 
     public constructor() {
@@ -35,7 +35,7 @@ export class Skybox {
                 map: new THREE.TextureLoader().load("./../../assets/models/Skybox/left.JPG"),
                 side: THREE.DoubleSide
             })];
-        this.skyMaterial = new THREE.MeshFaceMaterial(this.skyMaterials);
+        this.skyMaterial = new THREE.MultiMaterial(this.skyMaterials);
         this.skyGeometry = new THREE.BoxGeometry(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
         this.skyMesh = new THREE.Mesh(this.skyGeometry, this.skyMaterial);
     }

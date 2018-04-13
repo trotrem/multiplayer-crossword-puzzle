@@ -6,8 +6,7 @@ import { inject } from "inversify";
 import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { Track } from "../../track";
-import {LAP_MAX} from "../../../constants";
-import { RaceValidator } from "../racing-game/race-validator/racevalidator";
+import { ResultsManager } from "../racing-game/resultsManager/results-manager";
 const DELAY: number = 1000;
 const BEST_SCORES_MAX: number = 5;
 
@@ -73,8 +72,8 @@ export class GameResultsComponent implements OnInit {
         this._track = res[0];
         this._scores = res[0].INewScores;
         this._bestScores = res[0].IBestScores;
-        RaceValidator.bestScoresSort(this._bestScores);
-        RaceValidator.calculateHumanScore(this._scores, this._newBestScore);
+        ResultsManager.bestScoresSort(this._bestScores);
+        ResultsManager.calculateHumanScore(this._scores, this._newBestScore);
       });
   }
   public  isNotBestScore(): boolean {
@@ -95,10 +94,10 @@ export class GameResultsComponent implements OnInit {
     this._newBestScore.name = f.value.name;
 
   }
-  private replay(): void {
+  public replay(): void {
     this.router.navigateByUrl("/race/" + this._track.name);
   }
-  private returnToMain(): void {
+  public returnToMain(): void {
     this.router.navigateByUrl("/");
   }
 
@@ -108,7 +107,7 @@ export class GameResultsComponent implements OnInit {
     }
   this._isAdded = true;
   this._track.IBestScores.push(this._newBestScore);
-  RaceValidator.bestScoresSort(this._bestScores);
+  ResultsManager.bestScoresSort(this._bestScores);
   this.communicationService.updateNewScore(this._track);
 
   }
