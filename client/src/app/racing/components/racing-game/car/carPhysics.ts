@@ -52,7 +52,7 @@ export class CarPhysics {
             const accelerationForce: Vector3 = car.direction;
             accelerationForce.multiplyScalar(tractionForce);
             resultingForce.add(accelerationForce);
-        } else if (car.IsBraking && this.isGoingForward(car.speed, car.direction)) {
+        } else if (car.isBraking && this.isGoingForward(car.speed, car.direction)) {
             const brakeForce: Vector3 = this.getBrakeForce(car.RearWheel, car.Mass, car.direction);
             resultingForce.add(brakeForce);
         }

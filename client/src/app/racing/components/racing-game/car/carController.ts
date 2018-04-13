@@ -2,21 +2,23 @@ import { Car } from "./car";
 
 const MAXIMUM_STEERING_ANGLE: number = 0.25;
 
-export class CarController extends Car {
+export class CarController {
+
+    public constructor(private car: Car) { }
 
     public steerLeft(): void {
-        this.steeringWheelDirection = MAXIMUM_STEERING_ANGLE;
+        this.car.steeringWheel = MAXIMUM_STEERING_ANGLE;
     }
     public steerRight(): void {
-        this.steeringWheelDirection = -MAXIMUM_STEERING_ANGLE;
+        this.car.steeringWheel = -MAXIMUM_STEERING_ANGLE;
     }
     public releaseSteering(): void {
-        this.steeringWheelDirection = 0;
+        this.car.steeringWheel = 0;
     }
     public releaseBrakes(): void {
-        this.isBraking = false;
+        this.car.isBraking = false;
     }
     public brake(): void {
-        this.isBraking = true;
+        this.car.isBraking = true;
     }
 }

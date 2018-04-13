@@ -8,6 +8,7 @@ import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
 import { CarPhysics } from "./carPhysics";
+import { CarController } from "./carController";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -33,7 +34,7 @@ const LENGTH: number = 3.3948105126565693;
 
 export class Car extends Object3D {
     public isAcceleratorPressed: boolean;
-
+    public carController: CarController;
     private readonly engine: Engine;
     private readonly mass: number;
     private readonly rearWheel: Wheel;
@@ -43,7 +44,7 @@ export class Car extends Object3D {
 
     private _speed: Vector3;
     private _velocity: Vector3;
-    protected isBraking: boolean;
+    public isBraking: boolean;
     private _mesh: Object3D;
     protected steeringWheelDirection: number;
     private weightRear: number;
@@ -66,9 +67,6 @@ export class Car extends Object3D {
     }
     public get Speed(): Vector3 {
         return this._speed;
-    }
-    public get IsBraking(): boolean {
-        return this.isBraking;
     }
     public get WeightRear(): number {
         return this.weightRear;
@@ -106,6 +104,9 @@ export class Car extends Object3D {
     public get angle(): number {
         return this._mesh.rotation.y * RAD_TO_DEG;
     }
+    public set steeringWheel(direction: number) {
+        this.steeringWheelDirection = direction;
+    }
 
     public getCorners(pos: Vector3): Vector3[] {
         return [
@@ -141,12 +142,10 @@ export class Car extends Object3D {
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
         mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
-
         if (wheelbase <= 0) {
             console.error("Wheelbase should be greater than 0.");
             wheelbase = DEFAULT_WHEELBASE;
         }
-
         if (mass <= 0) {
             console.error("Mass should be greater than 0.");
             mass = DEFAULT_MASS;
@@ -170,29 +169,12 @@ export class Car extends Object3D {
         this._checkpoint = 0;
         this._counterLap = 0;
     }
-
     public async init(): Promise<void> {
+        this.carController = new CarController(this);
         this._mesh = await this.carLoader.load();
         this._mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this._mesh);
     }
-    // A mettre dans classe car controller
-    public steerLeft(): void {
-        this.steeringWheelDirection = MAXIMUM_STEERING_ANGLE;
-    }
-    public steerRight(): void {
-        this.steeringWheelDirection = -MAXIMUM_STEERING_ANGLE;
-    }
-    public releaseSteering(): void {
-        this.steeringWheelDirection = 0;
-    }
-    public releaseBrakes(): void {
-        this.isBraking = false;
-    }
-    public brake(): void {
-        this.isBraking = true;
-    }
-    //
     public getUpdatedPosition(): Vector3 {
         return this.updatedPosition.clone();
     }
@@ -228,8 +210,6 @@ export class Car extends Object3D {
     public getDeltaPosition(deltaTime: number): Vector3 {
         return this.speed.multiplyScalar(deltaTime);
     }
-
-    // should use car-physics (used in car)
     private physicsUpdate(deltaTime: number): void {
         this.rearWheel.angularVelocity += CarPhysics.getAngularAcceleration(this) * deltaTime;
         this.engine.update(this._speed.length(), this.rearWheel.radius);

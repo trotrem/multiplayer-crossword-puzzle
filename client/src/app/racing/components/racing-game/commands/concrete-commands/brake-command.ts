@@ -9,6 +9,6 @@ export class BrakeCommand implements ICommand {
     }
 
     public execute(): void {
-        this._car.brake();
+        this._car.carController.brake();
     }
 }
