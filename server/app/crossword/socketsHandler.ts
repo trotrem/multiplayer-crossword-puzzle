@@ -54,14 +54,17 @@ export class SocketsHandler {
     }
 
     private sendGridToPlayers(gameId: number): void {
-        const playersSockets: SocketIO.Socket[] = CrosswordGamesCache.Instance.getPlayersSockets(gameId);
         GridFetcher.fetchGrid(CrosswordGamesCache.Instance.getDifficulty(gameId), (grid: IGrid) => {
             const gridData: IGridData = CrosswordGamesCache.Instance.addGrid(grid, gameId);
-            playersSockets.map(
-                (socket: SocketIO.Socket) => {
-                    socket.emit(CrosswordEvents.GridFetched, gridData);
-                });
+            this.emitToGamePlayers(gameId, CrosswordEvents.GridFetched, gridData);
         }).catch(() => console.warn("error in grid fetching"));
+    }
+
+    private emitToGamePlayers(gameId: number, event: CrosswordEvents, data: IEventPayload): void {
+        CrosswordGamesCache.Instance.getPlayersSockets(gameId).map(
+            (socket: SocketIO.Socket) => {
+                socket.emit(event, data);
+            });
     }
 
     private onGetGamesList(socket: SocketIO.Socket): void {
@@ -81,7 +84,7 @@ export class SocketsHandler {
             }
 
             if (isValid) {
-                socket.emit(CrosswordEvents.WordValidated, parameters);
+                this.emitToGamePlayers(parameters.gridId, CrosswordEvents.WordValidated, parameters);
             }
         });
     }
