@@ -4,8 +4,6 @@ import { IWordValidationParameters, Difficulty } from "../../../../common/commun
 import { Cell } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
-import { inject } from "inversify";
-import { HttpClient } from "@angular/common/http";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -22,9 +20,7 @@ export class GridEventService {
   private nbPlayers: string;
   private _difficulty: Difficulty = "easy";
 
-  public constructor(
-    @inject(CommunicationService) private communicationService: CommunicationService,
-    private router: Router) {
+  public constructor(private communicationService: CommunicationService, private router: Router) {
   }
 
   public initialize(words: WordDescription[]): void {

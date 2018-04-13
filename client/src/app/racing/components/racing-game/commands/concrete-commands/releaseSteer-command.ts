@@ -9,6 +9,6 @@ export class ReleaseSteerCommand implements ICommand {
     }
 
     public execute(): void {
-        this._car.releaseSteering();
+        this._car.carController.releaseSteering();
     }
 }

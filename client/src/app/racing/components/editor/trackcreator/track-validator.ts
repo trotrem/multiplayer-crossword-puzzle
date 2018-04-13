@@ -3,8 +3,6 @@ import { RaceUtils } from "../../../utils/utils";
 import {HALF_CIRCLE_DEGREES} from "./../../../../constants";
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
-// const PRECISION: number = 0.0000001;
-const EXPONENT: number = 2;
 
 export class TrackValidator {
 

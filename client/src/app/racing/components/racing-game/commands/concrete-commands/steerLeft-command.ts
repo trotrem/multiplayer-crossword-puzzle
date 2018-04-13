@@ -9,6 +9,6 @@ export class SteerLeftCommand implements ICommand {
     }
 
     public execute(): void {
-        this._car.steerLeft();
+        this._car.carController.steerLeft();
     }
 }

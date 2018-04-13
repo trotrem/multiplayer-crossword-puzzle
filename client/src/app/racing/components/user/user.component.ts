@@ -11,9 +11,9 @@ import { inject } from "inversify";
 })
 export class UserComponent implements OnInit {
 
-  private tracks: Track[];
+  public tracks: Track[];
 
-  private selectedTrack: Track;
+  public selectedTrack: Track;
 
   public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
@@ -34,17 +34,5 @@ export class UserComponent implements OnInit {
   public showTrack(track: Track): void {
     this.selectedTrack = track;
     this.router.navigateByUrl("/race/" + this.selectedTrack.name);
-  }
-
-  public getAttributTracks(): Track[] {
-    return this.tracks;
-  }
-
-  public getSelectedTrack(): Track {
-    return this.selectedTrack;
-  }
-
-  public getTracksList(): Track[] {
-    return this.tracks;
   }
 }

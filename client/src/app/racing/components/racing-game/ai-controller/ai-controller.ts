@@ -59,7 +59,7 @@ export class AiController {
             this.turn(this._car.checkpoint + 1);
             this.hasTurned = true;
         } else if (this.hasTurned) {
-            this._car.releaseSteering();
+            this._car.carController.releaseSteering();
             this._car.checkpoint++;
             this.hasTurned = false;
         }
@@ -70,7 +70,7 @@ export class AiController {
             this.turn(this._car.checkpoint);
             this.hasCollided = true;
         } else if (this.calculateAngle(this._car.checkpoint) < MAX_ANGLE && this.hasCollided) {
-            this._car.releaseSteering();
+            this._car.carController.releaseSteering();
             this.hasCollided = false;
         }
     }
@@ -89,9 +89,9 @@ export class AiController {
 
     private turn(index: number): void {
         if (this.getOrientation(index) > 0) {
-            this._car.steerRight();
+            this._car.carController.steerRight();
         } else {
-            this._car.steerLeft();
+            this._car.carController.steerLeft();
         }
         this._car.isAcceleratorPressed = true;
     }
@@ -105,11 +105,11 @@ export class AiController {
 
     private brake(): void {
         this._car.isAcceleratorPressed = false;
-        this._car.brake();
+        this._car.carController.brake();
     }
 
     private accelerate(): void {
-        this._car.releaseBrakes();
+        this._car.carController.releaseBrakes();
         this._car.isAcceleratorPressed = true;
     }
 
