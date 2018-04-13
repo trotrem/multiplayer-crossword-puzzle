@@ -14,7 +14,9 @@ export class MultiplayerLobbyComponent implements OnInit {
     public lobbyGames: CrosswordLobbyGame[];
     private _playerName: string;
 
-    public constructor(private socketsService: SocketsService, private gameConfiguration: GameConfigurationService, private router: Router) {
+    public constructor(private socketsService: SocketsService,
+                       private gameConfiguration: GameConfigurationService,
+                       private router: Router) {
         this.lobbyGames = [];
     }
 

@@ -29,7 +29,6 @@ export class SocketsHandler {
 
     private onCreateGame(socket: SocketIO.Socket): void {
         socket.on(CrosswordEvents.NewGame, async (creationParameters: ICrosswordSettings) => {
-            console.log("game created")
             const gameId: number = CrosswordGamesCache.Instance.createGame(
                 { name: creationParameters.playerName, socket: socket, selectedWord: null },
                 creationParameters.difficulty);
@@ -42,7 +41,6 @@ export class SocketsHandler {
 
     private onJoinGame(socket: SocketIO.Socket): void {
         socket.on(CrosswordEvents.JoinGame, (joinParameters: { name: string; gridId: number }) => {
-            console.log("game joined")
             CrosswordGamesCache.Instance.joinGame(joinParameters.gridId, {
                 name: joinParameters.name,
                 socket: socket,
@@ -59,11 +57,9 @@ export class SocketsHandler {
         const playersSockets: SocketIO.Socket[] = CrosswordGamesCache.Instance.getPlayersSockets(gameId);
         GridFetcher.fetchGrid(CrosswordGamesCache.Instance.getDifficulty(gameId), (grid: IGrid) => {
             const gridData: IGridData = CrosswordGamesCache.Instance.addGrid(grid, gameId);
-            console.log(gridData)
             playersSockets.map(
                 (socket: SocketIO.Socket) => {
-                    console.log("player: " + socket.id)
-                    socket.emit(CrosswordEvents.GridFetched, gridData)
+                    socket.emit(CrosswordEvents.GridFetched, gridData);
                 });
         }).catch(() => console.warn("error in grid fetching"));
     }

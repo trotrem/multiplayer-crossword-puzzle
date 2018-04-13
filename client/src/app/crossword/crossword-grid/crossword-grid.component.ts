@@ -95,10 +95,8 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private subscribeToGridFetched(): void {
-        console.log("subscribed")
         this.communicationService.gridPromise
             .then((data) => {
-                console.log("fetched on client")
                 this.createGrid(data);
             });
     }
