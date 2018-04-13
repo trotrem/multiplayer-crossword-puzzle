@@ -1,31 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { SocketsService } from "../sockets.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CrosswordEvents, CrosswordLobbyGame } from "../../../../../common/communication/events";
+import { GameConfigurationService } from "../game-configuration.service";
 
 @Component({
-    selector: 'app-multiplayer-lobby',
-    templateUrl: './multiplayer-lobby.component.html',
-    styleUrls: ['./multiplayer-lobby.component.css']
+    selector: "app-multiplayer-lobby",
+    templateUrl: "./multiplayer-lobby.component.html",
+    styleUrls: ["./multiplayer-lobby.component.css"]
 })
 export class MultiplayerLobbyComponent implements OnInit {
 
     public lobbyGames: CrosswordLobbyGame[];
     private _playerName: string;
 
-    constructor(private socketsService: SocketsService, private route: ActivatedRoute) {
+    public constructor(private socketsService: SocketsService, private gameConfiguration: GameConfigurationService, private router: Router) {
         this.lobbyGames = [];
     }
 
-    ngOnInit() {
-        this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first().subscribe((games: CrosswordLobbyGame[]) => {console.log(games);this.lobbyGames = games; });
-        this.route.params.subscribe((params) => {
-            this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, params["Difficulty"]);
-            this._playerName = params["playerName"];
-                                                });
+    public ngOnInit(): void {
+        this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames)
+            .first()
+            .subscribe((games: CrosswordLobbyGame[]) => { this.lobbyGames = games; });
+        this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, this.gameConfiguration.difficulty);
+        this._playerName = this.gameConfiguration.playerName;
     }
 
-    public joinGame(game: CrosswordLobbyGame) {
-        this.socketsService.sendEvent(CrosswordEvents.JoinGame, {name: this._playerName, gridId: game.gameId});
+    public joinGame(game: CrosswordLobbyGame): void {
+        this.socketsService.sendEvent(CrosswordEvents.JoinGame, { name: this._playerName, gridId: game.gameId });
+        this.router.navigate(["/crossword/game/"]);
     }
 }

@@ -15,45 +15,59 @@ interface IPlayer {
     selectedWord: number;
 }
 
-interface ICacheGrid {
+interface ICacheGame {
     words: Array<ICacheWord>;
     gridData: IGridData;
     players: IPlayer[];
     maxPlayers: number;
 }
 
-interface IGridDictionary {
-    [id: string]: ICacheGrid;
+interface IGameDictionary {
+    [id: string]: ICacheGame;
 }
 
-export class GridCache {
-    private static _instance: GridCache;
+export class CrosswordGamesCache {
+    private static _instance: CrosswordGamesCache;
 
-    private _grids: IGridDictionary[];
+    private _grids: IGameDictionary[];
 
     private constructor() {
         this._grids = [{}, {}, {}];
     }
 
-    public static get Instance(): GridCache {
+    public static get Instance(): CrosswordGamesCache {
         return this._instance || (this._instance = new this());
     }
 
     public getOpenMultiplayerGames(difficulty: Difficulty): CrosswordLobbyGame[] {
         return Object.keys(this._grids[difficulty])
             .map((index: string) => ({ grid: this._grids[difficulty][index], id: index }))
-            .filter((grid: { grid: ICacheGrid, id: string }) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1)
-            .map((grid: { grid: ICacheGrid, id: string }) => ({ creator: grid.grid.players[0].name, gameId: grid.id }));
+            .filter((grid: { grid: ICacheGame, id: string }) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1)
+            .map((grid: { grid: ICacheGame, id: string }) => ({ creator: grid.grid.players[0].name, gameId: grid.id }));
     }
 
     public getGridData(id: number): IGridData {
-        const grid: ICacheGrid = this.getGrid(id);
+        const grid: ICacheGame = this.getGrid(id);
 
         return {
             id: grid.gridData.id,
             blackCells: grid.gridData.blackCells.slice(),
             wordInfos: grid.gridData.wordInfos.slice()
         };
+    }
+
+    public getDifficulty(id: number): Difficulty {
+        for (const difficulty in Difficulty) {
+            if (this._grids[difficulty][id] !== undefined) {
+                return Number(difficulty);
+            }
+        }
+
+        return null;
+    }
+
+    public getPlayersSockets(id: number): SocketIO.Socket[] {
+        return this.getGrid(id).players.map((player: IPlayer) => player.socket);
     }
 
     public getWords(id: number): string[] {
@@ -78,7 +92,7 @@ export class GridCache {
     }
 
     public addGrid(grid: IGrid, id: number): IGridData {
-        const cacheGrid: ICacheGrid = this.getGrid(id);
+        const cacheGrid: ICacheGame = this.getGrid(id);
         cacheGrid.gridData = this.convertIGridToGridData(grid, id);
         cacheGrid.words = grid.words.map((w: IWordContainer): ICacheWord => {
             return {
@@ -98,7 +112,7 @@ export class GridCache {
         this.getGrid(gridId).words[wordIndex].validated = true;
     }
 
-    private getGrid(id: number): ICacheGrid {
+    private getGrid(id: number): ICacheGame {
         for (const difficulty in Difficulty) {
             if (this._grids[difficulty][id] !== undefined) {
                 return this._grids[difficulty][id];

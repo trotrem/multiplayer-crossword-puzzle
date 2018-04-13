@@ -41,6 +41,6 @@ export class Message {
 
 export interface ICrosswordSettings {
     difficulty: Difficulty;
-    nbPlayers: NbPlayers;
+    nbPlayers: number;
     playerName?: string;
 }

@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { Request, Response, NextFunction } from "express";
-import { GridCache } from "./cache/crosswordGridCache";
+import { CrosswordGamesCache } from "./cache/crosswordGridCache";
 
 namespace Route {
     @injectable()
@@ -8,7 +8,7 @@ namespace Route {
 
         public getCheatModeWords(req: Request, res: Response, next: NextFunction): void {
             console.log("worked?: " + req.params.gridId)
-            res.send(GridCache.Instance.getWords(req.params.gridId));
+            res.send(CrosswordGamesCache.Instance.getWords(req.params.gridId));
           }
     }
 }

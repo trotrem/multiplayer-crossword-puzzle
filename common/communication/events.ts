@@ -9,7 +9,8 @@ export enum CrosswordEvents {
     ValidateWord = "validate-word",
     WordValidated = "word-validated",
     GetOpenGames = "get-open-games",
-    FetchedOpenGames = "fetched-open-games"
+    FetchedOpenGames = "fetched-open-games",
+    OpponentFound = "opponent-found"
 }
 
 export interface IEventPayload {}

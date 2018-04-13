@@ -24,27 +24,27 @@ import { RaceValidatorService } from "./racing/components/racing-game/race-valid
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { MultiplayerLobbyComponent } from "./crossword/multiplayer-lobby/multiplayer-lobby.component";
 import { SocketsService } from "./crossword/sockets.service";
+import { WaitingRoomComponent } from "./crossword/waiting-room/waiting-room.component";
+import { CommunicationService } from "./crossword/communication.service";
+import { GameConfigurationService } from "./crossword/game-configuration.service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
     { path: "gameResults/:name", component: GameResultsComponent },
     { path: "editor/:name", component: EditorComponent },
-    { path: "endGame", component: EndGameComponent},
-    { path: "endGame/:nbPlayers", component: EndGameComponent},
-    { path: "endGame/:nbPlayers/:Difficulty", component: EndGameComponent},
+    { path: "endGame", component: EndGameComponent },
     { path: "crossword/homePage", component: HomePageComponent },
-    { path: "crossword/lobby/:Difficulty", component: MultiplayerLobbyComponent },
-    { path: "crossword/lobby/:Difficulty/:playerName", component: MultiplayerLobbyComponent },
-    { path: "crossword/game/:Difficulty", component: CrosswordGridComponent },
-    { path: "crossword/game/:Difficulty/:playerName", component: CrosswordGridComponent },
+    { path: "crossword/lobby", component: MultiplayerLobbyComponent },
+    { path: "crossword/game", component: CrosswordGridComponent },
+    { path: "crossword/waiting", component: WaitingRoomComponent },
     { path: "editor", component: EditorComponent },
     { path: "admin", component: AdminComponent },
     { path: "user", component: UserComponent },
     { path: "race/:name", component: GameComponent },
     { path: "race", component: GameComponent },
     { path: "racing", component: RacingGameComponent },
-    { path: "", children: []},
-    { path: "**", component: PageNotFoundComponent }
+    { path: "", children: [] },
+    { path: "**", component: PageNotFoundComponent },
 ];
 
 @NgModule({
@@ -61,6 +61,7 @@ const appRoutes: Routes = [
         EndGameComponent,
         GameResultsComponent,
         MultiplayerLobbyComponent,
+        WaitingRoomComponent,
     ],
     imports: [
         BrowserModule,
@@ -70,8 +71,7 @@ const appRoutes: Routes = [
         ReactiveFormsModule,
         RouterModule.forRoot(
             appRoutes
-          )
-    ],
+        )],
     providers: [
         SceneServices,
         RacingCommunicationService,
@@ -80,7 +80,9 @@ const appRoutes: Routes = [
         RaceValidatorService,
         WallsCollisionsService,
         SocketsService,
-        {provide: APP_BASE_HREF, useValue : "/" }
+        CommunicationService,
+        GameConfigurationService,
+        { provide: APP_BASE_HREF, useValue: "/" }
     ],
     bootstrap: [AppComponent]
 })

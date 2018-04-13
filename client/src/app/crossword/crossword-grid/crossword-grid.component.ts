@@ -3,10 +3,10 @@ import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../..
 import { WordDescription } from "../wordDescription";
 import { Cell } from "../cell";
 import { CommunicationService } from "../communication.service";
-import { ActivatedRoute } from "@angular/router";
 import { GridEventService } from "../grid-event.service";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
+import { GameConfigurationService } from "../game-configuration.service";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -20,7 +20,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [CommunicationService, GridEventService]
+    providers: [GridEventService]
 })
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
@@ -52,7 +52,7 @@ export class CrosswordGridComponent implements OnInit {
     public constructor(
         private communicationService: CommunicationService,
         private gridEventService: GridEventService,
-        private route: ActivatedRoute,
+        private gameConfiguration: GameConfigurationService,
         private socketsService: SocketsService) {
         this.cells = new Array<Array<Cell>>();
         this.words = new Array<WordDescription>();
@@ -74,31 +74,32 @@ export class CrosswordGridComponent implements OnInit {
             .subscribe(() => {
                 console.warn('disconnected');
             });
-
-
     }
 
     public ngOnInit(): void {
-        this.route.params.subscribe((params) => {
-            this.gridEventService.setDifficulty(params["Difficulty"]);
-            this._difficulty = params["Difficulty"];
-            this._playerName = params["playerName"];
-            this.nbPlayers = this._playerName === undefined ? 1 : 2;
-            this.gridEventService.setNbPlayers(this.nbPlayers);
-            this.fetchGrid();
-            this.subscribeToValidation();
-        });
+        this.gridEventService.setDifficulty(this.gameConfiguration.difficulty);
+        this._difficulty = this.gameConfiguration.difficulty;
+        this._playerName = this.gameConfiguration.playerName;
+        this.nbPlayers = this.gameConfiguration.nbPlayers;
+        this.gridEventService.setNbPlayers(this.nbPlayers);
+        this.subscribeToGridFetched();
+        this.subscribeToValidation();
     }
 
-    private fetchGrid(): void {
-        this.communicationService.createGame(this._difficulty, this._playerName)
-            .subscribe((data) => {
-                const gridData: IGridData = data as IGridData;
-                this.gridEventService.setId(gridData.id);
-                gridData.blackCells.forEach((cell: IPoint) => {
-                    this.cells[cell.y][cell.x].isBlack = true;
-                });
-                this.fillWords(gridData);
+    private createGrid(gridData: IGridData): void {
+        this.gridEventService.setId(gridData.id);
+        gridData.blackCells.forEach((cell: IPoint) => {
+            this.cells[cell.y][cell.x].isBlack = true;
+        });
+        this.fillWords(gridData);
+    }
+
+    private subscribeToGridFetched(): void {
+        console.log("subscribed")
+        this.communicationService.gridPromise
+            .then((data) => {
+                console.log("fetched on client")
+                this.createGrid(data);
             });
     }
 

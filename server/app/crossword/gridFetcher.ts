@@ -10,7 +10,7 @@ const NO_GRIDS_FOUND_EXCEPTION: string = "no grids found";
 
 namespace Route {
     export class GridFetcher {
-        public static async fetchGrid(difficulty: Difficulty, gridFetchedCallback: (g: IGrid) => {}): Promise<void> {
+        public static async fetchGrid(difficulty: Difficulty, gridFetchedCallback: (g: IGrid) => void): Promise<void> {
             const newGrid: Promise<IGrid> = GenerateWords.generateGrid(difficulty);
 
             return crosswordDocument.find({ difficulty: difficulty }).then(

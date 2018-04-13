@@ -15,8 +15,9 @@ export class SocketsService {
         this.socket = socketIo(SERVER_URL);
     }
 
-    public sendEvent(event: CrosswordEvents, payload: IEventPayload = null): void {
+    public sendEvent(event: CrosswordEvents, payload: IEventPayload = {}): void {
         this.socket.emit(event, payload);
+        console.log(this.socket.id);
     }
 
     public onEvent(event: CrosswordEvents): Observable<IEventPayload> {

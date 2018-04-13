@@ -156,7 +156,7 @@ export class GridEventService {
     }
 
     private openEndGame(): void {
-        this.router.navigate(["/endGame/" + this._crosswordSettings.nbPlayers + "/", { Difficulty: this._crosswordSettings.difficulty }]);
+        this.router.navigate(["/crossword/endGame"]);
     }
 
     public setNbPlayers(nbPlayers: NbPlayers): void {
