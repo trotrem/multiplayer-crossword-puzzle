@@ -4,8 +4,6 @@ import { RenderEditorService } from "../render-editor.service/render-editor.serv
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
-const FIRST_POINT_COUNTOUR_SIZE: number = 5;
-const POINT_SIZE: number = 3;
 
 export class TrackCreator {
 
@@ -36,18 +34,9 @@ export class TrackCreator {
         return position;
     }
 
-    public createFirstPointContour(position: THREE.Vector3): THREE.Points {
-        const geometryPoint: THREE.Geometry = new THREE.Geometry();
-        geometryPoint.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: FIRST_POINT_COUNTOUR_SIZE, color: 0xFAA61A });
-
-        return new THREE.Points(geometryPoint, material);
-    }
-
-    public createPoint(position: THREE.Vector3): THREE.Points {
+    public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial ): THREE.Points {
         const pointGeometry: THREE.Geometry = new THREE.Geometry();
         pointGeometry.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: POINT_SIZE, color: 0xFF00A7 });
 
         return new THREE.Points(pointGeometry, material);
     }
