@@ -9,12 +9,10 @@ export class WordDictionaryData {
     ) { }
 
     get isCommon(): boolean {
-
-        return this.frequency > COMMON_TRESHOLD ? true : false;
+        return this.frequency > COMMON_TRESHOLD;
     }
 
     get isUncommon(): boolean {
-
-        return this.frequency < UNCOMMON_TRESHOLD ? true : false;
+        return this.frequency < UNCOMMON_TRESHOLD;
     }
 }

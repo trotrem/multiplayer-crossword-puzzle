@@ -58,20 +58,20 @@ describe("test on Querry of the words 't?e' to see if it handles certain excepti
 
 describe("Test the get Easy and Medium WordList  to see if it returns only common words with 1 definition.", () => {
 
-    it("Easy: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
+    it("Easy: The words should be : 'hall', 'hill' and 'hell' and 'hull'. ", async () => {
         words = await wordRetriever.getEasyWordList("H?ll");
         words.forEach((wordInfo: WordDictionaryData, index: number) => {
             const word: string = wordInfo.word;
-            const expectedWord: string[] = ["hall", "hill", "hell"];
+            const expectedWord: string[] = ["hall", "hill", "hell", "hull"];
             assert.equal(word, expectedWord[index]);
         });
     });
 
-    it("Medium: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
+    it("Medium: The words should be : 'hall', 'hill' and 'hell' and 'hull'. ", async () => {
         words = await wordRetriever.getMediumWordList("H?ll");
         words.forEach((wordInfo: WordDictionaryData, index: number) => {
             const word: string = wordInfo.word;
-            const expectedWord: string[] = ["hall", "hill", "hell"];
+            const expectedWord: string[] = ["hall", "hill", "hell", "hull"];
             assert.equal(word, expectedWord[index]);
         });
     });

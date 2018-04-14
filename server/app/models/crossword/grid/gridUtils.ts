@@ -6,9 +6,7 @@ const UNDEFINED_LETTER: string = "?";
 
 export class GridUtils {
     public static getText(gridSquares: IPoint[], grid: IGrid): string {
-        return gridSquares
-            .map((pos: IPoint) => grid.cells[pos.x][pos.y].letter)
-            .join("");
+        return gridSquares.map((pos: IPoint) => grid.cells[pos.x][pos.y].letter).join("");
     }
 
     public static setData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): void {
