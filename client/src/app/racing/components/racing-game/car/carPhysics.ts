@@ -40,7 +40,7 @@ export class CarPhysics {
         return this.getLongitudinalForce(car).divideScalar(car.Mass);
     }
     // should be in car-physics (getAcceleration)
-    private static getLongitudinalForce(car: Car): Vector3 {
+    public static getLongitudinalForce(car: Car): Vector3 {
         const resultingForce: Vector3 = new Vector3();
         if (car.speed.length() >= MINIMUM_SPEED) {
             const dragForce: Vector3 = this.getDragForce(car.direction, car.DragCoefficient, car.speed);
