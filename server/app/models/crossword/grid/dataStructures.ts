@@ -1,6 +1,7 @@
 import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
 import { Direction, IPoint } from "../../../../../common/communication/types";
 
+// TODO: IPoint -> x,y
 export interface ICell {
     isBlack: boolean;
     letter: string;
