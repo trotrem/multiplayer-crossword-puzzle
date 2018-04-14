@@ -43,7 +43,7 @@ export class CarsCollisionService {
 
     }
 
-    private detectCollision(cars: Car[]): boolean {
+    public detectCollision(cars: Car[]): boolean {
         this.shapeAroundCar(cars);
         const resultsP: IProjection[] = [];
         const resultsQ: IProjection[] = [];
