@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Track } from "./../../track";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { inject } from "inversify";
 
 @Component({
   selector: "app-user",
@@ -15,7 +14,7 @@ export class UserComponent implements OnInit {
 
   public selectedTrack: Track;
 
-  public constructor(@inject(RacingCommunicationService) private communicationService: RacingCommunicationService, private router: Router) {
+  public constructor(private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
     this.tracks = new Array<Track>();
   }

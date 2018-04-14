@@ -6,7 +6,6 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule } from "@angular/common/http";
-import { Track } from "./../../../track";
 import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 import { KeyboardService } from "../commands/keyboard.service";
@@ -21,10 +20,8 @@ describe("RenderGameService", () => {
     const sceneService: SceneGameService = new SceneGameService();
     // tslint:disable-next-line:prefer-const
     let canvas: HTMLCanvasElement;
-    const track: Track = {
-        name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-        INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
-    };
+    const startingZone: THREE.Line3 = new THREE.Line3;
+    const points: THREE. Vector3[] = new Array<THREE.Vector3>();
     const service: RenderGameService = new RenderGameService(sceneService);
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -50,7 +47,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
       /*  CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -69,7 +66,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         /*CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -89,7 +86,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
       /*  CarsPositionsHandler.insertCars(
             new THREE.Line3(new THREE.Vector3(-23, -2, 0), new THREE.Vector3(3, 7, 10)), service.getScene(), cars);*/
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
@@ -117,7 +114,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -132,7 +129,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
@@ -146,7 +143,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -161,7 +158,7 @@ describe("RenderGameService", () => {
             cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await carLoader.load();
         }
-        service.initialize(canvas, track, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }
