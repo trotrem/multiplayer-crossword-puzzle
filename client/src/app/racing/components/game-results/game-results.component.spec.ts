@@ -9,6 +9,7 @@ import { Track } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
@@ -33,6 +34,7 @@ describe("GameResultsComponent", () => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
             imports: [
+                BrowserDynamicTestingModule,
                 FormsModule,
                 HttpClientModule,
                 HttpClientTestingModule,
@@ -75,7 +77,7 @@ describe("GameResultsComponent", () => {
         expect(component.isNotBestScore()).toBeFalsy();
     });
     it(" IsNotBestScore() return false when the human car is in first position and have the best score  ", () => {
-        component.newBestScore = { name: "Amal", score: 10 };
+        component._newBestScore = { name: "Amal", score: 10 };
         component.getTrack(track.name);
         expect(component.isNotBestScore()).toBeFalsy();
     });

@@ -16,9 +16,9 @@ const BEST_SCORES_MAX: number = 5;
 })
 export class GameResultsComponent implements OnInit {
 
-    private _scores: INewScores[];
-    private _bestScores: IBestScores[];
-    private _newBestScore: IBestScores;
+    public _scores: INewScores[];
+    public _bestScores: IBestScores[];
+    public _newBestScore: IBestScores;
     private _track: Track;
     private _isAdded: boolean;
 
@@ -40,9 +40,6 @@ export class GameResultsComponent implements OnInit {
     }
     public get isAdded(): boolean {
         return this._isAdded;
-    }
-    public get newBestScore(): IBestScores {
-        return this._newBestScore;
     }
     public get bestScores(): IBestScores[] {
         return this._bestScores;
