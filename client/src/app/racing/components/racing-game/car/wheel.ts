@@ -4,18 +4,10 @@ export const DEFAULT_FRICTION_COEFFICIENT: number = 1;
 const RADIUS_COEFFICIENT: number = 2;
 
 export class Wheel {
-    private _angularVelocity: number;
+    public angularVelocity: number;
     private _mass: number;
     private _radius: number;
     private _frictionCoefficient: number;
-
-    public get angularVelocity(): number {
-        return this._angularVelocity;
-    }
-
-    public set angularVelocity(value: number) {
-        this._angularVelocity = value;
-    }
 
     public get inertia(): number {
         return this._mass * this._radius * this._radius / RADIUS_COEFFICIENT;

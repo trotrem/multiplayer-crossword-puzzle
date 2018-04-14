@@ -137,24 +137,5 @@ export class SceneEditorService {
     public get scene(): THREE.Scene {
         return this._scene;
     }
-    public setScene(scene: THREE.Scene): void {
-        this._scene = scene;
-    }
-
-    public getLines(): Array<THREE.Line> {
-        return this.lines;
-    }
-
-    public setLines(lines: Array<THREE.Line>): void {
-        this.lines = lines;
-    }
-
-    public getDragIndex(): number {
-        return this.dragIndex;
-    }
-
-    public setDragIndex(dragIndex: number): void {
-        this.dragIndex = dragIndex;
-    }
 
 }
