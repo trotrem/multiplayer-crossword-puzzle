@@ -40,7 +40,7 @@ describe("UserComponent", () => {
     });
 
     it("should containts a tracks's list", () => {
-        expect(component.getTracksList()).toBeDefined();
+        expect(component.tracks).toBeDefined();
     });
 
     it('navigate to "race/name" takes you to  "race/name"', fakeAsync(() => {
@@ -50,5 +50,25 @@ describe("UserComponent", () => {
         tick(50);
         expect(router.url).toBe("/race/" + name);
     }));
-
+    it("each track containts a name ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.name).toBeDefined();
+    });
+    it("each track containts a description ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.description).toBeDefined();
+    });
+    it("each track containts a number of uses ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.usesNumber).toBeDefined();
+    });
+    it("each track containts a best scores table ", () => {
+        component.ngOnInit();
+        for(const track of component.tracks)
+        expect(track.IBestScores).toBeDefined();
+    });
+    
 });

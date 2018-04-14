@@ -11,13 +11,14 @@ const DELAY_FOR_RED: number = 1500;
     moduleId: module.id,
     selector: "app-game-component",
     templateUrl: "./game.component.html",
-    styleUrls: ["./game.component.css"]
+    styleUrls: ["./game.component.css"],
+    providers: [GameManagerService, KeyboardService]
 })
 
 export class GameComponent implements AfterViewInit {
 
-    @ViewChild("container")
-    private containerRef: ElementRef;
+    @ViewChild("canvas")
+    private canvasRef: ElementRef;
     private lights: string[];
     private playButtonEnabled: boolean;
 
@@ -47,7 +48,7 @@ export class GameComponent implements AfterViewInit {
     public async ngAfterViewInit(): Promise<void> {
         const name: string = this.route.snapshot.paramMap.get("name");
         if (name !== null) {
-            await this.gameManager.initializeGame(name, this.containerRef);
+            await this.gameManager.initializeGame(name, this.canvasRef, this.keyboard);
         }
     }
 

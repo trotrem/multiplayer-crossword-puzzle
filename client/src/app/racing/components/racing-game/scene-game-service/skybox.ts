@@ -4,13 +4,27 @@ const SKYBOX_POSITION: number = 800;
 const SKYBOX_SIZE: number = 5000;
 
 export class Skybox {
+    private static _instance: Skybox;
     private skyMaterials: THREE.MeshBasicMaterial[];
     private skyMesh: THREE.Mesh;
-    private skyMaterial: THREE.MeshFaceMaterial;
+    private skyMaterial: THREE.MultiMaterial;
     private skyGeometry: THREE.BoxGeometry;
 
-    public constructor() {
-        this.skyMaterials = [
+    public static get instance(): Skybox {
+
+        return this._instance || (this._instance = new this());
+      }
+
+    private constructor() {
+        this.skyMaterials = this.initializeMaterials();
+        this.skyMaterial = new THREE.MultiMaterial(this.skyMaterials);
+        this.skyGeometry = new THREE.BoxGeometry(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
+        this.skyMesh = new THREE.Mesh(this.skyGeometry, this.skyMaterial);
+    }
+
+    private initializeMaterials(): THREE.MeshBasicMaterial[] {
+
+        return [
             new THREE.MeshBasicMaterial({
                 map: new THREE.TextureLoader().load("./../../assets/models/Skybox/front.JPG"),
                 side: THREE.DoubleSide
@@ -35,10 +49,8 @@ export class Skybox {
                 map: new THREE.TextureLoader().load("./../../assets/models/Skybox/left.JPG"),
                 side: THREE.DoubleSide
             })];
-        this.skyMaterial = new THREE.MeshFaceMaterial(this.skyMaterials);
-        this.skyGeometry = new THREE.BoxGeometry(SKYBOX_SIZE, SKYBOX_SIZE, SKYBOX_SIZE);
-        this.skyMesh = new THREE.Mesh(this.skyGeometry, this.skyMaterial);
     }
+
     public createSkybox(): THREE.Mesh {
         this.skyMesh.rotateZ(Math.PI / 2);
         this.skyMesh.rotateX(Math.PI / 2);

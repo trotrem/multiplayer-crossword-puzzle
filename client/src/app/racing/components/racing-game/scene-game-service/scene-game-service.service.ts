@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { ILine } from "./../walls-collisions-service/walls-collisions-service";
-import { Track } from "./../../../track";
 import { Car } from "./../car/car";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { CARS_MAX } from "../../../../constants";
@@ -15,19 +14,17 @@ const AMBIENT_LIGHT_OPACITY: number = 2;
 export class SceneGameService {
 
     private _scene: THREE.Scene;
-    private skyBox: Skybox;
 
     public constructor() {
         this._scene = new THREE.Scene;
-        this.skyBox = new Skybox();
     }
 
     public get scene(): THREE.Scene {
         return this._scene;
     }
-    public initialize(track: Track, cars: Car[], walls: ILine[]): void {
-        this.createScene(track, cars, walls);
-        for (const car of CarsPositionsHandler.insertCars(track.startingZone, cars)) {
+    public initialize(points: THREE.Vector3[], startingZone: THREE.Line3, cars: Car[], walls: ILine[]): void {
+        this.createScene(points, cars, walls);
+        for (const car of CarsPositionsHandler.insertCars(startingZone, cars)) {
             this.scene.add(car);
         }
     }
@@ -41,9 +38,9 @@ export class SceneGameService {
         }
     }
 
-    private createScene(track: Track, cars: Car[], walls: ILine[]): void {
+    private createScene(points: THREE.Vector3[], cars: Car[], walls: ILine[]): void {
         this._scene = new THREE.Scene();
-        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(track.points);
+        const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(points);
         for (const mesh of trackMeshs) {
             this.scene.add(mesh);
         }
@@ -51,9 +48,8 @@ export class SceneGameService {
             this.scene.add(cars[i]);
         }
         this.showWalls(walls);
-        track.points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
+        points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
-        this.scene.add(this.skyBox.createSkybox());
+        this.scene.add(Skybox.instance.createSkybox());
     }
-
 }

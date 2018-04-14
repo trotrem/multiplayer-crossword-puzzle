@@ -8,5 +8,5 @@
   </li>
 </ol>
 
-<button [disabled]="notReadyToModify()" (click)="editTrack()">edit Track</button>
-<button [disabled]="notReadyToModify()" (click)="deleteTrack()">delete Track</button>
+<button [disabled]="!isSelected" (click)="editTrack()">edit Track</button>
+<button [disabled]="!isSelected"  (click)="deleteTrack()">delete Track</button>
