@@ -46,10 +46,12 @@ export class RaceValidator {
     }
 
     public static estimateTime(timeNow: number, car: Car, points: THREE.Vector3[]): void {
-
+        let checkPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
+        checkPoints.shift();
+        checkPoints = points.slice().reverse();
         let distance: number =
             RaceUtils.calculateDistance(car.getUpdatedPosition(), points[car.checkpoint]);
-        for (let j: number = car.checkpoint; j > 0; j--) {
+        for (let j: number = car.checkpoint; j < checkPoints.length - 1; j++) {
             distance += RaceUtils.calculateDistance(points[j], points[j + 1]);
         }
         const time: number = car.setLapTimes((distance / car.speed.length()) + timeNow);
