@@ -77,7 +77,7 @@ describe("GameResultsComponent", () => {
         expect(component.isNotBestScore()).toBeFalsy();
     });
     it(" IsNotBestScore() return false when the human car is in first position and have the best score  ", () => {
-        component._newBestScore = { name: "Amal", score: 10 };
+        component.newBestScore = { name: "Amal", score: 10 };
         component.getTrack(track.name);
         expect(component.isNotBestScore()).toBeFalsy();
     });
