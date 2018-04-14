@@ -71,7 +71,7 @@ const appRoutes: Routes = [
           )
     ],
     providers: [
-        CommunicationService, 
+        CommunicationService,
         GridEventService,
         SceneEditorService,
         SceneGameService,

@@ -4,11 +4,11 @@ const SKYBOX_POSITION: number = 800;
 const SKYBOX_SIZE: number = 5000;
 
 export class Skybox {
+    private static _instance: Skybox;
     private skyMaterials: THREE.MeshBasicMaterial[];
     private skyMesh: THREE.Mesh;
     private skyMaterial: THREE.MultiMaterial;
     private skyGeometry: THREE.BoxGeometry;
-    private static _instance: Skybox;
 
     public static get instance(): Skybox {
 
@@ -23,7 +23,7 @@ export class Skybox {
     }
 
     private initializeMaterials(): THREE.MeshBasicMaterial[] {
-        
+
         return [
             new THREE.MeshBasicMaterial({
                 map: new THREE.TextureLoader().load("./../../assets/models/Skybox/front.JPG"),
@@ -48,7 +48,7 @@ export class Skybox {
             new THREE.MeshBasicMaterial({
                 map: new THREE.TextureLoader().load("./../../assets/models/Skybox/left.JPG"),
                 side: THREE.DoubleSide
-            })];    
+            })];
     }
 
     public createSkybox(): THREE.Mesh {
