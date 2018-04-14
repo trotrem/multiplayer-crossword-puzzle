@@ -4,7 +4,7 @@ import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "../../../utils/utils";
 import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
-const MAX_SPEED: number = 50;
+const MAX_SPEED: number = 20;
 const MIN_SPEED: number = 10;
 const MAX_DISTANCE: number = 18;
 const MIN_DISTANCE: number = 13;
