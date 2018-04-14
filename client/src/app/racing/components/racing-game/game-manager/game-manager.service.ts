@@ -79,40 +79,58 @@ export class GameManagerService {
 
     }
 
-    private async update(): Promise<void> {
-        requestAnimationFrame(async () => this.update());
-        const timeSinceLastFrame: number = Date.now() - this.lastDate;
-        this.timer += timeSinceLastFrame;
+    private update(): void {
+        requestAnimationFrame(() => this.update());
+        this.updateCars(this.updateDeltaTime());
         if (this.gameStarted) {
-            for (let i: number = 0; i < CARS_MAX; i++) {
-                this._cars[i].update(timeSinceLastFrame);
-            }
-            if (RaceValidator.validateRace(this._cars[0], this.timer, this.track.points).length === LAP_MAX) {
-                this.updateScores();
-            }
-            for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
-                if (this._aiControllers[i].update()) {
-                    this.updateLapTimeAI(i + 1);
-                }
-            }
-        } else {
-            this._cars[0].update(timeSinceLastFrame);
+            this.updateRaceProgressionStatus();
+            this.updateAI();
+
         }
         this.renderService.render(this._cars[0]);
+
+    }
+
+    private updateDeltaTime(): number {
+        const timeSinceLastFrame: number = Date.now() - this.lastDate;
+        this.timer += timeSinceLastFrame;
         this.lastDate = Date.now();
+
+        return timeSinceLastFrame;
+    }
+    private updateRaceProgressionStatus(): void {
+        RaceValidator.validateRace(this._cars[0], this.timer, this.track.points);
+        if (this._cars[0].getLapTimes().length === LAP_MAX) {
+            this.updateScores();
+        }
+    }
+
+    private updateCars(timeSinceLastFrame: number): void {
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            this._cars[i].update(timeSinceLastFrame);
+        }
+    }
+
+    private updateAI(): void {
+        for (let i: number = 0; i < AI_PLAYERS_MAX; i++) {
+            if (this._aiControllers[i].update()) {
+                this.updateLapTimeAI(i + 1);
+            }
+        }
     }
 
     private updateLapTimeAI(carIndex: number): void {
         this._cars[carIndex].setLapTimes(this.timer / MS_TO_SECONDS);
-        if (this._cars[carIndex].getLabTimes().length === LAP_MAX) {
+        if (this._cars[carIndex].getLapTimes().length === LAP_MAX) {
             RaceValidator.addScoreToTrack(this._cars[carIndex], this.track.INewScores, carIndex);
         }
     }
 
     private updateScores(): void {
+        this.gameStarted = false;
         RaceValidator.addScoreToTrack(this._cars[0], this.track.INewScores, 0);
         for (let i: number = 1; i < CARS_MAX; i++) {
-            if (this._cars[i].getLabTimes().length < LAP_MAX) {
+            if (this._cars[i].getLapTimes().length < LAP_MAX) {
                 RaceValidator.estimateTime(this.timer / MS_TO_SECONDS, this._cars[i], this.track.points);
                 RaceValidator.addScoreToTrack(this._cars[i], this.track.INewScores, i);
             }
