@@ -11,7 +11,8 @@ import { RenderEditorService } from "./render-editor.service/render-editor.servi
 @Component({
     selector: "app-editor",
     templateUrl: "./editor.component.html",
-    styleUrls: ["./editor.component.css"]
+    styleUrls: ["./editor.component.css"],
+    providers: [RenderEditorService, SceneEditorService]
 })
 
 export class EditorComponent implements OnInit {
