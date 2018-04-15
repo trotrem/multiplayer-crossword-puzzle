@@ -5,8 +5,6 @@ import { WallsCollisionsService } from "../walls-collisions-service/walls-collis
 import { KeyboardService } from "../commands/keyboard.service";
 import { Car } from "./../car/car";
 import { ILine } from "./../walls-collisions-service/walls-collisions-service";
-import { IBestScores, INewScores } from "./../../../../../../../common/communication/interfaces";
-import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers*/
 describe("SceneGameService", () => {

@@ -11,9 +11,6 @@ import { INewScores, IBestScores } from "../../../../../../../common/communicati
 import { KeyboardService } from "../commands/keyboard.service";
 import { Engine } from "./../car/engine";
 import { Track } from "./../../../track";
-
-const MS_BETWEEN_FRAMES: number = 16.6667;
-
 /* tslint:disable: no-magic-numbers */
 class MockEngine extends Engine {
     public getDriveTorque(): number {
@@ -31,9 +28,6 @@ class MockCar extends Car {
         this._position = pos;
     }
 }
-
-// "magic numbers" utilisés pour les tests
-/* tslint:disable:no-magic-numbers no-floating-promises */
 
 describe("Racevalidator", () => {
     let router: Router;
