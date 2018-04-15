@@ -6,7 +6,7 @@ import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { Track } from "../../track";
 import { ResultsManager } from "../racing-game/resultsManager/results-manager";
-const DELAY: number = 1000;
+const DELAY: number = 100;
 const BEST_SCORES_MAX: number = 5;
 
 @Component({
