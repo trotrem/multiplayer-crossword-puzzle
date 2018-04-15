@@ -74,11 +74,7 @@ describe("AdminComponent", () => {
     };
     const tracks: Track[] = new Array<Track>();
     tracks.push(track);
-<<<<<<< HEAD
-    component.Tracks = tracks;
-=======
     component.tracks = tracks;
->>>>>>> master
     component.onSelect(track);
     component.deleteTrack();
     expect(component.deleteTrack()).toBe(track);

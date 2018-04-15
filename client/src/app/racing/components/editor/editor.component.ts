@@ -34,10 +34,6 @@ export class EditorComponent implements OnInit {
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this.submitValid = false;
-<<<<<<< HEAD
-        this.sceneService = new SceneService();
-=======
->>>>>>> master
     }
 
     public async ngOnInit(): Promise<void> {
