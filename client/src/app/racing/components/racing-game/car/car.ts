@@ -50,8 +50,7 @@ export class Car extends Object3D {
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
-    public counterLap: number;
-    public checkpoint: number;
+    public  checkpoint: number;
 
     public get Engine(): Engine {
         return this.engine;
@@ -144,7 +143,6 @@ export class Car extends Object3D {
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
         this.checkpoint = 0;
-        this.counterLap = 0;
     }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
@@ -204,7 +202,7 @@ export class Car extends Object3D {
         this.rearWheel.update(this.speed.length());
         this.updatedPosition = this.mesh.position;
     }
-    public getLabTimes(): number[] {
+    public getLapTimes(): number[] {
         return this.lapTimes;
     }
     public setLapTimes(time: number): number {
