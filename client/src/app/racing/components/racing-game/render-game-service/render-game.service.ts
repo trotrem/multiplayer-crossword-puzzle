@@ -4,12 +4,12 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
-import { ILine } from "../walls-collisions-service/walls-collisions-service";
 import { KeyboardService } from "../commands/keyboard.service";
 import * as Command from "../commands/concrete-commands/headers";
 import * as KeyCode from "../commands/key-code";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { RenderService } from "../../render.service/render.service";
+import { ILine } from "../../../utils/utils";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;

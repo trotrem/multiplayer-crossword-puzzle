@@ -1,5 +1,10 @@
 import { Vector3 } from "three";
 
+export interface ILine {
+    pos1: THREE.Vector3;
+    pos2: THREE.Vector3;
+}
+
 const EXPONENT: number = 2;
 const PRECISION: number = 0.0001;
 
@@ -130,8 +135,6 @@ export class RaceUtils {
         p2: Vector3,
         q2: Vector3
     ): boolean {
-        // Find the four orientations needed for general and
-        // special cases
         const o1: number = this.getOrientation(p1, q1, p2);
         const o2: number = this.getOrientation(p1, q1, q2);
         const o3: number = this.getOrientation(p2, q2, p1);

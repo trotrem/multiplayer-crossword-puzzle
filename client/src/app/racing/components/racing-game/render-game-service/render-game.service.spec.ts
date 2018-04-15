@@ -6,11 +6,13 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { GameResultsComponent } from "../../game-results/game-results.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule } from "@angular/common/http";
-import { WallsCollisionsService, ILine } from "./../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 import { KeyboardService } from "../commands/keyboard.service";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
+import { ILine } from "../../../utils/utils";
+
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers no-floating-promises await-promise */
 describe("RenderGameService", () => {

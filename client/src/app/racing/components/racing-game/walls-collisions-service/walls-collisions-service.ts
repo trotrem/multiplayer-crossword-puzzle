@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils } from "../../../utils/utils";
+import { RaceUtils, ILine } from "../../../utils/utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
@@ -7,11 +7,6 @@ import { Injectable } from "@angular/core";
 enum WallSide {
     exterior = -1,
     interior = 1
-}
-
-export interface ILine {
-    pos1: THREE.Vector3;
-    pos2: THREE.Vector3;
 }
 
 const WALL_WIDTH: number = 8;
