@@ -1,5 +1,5 @@
 
 h1 {color: goldenrod}
 [hidden] { display: none !important;}
-.Left {width: 600px; float: left; }
-.Right {width: 600px; float: right; }
+.Left {width: 500px; float: left; }
+.Right {width: 500px; float: right; }
