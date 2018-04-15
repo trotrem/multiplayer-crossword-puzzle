@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
-import { Difficulty, IWordValidationParameters } from "../../../../common/communication/types";
+import { Difficulty, IWordValidationParameters, ICrosswordSettings } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData } from "../../../../common/communication/events";
+import { CrosswordEvents, IGridData, IValidationData } from "../../../../common/communication/events";
 
 const SERVER_URL: string = "http://localhost:3000"
 
@@ -27,7 +27,8 @@ export class CommunicationService {
 
     // TODO: type safety
     public createGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
-        this.socketsService.sendEvent(CrosswordEvents.NewGame, { difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers });
+        const payload: ICrosswordSettings = { difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers };
+        this.socketsService.sendEvent(CrosswordEvents.NewGame, payload);
     }
 
     public onGridFetched(): Promise<IGridData> {
@@ -38,8 +39,8 @@ export class CommunicationService {
         this.socketsService.sendEvent(CrosswordEvents.ValidateWord, parameters);
     }
 
-    public onValidation(): Observable<IWordValidationParameters> {
-        return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<IWordValidationParameters>;
+    public onValidation(): Observable<IValidationData> {
+        return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<IValidationData>;
     }
 
     public onOpponentFound(): Observable<null> {

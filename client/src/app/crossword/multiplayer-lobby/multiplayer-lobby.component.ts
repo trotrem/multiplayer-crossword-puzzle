@@ -20,6 +20,7 @@ export class MultiplayerLobbyComponent implements OnInit {
         this.lobbyGames = [];
     }
 
+    // TODO passr par le communication service
     public ngOnInit(): void {
         this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames)
             .first()

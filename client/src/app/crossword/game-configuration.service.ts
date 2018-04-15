@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { Difficulty } from "../../../../common/communication/types";
 
 @Injectable()
@@ -27,7 +27,7 @@ export class GameConfigurationService {
         this._nbPlayers = null;
     }
 
-    public configureGame(difficulty: Difficulty, playerName: string, nbPlayers: number) {
+    public configureGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this._difficulty = difficulty;
         this._playerName = playerName;
         this._nbPlayers = nbPlayers;

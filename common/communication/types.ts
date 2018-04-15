@@ -44,3 +44,4 @@ export interface ICrosswordSettings {
     nbPlayers: number;
     playerName?: string;
 }
+

@@ -1,4 +1,4 @@
-import { WordDictionaryData } from "./word-dictionnary-data";
+import { WordDictionaryData } from "../../dataStructures";
 import { ExternalApiService } from "./externalApi.service";
 import { Difficulty } from "../../../../../common/communication/types";
 import { DatamuseObject } from "./datamuse-object";

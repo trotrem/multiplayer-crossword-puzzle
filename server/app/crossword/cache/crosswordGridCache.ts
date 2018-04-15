@@ -1,22 +1,14 @@
 import { IWordInfo, Difficulty } from "../../../../common/communication/types";
-import { IGrid, IWordContainer } from "../models/grid/dataStructures";
 import { GridUtils } from "../models/grid/gridUtils";
-import { WordDictionaryData } from "../models/lexiconAPI/gridWordInformation";
 import { IGridData, CrosswordLobbyGame } from "../../../../common/communication/events";
+import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
 
-interface ICacheWord {
-    word: string;
-    validated: boolean;
-}
+// TODO sortir
 
-interface IPlayer {
-    name: string;
-    socket: SocketIO.Socket;
-    selectedWord: number;
-}
+// TODO: renommer fichier
 
 interface ICacheGame {
-    words: Array<ICacheWord>;
+    words: Array<IValidationWord>;
     gridData: IGridData;
     players: IPlayer[];
     maxPlayers: number;
@@ -46,16 +38,6 @@ export class CrosswordGamesCache {
             .map((grid: { grid: ICacheGame, id: string }) => ({ creator: grid.grid.players[0].name, gameId: grid.id }));
     }
 
-    public getGridData(id: number): IGridData {
-        const grid: ICacheGame = this.getGrid(id);
-
-        return {
-            id: grid.gridData.id,
-            blackCells: grid.gridData.blackCells.slice(),
-            wordInfos: grid.gridData.wordInfos.slice()
-        };
-    }
-
     public getDifficulty(id: number): Difficulty {
         for (const difficulty in Difficulty) {
             if (this._grids[difficulty][id] !== undefined) {
@@ -67,52 +49,64 @@ export class CrosswordGamesCache {
     }
 
     public getPlayersSockets(id: number): SocketIO.Socket[] {
-        return this.getGrid(id).players.map((player: IPlayer) => player.socket);
+        return this.getGame(id).players.map((player: IPlayer) => player.socket);
     }
 
-    public getWords(id: number): string[] {
-        return this.getGrid(id).words.map((word: ICacheWord) => word.word).slice();
+    public getOpponentSocket(id: number, socket: SocketIO.Socket): SocketIO.Socket {
+        const sockets: SocketIO.Socket[] = this.getPlayersSockets(id);
+        if (sockets.length === 2) {
+            return sockets.filter((p: SocketIO.Socket) => p.id !== socket.id)[0];
+        }
+
+        return null;
     }
 
-    public createGame(creator: IPlayer, difficulty: Difficulty): number {
+    public getWords(id: number): IValidationWord[] {
+        return this.getGame(id).words.slice();
+    }
+
+    public createGame(creator: IPlayer, difficulty: Difficulty, nbPlayers: number): number {
         const id: number = this.gridUniqueKey();
 
         this._grids[difficulty][id] = {
             gridData: null,
             words: null,
             players: [creator],
-            maxPlayers: creator.name === undefined ? 1 : 2
+            maxPlayers: nbPlayers
         };
 
         return id;
     }
 
     public joinGame(id: number, player: IPlayer): void {
-        this.getGrid(id).players.push(player);
+        this.getGame(id).players.push(player);
     }
 
+    // TODO: séparer
     public addGrid(grid: IGrid, id: number): IGridData {
-        const cacheGrid: ICacheGame = this.getGrid(id);
+        const cacheGrid: ICacheGame = this.getGame(id);
         cacheGrid.gridData = this.convertIGridToGridData(grid, id);
-        cacheGrid.words = grid.words.map((w: IWordContainer): ICacheWord => {
+        cacheGrid.words = grid.words.map((w: IWordContainer): IValidationWord => {
             return {
                 word: GridUtils.getText(w, grid).toUpperCase(),
-                validated: false
+                validatedBy: undefined
             };
         });
 
         return cacheGrid.gridData;
     }
 
+    // TODO: utiliser
     public removeGrid(id: number): void {
         delete this._grids[id];
     }
 
-    public validateWord(gridId: number, wordIndex: number): void {
-        this.getGrid(gridId).words[wordIndex].validated = true;
+    public validateWord(gridId: number, wordIndex: number, playerSocketId: string): void {
+        const game: ICacheGame = this.getGame(gridId);
+        game.words[wordIndex].validatedBy = playerSocketId;
     }
 
-    private getGrid(id: number): ICacheGame {
+    private getGame(id: number): ICacheGame {
         for (const difficulty in Difficulty) {
             if (this._grids[difficulty][id] !== undefined) {
                 return this._grids[difficulty][id];

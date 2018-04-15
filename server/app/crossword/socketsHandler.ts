@@ -4,8 +4,8 @@ import * as http from "http";
 import { ICrosswordSettings, Difficulty, IWordValidationParameters } from "../../../common/communication/types";
 import { GridFetcher } from "./gridFetcher";
 import { CrosswordGamesCache } from "./cache/crosswordGridCache";
-import { CrosswordEvents, IEventPayload, IGridData } from "../../../common/communication/events";
-import { IGrid } from "./models/grid/dataStructures";
+import { CrosswordEvents, IEventPayload, IGridData, IValidationData } from "../../../common/communication/events";
+import { IValidationWord, IGrid } from "./dataStructures";
 
 @injectable()
 export class SocketsHandler {
@@ -23,6 +23,7 @@ export class SocketsHandler {
         });
     }
 
+    // TODO: utiliser et passer socket
     public emitEvent(event: CrosswordEvents, payload: IEventPayload): void {
         this.io.sockets.emit(event, payload);
     }
@@ -31,7 +32,8 @@ export class SocketsHandler {
         socket.on(CrosswordEvents.NewGame, async (creationParameters: ICrosswordSettings) => {
             const gameId: number = CrosswordGamesCache.Instance.createGame(
                 { name: creationParameters.playerName, socket: socket, selectedWord: null },
-                creationParameters.difficulty);
+                creationParameters.difficulty,
+                creationParameters.nbPlayers);
 
             if (creationParameters.nbPlayers === 1) {
                 this.sendGridToPlayers(gameId);
@@ -75,16 +77,21 @@ export class SocketsHandler {
 
     private onValidateWord(socket: SocketIO.Socket): void {
         socket.on(CrosswordEvents.ValidateWord, (parameters: IWordValidationParameters) => {
-            let isValid: boolean = false;
-            const words: string[] = CrosswordGamesCache.Instance.getWords(parameters.gridId);
-            // TODO checker si le mot est déjà valide?
-            if (words.length > parameters.wordIndex && words[parameters.wordIndex] === parameters.word) {
-                CrosswordGamesCache.Instance.validateWord(parameters.gridId, parameters.wordIndex);
-                isValid = true;
-            }
+            const validationWords: IValidationWord[] = CrosswordGamesCache.Instance.getWords(parameters.gridId);
+            if (validationWords.length > parameters.wordIndex && validationWords[parameters.wordIndex].validatedBy === undefined && validationWords[parameters.wordIndex].word === parameters.word) {
+                CrosswordGamesCache.Instance.validateWord(parameters.gridId, parameters.wordIndex, socket.id);
 
-            if (isValid) {
-                this.emitToGamePlayers(parameters.gridId, CrosswordEvents.WordValidated, parameters);
+                const validationPayload: IValidationData = {
+                    word: parameters.word,
+                    index: parameters.wordIndex,
+                    validatedByReceiver: true
+                }
+
+                socket.emit(CrosswordEvents.WordValidated, validationPayload);
+
+                validationPayload.validatedByReceiver = false;
+                CrosswordGamesCache.Instance.getOpponentSocket(parameters.gridId, socket)
+                    .emit(CrosswordEvents.WordValidated, validationPayload);
             }
         });
     }

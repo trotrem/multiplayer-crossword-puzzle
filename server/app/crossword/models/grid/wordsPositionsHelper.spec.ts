@@ -1,7 +1,7 @@
 // tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { IGrid } from "./dataStructures";
+import { IGrid } from "../../dataStructures";
 
 describe("createListOfWord", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };

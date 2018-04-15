@@ -1,9 +1,9 @@
 import { GenerateWords } from "./models/grid/generateWords";
 import { Difficulty } from "../../../common/communication/types";
-import { IGrid } from "./models/grid/dataStructures";
 import { Document } from "mongoose";
 import { crosswordDocument } from "./models/crosswordDbSchemas";
 import { Utils } from "../utils";
+import { IGrid } from "./dataStructures";
 
 const MAX_SAME_DIFFICULTY_DB_GRIDS: number = 10;
 const NO_GRIDS_FOUND_EXCEPTION: string = "no grids found";

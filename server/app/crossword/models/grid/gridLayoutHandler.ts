@@ -1,4 +1,4 @@
-import { IGrid, ICell } from "./dataStructures";
+import { IGrid, ICell } from "../../dataStructures";
 import { Utils } from "../../../utils";
 import { IPoint } from "../../../../../common/communication/types";
 

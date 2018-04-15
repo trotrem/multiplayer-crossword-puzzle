@@ -15,11 +15,14 @@ import { GameConfigurationService } from "../game-configuration.service";
 })
 export class HomePageComponent implements OnInit {
 
+    // todo changer les noms osti
     public oneTwo: number;
     public EasyMediumHard: number;
     public playerName: string;
 
-    public constructor(private router: Router, private communicationService: CommunicationService, private gameConfiguration: GameConfigurationService) {
+    public constructor(private router: Router,
+                       private communicationService: CommunicationService,
+                       private gameConfiguration: GameConfigurationService) {
         this.oneTwo = 2;
         this.EasyMediumHard = 0;
         this.playerName = "";
@@ -46,6 +49,7 @@ export class HomePageComponent implements OnInit {
         }
     }
 
+    // todo rename
     public joinExisting(form: NgForm): void {
         this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
         this.router.navigate(["/crossword/lobby/"]);

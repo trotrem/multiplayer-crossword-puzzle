@@ -6,6 +6,7 @@ import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
+import { IValidationData } from "../../../../common/communication/events";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -129,17 +130,19 @@ export class GridEventService {
         this.communicationService.validate(parameters);
     }
 
-    public onWordValidated(data: IWordValidationParameters): void {
-        const word: WordDescription = this._words[data.wordIndex];
+    public onWordValidated(data: IValidationData): void {
+        const word: WordDescription = this._words[data.index];
         if (data) {
-            for (const cell of word.cells) {
-                cell.letterFound = true;
+            for (let i: number = 0; i < word.cells.length; i++) {
+                word.cells[i].letterFound = true;
+                word.cells[i].content = data.word[i];
             }
             word.found = true;
         }
         this.validateGrid();
     }
 
+    // TODO only check crossing word
     private wordFoundByOtherWord(): void {
         for (const word of this._words) {
             this.validate(word);

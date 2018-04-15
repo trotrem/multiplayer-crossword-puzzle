@@ -2,10 +2,9 @@
 import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { IGrid } from "./dataStructures";
 import { GridUtils } from "./gridUtils";
 import { Direction, Difficulty } from "../../../../../common/communication/types";
-import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
+import { WordDictionaryData, IGrid } from "../../dataStructures";
 
 describe("addWord", () => {
 

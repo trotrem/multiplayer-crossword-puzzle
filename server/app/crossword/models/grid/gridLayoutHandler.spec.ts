@@ -1,7 +1,7 @@
 // tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { GridLayoutHandler, MINBLACK, MAXBLACK } from "./gridLayoutHandler";
-import { IGrid } from "./dataStructures";
+import { IGrid } from "../../dataStructures";
 
 describe("makeGrid", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };

@@ -81,6 +81,7 @@ export class CrosswordGridComponent implements OnInit {
         this._difficulty = this.gameConfiguration.difficulty;
         this._playerName = this.gameConfiguration.playerName;
         this.nbPlayers = this.gameConfiguration.nbPlayers;
+        // TODO sketch
         this.gridEventService.setNbPlayers(this.nbPlayers);
         this.subscribeToGridFetched();
         this.subscribeToValidation();

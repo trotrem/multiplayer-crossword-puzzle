@@ -25,3 +25,9 @@ export interface IGridData extends IEventPayload {
     blackCells: Array<IPoint>;
     wordInfos: Array<IWordInfo>;
 }
+
+export interface IValidationData {
+    word: string;
+    index: number;
+    validatedByReceiver: boolean;
+}

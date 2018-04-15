@@ -1,6 +1,5 @@
 import { IPoint } from "../../../../../common/communication/types";
-import { IGrid, IWordContainer } from "./dataStructures";
-import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
+import { WordDictionaryData, IWordContainer, IGrid } from "../../dataStructures";
 
 export class GridUtils {
   public static getText(word: IWordContainer, grid: IGrid): string {

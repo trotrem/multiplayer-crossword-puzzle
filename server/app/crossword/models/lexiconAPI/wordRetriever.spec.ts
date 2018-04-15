@@ -1,90 +1,90 @@
-import { WordDictionaryData } from "./word-dictionnary-data";
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 import { expect } from "chai";
 import { Difficulty } from "../../../../../common/communication/types";
+import { WordDictionaryData } from "../../dataStructures";
 
 const wordRetriever: WordRetriever = WordRetriever.instance;
 let words: WordDictionaryData[] = [];
 
 describe("Test to see if wordRetrieve correctly create object of the word 'hall'.", () => {
 
-	it("The word should be : 'hall'. ", async () => {
-		console.log("hi");
-		words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
-		const word: string = words[0].word;
-		const expectedWord: string = "hall";
-		expect(word).to.equal(expectedWord);
-	});
+    it("The word should be : 'hall'. ", async () => {
+        console.log("hi");
+        words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
+        const word: string = words[0].word;
+        const expectedWord: string = "hall";
+        expect(word).to.equal(expectedWord);
+    });
 
-	it("The chosen definition should be : 'n\ta large building for meetings or entertainment'. ", async () => {
-		words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
-		const secondDefinition: string = words[0].definitions[0];
-		const expectedSecondDefintion: string = "n\ta large building for meetings or entertainment";
-		expect(secondDefinition).to.equal(expectedSecondDefintion);
-	});
+    it("The chosen definition should be : 'n\ta large building for meetings or entertainment'. ", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
+        const secondDefinition: string = words[0].definitions[0];
+        const expectedSecondDefintion: string = "n\ta large building for meetings or entertainment";
+        expect(secondDefinition).to.equal(expectedSecondDefintion);
+    });
 
-	it("The frequency of 'hall' should be : '107.184799'. ", async () => {
-		words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
-		const frequency: number = words[0].frequency;
-		const expectedFrequency: number = 107.184799;
-		expect(frequency).to.equal(expectedFrequency);
-	});
+    it("The frequency of 'hall' should be : '107.184799'. ", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
+        const frequency: number = words[0].frequency;
+        const expectedFrequency: number = 107.184799;
+        expect(frequency).to.equal(expectedFrequency);
+    });
 
-	it("The word 'hall' should be common. ", async () => {
-		words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
-		const isCommon: boolean = words[0].isCommon;
-		// Fonction Chai ne finissant pas avec des parantheses
-		expect(isCommon).to.be.true; // tslint:disable-line
-	});
+    it("The word 'hall' should be common. ", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
+        const isCommon: boolean = words[0].isCommon;
+        // Fonction Chai ne finissant pas avec des parantheses
+        expect(isCommon).to.be.true; // tslint:disable-line
+    });
 
 });
 
 describe("test on Querry of the words 't?e' to see if it handles certain exceptions correctly.", () => {
 
-	it("the first valid word should be 'tie' (first JSON word was the, but has no def).", async () => {
-		words = await wordRetriever.getWordsWithDefinitions("t?e", Difficulty.Easy);
-		const word: string = words[0].word;
-		const expectedWord: string = "tie";
-		expect(word).to.be.equal(expectedWord);
-	});
+    it("the first valid word should be 'tie' (first JSON word was the, but has no def).", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("t?e", Difficulty.Easy);
+        const word: string = words[0].word;
+        const expectedWord: string = "tie";
+        expect(word).to.be.equal(expectedWord);
+    });
 
-	it("The word 'tee' should be uncommon.", async () => {
-		words = await wordRetriever.getWordsWithDefinitions("t?e", Difficulty.Hard);
-		const teeIndex: number = 2;
-		const isCommon: boolean = words[teeIndex].isCommon;
-		// Fonction Chai ne finissant pas avec des parantheses
-		expect(isCommon).to.be.false; // tslint:disable-line
-	});
+    it("The word 'tee' should be uncommon.", async () => {
+        words = await wordRetriever.getWordsWithDefinitions("t?e", Difficulty.Hard);
+        const teeIndex: number = 2;
+        const isCommon: boolean = words[teeIndex].isCommon;
+        // Fonction Chai ne finissant pas avec des parantheses
+        expect(isCommon).to.be.false; // tslint:disable-line
+    });
 });
 
 describe("Test the get Easy and Medium WordList  to see if it returns only common words with 1 definition.", () => {
 
-	it("Easy: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
-		words = await wordRetriever.getEasyWordList("H?ll");
-		words.forEach((wordInfo: WordDictionaryData, index: number) => {
-			const word: string = wordInfo.word;
-			const expectedWord: string[] = ["hall", "hill", "hell"];
-			assert.equal(word, expectedWord[index]);
-		});
-	});
+    it("Easy: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
+        words = await wordRetriever.getEasyWordList("H?ll");
+        words.forEach((wordInfo: WordDictionaryData, index: number) => {
+            const word: string = wordInfo.word;
+            const expectedWord: string[] = ["hall", "hill", "hell"];
+            assert.equal(word, expectedWord[index]);
+        });
+    });
 
-	it("Medium: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
-		 words = await wordRetriever.getMediumWordList("H?ll");
-		 words.forEach((wordInfo: WordDictionaryData, index: number) => {
-			 const word: string = wordInfo.word;
-			 const expectedWord: string[] = ["hall", "hill", "hell"];
-			 assert.equal(word, expectedWord[index]);
-		 });
-	 });
- 
-	 it("The words should all have 1 definition ", async () => {
-		 words = await wordRetriever.getEasyWordList("H?ll");
-		 words.forEach((wordInfo: WordDictionaryData) => {
-			 const length: number = wordInfo.definitions.length;
-			 assert.equal(length, 1);
-		 });
-	 });
+    it("Medium: The words should be : 'hall', 'hill' and 'hell'. ", async () => {
+        words = await wordRetriever.getMediumWordList("H?ll");
+        words.forEach((wordInfo: WordDictionaryData, index: number) => {
+            const word: string = wordInfo.word;
+            const expectedWord: string[] = ["hall", "hill", "hell"];
+            assert.equal(word, expectedWord[index]);
+        });
+    });
+
+    it("The words should all have 1 definition ", async () => {
+        words = await wordRetriever.getEasyWordList("H?ll");
+        words.forEach((wordInfo: WordDictionaryData) => {
+            const length: number = wordInfo.definitions.length;
+            assert.equal(length, 1);
+        });
+    });
 });
 
 describe("Test the getHardWordList to see if it returns only uncommon words with 1 definition.", () => {
