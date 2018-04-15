@@ -26,12 +26,15 @@ export class TrackCreator {
     public getPlacementPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
         let position: THREE.Vector3 = this.renderService.convertToWorldPosition(positionEvent);
 
-        if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
+        if (this.verifieDistance(position)) {
             position = this.points[0];
             this.isClosed = true;
         }
 
         return position;
+    }
+    private verifieDistance(position: THREE.Vector3): boolean {
+        return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
     }
 
     public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial ): THREE.Points {
