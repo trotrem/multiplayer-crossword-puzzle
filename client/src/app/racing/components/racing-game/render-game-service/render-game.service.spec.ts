@@ -12,7 +12,8 @@ import { KeyboardService } from "../commands/keyboard.service";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 // "magic numbers" utilisés pour les tests
-/* tslint:disable:no-magic-numbers no-floating-promises await-promise */
+/* tslint:disable:no-magic-numbers  */
+//TODO : Laurence
 describe("RenderGameService", () => {
     const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();

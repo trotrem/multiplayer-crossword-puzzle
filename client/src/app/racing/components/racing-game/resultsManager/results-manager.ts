@@ -1,7 +1,7 @@
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 
 export class ResultsManager {
-
+//TODO : pas la bonne place Amal
 public static calculateHumanScore(scores: INewScores[], bestScore: IBestScores): void {
     for (const sc of scores[0].scoresCar) {
       bestScore.scorePlayer += sc;

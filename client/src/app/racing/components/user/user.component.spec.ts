@@ -8,7 +8,7 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { GameComponent } from "../racing-game/game-component/game.component";
 
 // tslint:disable:no-floating-promises
-
+//TODO : pas de disable promises: Amal
 describe("UserComponent", () => {
     let component: UserComponent;
     let fixture: ComponentFixture<UserComponent>;

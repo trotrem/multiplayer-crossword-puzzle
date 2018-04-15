@@ -16,7 +16,6 @@ export class AiController {
     private hasCollided: boolean = false;
     private distanceToCorner: number;
 
-    // TODO : Inject collisionWallService (later)
     public constructor(private _car: Car, points: THREE.Vector3[], private collisionWallService: WallsCollisionsService) {
         this._checkPoints.shift();
         this._checkPoints = points.slice().reverse();
@@ -81,7 +80,6 @@ export class AiController {
             0)) * HALF_CIRCLE_DEGREES / Math.PI;
     }
 
-    // TODO : À vérifier, utils pour gridword et racing ? utilisé dans les 2
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }

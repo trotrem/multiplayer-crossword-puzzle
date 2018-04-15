@@ -113,6 +113,7 @@ export class Car extends Object3D {
     public get updatePosition(): Vector3 {
         return this.updatedPosition;
     }
+    //TODO : extraire construteur? : Sarah
     public constructor(
         private collisionService: WallsCollisionsService, private keyboard: KeyboardService,
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,

@@ -35,7 +35,7 @@ export class EditorComponent implements OnInit {
         };
         this.submitValid = false;
     }
-
+//TODO : string magique Amal
     public async ngOnInit(): Promise<void> {
         this.renderService.initialize(this.canvas, this.sceneService.scene);
         const name: string = this.route.snapshot.paramMap.get("name");

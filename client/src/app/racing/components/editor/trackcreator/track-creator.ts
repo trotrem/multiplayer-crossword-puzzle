@@ -69,7 +69,7 @@ export class TrackCreator {
 
         return lines;
     }
-
+//TODO : Laurence string magique
     public redrawConflictingLines(illegalPoints: THREE.Vector3[]): Array<THREE.Line> {
         const lines: Array<THREE.Line> = new Array<THREE.Line>();
         for (let i: number = 0; i < illegalPoints.length; i += MAX_SELECTION) {

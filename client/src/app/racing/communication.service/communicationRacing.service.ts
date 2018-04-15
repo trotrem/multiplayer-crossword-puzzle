@@ -44,7 +44,7 @@ export class RacingCommunicationService {
             .subscribe((data: Response) => {
             });
     }
-
+    // TODO: rename Amal
     public updateNewScore(track: Track): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")

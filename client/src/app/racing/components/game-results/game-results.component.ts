@@ -21,7 +21,7 @@ export class GameResultsComponent implements OnInit {
     public newBestScore: IBestScores;
     private _track: Track;
     private _isAdded: boolean;
-
+//TODO : initialize les attributs: Amal
     public constructor(
         private router: Router, private route: ActivatedRoute,
         private communicationService: RacingCommunicationService) {

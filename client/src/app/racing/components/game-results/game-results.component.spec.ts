@@ -11,8 +11,8 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 
-/* tslint:disable:no-magic-numbers no-floating-promises */
-
+/* tslint:disable:no-magic-numbers */
+//TODO : float promises: Amal 
 describe("GameResultsComponent", () => {
     let component: GameResultsComponent;
     let fixture: ComponentFixture<GameResultsComponent>;
