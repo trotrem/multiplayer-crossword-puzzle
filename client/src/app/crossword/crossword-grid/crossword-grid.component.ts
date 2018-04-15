@@ -26,7 +26,7 @@ export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
     // needed so the html recognizes the enum
     public NbPlayers: typeof NbPlayers = NbPlayers;
-    public nbPlayers: NbPlayers;
+    public nbPlayers: number;
     private words: WordDescription[];
     private _difficulty: Difficulty = Difficulty.Easy;
     private _playerName: string;
@@ -47,6 +47,14 @@ export class CrosswordGridComponent implements OnInit {
 
     public get verticalWords(): WordDescription[] {
         return this.words.filter((word) => word.direction === Direction.Vertical);
+    }
+
+    public get nbPlayerFoundWords(): number {
+        return this.words.filter((word) => word.found === FoundStatus.PLAYER).length;
+    }
+
+    public get nbOpponentFoundWords(): number {
+        return this.words.filter((word) => word.found === FoundStatus.OPPONENT).length;
     }
 
     public constructor(

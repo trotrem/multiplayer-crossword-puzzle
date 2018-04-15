@@ -12,6 +12,7 @@
         </div>
       </div>
     </div>
+    <h2 *ngIf="nbPlayers === 2">you found {{nbPlayerFoundWords}} words and your opponent found {{nbOpponentFoundWords}} words!</h2>
     <h2>{{tipMode === TipMode.Definitions ? "definitions mode" : "cheat mode"}}</h2>
     <button (click)="toggleTipMode()">toggle cheat mode</button>
   </div>
