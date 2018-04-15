@@ -3,3 +3,16 @@ h1 {color: goldenrod}
 [hidden] { display: none !important;}
 .Left {width: 500px; float: left; }
 .Right {width: 500px; float: right; }
+button {
+    background-color:#36f456;
+    border: none;
+    color: blue;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
