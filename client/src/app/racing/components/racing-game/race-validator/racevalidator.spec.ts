@@ -86,7 +86,7 @@ describe("Racevalidator", () => {
         expect(car.getLapTimes().length).toEqual(3);
     }));
 
-    it("should update track.scores ", (() => {
+    it("should update track.scoresCar ", (() => {
         const track: Track = {
             name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
@@ -96,7 +96,7 @@ describe("Racevalidator", () => {
         car.setLapTimes(5000);
         RaceValidator.addScoreToTrack(car, track.INewScores, 0);
         expect(track.INewScores.length).toEqual(1);
-        expect(track.INewScores[0].scores.length).toEqual(3);
+        expect(track.INewScores[0].scoresCar.length).toEqual(3);
     }));
 
 });
