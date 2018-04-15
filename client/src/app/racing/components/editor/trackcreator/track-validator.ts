@@ -28,7 +28,7 @@ export class TrackValidator {
             return;
         }
 
-        if (RaceUtils.doIntersect(position1, position2, position3, position4)) {
+        if (RaceUtils.doLinesIntersect(position1, position2, position3, position4)) {
             this.setPoints(position3, position4);
         }
     }

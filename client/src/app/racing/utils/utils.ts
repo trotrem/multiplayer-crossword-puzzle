@@ -1,7 +1,6 @@
-
-const EXPONENT: number = 2;
 import { Vector3 } from "three";
 
+const EXPONENT: number = 2;
 const PRECISION: number = 0.0001;
 
 export class RaceUtils {
@@ -16,13 +15,14 @@ export class RaceUtils {
     public static calculateDistance(position1: THREE.Vector3, position2: THREE.Vector3): number {
         return Math.sqrt(Math.pow(position1.x - position2.x, EXPONENT) + Math.pow(position1.y - position2.y, EXPONENT));
     }
-    public static linesCross(
+
+    public static arelinesCrossing(
         pos1: Vector3,
         pos2: Vector3,
         pos3: Vector3,
         pos4: Vector3
     ): boolean {
-        const intersect: Vector3 = this.twoLinesIntersection(
+        const intersect: Vector3 = this.getTwoLinesIntersection(
             pos1,
             pos2,
             pos3,
@@ -42,7 +42,7 @@ export class RaceUtils {
         return true;
     }
 
-    public static twoLinesIntersection(
+    public static getTwoLinesIntersection(
         position1: Vector3,
         position2: Vector3,
         position3: Vector3,
@@ -100,9 +100,7 @@ export class RaceUtils {
         return intersection;
     }
 
-    // Given three colinear points p, q, r, the function checks if
-    // point q lies on line segment 'pr'
-    private static onSegment(p: Vector3, q: Vector3, r: Vector3): boolean {
+    private static isPointOnSegment(p: Vector3, q: Vector3, r: Vector3): boolean {
         if (
             q.x <= Math.max(p.x, r.x) &&
             q.x >= Math.min(p.x, r.x) &&
@@ -120,7 +118,7 @@ export class RaceUtils {
     // 0 --> p, q and r are colinear
     // 1 --> Clockwise
     // 2 --> Counterclockwise
-    private static orientation(p: Vector3, q: Vector3, r: Vector3): number {
+    private static getOrientation(p: Vector3, q: Vector3, r: Vector3): number {
         const val: number = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
 
         if (val === 0) {
@@ -132,7 +130,7 @@ export class RaceUtils {
 
     // The main function that returns true if line segment 'p1q1'
     // and 'p2q2' intersect.
-    public static doIntersect(
+    public static doLinesIntersect(
         p1: Vector3,
         q1: Vector3,
         p2: Vector3,
@@ -140,10 +138,10 @@ export class RaceUtils {
     ): boolean {
         // Find the four orientations needed for general and
         // special cases
-        const o1: number = this.orientation(p1, q1, p2);
-        const o2: number = this.orientation(p1, q1, q2);
-        const o3: number = this.orientation(p2, q2, p1);
-        const o4: number = this.orientation(p2, q2, q1);
+        const o1: number = this.getOrientation(p1, q1, p2);
+        const o2: number = this.getOrientation(p1, q1, q2);
+        const o3: number = this.getOrientation(p2, q2, p1);
+        const o4: number = this.getOrientation(p2, q2, q1);
 
         // General case
         if (o1 !== o2 && o3 !== o4) {
@@ -152,22 +150,22 @@ export class RaceUtils {
 
         // Special Cases
         // p1, q1 and p2 are colinear and p2 lies on segment p1q1
-        if (o1 === 0 && this.onSegment(p1, p2, q1)) {
+        if (o1 === 0 && this.isPointOnSegment(p1, p2, q1)) {
             return true;
         }
 
         // p1, q1 and q2 are colinear and q2 lies on segment p1q1
-        if (o2 === 0 && this.onSegment(p1, q2, q1)) {
+        if (o2 === 0 && this.isPointOnSegment(p1, q2, q1)) {
             return true;
         }
 
         // p2, q2 and p1 are colinear and p1 lies on segment p2q2
-        if (o3 === 0 && this.onSegment(p2, p1, q2)) {
+        if (o3 === 0 && this.isPointOnSegment(p2, p1, q2)) {
             return true;
         }
 
         // p2, q2 and q1 are colinear and q1 lies on segment p2q2
-        if (o4 === 0 && this.onSegment(p2, q1, q2)) {
+        if (o4 === 0 && this.isPointOnSegment(p2, q1, q2)) {
             return true;
         }
 

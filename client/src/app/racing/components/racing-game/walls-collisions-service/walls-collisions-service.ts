@@ -26,7 +26,7 @@ export class WallsCollisionsService {
         this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));
         for (let i: number = 0; i < this._corners.length; i++) {
             for (const wall of this._walls) {
-                if (RaceUtils.doIntersect(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
+                if (RaceUtils.doLinesIntersect(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
                     normals.push(wall.pos2.clone().sub(wall.pos1).cross(new THREE.Vector3(0, 0, 1)).normalize());
                 }
             }
@@ -85,7 +85,7 @@ export class WallsCollisionsService {
             wallSide
         );
 
-        return RaceUtils.twoLinesIntersection(
+        return RaceUtils.getTwoLinesIntersection(
             firstSegmentCoordinates[0],
             firstSegmentCoordinates[1],
             secondSegmentCoordinates[0],
