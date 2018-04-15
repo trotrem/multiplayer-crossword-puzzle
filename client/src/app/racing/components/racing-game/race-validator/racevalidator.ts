@@ -37,10 +37,10 @@ export class RaceValidator {
     }
 
     public static addScoreToTrack(car: Car, scores: INewScores[], carIndex: number): void {
-        const newScore: INewScores = { id: carIndex, scores: new Array<number>() };
+        const newScore: INewScores = { idCar: carIndex, scoresCar: new Array<number>() };
         scores.push(newScore);
         for (const time of car.getLabTimes()) {
-            scores[scores.length - 1].scores.push(time);
+            scores[scores.length - 1].scoresCar.push(time);
         }
     }
 

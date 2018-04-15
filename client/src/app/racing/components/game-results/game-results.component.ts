@@ -26,10 +26,10 @@ export class GameResultsComponent implements OnInit {
         private router: Router, private route: ActivatedRoute,
         private communicationService: RacingCommunicationService) {
         this._scores = new Array<INewScores>();
-        this._scores.push({ id: 0, scores: new Array<number>() });
+        this._scores.push({ idCar: 0, scoresCar: new Array<number>() });
         this._bestScores = new Array<IBestScores>();
-        this._bestScores.push({name: "", score : 0});
-        this.newBestScore = { name: "", score: 0 };
+        this._bestScores.push({namePlayer: "", scorePlayer : 0});
+        this.newBestScore = { namePlayer: "", scorePlayer: 0 };
         this._track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
@@ -67,12 +67,12 @@ export class GameResultsComponent implements OnInit {
             });
     }
     public isNotBestScore(): boolean {
-        if (this.scores[0].id !== 0) {
+        if (this.scores[0].idCar !== 0) {
             return true;
         }
         if (this.bestScores.length < BEST_SCORES_MAX) {
             return false;
-        } else if (this.newBestScore.score < this.bestScores[this.bestScores.length - 1].score) {
+        } else if (this.newBestScore.scorePlayer < this.bestScores[this.bestScores.length - 1].scorePlayer) {
 
             return false;
         }
@@ -81,7 +81,7 @@ export class GameResultsComponent implements OnInit {
     }
     public onSubmit(f: NgForm): void {
 
-        this.newBestScore.name = f.value.name;
+        this.newBestScore.namePlayer = f.value.name;
 
     }
     public replay(): void {
