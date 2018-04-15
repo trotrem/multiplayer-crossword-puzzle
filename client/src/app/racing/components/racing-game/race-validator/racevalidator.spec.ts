@@ -9,7 +9,6 @@ import { Car } from "../car/car";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 import { KeyboardService } from "../commands/keyboard.service";
-import { CarLoader } from "./../car/car-loader";
 import { Engine } from "./../car/engine";
 import { Track } from "./../../../track";
 
@@ -37,7 +36,6 @@ class MockCar extends Car {
 /* tslint:disable:no-magic-numbers no-floating-promises */
 
 describe("Racevalidator", () => {
-    const carLoader: CarLoader = new CarLoader();
     let router: Router;
     const keyboard: KeyboardService = new KeyboardService;
     let car: MockCar;
@@ -53,7 +51,6 @@ describe("Racevalidator", () => {
     });
 
     beforeEach(async (done: () => void) => {
-        // router = _router;
         car = new MockCar(wallsCollisionsService, keyboard, new MockEngine());
         done();
 
