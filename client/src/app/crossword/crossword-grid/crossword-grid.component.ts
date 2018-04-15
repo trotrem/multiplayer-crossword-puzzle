@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
-import { Cell } from "../cell";
+import { Cell, FoundStatus } from "../cell";
 import { CommunicationService } from "../communication.service";
 import { GridEventService } from "../grid-event.service";
 import { SocketsService } from "../sockets.service";
@@ -59,7 +59,7 @@ export class CrosswordGridComponent implements OnInit {
         for (let i: number = 0; i < GRID_HEIGHT; i++) {
             this.cells[i] = new Array<Cell>();
             for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: false });
+                this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: FoundStatus.NOT });
             }
         }
 
@@ -118,7 +118,7 @@ export class CrosswordGridComponent implements OnInit {
                     cells.push(this.cells[word.y + i][word.x]);
                 }
             }
-            this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: false });
+            this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: FoundStatus.NOT });
         });
     }
 

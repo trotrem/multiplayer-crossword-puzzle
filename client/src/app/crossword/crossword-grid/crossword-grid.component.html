@@ -18,13 +18,13 @@
   <div>
     <h2>horizontal</h2>
     <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)"
-    [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.found === true}">
+       [ngClass]="{'definition-foundByOpponent': word.found === 1, 'definition-foundByPlayer': word.found === 2, 'definition-selected': selectedWord === word && word.found === 0, 'definition': selectedWord !== word && word.found === 0}">
     {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
   </div>
   <div>
     <h2>vertical</h2>
-    <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)" 
-    [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.found === true}">
+    <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)"
+       [ngClass]="{'definition-foundByOpponent': word.found === 1, 'definition-foundByPlayer': word.found === 2, 'definition-selected': selectedWord === word && word.found === 0 , 'definition': selectedWord !== word && word.found === 0}">
     {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
   </div>
 </div>

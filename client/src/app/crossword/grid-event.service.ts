@@ -138,7 +138,7 @@ export class GridEventService {
                 word.cells[i].letterFound = foundStatus;
                 word.cells[i].content = data.word[i];
             }
-            word.found = true;
+            word.found = foundStatus;
         }
         this.validateGrid();
     }

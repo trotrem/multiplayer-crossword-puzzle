@@ -12,7 +12,7 @@
 
 .crossword-row {
     display: grid;
-    grid-template-rows: 1fr; 
+    grid-template-rows: 1fr;
     grid-template-columns: repeat(10, 50px);
 }
 
@@ -54,7 +54,13 @@
     outline:1px solid #000;
 }
 
-.definition-found {
+.definition-foundByOpponent {
+    color: #ff1a1a;
+    text-decoration: line-through;
+}
+
+.definition-foundByPlayer {
+    color: #1fcc1f;
     text-decoration: line-through;
 }
 

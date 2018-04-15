@@ -1,4 +1,4 @@
-import {Cell} from "./cell";
+import { Cell, FoundStatus} from "./cell";
 import { Direction } from "../../../../common/communication/types";
 
 export interface WordDescription {
@@ -7,5 +7,5 @@ export interface WordDescription {
     cells: Cell[];
     definition: string;
     word?: string;
-    found: boolean;
+    found: FoundStatus;
 }
