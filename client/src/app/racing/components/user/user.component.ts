@@ -16,14 +16,12 @@ export class UserComponent implements OnInit {
 
   public constructor(private communicationService: RacingCommunicationService, private router: Router) {
     this.tracks = new Array<Track>();
-    this.tracks = new Array<Track>();
+
   }
 
   public ngOnInit(): void {
     this.getTracks();
   }
-
-  // TODO : possible de mettre ensemble ??
   private getTracks(): void {
     this.communicationService.getTracks()
       .subscribe((res: Array<Track>) => {

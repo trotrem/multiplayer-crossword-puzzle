@@ -9,7 +9,6 @@ export class RaceValidator {
 
     public static validateRace(car: Car, timer: number, points: THREE.Vector3[]): number[] {
 
-        car.getUpdatedPosition();
         if (RaceUtils.calculateDistance(car.getUpdatedPosition(), points[points.length - car.checkpoint - 1])
             <= ADD_TO_DISTANCE) {
             car.checkpoint += 1;
