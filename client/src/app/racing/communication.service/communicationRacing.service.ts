@@ -55,15 +55,5 @@ export class RacingCommunicationService {
             .subscribe((data: Response) => {
             });
     }
-    public updateIBestScore(track: Track): void {
-        const headers: HttpHeaders = new HttpHeaders()
-            .set("Authorization", "my-auth-token")
-            .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateIBestScore", JSON.stringify(track), {
-            headers: headers
-        })
-            .subscribe((data: Response) => {
-            });
-    }
 
 }
