@@ -28,18 +28,14 @@ export class RaceUtils {
             pos3,
             pos4
         );
-        if (
+        return (
             intersect === null ||
             Math.abs(
                 pos1.distanceTo(intersect) +
                 intersect.distanceTo(pos2) -
                 pos1.distanceTo(pos2)
             ) > PRECISION
-        ) {
-            return false;
-        }
-
-        return true;
+        )
     }
 
     public static getTwoLinesIntersection(
@@ -48,8 +44,8 @@ export class RaceUtils {
         position3: Vector3,
         position4: Vector3
     ): Vector3 {
-        if (this.calculateDet(position1, position2, position3, position4) !== 0) {
-            return this.calculateIntersection(
+        if (this.getDet(position1, position2, position3, position4) !== 0) {
+            return this.getIntersection(
                 position1,
                 position2,
                 position3,
@@ -60,7 +56,7 @@ export class RaceUtils {
         return null;
     }
 
-    private static calculateDet(
+    private static getDet(
         position1: THREE.Vector3,
         position2: THREE.Vector3,
         position3: THREE.Vector3,
@@ -72,7 +68,7 @@ export class RaceUtils {
         );
     }
 
-    private static calculateIntersection(
+    private static getIntersection(
         position1: Vector3,
         position2: Vector3,
         position3: Vector3,
@@ -86,7 +82,7 @@ export class RaceUtils {
                 (position1.x - position2.x) *
                 ((position4.y - position3.y) * position3.x +
                     (position3.x - position4.x) * position3.y)) /
-            this.calculateDet(position1, position2, position3, position4);
+            this.getDet(position1, position2, position3, position4);
 
         intersection.y =
             ((position2.y - position1.y) *
@@ -95,7 +91,7 @@ export class RaceUtils {
                 (position4.y - position3.y) *
                 ((position2.y - position1.y) * position1.x +
                     (position1.x - position2.x) * position1.y)) /
-            this.calculateDet(position1, position2, position3, position4);
+            this.getDet(position1, position2, position3, position4);
 
         return intersection;
     }
@@ -128,8 +124,6 @@ export class RaceUtils {
         return val > 0 ? 1 : 2; // clock or counterclock wise
     }
 
-    // The main function that returns true if line segment 'p1q1'
-    // and 'p2q2' intersect.
     public static doLinesIntersect(
         p1: Vector3,
         q1: Vector3,
@@ -143,32 +137,10 @@ export class RaceUtils {
         const o3: number = this.getOrientation(p2, q2, p1);
         const o4: number = this.getOrientation(p2, q2, q1);
 
-        // General case
-        if (o1 !== o2 && o3 !== o4) {
-            return true;
-        }
-
-        // Special Cases
-        // p1, q1 and p2 are colinear and p2 lies on segment p1q1
-        if (o1 === 0 && this.isPointOnSegment(p1, p2, q1)) {
-            return true;
-        }
-
-        // p1, q1 and q2 are colinear and q2 lies on segment p1q1
-        if (o2 === 0 && this.isPointOnSegment(p1, q2, q1)) {
-            return true;
-        }
-
-        // p2, q2 and p1 are colinear and p1 lies on segment p2q2
-        if (o3 === 0 && this.isPointOnSegment(p2, p1, q2)) {
-            return true;
-        }
-
-        // p2, q2 and q1 are colinear and q1 lies on segment p2q2
-        if (o4 === 0 && this.isPointOnSegment(p2, q1, q2)) {
-            return true;
-        }
-
-        return false; // Doesn't fall in any of the above cases
+        return (o1 !== o2 && o3 !== o4) ||
+               (o1 === 0 && this.isPointOnSegment(p1, p2, q1)) ||
+               (o2 === 0 && this.isPointOnSegment(p1, q2, q1)) ||
+               (o3 === 0 && this.isPointOnSegment(p2, p1, q2)) ||
+               (o4 === 0 && this.isPointOnSegment(p2, q1, q2));
     }
 }
