@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
 import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers } from "../../../../common/communication/types";
-import { Cell } from "./cell";
+import { Cell, FoundStatus } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
@@ -132,9 +132,10 @@ export class GridEventService {
 
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
+        const foundStatus: FoundStatus = data.validatedByReceiver ? FoundStatus.PLAYER : FoundStatus.OPPONENT;
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
-                word.cells[i].letterFound = true;
+                word.cells[i].letterFound = foundStatus;
                 word.cells[i].content = data.word[i];
             }
             word.found = true;

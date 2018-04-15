@@ -35,7 +35,12 @@
     outline-color: black !important;
 }
 
-.wordFound {
+.letterFoundByOpponent {
+    color: #ff1a1a;
+    outline: 2px solid #ff1a1a;
+}
+
+.letterFoundByPlayer {
     color: #1fcc1f;
     outline: 2px solid #1fcc1f;
  }

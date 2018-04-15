@@ -7,7 +7,7 @@
     <div class="crossword-grid">
       <div class="crossword-row" *ngFor="let row of cells">
         <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)"
-         [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true, 'wordFound': cell.letterFound === true}">
+         [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true, 'letterFoundByPlayer': cell.letterFound === 2, 'letterFoundByOpponent': cell.letterFound === 1}" >
          {{cell.content}}
         </div>
       </div>
