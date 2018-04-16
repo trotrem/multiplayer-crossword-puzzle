@@ -4,7 +4,7 @@ export const DEFAULT_FRICTION_COEFFICIENT: number = 1;
 const RADIUS_COEFFICIENT: number = 2;
 
 export class Wheel {
-    public angularVelocity: number;
+    public _angularVelocity: number;
     private _mass: number;
     private _radius: number;
     private _frictionCoefficient: number;

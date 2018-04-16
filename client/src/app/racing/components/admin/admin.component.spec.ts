@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { AdminComponent } from "./admin.component";
 import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Track } from "../../track";
+import { ITrack } from "../../track";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { FormsModule } from "@angular/forms";
 
@@ -12,12 +12,14 @@ import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
-/* tslint:disable:no-magic-numbers no-floating-promises */
-
 describe("AdminComponent", () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
   let router: Router;
+  const track: ITrack = {
+    name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
+    INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AdminComponent, EditorComponent],
@@ -34,7 +36,6 @@ describe("AdminComponent", () => {
     fixture = TestBed.createComponent(AdminComponent);
 
   }));
-
   beforeEach(inject([Router], (_router: Router) => {
     router = _router;
     fixture = TestBed.createComponent(AdminComponent);
@@ -49,36 +50,20 @@ describe("AdminComponent", () => {
     expect(component.tracks).toBeDefined();
   });
   it("should select a track from track's list", () => {
-    // tslint:disable-next-line:prefer-const
-    let track: Track;
     component.onSelect(track);
-    // expect(component.getisSelected()).toBe(true);
     expect(component.selectedTrack).toBe(track);
   });
   it("should edit a track from track's list when selected", () => {
-    // tslint:disable-next-line:prefer-const
-    const track: Track = {
-      name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
-    };
+
     component.onSelect(track);
     component.editTrack();
     expect(component.editTrack()).toBe(track);
   });
   it("should delete a track from track's list when selected", () => {
 
-    // tslint:disable-next-line:prefer-const
-    const track: Track = {
-      name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
-      INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
-    };
-    const tracks: Track[] = new Array<Track>();
+    const tracks: ITrack[] = new Array<ITrack>();
     tracks.push(track);
-<<<<<<< HEAD
-    component.Tracks = tracks;
-=======
     component.tracks = tracks;
->>>>>>> master
     component.onSelect(track);
     component.deleteTrack();
     expect(component.deleteTrack()).toBe(track);
@@ -87,7 +72,7 @@ describe("AdminComponent", () => {
   it('navigate to " "editor/:name"" takes you to  "editor/:name"', fakeAsync(() => {
     const name: string = "Laurence";
     router.navigateByUrl("/editor/" + name);
-    /* tslint:disable */
+    // tslint:disable-next-line:no-magic-numbers
     tick(50);
     expect(router.url).toBe("/editor/" + name);
   }));

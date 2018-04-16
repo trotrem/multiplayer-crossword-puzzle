@@ -5,3 +5,4 @@ export interface IMap<T> {
 export interface ICommand {
     execute(): void;
 }
+//TODO :  demander à Jinghui

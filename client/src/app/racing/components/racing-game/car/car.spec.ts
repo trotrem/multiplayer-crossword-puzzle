@@ -4,6 +4,7 @@ import { Wheel } from "./wheel";
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { KeyboardService } from "../commands/keyboard.service";
+import { CarPhysics } from "./carPhysics";
 
 const MS_BETWEEN_FRAMES: number = 16.6667;
 
@@ -45,13 +46,6 @@ describe("Car", () => {
 
     it("should decelerate when brake is pressed", () => {
         // Remove rolling resistance and drag force so the only force slowing down the car is the brakes.
-        car["getRollingResistance"] = () => {
-            return new Vector3(0, 0, 0);
-        };
-
-        car["getDragForce"] = () => {
-            return new Vector3(0, 0, 0);
-        };
 
         car.isAcceleratorPressed = true;
         car.update(MS_BETWEEN_FRAMES);

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils } from "../../../utils/utils";
+import { RaceUtils, ILine } from "../../../race-utils/race-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
@@ -9,23 +9,20 @@ enum WallSide {
     interior = 1
 }
 
-export interface ILine {
-    pos1: THREE.Vector3;
-    pos2: THREE.Vector3;
-}
-
 const WALL_WIDTH: number = 8;
 
 @Injectable()
 export class WallsCollisionsService {
     private _corners: THREE.Vector3[] = [];
 
+    /* REFACTOR */
     public getCollisionNormal(car: Car, walls: ILine[]): THREE.Vector3[] {
         const normals: THREE.Vector3[] = [];
         this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));
         for (let i: number = 0; i < this._corners.length; i++) {
             for (const wall of walls) {
-                if (RaceUtils.doIntersect(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
+                if (RaceUtils.doLinesIntersect({pos1: this._corners[i], pos2: this._corners[(i + 1) % this._corners.length]},
+                                               {pos1: wall.pos1, pos2: wall.pos2})) {
                     normals.push(wall.pos2.clone().sub(wall.pos1).cross(new THREE.Vector3(0, 0, 1)).normalize());
                 }
             }
@@ -72,6 +69,7 @@ export class WallsCollisionsService {
 }
 
     private findWallPairIntersection(trackPoints: THREE.Vector3[], i: number, wallSide: WallSide): THREE.Vector3 {
+<<<<<<< HEAD
     const firstSegmentCoordinates: THREE.Vector3[] = this.trackToWallCoordinates(
         trackPoints
             .slice(i, i + 1)
@@ -92,6 +90,26 @@ export class WallsCollisionsService {
         secondSegmentCoordinates[1]
     );
 }
+=======
+        const firstSegmentCoordinates: THREE.Vector3[] = this.trackToWallCoordinates(
+            trackPoints
+                .slice(i, i + 1)
+                .concat(trackPoints[(i + 1) % trackPoints.length]),
+            wallSide
+        );
+        const secondSegmentCoordinates: THREE.Vector3[] = this.trackToWallCoordinates(
+            trackPoints
+                .slice((i + 1) % trackPoints.length, (i + 1) % trackPoints.length + 1)
+                .concat(trackPoints[(i + 2) % trackPoints.length]),
+            wallSide
+        );
+
+        return RaceUtils.getTwoLinesIntersection(
+            {pos1: firstSegmentCoordinates[0], pos2: firstSegmentCoordinates[1]},
+            {pos1: secondSegmentCoordinates[0], pos2: secondSegmentCoordinates[1]}
+        );
+    }
+>>>>>>> master
 
     private trackToWallCoordinates(trackSegmentPoints: THREE.Vector3[], wallSide: WallSide): THREE.Vector3[] {
     const wallCoordinates: THREE.Vector3[] = [];

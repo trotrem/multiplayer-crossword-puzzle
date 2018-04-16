@@ -5,7 +5,7 @@ import { Car } from "../car/car";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
 import { KeyboardService } from "../commands/keyboard.service";
-// "magic numbers" utilisés pour les tests
+
 /* tslint:disable:no-magic-numbers */
 describe("CarsPositionsHandler", () => {
   const carLoader: CarLoader = new CarLoader();

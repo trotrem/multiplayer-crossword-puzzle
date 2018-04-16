@@ -1,8 +1,7 @@
 import { Car } from "../car/car";
-import THREE = require("three");
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { RaceUtils } from "../../../utils/utils";
+import { RaceUtils } from "../../../race-utils/race-utils";
 import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
 import { WallService } from "../walls-collisions-service/walls";
 const MAX_SPEED: number = 50;
@@ -13,12 +12,11 @@ const MAX_ANGLE: number = 2;
 
 export class AiController {
 
-    private _checkPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
+    private _checkPoints: Vector3[] = new Array<Vector3>();
     private hasTurned: boolean = false;
     private hasCollided: boolean = false;
     private distanceToCorner: number;
 
-    // TODO : Inject collisionWallService (later)
     public constructor(
         private _car: Car,
         points: THREE.Vector3[],
@@ -48,9 +46,9 @@ export class AiController {
 
     private updateCheckPoint(): boolean {
         if (this._car.checkpoint === this._checkPoints.length - 1) {
-            if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
+            if (RaceUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
                 this._car.checkpoint = 0;
-                if (this._car.getLabTimes().length < LAP_MAX) {
+                if (this._car.getLapTimes().length < LAP_MAX) {
                     return true;
                 }
             }
@@ -60,7 +58,7 @@ export class AiController {
     }
 
     private turnCorner(): void {
-        if (RaceUtils.calculateDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
+        if (RaceUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
             this.turn(this._car.checkpoint + 1);
             this.hasTurned = true;
         } else if (this.hasTurned) {
@@ -87,7 +85,6 @@ export class AiController {
             0)) * HALF_CIRCLE_DEGREES / Math.PI;
     }
 
-    // TODO : À vérifier, utils pour gridword et racing ? utilisé dans les 2
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }

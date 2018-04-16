@@ -4,7 +4,7 @@ import { Response } from "@angular/http";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
-import { Track } from "../track";
+import { ITrack } from "../track";
 
 export const URL_SERVER: string = "http://localhost:3000/racing/";
 @Injectable()
@@ -13,7 +13,7 @@ export class RacingCommunicationService {
     public constructor(private http: HttpClient) {
     }
 
-    public saveTrack(track: Track): void {
+    public saveTrack(track: ITrack): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
@@ -24,16 +24,16 @@ export class RacingCommunicationService {
             });
     }
 
-    public async getTrackByName(name: string): Promise<Track[]> {
-        return this.http.get<Track[]>(URL_SERVER + "findOne/" + name).toPromise();
+    public async getTrackByName(name: string): Promise<ITrack[]> {
+        return this.http.get<ITrack[]>(URL_SERVER + "findOne/" + name).toPromise();
 
     }
 
-    public getTracks(): Observable<Track[]> {
-        return this.http.get<Track[]>(URL_SERVER + "admin");
+    public getTracks(): Observable<ITrack[]> {
+        return this.http.get<ITrack[]>(URL_SERVER + "admin");
     }
 
-    public async deleteTrack(track: Track): Promise<void> {
+    public async deleteTrack(track: ITrack): Promise<void> {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
@@ -45,21 +45,11 @@ export class RacingCommunicationService {
             });
     }
 
-    public updateNewScore(track: Track): void {
+    public updateScores(track: ITrack): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
         this.http.put(URL_SERVER + "updateINewScores", JSON.stringify(track), {
-            headers: headers
-        })
-            .subscribe((data: Response) => {
-            });
-    }
-    public updateIBestScore(track: Track): void {
-        const headers: HttpHeaders = new HttpHeaders()
-            .set("Authorization", "my-auth-token")
-            .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateIBestScore", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {

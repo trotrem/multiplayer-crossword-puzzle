@@ -22,12 +22,12 @@ describe("addWord", () => {
 
         WordsPositionsHelper.createListOfWord(grid);
         grid = await GenerateWords.addWord(0, grid, "hard");
-        expect(GridUtils.getText(grid.words[0], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[1], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[2], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[0], grid).length).equals(4);
-        expect(GridUtils.getText(grid.words[1], grid).length).equals(3);
-        expect(GridUtils.getText(grid.words[2], grid).length).equals(3);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid).length).equals(4);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid).length).equals(3);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid).length).equals(3);
     });
 
     it("Should return null if unable to fill grid", async () => {
