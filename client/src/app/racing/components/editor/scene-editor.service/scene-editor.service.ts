@@ -28,22 +28,28 @@ export class SceneEditorService {
         }
         const position: THREE.Vector3 =
             this.trackCreator.getPlacementPosition(new THREE.Vector3(event.x, event.y));
+        this.drawPoints(position);
+        this.drawLines(position);
+        this.trackCreator.points.push(position);
+    }
+
+    private drawPoints(position: THREE.Vector3): void {
         if (this.trackCreator.points.length === 0) {
             this.scene.add(this.trackCreator.createPoint(position, FIRST_POINT_MATERIAL));
         }
         this.scene.add(this.trackCreator.createPoint(position, POINT_MATERIAL));
+    }
 
+    private drawLines(position: THREE.Vector3): void {
         if (this.trackCreator.points.length > 0) {
             this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
             this.addLinesToScene();
         }
-
-        this.trackCreator.points.push(position);
     }
 
     private addLinesToScene(): void {
-        for (const i of this.lines) {
-            this.scene.add(i);
+        for (const line of this.lines) {
+            this.scene.add(line);
         }
     }
 
