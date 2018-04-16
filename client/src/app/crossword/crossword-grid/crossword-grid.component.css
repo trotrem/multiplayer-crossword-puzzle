@@ -16,7 +16,7 @@
     grid-template-columns: repeat(10, 50px);
 }
 
-.cell, .black, .selected, .wordFound {
+.cell, .black, .selectedByPlayer, .selectedByOpponent, .selectedByBoth, .wordFound {
     z-index:0;
     width:50px;
     height:50px;
@@ -31,10 +31,17 @@
     background-color:black;
 }
 
-.selected {
+.selectedByPlayer, .selectedByOpponent {
     z-index: 1;
     outline-width: 4px;
-    outline-color: black;
+}
+
+.selectedByPlayer {
+    outline-color: #0099cc;
+}
+
+.selectedByOpponent {
+    outline-color: #ff9900;
 }
 
 .letterFoundByOpponent {
@@ -55,22 +62,38 @@
     );
 }
 
+.definition, .definition-selectedByPlayer, .definition-selectedByOpponent, .definition-selectedByBoth, .definition-foundByOpponent, .definition-foundByPlayer {
+    display:inline-block;
+    clear:both;
+    float:left;
+}
+
 .definition {
     cursor: pointer;
 }
 
-.definition-selected {
+.definition-selectedByPlayer {
     cursor: default;
-    outline:1px solid #000;
+    outline:1px solid #0080ff;
+}
+
+.definition-selectedByOpponent {
+    outline:1px solid #ff9900;
+}
+
+.definition-selectedByBoth {
+    cursor: default;
+    box-shadow:0 0 0 1px #ff9900;
+    outline:1px solid #0080ff;
 }
 
 .definition-foundByOpponent {
-    color: #ff1a1a;
+    background-color: #ffe066;
     text-decoration: line-through;
 }
 
 .definition-foundByPlayer {
-    color: #1fcc1f;
+    background-color: #80dfff;
     text-decoration: line-through;
 }
 

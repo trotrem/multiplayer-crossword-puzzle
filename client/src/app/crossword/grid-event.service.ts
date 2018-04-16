@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
 import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers } from "../../../../common/communication/types";
-import { Cell, FoundStatus } from "./cell";
+import { Cell, AssociatedPlayers } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
@@ -15,9 +15,15 @@ const UPPER_Z: number = 90;
 const LOWER_A: number = 97;
 const LOWER_Z: number = 122;
 
+interface SelectedWord {
+    player: AssociatedPlayers;
+    word: WordDescription;
+}
+
 @Injectable()
 export class GridEventService {
-    private _selectedWord: WordDescription = null;
+    private _selectedWord: SelectedWord = { player: AssociatedPlayers.PLAYER, word: null};
+    private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null};
     private _words: WordDescription[];
     private _id: number;
     private _crosswordSettings: ICrosswordSettings;
@@ -32,25 +38,32 @@ export class GridEventService {
         this._crosswordSettings = { difficulty: Difficulty.Easy, nbPlayers: nbPlayers };
     }
 
-    public setSelectedWord(word: WordDescription, selected: boolean): WordDescription {
-        if (this._selectedWord === word) {
+    public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
+        return this.setSelectedWord(this._selectedWord, word, selected);
+    }
+    public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
+        if (target.word === word) {
             return null;
         }
-        if (this._selectedWord !== null) {
-            this.setWordSelectedState(this._selectedWord, false);
-            this._selectedWord = null;
+        if (target.word !== null) {
+            this.setWordSelectedState(target, target.word, false);
+            target.word = null;
         }
         if (word !== null && selected) {
-            this.setWordSelectedState(word, true);
-            this._selectedWord = word;
+            this.setWordSelectedState(target, word, true);
+            target.word = word;
         }
 
-        return this._selectedWord;
+        return target.word;
     }
 
-    private setWordSelectedState(word: WordDescription, selected: boolean): void {
+    private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
-            cell.selected = selected;
+            if (selected) {
+                cell.selectedBy = cell.selectedBy | target.player;
+            } else {
+                cell.selectedBy = cell.selectedBy & ~ target.player;
+            }
         }
     }
 
@@ -60,19 +73,19 @@ export class GridEventService {
         }
         event.stopPropagation();
         for (const word of this._words) {
-            if (word.cells[0] === cell && word !== this._selectedWord) {
+            if (word.cells[0] === cell && word !== this._selectedWord.word) {
 
-                return this.setSelectedWord(word, true);
+                return this.setSelectedWord(this._selectedWord, word, true);
             }
         }
         for (const word of this._words) {
-            if (word.cells.indexOf(cell) !== -1 && word !== this._selectedWord) {
+            if (word.cells.indexOf(cell) !== -1 && word !== this._selectedWord.word) {
 
-                return this.setSelectedWord(word, true);
+                return this.setSelectedWord(this._selectedWord, word, true);
             }
         }
 
-        return this._selectedWord;
+        return this._selectedWord.word;
     }
 
     public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {
@@ -81,7 +94,7 @@ export class GridEventService {
         }
         event.stopPropagation();
 
-        return this.setSelectedWord(word, true);
+        return this.setSelectedWord(this._selectedWord, word, true);
     }
 
     public onKeyPress(event: KeyboardEvent): void {
@@ -90,10 +103,10 @@ export class GridEventService {
                 event.keyCode <= UPPER_Z ||
                 event.keyCode >= LOWER_A &&
                 event.keyCode <= LOWER_Z) {
-                this.write(String.fromCharCode(event.keyCode).toUpperCase(), this._selectedWord);
+                this.write(String.fromCharCode(event.keyCode).toUpperCase(), this._selectedWord.word);
             }
             if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
-                this.erase(this._selectedWord);
+                this.erase(this._selectedWord.word);
             }
         }
     }
@@ -132,11 +145,11 @@ export class GridEventService {
 
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
-        const foundStatus: FoundStatus = data.validatedByReceiver ? FoundStatus.PLAYER : FoundStatus.OPPONENT;
+        const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT;
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
-                word.cells[i].letterFound = (foundStatus !== word.cells[i].letterFound && word.cells[i].letterFound !== FoundStatus.NOT) ?
-                    FoundStatus.BOTH :
+                word.cells[i].letterFound = (foundStatus !== word.cells[i].letterFound && word.cells[i].letterFound !== AssociatedPlayers.NONE) ?
+                    AssociatedPlayers.BOTH :
                     foundStatus;
 
                 word.cells[i].content = data.word[i];

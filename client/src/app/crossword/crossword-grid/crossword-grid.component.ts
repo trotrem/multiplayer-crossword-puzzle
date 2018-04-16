@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { WordDescription } from "../wordDescription";
-import { Cell, FoundStatus } from "../cell";
+import { Cell, AssociatedPlayers } from "../cell";
 import { CommunicationService } from "../communication.service";
 import { GridEventService } from "../grid-event.service";
 import { SocketsService } from "../sockets.service";
@@ -22,6 +22,8 @@ enum TipMode {
     styleUrls: ["./crossword-grid.component.css"],
     providers: [GridEventService]
 })
+
+// TODO: initialiser attributs dans le constructeur (et checker à d'autres places)
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
     // needed so the html recognizes the enum
@@ -31,6 +33,7 @@ export class CrosswordGridComponent implements OnInit {
     private _difficulty: Difficulty = Difficulty.Easy;
     private _playerName: string;
     public selectedWord: WordDescription = null;
+    public opponentSelectedWord: WordDescription = null;
     // needed so the html recognizes the enum
     private TipMode: typeof TipMode = TipMode;// tslint:disable-line
     public tipMode: TipMode = TipMode.Definitions;
@@ -38,7 +41,7 @@ export class CrosswordGridComponent implements OnInit {
     @HostListener("document:click")
     // (listens to document event so it's not called in the code)
     private onBackgroundClick(): void {  // tslint:disable-line
-        this.selectedWord = this.gridEventService.setSelectedWord(null, false);
+        this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
     }
 
     public get horizontalWords(): WordDescription[] {
@@ -50,11 +53,11 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public get nbPlayerFoundWords(): number {
-        return this.words.filter((word) => word.found === FoundStatus.PLAYER).length;
+        return this.words.filter((word) => word.found === AssociatedPlayers.PLAYER).length;
     }
 
     public get nbOpponentFoundWords(): number {
-        return this.words.filter((word) => word.found === FoundStatus.OPPONENT).length;
+        return this.words.filter((word) => word.found === AssociatedPlayers.OPPONENT).length;
     }
 
     public constructor(
@@ -67,7 +70,10 @@ export class CrosswordGridComponent implements OnInit {
         for (let i: number = 0; i < GRID_HEIGHT; i++) {
             this.cells[i] = new Array<Cell>();
             for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({ content: "", selected: false, isBlack: false, letterFound: FoundStatus.NOT });
+                this.cells[i].push({ content: "",
+                                     selectedBy: AssociatedPlayers.NONE,
+                                     isBlack: false,
+                                     letterFound: AssociatedPlayers.NONE });
             }
         }
 
@@ -126,7 +132,11 @@ export class CrosswordGridComponent implements OnInit {
                     cells.push(this.cells[word.y + i][word.x]);
                 }
             }
-            this.words.push({ id: index, direction: word.direction, cells: cells, definition: word.definition, found: FoundStatus.NOT });
+            this.words.push({ id: index,
+                              direction: word.direction,
+                              cells: cells,
+                              definition: word.definition,
+                              found: AssociatedPlayers.NONE });
         });
     }
 

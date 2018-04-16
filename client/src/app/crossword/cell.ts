@@ -1,5 +1,5 @@
-export enum FoundStatus {
-    NOT,
+export enum AssociatedPlayers {
+    NONE,
     OPPONENT,
     PLAYER,
     BOTH
@@ -8,6 +8,6 @@ export enum FoundStatus {
 export interface Cell {
     isBlack: boolean;
     content: string;
-    selected: boolean;
-    letterFound: FoundStatus;
+    selectedBy: AssociatedPlayers;
+    letterFound: AssociatedPlayers;
 }
