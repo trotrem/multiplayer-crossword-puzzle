@@ -4,6 +4,7 @@ import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { RaceUtils } from "../../../utils/utils";
 import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
+import { WallService } from "../walls-collisions-service/walls";
 const MAX_SPEED: number = 50;
 const MIN_SPEED: number = 10;
 const MAX_DISTANCE: number = 18;
@@ -18,10 +19,14 @@ export class AiController {
     private distanceToCorner: number;
 
     // TODO : Inject collisionWallService (later)
-    public constructor(private _car: Car, points: THREE.Vector3[], private collisionWallService: WallsCollisionsService) {
-        this._checkPoints.shift();
-        this._checkPoints = points.slice().reverse();
-        this.distanceToCorner = this.randomIntFromInterval(MIN_DISTANCE, MAX_DISTANCE);
+    public constructor(
+        private _car: Car,
+        points: THREE.Vector3[],
+        private collisionWallService: WallsCollisionsService,
+        private wallService: WallService) {
+            this._checkPoints.shift();
+            this._checkPoints = points.slice().reverse();
+            this.distanceToCorner = this.randomIntFromInterval(MIN_DISTANCE, MAX_DISTANCE);
     }
 
     public update(): boolean {
