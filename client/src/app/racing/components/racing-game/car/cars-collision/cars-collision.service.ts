@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { Car } from "../Car";
 import { Injectable } from "@angular/core";
 
-// Possible refactor
 export interface IProjection {
     minProj: number;
     maxProj: number;
@@ -55,12 +54,8 @@ export class CarsCollisionService {
             resultsR[i] = this.getMinMax(this._vecCars[i], this._normals[1][1]);
             resultsS[i] = this.getMinMax(this._vecCars[i], this._normals[1][0]);
         }
-        const separateP: boolean = this.result(resultsP);
-        const separateQ: boolean = this.result(resultsQ);
-        const separateR: boolean = this.result(resultsR);
-        const separateS: boolean = this.result(resultsS);
 
-        return !(separateP || separateQ || separateR || separateS);
+        return !this.getCollisionDetection(resultsP, resultsQ, resultsR, resultsS);
     }
     private shapeAroundCar(cars: Car[]): void {
         for (let i: number = 0; i < cars.length; i++) {
@@ -68,7 +63,6 @@ export class CarsCollisionService {
             this._vecCars[i] = this.prepareShape(cars[i]);
         }
     }
-
     private prepareShape(car: Car): THREE.Vector3[] {
         return car.getCorners(car.getUpdatedPosition().add(car.velocity));
     }
@@ -89,7 +83,19 @@ export class CarsCollisionService {
 
         return points;
     }
-    private result(results: IProjection[]): boolean {
+    private getCollisionDetection(
+        resultsP: IProjection[],
+        resultsQ: IProjection[],
+        resultsR: IProjection[],
+        resultsS: IProjection[]): boolean {
+            const separateP: boolean = this.getResult(resultsP);
+            const separateQ: boolean = this.getResult(resultsQ);
+            const separateR: boolean = this.getResult(resultsR);
+            const separateS: boolean = this.getResult(resultsS);
+
+            return !(separateP || separateQ || separateR || separateS);
+    }
+    private getResult(results: IProjection[]): boolean {
         return results[0].maxProj < results[1].minProj || results[1].maxProj < results[0].minProj;
     }
 
