@@ -89,6 +89,58 @@ export class Car extends Object3D {
     public set steeringWheel(direction: number) {
         this.steeringWheelDirection = direction;
     }
+    public constructor(
+        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardService,
+        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
+        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
+        super();
+        wheelbase = this.handleWheelBaseError(wheelbase);
+        mass = this.handleMassError(mass);
+        dragCoefficient = this.handleDragError(dragCoefficient);
+        this.engine = engine;
+        this.rearWheel = rearWheel;
+        this.wheelbase = wheelbase;
+        this.mass = mass;
+        this.dragCoefficient = dragCoefficient;
+        this.initializeCar();
+    }
+    private initializeCar(): void {
+        this.carLoader = new CarLoader();
+        this.updatedPosition = new Vector3();
+        this.isBraking = false;
+        this.steeringWheelDirection = 0;
+        this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
+        this._speed = new Vector3(0, 0, 0);
+        this.lapTimes = new Array<number>();
+        this.checkpoint = 0;
+    }
+    private handleWheelBaseError(wheelbase: number): number {
+        if (wheelbase <= 0) {
+            console.error("Wheelbase should be greater than 0.");
+
+            return DEFAULT_WHEELBASE;
+        }
+
+        return wheelbase;
+    }
+    private handleMassError(mass: number): number {
+        if (mass <= 0) {
+            console.error("Mass should be greater than 0.");
+
+            return DEFAULT_MASS;
+        }
+
+        return mass;
+    }
+    private handleDragError(dragCoefficient: number): number {
+        if (dragCoefficient <= 0) {
+            console.error("Drag coefficient should be greater than 0.");
+
+            return DEFAULT_DRAG_COEFFICIENT;
+        }
+
+        return dragCoefficient;
+    }
 
     public getCorners(pos: Vector3): Vector3[] {
         return [
@@ -113,48 +165,6 @@ export class Car extends Object3D {
     }
     public get updatePosition(): Vector3 {
         return this.updatedPosition;
-    }
-    //TODO : extraire construteur? : Sarah
-    public constructor(
-        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardService,
-        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
-        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
-        super();
-        if (wheelbase <= 0) {
-            console.error("Wheelbase should be greater than 0.");
-            wheelbase = DEFAULT_WHEELBASE;
-        }
-        if (mass <= 0) {
-            console.error("Mass should be greater than 0.");
-            mass = DEFAULT_MASS;
-        }
-        if (dragCoefficient <= 0) {
-            console.error("Drag coefficient should be greater than 0.");
-            dragCoefficient = DEFAULT_DRAG_COEFFICIENT;
-        }
-        this.engine = engine;
-        this.rearWheel = rearWheel;
-        this.wheelbase = wheelbase;
-        this.mass = mass;
-        this.dragCoefficient = dragCoefficient;
-        this.carLoader = new CarLoader();
-        this.updatedPosition = new Vector3();
-        this.isBraking = false;
-        this.steeringWheelDirection = 0;
-        this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
-        this._speed = new Vector3(0, 0, 0);
-        this.lapTimes = new Array<number>();
-        this.checkpoint = 0;
-    }
-    private initializeCar(): void { 
-        this.engine = engine;
-        this.rearWheel = rearWheel;
-        this.wheelbase = wheelbase;
-        this.mass = mass;
-        this.dragCoefficient = dragCoefficient;
-    }
-    private initializeExtern(): void { 
-
     }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
