@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from "@angular/core/testing";
+import { TestBed, async } from "@angular/core/testing";
 import { Car } from "../car/car";
 import * as THREE from "three";
 import { RenderGameService } from "./render-game.service";
@@ -7,16 +7,13 @@ import { GameResultsComponent } from "../../game-results/game-results.component"
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule } from "@angular/common/http";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
-import { CarLoader } from "../car/car-loader";
 import { KeyboardService } from "../commands/keyboard.service";
-import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { ILine } from "../../../race-utils/race-utils";
 import { FormsModule } from "@angular/forms";
 
 /* tslint:disable:no-magic-numbers  */
 describe("RenderGameService", () => {
-    const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     const keyboard: KeyboardService = new KeyboardService;
     const sceneService: SceneGameService = new SceneGameService();
@@ -64,7 +61,7 @@ describe("RenderGameService", () => {
         service.initialize(canvas, points, startingZone, cars, walls, keyboard);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         expect(service.getTopCamera().position.x === cars[0].getUpdatedPosition().x &&
-        service.getTopCamera().position.y === cars[0].getUpdatedPosition().y).toBeTruthy();
+            service.getTopCamera().position.y === cars[0].getUpdatedPosition().y).toBeTruthy();
     });
 
     it("should rotate a rear camera with the car", () => {
