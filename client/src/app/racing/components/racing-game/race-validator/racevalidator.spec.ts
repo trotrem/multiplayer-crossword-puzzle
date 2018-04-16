@@ -8,7 +8,7 @@ import { FormsModule } from "@angular/forms";
 import { Car } from "../car/car";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { Engine } from "./../car/engine";
 import { ITrack } from "./../../../track";
 import { WallService } from "../walls-collisions-service/walls";
@@ -32,7 +32,7 @@ class MockCar extends Car {
 
 describe("Racevalidator", () => {
     let router: Router;
-    const keyboard: KeyboardService = new KeyboardService;
+    const keyboard: KeyboardEventService = new KeyboardEventService;
     let car: MockCar;
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     const wallService: WallService = new WallService();

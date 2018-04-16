@@ -4,18 +4,18 @@ import { CarsPositionsHandler } from "./cars-positions-handler";
 import { Car } from "../car/car";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers */
 describe("CarsPositionsHandler", () => {
   const carLoader: CarLoader = new CarLoader();
   const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
-  const keyboard: KeyboardService = new KeyboardService;
+  const keyboard: KeyboardEventService = new KeyboardEventService;
   const wallService: WallService = new WallService();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CarsPositionsHandler, WallsCollisionsService, WallService, KeyboardService]
+      providers: [CarsPositionsHandler, WallsCollisionsService, WallService, KeyboardEventService]
     });
   });
 

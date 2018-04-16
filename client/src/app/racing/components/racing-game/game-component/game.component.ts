@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { GameManagerService } from "../game-manager/game-manager.service";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
@@ -19,7 +19,7 @@ const CANVAS: string = "canvas";
     selector: "app-game-component",
     templateUrl: "./game.component.html",
     styleUrls: ["./game.component.css"],
-    providers: [GameManagerService, KeyboardService]
+    providers: [GameManagerService, KeyboardEventService]
 })
 export class GameComponent implements AfterViewInit {
 
@@ -28,7 +28,7 @@ export class GameComponent implements AfterViewInit {
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: KeyboardService) {
+    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
