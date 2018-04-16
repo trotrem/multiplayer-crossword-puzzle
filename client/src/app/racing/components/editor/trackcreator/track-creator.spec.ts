@@ -31,14 +31,14 @@ describe("TrackCreator", () => {
     });
     it("should recreate a conflict line ", () => {
         const color: number =  0xFF0000;
-        const illegalPoints: Array<THREE.Vector3> = new Array<THREE.Vector3>();
+        component.illegalPoints = new Array<THREE.Vector3>();
         // tslint:disable-next-line:no-magic-numbers
         const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
         // tslint:disable-next-line:no-magic-numbers
         const position2: THREE.Vector3 = new THREE.Vector3(23, -2, 0);
-        illegalPoints.push(position1);
-        illegalPoints.push(new THREE.Vector3(0, 0, 0));
-        illegalPoints.push(position2);
+        component.illegalPoints.push(position1);
+        component.illegalPoints.push(new THREE.Vector3(0, 0, 0));
+        component.illegalPoints.push(position2);
         const lines: Array<THREE.Line> = component.redrawConflictingLines( color);
         // tslint:disable-next-line:no-magic-numbers
         expect(lines.length).toBe(2);
