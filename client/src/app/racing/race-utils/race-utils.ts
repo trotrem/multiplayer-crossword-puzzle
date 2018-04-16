@@ -18,16 +18,11 @@ export class RaceUtils {
         return Math.sqrt(Math.pow(position1.x - position2.x, 2) + Math.pow(position1.y - position2.y, 2));
     }
 
-    public static getTwoLinesIntersection(line1: ILine, line2: ILine): Vector3 {
-        if (this.getDet(line1, line2) !== 0) {
-            return this.getIntersection(line1, line2);
-        }
-
-        return null;
-    }
-
-    private static getIntersection(line1: ILine, line2: ILine): Vector3 {
+    public static getIntersection(line1: ILine, line2: ILine): Vector3 {
         const determinant: number = this.getDet(line1, line2);
+        if (determinant === 0) {
+            return null;
+        }
         const intersection: Vector3 = new Vector3(0, 0, 0);
         intersection.x =
             ((line2.pos1.x - line2.pos2.x) *
