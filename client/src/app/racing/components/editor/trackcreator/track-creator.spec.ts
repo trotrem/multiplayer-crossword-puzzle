@@ -38,7 +38,8 @@ describe("TrackCreator", () => {
         illegalPoints.push(position1);
         illegalPoints.push(new THREE.Vector3(0, 0, 0));
         illegalPoints.push(position2);
-        const lines: Array<THREE.Line> = component.redrawConflictingLines(illegalPoints);
+        component.illegalPoints = illegalPoints;
+        const lines: Array<THREE.Line> = component.redrawConflictingLines();
         // tslint:disable-next-line:no-magic-numbers
         expect(lines.length).toBe(2);
     });

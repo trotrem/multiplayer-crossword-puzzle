@@ -10,7 +10,7 @@ import { WallsCollisionsService } from "../walls-collisions-service/walls-collis
 import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
 import { KeyboardService } from "../commands/keyboard.service";
 import { Engine } from "./../car/engine";
-import { Track } from "./../../../track";
+import { ITrack } from "./../../../track";
 /* tslint:disable: no-magic-numbers */
 class MockEngine extends Engine {
     public getDriveTorque(): number {
@@ -87,7 +87,7 @@ describe("Racevalidator", () => {
     }));
 
     it("should update track.scoresCar ", (() => {
-        const track: Track = {
+        const track: ITrack = {
             name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };

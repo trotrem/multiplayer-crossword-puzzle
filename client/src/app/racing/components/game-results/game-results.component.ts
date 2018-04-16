@@ -4,8 +4,8 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { NgForm } from "@angular/forms";
 import * as THREE from "three";
-import { Track } from "../../track";
-import { ResultsManager } from "../racing-game/resultsManager/results-manager";
+import { ITrack } from "../../track";
+import { ResultsManager } from "./resultsManager/results-manager";
 const DELAY: number = 100;
 const BEST_SCORES_MAX: number = 5;
 
@@ -19,22 +19,28 @@ export class GameResultsComponent implements OnInit {
     private _scores: INewScores[];
     private _bestScores: IBestScores[];
     public newBestScore: IBestScores;
-    private _track: Track;
+    private _track: ITrack;
     private _isAdded: boolean;
-//TODO : initialize les attributs: Amal
+
     public constructor(
         private router: Router, private route: ActivatedRoute,
         private communicationService: RacingCommunicationService) {
-        this._scores = new Array<INewScores>();
-        this._scores.push({ idCar: 0, scoresCar: new Array<number>() });
-        this._bestScores = new Array<IBestScores>();
-        this._bestScores.push({namePlayer: "", scorePlayer : 0});
-        this.newBestScore = { namePlayer: "", scorePlayer: 0 };
+        this.initializeNewScores();
+        this.initializeBestScores();
         this._track = {
             name: "", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
             INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
         };
         this._isAdded = false;
+    }
+    private initializeBestScores(): void {
+        this._bestScores = new Array<IBestScores>();
+        this._bestScores.push({namePlayer: "", scorePlayer : 0});
+        this.newBestScore = { namePlayer: "", scorePlayer: 0 };
+    }
+    private initializeNewScores(): void {
+        this._scores = new Array<INewScores>();
+        this._scores.push({ idCar: 0, scoresCar: new Array<number>() });
     }
     public get scores(): INewScores[] {
         return this._scores;
@@ -58,16 +64,18 @@ export class GameResultsComponent implements OnInit {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
-    public async getTrack(name: string): Promise<void> {
+    public async getTrack(name: string): Promise<ITrack> {
         await this.delay(DELAY);
         this.communicationService.getTrackByName(name)
-            .then((res: Track[]) => {
+            .then((res: ITrack[]) => {
                 this._track = res[0];
                 this._scores = res[0].INewScores;
                 this._bestScores = res[0].IBestScores;
                 ResultsManager.bestScoresSort(this.bestScores);
                 ResultsManager.calculateHumanScore(this.scores, this.newBestScore);
             });
+
+        return this._track;
     }
     public isNotBestScore(): boolean {
         if (this.scores[0].idCar !== 0) {
@@ -82,9 +90,9 @@ export class GameResultsComponent implements OnInit {
 
         return true;
     }
-    public onSubmit(f: NgForm): void {
+    public onSubmit(form: NgForm): void {
 
-        this.newBestScore.namePlayer = f.value.name;
+        this.newBestScore.namePlayer = form.value.name;
 
     }
     public replay(): void {
@@ -101,7 +109,7 @@ export class GameResultsComponent implements OnInit {
         this._isAdded = true;
         this._track.IBestScores.push(this.newBestScore);
         ResultsManager.bestScoresSort(this.bestScores);
-        this.communicationService.updateNewScore(this._track);
+        this.communicationService.updateScores(this._track);
 
     }
 }

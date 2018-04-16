@@ -1,5 +1,5 @@
 <h2>Track editor</h2>
-<form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+<form #f="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
     <div>
         Name:
         <input name="name" [(ngModel)]="track.name" placeholder="name">

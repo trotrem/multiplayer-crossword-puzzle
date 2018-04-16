@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import {INewScores, IBestScores} from "../../../../common/communication/interfaces";
-//TODO : changer pour ITrack: Amal
-export interface Track {
+
+export interface ITrack {
     name: string;
     description: string;
     startingZone: THREE.Line3;

@@ -13,7 +13,6 @@ import { INewScores, IBestScores } from "../../../../../../../common/communicati
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { ILine } from "../../../race-utils/race-utils";
 
-// "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers  */
 //TODO : Laurence
 describe("RenderGameService", () => {

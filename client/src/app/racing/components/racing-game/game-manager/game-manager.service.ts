@@ -3,7 +3,7 @@ import { RenderGameService } from "../render-game-service/render-game.service";
 import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
-import { Track } from "../../../track";
+import { ITrack } from "../../../track";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";
 import { RaceValidator } from "../race-validator/racevalidator";
 import { Router } from "@angular/router";
@@ -21,7 +21,7 @@ export class GameManagerService {
     private timer: number;
     private lastDate: number;
     private _cars: Car[] = [];
-    private track: Track;
+    private track: ITrack;
     private _aiControllers: AiController[];
     private gameStarted: boolean = false;
 
@@ -64,10 +64,10 @@ export class GameManagerService {
         this.renderService.onResize();
     }
 
-    private async getTrack(name: string): Promise<Track> {
+    private async getTrack(name: string): Promise<ITrack> {
         return this.communicationService.getTrackByName(name)
-            .then(async (res: Track[]): Promise<Track> => {
-                const track: Track = res[0];
+            .then(async (res: ITrack[]): Promise<ITrack> => {
+                const track: ITrack = res[0];
                 const points: THREE.Vector3[] = [];
                 for (const point of track.points) {
                     points.push(new THREE.Vector3(point.x, point.y, point.z));
@@ -136,7 +136,7 @@ export class GameManagerService {
             }
         }
         this.track.usesNumber++;
-        this.communicationService.updateNewScore(this.track);
+        this.communicationService.updateScores(this.track);
         this.navigateToGameResults();
     }
 

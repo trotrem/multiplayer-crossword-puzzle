@@ -5,19 +5,19 @@ import { GameResultsComponent } from "./game-results.component";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { Track } from "./../../track";
+import { ITrack } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 
 /* tslint:disable:no-magic-numbers */
-//TODO : float promises: Amal 
+
 describe("GameResultsComponent", () => {
     let component: GameResultsComponent;
     let fixture: ComponentFixture<GameResultsComponent>;
     let route: ActivatedRoute;
-    const track: Track = {
+    const track: ITrack = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
@@ -62,13 +62,13 @@ describe("GameResultsComponent", () => {
     });
     it("should return the track's newScores  ", async () => {
         route.snapshot.params = { params: track.name };
-        await component.getTrack(track.name);
+        const track2: ITrack = await component.getTrack(track.name);
         expect(component.scores === track.INewScores).toBe(true);
     });
 
     it("should return the track's BestScores  ", async () => {
         route.snapshot.params = { params: track.name };
-        await component.getTrack(track.name);
+        const track2: ITrack = await component.getTrack(track.name);
         expect(component.bestScores === track.IBestScores).toBe(true);
     });
 
