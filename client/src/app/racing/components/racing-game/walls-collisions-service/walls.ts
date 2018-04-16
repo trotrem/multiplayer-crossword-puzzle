@@ -24,7 +24,12 @@ export class WallService {
 
         const points: THREE.Vector3[] = this.copyPoints(trackPoints);
         points.pop();
+        this.setExtIntWalls(exteriorWalls, interiorWalls, points);
 
+        return this._walls;
+    }
+
+    private setExtIntWalls(exteriorWalls: ILine[], interiorWalls: ILine[], points: THREE.Vector3[]): void {
         for (let i: number = 0; i < points.length; i++) {
             const interiorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.interior);
             const exteriorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.exterior);
@@ -39,10 +44,7 @@ export class WallService {
                 interiorWalls.push({ pos1: interiorCrossing, pos2: null });
             }
         }
-
         this._walls = interiorWalls.concat(exteriorWalls);
-
-        return this._walls;
     }
 
     private copyPoints(points: THREE.Vector3[]): THREE.Vector3[] {
