@@ -32,7 +32,7 @@ const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
     { path: "gameResults/:name", component: GameResultsComponent },
     { path: "editor/:name", component: EditorComponent },
-    { path: "endGame", component: EndGameComponent },
+    { path: "crossword/endGame", component: EndGameComponent },
     { path: "crossword/homePage", component: HomePageComponent },
     { path: "crossword/lobby", component: MultiplayerLobbyComponent },
     { path: "crossword/game", component: CrosswordGridComponent },

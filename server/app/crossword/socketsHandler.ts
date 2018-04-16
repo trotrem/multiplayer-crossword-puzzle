@@ -78,20 +78,24 @@ export class SocketsHandler {
     private onValidateWord(socket: SocketIO.Socket): void {
         socket.on(CrosswordEvents.ValidateWord, (parameters: IWordValidationParameters) => {
             const validationWords: IValidationWord[] = CrosswordGamesCache.Instance.getWords(parameters.gridId);
-            if (validationWords.length > parameters.wordIndex && validationWords[parameters.wordIndex].validatedBy === undefined && validationWords[parameters.wordIndex].word === parameters.word) {
+
+            if (validationWords.length > parameters.wordIndex &&
+                validationWords[parameters.wordIndex].validatedBy === undefined &&
+                validationWords[parameters.wordIndex].word === parameters.word) {
                 CrosswordGamesCache.Instance.validateWord(parameters.gridId, parameters.wordIndex, socket.id);
 
                 const validationPayload: IValidationData = {
                     word: parameters.word,
                     index: parameters.wordIndex,
                     validatedByReceiver: true
-                }
+                };
 
                 socket.emit(CrosswordEvents.WordValidated, validationPayload);
-
-                validationPayload.validatedByReceiver = false;
-                CrosswordGamesCache.Instance.getOpponentSocket(parameters.gridId, socket)
-                    .emit(CrosswordEvents.WordValidated, validationPayload);
+                if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(parameters.gridId) === 2) {
+                    validationPayload.validatedByReceiver = false;
+                    CrosswordGamesCache.Instance.getOpponentSocket(parameters.gridId, socket)
+                        .emit(CrosswordEvents.WordValidated, validationPayload);
+                }
             }
         });
     }

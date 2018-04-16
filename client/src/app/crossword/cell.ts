@@ -1,7 +1,8 @@
 export enum FoundStatus {
     NOT,
     OPPONENT,
-    PLAYER
+    PLAYER,
+    BOTH
 }
 
 export interface Cell {

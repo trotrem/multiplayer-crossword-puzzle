@@ -17,6 +17,7 @@
 }
 
 .cell, .black, .selected, .wordFound {
+    z-index:0;
     width:50px;
     height:50px;
     outline:1px solid #000;
@@ -31,19 +32,28 @@
 }
 
 .selected {
-    outline-width: 4px !important;
-    outline-color: black !important;
+    z-index: 1;
+    outline-width: 4px;
+    outline-color: black;
 }
 
 .letterFoundByOpponent {
-    color: #ff1a1a;
-    outline: 2px solid #ff1a1a;
+    background-color: #ffe066;
 }
 
 .letterFoundByPlayer {
-    color: #1fcc1f;
-    outline: 2px solid #1fcc1f;
- }
+    background-color: #80dfff;
+}
+
+.letterFoundByBoth {
+    background: repeating-linear-gradient(
+        35deg,
+        #80dfff,
+        #80dfff 10px,
+        #ffe066 10px,
+        #ffe066 20px
+    );
+}
 
 .definition {
     cursor: pointer;

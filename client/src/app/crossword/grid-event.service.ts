@@ -135,7 +135,10 @@ export class GridEventService {
         const foundStatus: FoundStatus = data.validatedByReceiver ? FoundStatus.PLAYER : FoundStatus.OPPONENT;
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
-                word.cells[i].letterFound = foundStatus;
+                word.cells[i].letterFound = (foundStatus !== word.cells[i].letterFound && word.cells[i].letterFound !== FoundStatus.NOT) ?
+                    FoundStatus.BOTH :
+                    foundStatus;
+
                 word.cells[i].content = data.word[i];
             }
             word.found = foundStatus;

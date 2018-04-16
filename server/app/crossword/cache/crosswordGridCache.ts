@@ -106,6 +106,10 @@ export class CrosswordGamesCache {
         game.words[wordIndex].validatedBy = playerSocketId;
     }
 
+    public getGameNumberOfPlayers(gameId: number): number {
+        return this.getGame(gameId).maxPlayers;
+    }
+
     private getGame(id: number): ICacheGame {
         for (const difficulty in Difficulty) {
             if (this._grids[difficulty][id] !== undefined) {
