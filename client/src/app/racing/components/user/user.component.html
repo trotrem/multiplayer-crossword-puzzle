@@ -1,26 +1,22 @@
-<h3>
-  Track List:
-</h3>
+<h1> Track's list</h1>
 <ol>
-  <h5>Please select the name of the desired track  </h5>
   <li *ngFor="let track of tracks">
-    
-    <dt> track name: </dt>
-    <dd>{{track.name}}</dd>
-    <dt> track description: </dt>
+    <h3> {{track.name}}</h3>
+    <dt> Description: </dt>
     <dd >{{track.description}}<br></dd>
-    <dt> track number of uses: </dt>
+    <dt> Number of uses: </dt>
     <dd >{{track.usesNumber}}</dd>
-    <dt> track best scores: </dt>
+    <dt> Best scores: </dt>
     <table>
       <th> Player's name</th>
       <th> Player's score</th>
       <tr *ngFor="let best of track.IBestScores">
-    <td > {{best.scorePlayer}} </td>
+    <td > {{best.namePlayer}} </td>
     <td > {{best.scorePlayer}} </td>
   </tr>
   </table>
     <button [class.selected]="track === selectedTrack"
-    (click)="showTrack(track)"> Show this Track</button>
+    (click)="showTrack(track)"> Select this Track</button>
+    
 </li>
 </ol>
