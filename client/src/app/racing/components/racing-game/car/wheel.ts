@@ -47,10 +47,10 @@ export class Wheel {
         this._mass = mass;
         this._radius = radius;
         this._frictionCoefficient = frictionCoefficient;
-        this.angularVelocity = 0;
+        this._angularVelocity = 0;
     }
 
     public update(speed: number): void {
-        this.angularVelocity = speed / this.radius;
+        this._angularVelocity = speed / this.radius;
     }
 }
