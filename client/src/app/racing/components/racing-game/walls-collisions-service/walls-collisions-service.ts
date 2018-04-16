@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils, ILine } from "../../../race-utils/race-utils";
+import { VectorUtils, ILine } from "../../../race-utils/vector-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
@@ -22,8 +22,8 @@ export class WallsCollisionsService {
         this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));
         for (let i: number = 0; i < this._corners.length; i++) {
             for (const wall of this._walls) {
-                if (RaceUtils.doLinesIntersect({pos1: this._corners[i], pos2: this._corners[(i + 1) % this._corners.length]},
-                                               {pos1: wall.pos1, pos2: wall.pos2})) {
+                if (VectorUtils.doLinesIntersect({pos1: this._corners[i], pos2: this._corners[(i + 1) % this._corners.length]},
+                                                 {pos1: wall.pos1, pos2: wall.pos2})) {
                     normals.push(wall.pos2.clone().sub(wall.pos1).cross(new THREE.Vector3(0, 0, 1)).normalize());
                 }
             }
@@ -82,7 +82,7 @@ export class WallsCollisionsService {
             wallSide
         );
 
-        return RaceUtils.getTwoLinesIntersection(
+        return VectorUtils.getIntersection(
             {pos1: firstSegmentCoordinates[0], pos2: firstSegmentCoordinates[1]},
             {pos1: secondSegmentCoordinates[0], pos2: secondSegmentCoordinates[1]}
         );

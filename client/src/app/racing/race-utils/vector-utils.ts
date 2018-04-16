@@ -5,7 +5,7 @@ export interface ILine {
     pos2: Vector3;
 }
 
-export class RaceUtils {
+export class VectorUtils {
 
     public static getAngle(position1: Vector3, position2: Vector3, position3: Vector3): number {
         return Math.acos((Math.pow(this.getDistance(position2, position3), 2)
@@ -50,6 +50,28 @@ export class RaceUtils {
         );
     }
 
+    public static doLinesIntersect(line1: ILine, line2: ILine): boolean {
+        const orientation1: number = this.getOrientation(line1.pos1, line1.pos2, line2.pos1);
+        const orientation2: number = this.getOrientation(line1.pos1, line1.pos2, line2.pos2);
+        const orientation3: number = this.getOrientation(line2.pos1, line2.pos2, line1.pos1);
+        const orientation4: number = this.getOrientation(line2.pos1, line2.pos2, line1.pos2);
+
+        return (orientation1 !== orientation2 && orientation3 !== orientation4) ||
+               (orientation1 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos1, pos2: line1.pos2 })) ||
+               (orientation2 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos2, pos2: line1.pos2 })) ||
+               (orientation3 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos1, pos2: line2.pos2 })) ||
+               (orientation4 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos2, pos2: line2.pos2 }));
+    }
+
+    private static getOrientation(p: Vector3, q: Vector3, r: Vector3): number {
+        const val: number = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+        if (val === 0) {
+            return 0; // return 0 when the points are colinear
+        }
+
+        return val > 0 ? 1 : 2; // return 1 for clock wise or return 2 for counterclock wise
+    }
+
     private static isPointOnSegment(point: Vector3, line: ILine): boolean {
 
         return (
@@ -58,28 +80,5 @@ export class RaceUtils {
             point.y <= Math.max(line.pos1.y, line.pos2.y) &&
             point.y >= Math.min(line.pos1.y, line.pos2.y)
         );
-    }
-
-    private static getOrientation(p: Vector3, q: Vector3, r: Vector3): number {
-        const val: number = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-        if (val === 0) {
-            return 0; // points are colinear
-        }
-
-        return val > 0 ? 1 : 2; // 1 for clock wise or 2 for counterclock wise
-    }
-
-    // orientation
-    public static doLinesIntersect(line1: ILine, line2: ILine): boolean {
-        const orientation1: number = this.getOrientation(line1.pos1, line1.pos2, line2.pos1);
-        const orientation2: number = this.getOrientation(line1.pos1, line1.pos2, line2.pos2);
-        const orientation3: number = this.getOrientation(line2.pos1, line2.pos2, line1.pos1);
-        const orientation4: number = this.getOrientation(line2.pos1, line2.pos2, line1.pos2);
-
-        return (orientation1 !== orientation2 && orientation3 !== orientation4) ||
-            (orientation1 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos1, pos2: line1.pos2 })) ||
-            (orientation2 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos2, pos2: line1.pos2 })) ||
-            (orientation3 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos1, pos2: line2.pos2 })) ||
-            (orientation4 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos2, pos2: line2.pos2 }));
     }
 }
