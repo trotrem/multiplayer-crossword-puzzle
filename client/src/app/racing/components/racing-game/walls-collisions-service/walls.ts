@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils, ILine } from "../../../race-utils/race-utils";
+import { VectorUtils, ILine } from "../../../race-utils/vector-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
@@ -70,7 +70,7 @@ export class WallService {
             wallSide
         );
 
-        return RaceUtils.getTwoLinesIntersection(
+        return VectorUtils.getIntersection(
             { pos1: firstSegmentCoordinates[0], pos2: firstSegmentCoordinates[1] },
             { pos1: secondSegmentCoordinates[0], pos2: secondSegmentCoordinates[1] }
         );
