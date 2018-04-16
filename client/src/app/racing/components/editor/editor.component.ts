@@ -69,9 +69,9 @@ export class EditorComponent implements OnInit {
         });
 
     }
-    public onSubmit(f: NgForm): void {
-        this.track.description = f.value.description;
-        this.track.name = f.value.name;
+    public onSubmit(form: NgForm): void {
+        this.track.description = form.value.description;
+        this.track.name = form.value.name;
         this.submitValid = true;
     }
 
