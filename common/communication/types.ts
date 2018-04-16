@@ -9,7 +9,7 @@ export enum Direction {
 }
 
 export interface IWordValidationParameters {
-    gridId: number;
+    gridId: string;
     word: string;
     wordIndex: number;
 }

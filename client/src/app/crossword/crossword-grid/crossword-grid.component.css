@@ -31,7 +31,7 @@
     background-color:black;
 }
 
-.selectedByPlayer, .selectedByOpponent {
+.selectedByPlayer, .selectedByOpponent, .selectedByBoth {
     z-index: 1;
     outline-width: 4px;
 }
@@ -42,6 +42,12 @@
 
 .selectedByOpponent {
     outline-color: #ff9900;
+}
+
+.selectedByBoth {
+    box-shadow: 0px 0px 0 4px #ff9900;
+    outline-color: #0099cc;
+    outline-style: dotted;
 }
 
 .letterFoundByOpponent {
@@ -74,7 +80,7 @@
 
 .definition-selectedByPlayer {
     cursor: default;
-    outline:1px solid #0080ff;
+    outline:1px solid #0099cc;
 }
 
 .definition-selectedByOpponent {
@@ -84,7 +90,7 @@
 .definition-selectedByBoth {
     cursor: default;
     box-shadow:0 0 0 1px #ff9900;
-    outline:1px solid #0080ff;
+    outline:1px solid #0099cc;
 }
 
 .definition-foundByOpponent {

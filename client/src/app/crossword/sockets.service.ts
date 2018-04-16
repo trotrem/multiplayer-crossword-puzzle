@@ -15,13 +15,14 @@ export class SocketsService {
         this.socket = socketIo(SERVER_URL);
     }
 
-    public sendEvent(event: CrosswordEvents, payload: IEventPayload = {}): void {
+    // TODO: Changer les any pour des IEventPayload
+    public sendEvent(event: CrosswordEvents, payload: any): void {
         this.socket.emit(event, payload);
     }
 
-    public onEvent(event: CrosswordEvents): Observable<IEventPayload> {
-        return new Observable<IEventPayload>((observer: Observer<IEventPayload>) => {
-            this.socket.on(event, (pd: IEventPayload) => {
+    public onEvent(event: CrosswordEvents): Observable<any> {
+        return new Observable<IEventPayload>((observer: Observer<any>) => {
+            this.socket.on(event, (pd: any) => {
                 observer.next(pd);
             });
         });

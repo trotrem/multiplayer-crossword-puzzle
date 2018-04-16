@@ -77,7 +77,6 @@ export class CrosswordGridComponent implements OnInit {
             }
         }
 
-        this.gridEventService.initialize(this.words, this.nbPlayers);
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
@@ -91,18 +90,19 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.gridEventService.setDifficulty(this.gameConfiguration.difficulty);
+        this.nbPlayers = this.gameConfiguration.nbPlayers;
         this._difficulty = this.gameConfiguration.difficulty;
         this._playerName = this.gameConfiguration.playerName;
-        this.nbPlayers = this.gameConfiguration.nbPlayers;
         // TODO sketch
-        this.gridEventService.setNbPlayers(this.nbPlayers);
         this.subscribeToGridFetched();
         this.subscribeToValidation();
     }
 
     private createGrid(gridData: IGridData): void {
-        this.gridEventService.setId(gridData.id);
+        console.log(gridData.gameId)
+        this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
+        this.gridEventService.setNbPlayers(this.nbPlayers);
+        this.gridEventService.setDifficulty(this.gameConfiguration.difficulty);
         gridData.blackCells.forEach((cell: IPoint) => {
             this.cells[cell.y][cell.x].isBlack = true;
         });

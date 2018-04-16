@@ -4,7 +4,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
 import { Difficulty, IWordValidationParameters, ICrosswordSettings } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData, IValidationData } from "../../../../common/communication/events";
+import { CrosswordEvents, IGridData, IValidationData, IWordSelection } from "../../../../common/communication/events";
 
 const SERVER_URL: string = "http://localhost:3000"
 
@@ -21,7 +21,7 @@ export class CommunicationService {
         this._gridPromise = this.onGridFetched();
     }
 
-    public fetchCheatModeWords(id: number): Observable<string[]> {
+    public fetchCheatModeWords(id: string): Observable<string[]> {
         return this.http.get<string[]>(SERVER_URL + "/crossword/cheatwords/" + id);
     }
 
@@ -45,5 +45,13 @@ export class CommunicationService {
 
     public onOpponentFound(): Observable<null> {
         return this.socketsService.onEvent(CrosswordEvents.OpponentFound).first() as Observable<null>;
+    }
+
+    public sendSelectionStatus(selectedWord: IWordSelection): void {
+        this.socketsService.sendEvent(CrosswordEvents.SelectedWord, selectedWord);
+    }
+
+    public onOpponentSelectedWord(): Observable<IWordSelection> {
+        return this.socketsService.onEvent(CrosswordEvents.OpponentSelectedWord) as Observable<IWordSelection>;
     }
 }

@@ -6,7 +6,7 @@ import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
-import { IValidationData } from "../../../../common/communication/events";
+import { IValidationData, IWordSelection } from "../../../../common/communication/events";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -25,7 +25,8 @@ export class GridEventService {
     private _selectedWord: SelectedWord = { player: AssociatedPlayers.PLAYER, word: null};
     private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null};
     private _words: WordDescription[];
-    private _id: number;
+    private _id: string;
+    private _nbPlayers: number;
     private _crosswordSettings: ICrosswordSettings;
 
     public constructor(
@@ -33,15 +34,34 @@ export class GridEventService {
         private router: Router) {
     }
 
-    public initialize(words: WordDescription[], nbPlayers: NbPlayers): void {
+    public initialize(words: WordDescription[], nbPlayers: NbPlayers, id: string): void {
+        this._id = id;
         this._words = words;
         this._crosswordSettings = { difficulty: Difficulty.Easy, nbPlayers: nbPlayers };
+        this._nbPlayers = nbPlayers;
+        if (nbPlayers === 2) {
+            this.subscribeToOpponentSelection();
+        }
+    }
+
+    private subscribeToOpponentSelection(): void {
+        this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
+            console.log("received");
+            this.setSelectedWord(this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null, true);
+        });
     }
 
     public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         return this.setSelectedWord(this._selectedWord, word, selected);
     }
+
+    // TODO: selected inutile
     public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
+        if (this._nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
+            console.log("sending")
+            this.communicationService.sendSelectionStatus({gameId: this._id, wordId: word !== null ? word.id : null});
+        }
+
         if (target.word === word) {
             return null;
         }
@@ -191,11 +211,11 @@ export class GridEventService {
         return this._crosswordSettings.difficulty;
     }
 
-    public setId(id: number): void {
+    public setId(id: string): void {
         this._id = id;
     }
 
-    public getId(): number {
+    public getId(): string {
         return this._id;
     }
 }
