@@ -15,12 +15,15 @@ export class TrackCreator {
 
     public trackValid: boolean;
 
+    private color: number;
+
     public constructor(private renderService: RenderEditorService) {
         this.trackValidator = new TrackValidator();
         this.points = new Array<THREE.Vector3>();
 
         this.trackValid = false;
         this.isClosed = false;
+        this.color = 0;
     }
 
     public getPlacementPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
@@ -37,7 +40,7 @@ export class TrackCreator {
         return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
     }
 
-    public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial ): THREE.Points {
+    public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial): THREE.Points {
         const pointGeometry: THREE.Geometry = new THREE.Geometry();
         pointGeometry.vertices.push(position);
 
@@ -45,27 +48,31 @@ export class TrackCreator {
     }
 
     public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): Array<THREE.Line> {
-        let lines: Array<THREE.Line> = new Array<THREE.Line>();
+        const lines: Array<THREE.Line> = this.verifyTrack(lastPos, newPos);
+        const lineGeometry: THREE.Geometry = new THREE.Geometry;
+        lineGeometry.vertices.push(lastPos);
+        lineGeometry.vertices.push(newPos);
+        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "color": this.color }));
+        lines.push(line);
+        this.trackValidator.emptyPoints();
+
+        return lines;
+    }
+
+    private verifyTrack(lastPos: THREE.Vector3, newPos: THREE.Vector3): Array<THREE.Line> {
         let illegalPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
-        let color: number;
+        let lines: Array<THREE.Line> = new Array<THREE.Line>();
         illegalPoints = this.trackValidator.isValid(this.points, lastPos, newPos);
 
         if (illegalPoints.length === 0) {
-            color = GREEN_COLOR;
+            this.color = GREEN_COLOR;
         } else {
-            color = RED_COLOR;
+            this.color = RED_COLOR;
             if (illegalPoints.length > 1) {
                 lines = this.redrawConflictingLines(illegalPoints);
             }
             this.trackValid = false;
         }
-
-        const lineGeometry: THREE.Geometry = new THREE.Geometry;
-        lineGeometry.vertices.push(lastPos);
-        lineGeometry.vertices.push(newPos);
-        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
-        lines.push(line);
-        this.trackValidator.emptyPoints();
 
         return lines;
     }

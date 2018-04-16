@@ -48,8 +48,8 @@ export class SceneEditorService {
     }
 
     private addLinesToScene(): void {
-        for (const i of this.lines) {
-            this.scene.add(i);
+        for (const line of this.lines) {
+            this.scene.add(line);
         }
     }
 
