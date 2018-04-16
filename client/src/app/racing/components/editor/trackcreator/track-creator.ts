@@ -4,8 +4,6 @@ import { RenderEditorService } from "../render-editor.service/render-editor.serv
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;
-const FIRST_POINT_COUNTOUR_SIZE: number = 5;
-const POINT_SIZE: number = 3;
 
 export class TrackCreator {
 
@@ -28,26 +26,20 @@ export class TrackCreator {
     public getPlacementPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
         let position: THREE.Vector3 = this.renderService.convertToWorldPosition(positionEvent);
 
-        if (this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION) {
+        if (this.verifieDistance(position)) {
             position = this.points[0];
             this.isClosed = true;
         }
 
         return position;
     }
-
-    public createFirstPointContour(position: THREE.Vector3): THREE.Points {
-        const geometryPoint: THREE.Geometry = new THREE.Geometry();
-        geometryPoint.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: FIRST_POINT_COUNTOUR_SIZE, color: 0xFAA61A });
-
-        return new THREE.Points(geometryPoint, material);
+    private verifieDistance(position: THREE.Vector3): boolean {
+        return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
     }
 
-    public createPoint(position: THREE.Vector3): THREE.Points {
+    public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial ): THREE.Points {
         const pointGeometry: THREE.Geometry = new THREE.Geometry();
         pointGeometry.vertices.push(position);
-        const material: THREE.PointsMaterial = new THREE.PointsMaterial({ size: POINT_SIZE, color: 0xFF00A7 });
 
         return new THREE.Points(pointGeometry, material);
     }
@@ -77,7 +69,7 @@ export class TrackCreator {
 
         return lines;
     }
-
+//TODO : Laurence string magique
     public redrawConflictingLines(illegalPoints: THREE.Vector3[]): Array<THREE.Line> {
         const lines: Array<THREE.Line> = new Array<THREE.Line>();
         for (let i: number = 0; i < illegalPoints.length; i += MAX_SELECTION) {

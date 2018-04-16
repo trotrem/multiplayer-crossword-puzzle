@@ -11,7 +11,8 @@ import { RenderEditorService } from "./render-editor.service/render-editor.servi
 @Component({
     selector: "app-editor",
     templateUrl: "./editor.component.html",
-    styleUrls: ["./editor.component.css"]
+    styleUrls: ["./editor.component.css"],
+    providers: [RenderEditorService, SceneEditorService]
 })
 
 export class EditorComponent implements OnInit {
@@ -35,7 +36,7 @@ export class EditorComponent implements OnInit {
         };
         this.submitValid = false;
     }
-
+//TODO : string magique Amal
     public async ngOnInit(): Promise<void> {
         this.renderService.initialize(this.canvas, this.sceneService.scene);
         const name: string = this.route.snapshot.paramMap.get("name");

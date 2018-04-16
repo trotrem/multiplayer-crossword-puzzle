@@ -44,22 +44,12 @@ export class RacingCommunicationService {
             .subscribe((data: Response) => {
             });
     }
-
+    // TODO: rename Amal
     public updateNewScore(track: Track): void {
         const headers: HttpHeaders = new HttpHeaders()
             .set("Authorization", "my-auth-token")
             .set("Content-Type", "application/json");
         this.http.put(URL_SERVER + "updateINewScores", JSON.stringify(track), {
-            headers: headers
-        })
-            .subscribe((data: Response) => {
-            });
-    }
-    public updateIBestScore(track: Track): void {
-        const headers: HttpHeaders = new HttpHeaders()
-            .set("Authorization", "my-auth-token")
-            .set("Content-Type", "application/json");
-        this.http.put(URL_SERVER + "updateIBestScore", JSON.stringify(track), {
             headers: headers
         })
             .subscribe((data: Response) => {

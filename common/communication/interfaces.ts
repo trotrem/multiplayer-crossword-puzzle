@@ -1,9 +1,9 @@
 
 export interface INewScores {
-    id: number;
-    scores: number[];
+    idCar: number;
+    scoresCar: number[];
 }
 export interface IBestScores {
-    name: string;
-    score: number;
+    namePlayer: string;
+    scorePlayer: number;
 }

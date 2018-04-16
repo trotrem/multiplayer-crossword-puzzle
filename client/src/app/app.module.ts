@@ -73,10 +73,8 @@ const appRoutes: Routes = [
     providers: [
         CommunicationService,
         GridEventService,
-        SceneEditorService,
         SceneGameService,
         RacingCommunicationService,
-        RenderEditorService,
         RenderGameService,
         WallsCollisionsService,
         {provide: APP_BASE_HREF, useValue : "/" }

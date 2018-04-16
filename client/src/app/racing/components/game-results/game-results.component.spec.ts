@@ -9,9 +9,10 @@ import { Track } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 
-/* tslint:disable:no-magic-numbers no-floating-promises */
-
+/* tslint:disable:no-magic-numbers */
+//TODO : float promises: Amal 
 describe("GameResultsComponent", () => {
     let component: GameResultsComponent;
     let fixture: ComponentFixture<GameResultsComponent>;
@@ -20,19 +21,20 @@ describe("GameResultsComponent", () => {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
-    track.INewScores.push({ id: 2, scores: new Array<number>() });
-    track.INewScores.push({ id: 1, scores: new Array<number>() });
-    track.INewScores.push({ id: 0, scores: new Array<number>() });
-    track.IBestScores.push({ name: "Amal", score: 10 });
-    track.IBestScores.push({ name: "Amal", score: 10 });
-    track.IBestScores.push({ name: "Amal", score: 10 });
-    track.IBestScores.push({ name: "Amal", score: 10 });
-    track.IBestScores.push({ name: "Amal", score: 30 });
+    track.INewScores.push({ idCar: 2, scoresCar: new Array<number>() });
+    track.INewScores.push({ idCar: 1, scoresCar: new Array<number>() });
+    track.INewScores.push({ idCar: 0, scoresCar: new Array<number>() });
+    track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 10 });
+    track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 10 });
+    track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 10 });
+    track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 10 });
+    track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 30 });
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
             imports: [
+                BrowserDynamicTestingModule,
                 FormsModule,
                 HttpClientModule,
                 HttpClientTestingModule,
@@ -75,7 +77,7 @@ describe("GameResultsComponent", () => {
         expect(component.isNotBestScore()).toBeFalsy();
     });
     it(" IsNotBestScore() return false when the human car is in first position and have the best score  ", () => {
-        component.newBestScore = { name: "Amal", score: 10 };
+        component.newBestScore = { namePlayer: "Amal", scorePlayer: 10 };
         component.getTrack(track.name);
         expect(component.isNotBestScore()).toBeFalsy();
     });

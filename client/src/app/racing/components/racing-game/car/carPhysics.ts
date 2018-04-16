@@ -14,7 +14,7 @@ const PERCENTAGE: number = 100;
 const COEFFICIENT_DEGREE: number = 0.01;
 const COEFFICIENT_USE: number = 0.0095;
 const COEFFICIENT_USES: number = 0.005;
-
+//TODO : enlever les commentaires :Sarah
 export class CarPhysics {
     // should be in car-physics
     public static getWeightDistribution(car: Car, mass: number, wheelbase: number): number {
@@ -40,7 +40,7 @@ export class CarPhysics {
         return this.getLongitudinalForce(car).divideScalar(car.Mass);
     }
     // should be in car-physics (getAcceleration)
-    private static getLongitudinalForce(car: Car): Vector3 {
+    public static getLongitudinalForce(car: Car): Vector3 {
         const resultingForce: Vector3 = new Vector3();
         if (car.speed.length() >= MINIMUM_SPEED) {
             const dragForce: Vector3 = this.getDragForce(car.direction, car.DragCoefficient, car.speed);

@@ -45,13 +45,12 @@ export class Car extends Object3D {
     private _speed: Vector3;
     private _velocity: Vector3;
     public isBraking: boolean;
-    private _mesh: Object3D;
+    public mesh: Object3D;
     protected steeringWheelDirection: number;
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
-    public counterLap: number;
-    public checkpoint: number;
+    public  checkpoint: number;
 
     public get Engine(): Engine {
         return this.engine;
@@ -84,7 +83,7 @@ export class Car extends Object3D {
         return this.engine.rpm;
     }
     public get angle(): number {
-        return this._mesh.rotation.y * RAD_TO_DEG;
+        return this.mesh.rotation.y * RAD_TO_DEG;
     }
     public set steeringWheel(direction: number) {
         this.steeringWheelDirection = direction;
@@ -101,14 +100,12 @@ export class Car extends Object3D {
             pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
                 this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
     }
-    public get mesh(): Object3D {
-        return this._mesh;
-    }
+
     public get direction(): Vector3 {
         const rotationMatrix: Matrix4 = new Matrix4();
         const carDirection: Vector3 = new Vector3(0, 0, -1);
 
-        rotationMatrix.extractRotation(this._mesh.matrix);
+        rotationMatrix.extractRotation(this.mesh.matrix);
         carDirection.applyMatrix4(rotationMatrix);
 
         return carDirection;
@@ -116,6 +113,7 @@ export class Car extends Object3D {
     public get updatePosition(): Vector3 {
         return this.updatedPosition;
     }
+    //TODO : extraire construteur? : Sarah
     public constructor(
         private collisionService: WallsCollisionsService, private keyboard: KeyboardService,
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
@@ -146,13 +144,12 @@ export class Car extends Object3D {
         this._speed = new Vector3(0, 0, 0);
         this.lapTimes = new Array<number>();
         this.checkpoint = 0;
-        this.counterLap = 0;
     }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
-        this._mesh = await this.carLoader.load();
-        this._mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
-        this.add(this._mesh);
+        this.mesh = await this.carLoader.load();
+        this.mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
+        this.add(this.mesh);
     }
     public getUpdatedPosition(): Vector3 {
         return this.updatedPosition.clone();
@@ -170,7 +167,7 @@ export class Car extends Object3D {
     }
     private setRotationMatrix(): Matrix4 {
         const rotationMatrix: Matrix4 = new Matrix4();
-        rotationMatrix.extractRotation(this._mesh.matrix);
+        rotationMatrix.extractRotation(this.mesh.matrix);
 
         return rotationMatrix;
     }
@@ -184,7 +181,7 @@ export class Car extends Object3D {
         const R: number =
             DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
         const omega: number = this._speed.length() / R;
-        this._mesh.rotateY(omega);
+        this.mesh.rotateY(omega);
     }
     public getDeltaPosition(deltaTime: number): Vector3 {
         return this.speed.multiplyScalar(deltaTime);
@@ -202,11 +199,11 @@ export class Car extends Object3D {
             this._speed.setLength(Math.max(this._speed.length() - WALL_SPEED_LOSS, Math.min(this._speed.length(), MIN_WALL_SPEED)));
             this._velocity.sub(collisionNormal.clone().multiplyScalar(this._velocity.dot(collisionNormal)));
         }
-        this._mesh.position.add(this._velocity);
+        this.mesh.position.add(this._velocity);
         this.rearWheel.update(this.speed.length());
-        this.updatedPosition = this._mesh.position;
+        this.updatedPosition = this.mesh.position;
     }
-    public getLabTimes(): number[] {
+    public getLapTimes(): number[] {
         return this.lapTimes;
     }
     public setLapTimes(time: number): number {
