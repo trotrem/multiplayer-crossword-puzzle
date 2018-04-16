@@ -61,7 +61,7 @@ export class RenderGameService extends RenderService {
             this.cameras[1].updatePosition(player.getUpdatedPosition());
         }
         this.renderer.render(this.sceneGameService.scene, this.cameras[this.cameraID]);
-        this.stats.update();
+        // this.stats.update();
     }
     public onResize(): void {
         if (this.cameraID === 0) {
