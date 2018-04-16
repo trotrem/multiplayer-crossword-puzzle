@@ -6,8 +6,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import {Difficulty} from "../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 
-/* tslint:disable:no-magic-numbers no-floating-promises */
-
+/* tslint:disable:no-magic-numbers*/
 describe("HomePageComponent", () => {
   let router: Router;
   let component: HomePageComponent = new HomePageComponent(router);
@@ -37,7 +36,6 @@ describe("HomePageComponent", () => {
     const difficulty: Difficulty = "easy";
     const nbPlayers: string = "one";
     router.navigateByUrl("/crossword/" + nbPlayers + "/" + difficulty);
-    /* tslint:disable */
     tick(50);
     expect(router.url).toBe("/crossword/" + nbPlayers + "/" + difficulty);
   }));

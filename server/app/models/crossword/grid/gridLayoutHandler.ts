@@ -55,9 +55,7 @@ export class GridLayoutHandler {
     }
 
     public static makeGrid(grid: IGrid): void {
-        // making an empty grid
         this.makeEmptyGrid(grid);
-        // putting black square in the grid
         this.generateBlackSquares(grid);
     }
 }

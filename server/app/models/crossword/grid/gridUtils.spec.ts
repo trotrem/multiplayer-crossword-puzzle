@@ -1,4 +1,4 @@
-// tslint:disable:no-magic-numbers
+/* tslint:disable:no-magic-numbers*/
 import { expect } from "chai";
 import { IGrid } from "./dataStructures";
 import { GridUtils } from "./gridUtils";
@@ -13,7 +13,7 @@ describe("getText", () => {
                               words: [{ id: 0, direction: Direction.Vertical,
                                         gridSquares: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}] }],
                               blackCells: [] };
-        expect(GridUtils.getText(grid.words[0], grid)).equals("yes");
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid)).equals("yes");
     });
 });
 
@@ -26,6 +26,6 @@ describe("setData", () => {
                                         gridSquares: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}] }],
                               blackCells: [] };
         GridUtils.setData(new WordDictionaryData("bah", [], 0), grid.words[0], grid);
-        expect(GridUtils.getText(grid.words[0], grid)).equals("bah");
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid)).equals("bah");
     });
 });

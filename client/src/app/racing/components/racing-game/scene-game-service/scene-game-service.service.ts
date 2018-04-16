@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { ILine } from "./../walls-collisions-service/walls-collisions-service";
 import { Car } from "./../car/car";
 import { TrackDisplay } from "./../trackDisplay/track-display";
 import { CARS_MAX } from "../../../../constants";
 import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
 import {Skybox} from "./skybox";
+import { ILine } from "../../../race-utils/race-utils";
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;

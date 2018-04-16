@@ -5,22 +5,24 @@ import { ActivatedRoute } from "@angular/router";
 import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import * as THREE from "three";
-import { Track } from "../../track";
+import { ITrack } from "../../track";
 import { RenderEditorService } from "./render-editor.service/render-editor.service";
-
+const TRACK_NAME: string = "name";
+const CANVAS: string = "canvas";
 @Component({
     selector: "app-editor",
     templateUrl: "./editor.component.html",
-    styleUrls: ["./editor.component.css"]
+    styleUrls: ["./editor.component.css"],
+    providers: [RenderEditorService, SceneEditorService]
 })
 
 export class EditorComponent implements OnInit {
 
-    @ViewChild("canvas")
+    @ViewChild(CANVAS)
 
     private canvasRef: ElementRef;
     private submitValid: boolean;
-    public track: Track;
+    public track: ITrack;
 
     private get canvas(): HTMLCanvasElement {
         return this.canvasRef.nativeElement;
@@ -35,10 +37,9 @@ export class EditorComponent implements OnInit {
         };
         this.submitValid = false;
     }
-
     public async ngOnInit(): Promise<void> {
         this.renderService.initialize(this.canvas, this.sceneService.scene);
-        const name: string = this.route.snapshot.paramMap.get("name");
+        const name: string = this.route.snapshot.paramMap.get(TRACK_NAME);
         if (name !== null) {
             await this.getTrack(name);
         }
@@ -69,15 +70,15 @@ export class EditorComponent implements OnInit {
         });
 
     }
-    public onSubmit(f: NgForm): void {
-        this.track.description = f.value.description;
-        this.track.name = f.value.name;
+    public onSubmit(form: NgForm): void {
+        this.track.description = form.value.description;
+        this.track.name = form.value.name;
         this.submitValid = true;
     }
 
     public async getTrack(name: string): Promise<void> {
         await this.communicationService.getTrackByName(name)
-            .then((res: Track[]) => {
+            .then((res: ITrack[]) => {
                 this.track = res[0];
                 const newPoints: Array<THREE.Vector3> = this.track.points;
                 this.sceneService.setIsClosed(true);

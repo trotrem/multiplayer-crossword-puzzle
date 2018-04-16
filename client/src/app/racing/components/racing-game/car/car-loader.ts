@@ -1,5 +1,6 @@
 import { Object3D, ObjectLoader } from "three";
 export class CarLoader {
+//TODO : static? Sarah
     public constructor() {}
     public async load(): Promise<Object3D> {
         return new Promise<Object3D>((resolve, reject) => {

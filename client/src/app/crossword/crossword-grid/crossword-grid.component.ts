@@ -27,20 +27,19 @@ export class CrosswordGridComponent implements OnInit {
     private _difficulty: Difficulty = "easy";
     public selectedWord: WordDescription = null;
     // needed so the html recognizes the enum
-    private TipMode: typeof TipMode = TipMode;// tslint:disable-line
+    public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode = TipMode.Definitions;
 
     @HostListener("document:click")
-    // (listens to document event so it's not called in the code)
-    private onBackgroundClick(): void {  // tslint:disable-line
+    private onBackgroundClick(): void {
         this.selectedWord = this.gridEventService.setSelectedWord(null, false);
     }
 
-    public get horizontalWords(): WordDescription[] {
+    public getHorizontalWords(): WordDescription[] {
         return this.words.filter((word) => word.direction === Direction.Horizontal);
     }
 
-    public get verticalWords(): WordDescription[] {
+    public getVerticalWords(): WordDescription[] {
         return this.words.filter((word) => word.direction === Direction.Vertical);
     }
 
@@ -61,9 +60,9 @@ export class CrosswordGridComponent implements OnInit {
     }
     public ngOnInit(): void {
         this.route.params.subscribe((params) => {
-            this.gridEventService.setDifficulty(params["Difficulty"]);
+            this.gridEventService.difficulty = params["Difficulty"];
             this._difficulty = params["Difficulty"];
-            this.gridEventService.setNbPlayers(params["nbPlayers"]);
+            this.gridEventService.NbPlayers = params["nbPlayers"];
             this.nbPlayers = params["nbPlayers"];
             this.fetchGrid();
         });
@@ -73,7 +72,7 @@ export class CrosswordGridComponent implements OnInit {
         this.communicationService.fetchGrid(this._difficulty)
             .subscribe((data) => {
                 const gridData: IGridData = data as IGridData;
-                this.gridEventService.setId(gridData.id);
+                this.gridEventService.id = gridData.id;
                 gridData.blackCells.forEach((cell) => {
                     this.cells[cell.y][cell.x].isBlack = true;
                 });
@@ -96,7 +95,7 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public toggleTipMode(): void {
-        if (this.horizontalWords[0].word === undefined) {
+        if (this.getHorizontalWords()[0].word === undefined) {
             this.fetchCheatModeWords();
         }
         this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions;
@@ -116,11 +115,11 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private fetchCheatModeWords(): void {
-        this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
+        this.communicationService.fetchCheatModeWords(this.gridEventService.id)
             .subscribe((data: string[]) => {
                 const words: string[] = data as string[];
                 let i: number = 0;
-                for (const word of this.horizontalWords.concat(this.verticalWords)) {
+                for (const word of this.getHorizontalWords().concat(this.getVerticalWords())) {
                     word.word = words[i];
                     i++;
                 }

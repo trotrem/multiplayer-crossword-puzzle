@@ -2,6 +2,13 @@ import * as THREE from "three";
 
 const SKYBOX_POSITION: number = 800;
 const SKYBOX_SIZE: number = 5000;
+const PATH: string = "./../../assets/models/Skybox/";
+const FRONT: string = "front.JPG";
+const BACK: string = "back.JPG";
+const RIGHT: string = "right.JPG";
+const LEFT: string = "left.JPG";
+const TOP: string = "top.JPG";
+const BOTTOM: string = "bottom.JPG";
 
 export class Skybox {
     private static _instance: Skybox;
@@ -13,7 +20,7 @@ export class Skybox {
     public static get instance(): Skybox {
 
         return this._instance || (this._instance = new this());
-      }
+    }
 
     private constructor() {
         this.skyMaterials = this.initializeMaterials();
@@ -26,27 +33,27 @@ export class Skybox {
 
         return [
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/front.JPG"),
+                map: new THREE.TextureLoader().load(PATH + FRONT),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/back.JPG"),
+                map: new THREE.TextureLoader().load(PATH + BACK),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/top.JPG"),
+                map: new THREE.TextureLoader().load(PATH + TOP),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/bottom.JPG"),
+                map: new THREE.TextureLoader().load(PATH + BOTTOM),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/right.JPG"),
+                map: new THREE.TextureLoader().load(PATH + RIGHT),
                 side: THREE.DoubleSide
             }),
             new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load("./../../assets/models/Skybox/left.JPG"),
+                map: new THREE.TextureLoader().load(PATH + LEFT),
                 side: THREE.DoubleSide
             })];
     }
