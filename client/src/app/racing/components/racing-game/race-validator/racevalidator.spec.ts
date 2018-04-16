@@ -11,6 +11,7 @@ import { INewScores, IBestScores } from "../../../../../../../common/communicati
 import { KeyboardService } from "../commands/keyboard.service";
 import { Engine } from "./../car/engine";
 import { ITrack } from "./../../../track";
+import { WallService } from "../walls-collisions-service/walls";
 /* tslint:disable: no-magic-numbers */
 class MockEngine extends Engine {
     public getDriveTorque(): number {
@@ -34,10 +35,11 @@ describe("Racevalidator", () => {
     const keyboard: KeyboardService = new KeyboardService;
     let car: MockCar;
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
+    const wallService: WallService = new WallService();
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
-            providers: [RaceValidator, WallsCollisionsService],
+            providers: [RaceValidator, WallsCollisionsService, WallService],
             imports: [
                 FormsModule,
                 RouterTestingModule.withRoutes([{ path: "gameResults/:CarIndex", component: GameResultsComponent }])]
@@ -45,7 +47,7 @@ describe("Racevalidator", () => {
     });
 
     beforeEach(async (done: () => void) => {
-        car = new MockCar(wallsCollisionsService, keyboard, new MockEngine());
+        car = new MockCar(wallsCollisionsService, wallService, keyboard, new MockEngine());
         done();
 
     });

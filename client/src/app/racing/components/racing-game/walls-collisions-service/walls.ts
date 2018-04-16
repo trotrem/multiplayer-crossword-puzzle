@@ -1,16 +1,11 @@
 import * as THREE from "three";
-import { RaceUtils } from "../../../utils/utils";
+import { RaceUtils, ILine } from "../../../race-utils/race-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
 enum WallSide {
     exterior = -1,
     interior = 1
-}
-
-export interface ILine {
-    pos1: THREE.Vector3;
-    pos2: THREE.Vector3;
 }
 
 const WALL_WIDTH: number = 8;
@@ -73,11 +68,9 @@ export class WallService {
             wallSide
         );
 
-        return RaceUtils.twoLinesIntersection(
-            firstSegmentCoordinates[0],
-            firstSegmentCoordinates[1],
-            secondSegmentCoordinates[0],
-            secondSegmentCoordinates[1]
+        return RaceUtils.getTwoLinesIntersection(
+            { pos1: firstSegmentCoordinates[0], pos2: firstSegmentCoordinates[1] },
+            { pos1: secondSegmentCoordinates[0], pos2: secondSegmentCoordinates[1] }
         );
     }
 

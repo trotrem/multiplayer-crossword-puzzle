@@ -69,7 +69,7 @@ export class AiController {
     }
 
     private verifyCollisionWall(): void {
-        if (this.collisionWallService.getCollisionNormal(this._car).length > 0) {
+        if (this.collisionWallService.getCollisionNormal(this._car, this.wallService.walls).length > 0) {
             this.turn(this._car.checkpoint);
             this.hasCollided = true;
         } else if (this.calculateAngle(this._car.checkpoint) < MAX_ANGLE && this.hasCollided) {

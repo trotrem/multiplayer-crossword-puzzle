@@ -11,12 +11,14 @@ import { KeyboardService } from "../commands/keyboard.service";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { ILine } from "../../../race-utils/race-utils";
 import { FormsModule } from "@angular/forms";
+import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers  */
 describe("RenderGameService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     const keyboard: KeyboardService = new KeyboardService;
     const sceneService: SceneGameService = new SceneGameService();
+    const wallService: WallService = new WallService();
     // tslint:disable-next-line:prefer-const
     let canvas: HTMLCanvasElement;
     const startingZone: THREE.Line3 = new THREE.Line3;
@@ -39,7 +41,7 @@ describe("RenderGameService", () => {
     }));
 
     beforeEach(async (done: () => void) => {
-        car = new Car(wallsCollisionsService, keyboard);
+        car = new Car(wallsCollisionsService, wallService, keyboard);
         await car.init();
 
         points.push(new THREE.Vector3(2, 3, 0));
