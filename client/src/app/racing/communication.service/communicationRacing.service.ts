@@ -1,4 +1,4 @@
-import { Injectable, StaticInjector } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
 
 import { HttpHeaders, HttpClient } from "@angular/common/http";
