@@ -24,7 +24,7 @@ describe("TrackValoidator", () => {
         const position1: THREE.Vector3 = new THREE.Vector3(-24, -22.6, 0);
         points.push(position1);
         const position2: THREE.Vector3 = new THREE.Vector3(-10.3, -23.3, 0);
-        expect(TrackValidator.isValid(points, position1, position2).length).toBe(3);
+        expect(TrackValidator.isValid(points, position1, position2).length).toBe(1);
     });
 
     it("shouldnt accept two segments crossing", () => {
@@ -35,6 +35,6 @@ describe("TrackValoidator", () => {
         const position1: THREE.Vector3 = new THREE.Vector3(12, 6, 0);
         points.push(position1);
         const position2: THREE.Vector3 = new THREE.Vector3(-42, 7.7, 0);
-        expect(TrackValidator.isValid(points, position1, position2).length).toBe(5);
+        expect(TrackValidator.isValid(points, position1, position2).length).toBe(2);
     });
 });

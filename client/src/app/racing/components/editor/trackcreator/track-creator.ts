@@ -11,12 +11,9 @@ export class TrackCreator {
 
     public isClosed: boolean;
 
-    public trackValidator: TrackValidator;
-
     public trackValid: boolean;
 
     public constructor(private renderService: RenderEditorService) {
-        this.trackValidator = new TrackValidator();
         this.points = new Array<THREE.Vector3>();
 
         this.trackValid = false;
@@ -48,7 +45,7 @@ export class TrackCreator {
         let lines: Array<THREE.Line> = new Array<THREE.Line>();
         let illegalPoints: THREE.Vector3[] = new Array<THREE.Vector3>();
         let color: number;
-        illegalPoints = this.trackValidator.isValid(this.points, lastPos, newPos);
+        illegalPoints = TrackValidator.isValid(this.points, lastPos, newPos);
 
         if (illegalPoints.length === 0) {
             color = GREEN_COLOR;
@@ -65,7 +62,7 @@ export class TrackCreator {
         lineGeometry.vertices.push(newPos);
         const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
         lines.push(line);
-        this.trackValidator.emptyPoints();
+        TrackValidator.emptyPoints(illegalPoints);
 
         return lines;
     }
