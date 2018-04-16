@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils, ILine } from "../../../utils/utils";
+import { RaceUtils, ILine } from "../../../race-utils/race-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
@@ -16,12 +16,14 @@ export class WallsCollisionsService {
     private _walls: ILine[] = [];
     private _corners: THREE.Vector3[] = [];
 
+    /* REFACTOR */
     public getCollisionNormal(car: Car): THREE.Vector3[] {
         const normals: THREE.Vector3[] = [];
         this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));
         for (let i: number = 0; i < this._corners.length; i++) {
             for (const wall of this._walls) {
-                if (RaceUtils.doLinesIntersect(this._corners[i], this._corners[(i + 1) % this._corners.length], wall.pos1, wall.pos2)) {
+                if (RaceUtils.doLinesIntersect({pos1: this._corners[i], pos2: this._corners[(i + 1) % this._corners.length]},
+                                               {pos1: wall.pos1, pos2: wall.pos2})) {
                     normals.push(wall.pos2.clone().sub(wall.pos1).cross(new THREE.Vector3(0, 0, 1)).normalize());
                 }
             }
@@ -81,10 +83,8 @@ export class WallsCollisionsService {
         );
 
         return RaceUtils.getTwoLinesIntersection(
-            firstSegmentCoordinates[0],
-            firstSegmentCoordinates[1],
-            secondSegmentCoordinates[0],
-            secondSegmentCoordinates[1]
+            {pos1: firstSegmentCoordinates[0], pos2: firstSegmentCoordinates[1]},
+            {pos1: secondSegmentCoordinates[0], pos2: secondSegmentCoordinates[1]}
         );
     }
 

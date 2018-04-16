@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Car } from "../car/car";
 import { MS_TO_SECONDS, LAP_MAX } from "./../../../../constants";
-import { RaceUtils } from "../../../utils/utils";
+import { RaceUtils } from "../../../race-utils/race-utils";
 import { INewScores } from "./../../../../../../../common/communication/interfaces";
 const ADD_TO_DISTANCE: number = 20;
 
@@ -10,7 +10,7 @@ export class RaceValidator {
     public static validateRace(car: Car, timer: number, points: THREE.Vector3[]): number[] {
 
         car.getUpdatedPosition();
-        if (RaceUtils.calculateDistance(car.getUpdatedPosition(), points[points.length - car.checkpoint - 1])
+        if (RaceUtils.getDistance(car.getUpdatedPosition(), points[points.length - car.checkpoint - 1])
             <= ADD_TO_DISTANCE) {
             car.checkpoint += 1;
             if (car.checkpoint === points.length) {
@@ -50,9 +50,9 @@ export class RaceValidator {
         checkPoints.shift();
         checkPoints = points.slice().reverse();
         let distance: number =
-            RaceUtils.calculateDistance(car.getUpdatedPosition(), points[car.checkpoint]);
+            RaceUtils.getDistance(car.getUpdatedPosition(), points[car.checkpoint]);
         for (let j: number = car.checkpoint; j < checkPoints.length - 1; j++) {
-            distance += RaceUtils.calculateDistance(points[j], points[j + 1]);
+            distance += RaceUtils.getDistance(points[j], points[j + 1]);
         }
         const time: number = car.setLapTimes((distance / car.speed.length()) + timeNow);
         while (car.getLabTimes().length !== LAP_MAX) {

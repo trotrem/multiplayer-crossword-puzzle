@@ -190,7 +190,7 @@ export class Car extends Object3D {
         return this.speed.multiplyScalar(deltaTime);
     }
     private physicsUpdate(deltaTime: number): void {
-        this.rearWheel.angularVelocity += CarPhysics.getAngularAcceleration(this) * deltaTime;
+        this.rearWheel._angularVelocity += CarPhysics.getAngularAcceleration(this) * deltaTime;
         this.engine.update(this._speed.length(), this.rearWheel.radius);
         this.weightRear = CarPhysics.getWeightDistribution(this, this.mass, this.wheelbase);
         this._speed.add(CarPhysics.getDeltaSpeed(this, deltaTime));

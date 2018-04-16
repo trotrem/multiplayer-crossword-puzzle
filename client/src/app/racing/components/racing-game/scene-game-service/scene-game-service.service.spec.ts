@@ -7,7 +7,7 @@ import { Car } from "./../car/car";
 import { CarLoader } from "../car/car-loader";
 import { IBestScores, INewScores } from "./../../../../../../../common/communication/interfaces";
 import { CarsPositionsHandler } from "../cars-positions-handler/cars-positions-handler";
-import { ILine } from "../../../utils/utils";
+import { ILine } from "../../../race-utils/race-utils";
 
 // "magic numbers" utilisés pour les tests
 /* tslint:disable:no-magic-numbers*/

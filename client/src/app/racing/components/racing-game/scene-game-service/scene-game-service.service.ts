@@ -5,7 +5,7 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { CARS_MAX } from "../../../../constants";
 import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
 import {Skybox} from "./skybox";
-import { ILine } from "../../../utils/utils";
+import { ILine } from "../../../race-utils/race-utils";
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
