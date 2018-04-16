@@ -30,6 +30,7 @@ describe("TrackCreator", () => {
         expect(lines.length).toBe(1);
     });
     it("should recreate a conflict line ", () => {
+        const color: number =  0xFF0000;
         const illegalPoints: Array<THREE.Vector3> = new Array<THREE.Vector3>();
         // tslint:disable-next-line:no-magic-numbers
         const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
@@ -38,7 +39,7 @@ describe("TrackCreator", () => {
         illegalPoints.push(position1);
         illegalPoints.push(new THREE.Vector3(0, 0, 0));
         illegalPoints.push(position2);
-        const lines: Array<THREE.Line> = component.redrawConflictingLines(illegalPoints);
+        const lines: Array<THREE.Line> = component.redrawConflictingLines(illegalPoints, color);
         // tslint:disable-next-line:no-magic-numbers
         expect(lines.length).toBe(2);
     });

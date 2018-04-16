@@ -49,10 +49,11 @@ export class TrackCreator {
 
     public createLine(lastPos: THREE.Vector3, newPos: THREE.Vector3): Array<THREE.Line> {
         const lines: Array<THREE.Line> = this.verifyTrack(lastPos, newPos);
+        const color: number = this.color;
         const lineGeometry: THREE.Geometry = new THREE.Geometry;
         lineGeometry.vertices.push(lastPos);
         lineGeometry.vertices.push(newPos);
-        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "color": this.color }));
+        const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
         lines.push(line);
         this.trackValidator.emptyPoints();
 
@@ -69,21 +70,21 @@ export class TrackCreator {
         } else {
             this.color = RED_COLOR;
             if (illegalPoints.length > 1) {
-                lines = this.redrawConflictingLines(illegalPoints);
+                lines = this.redrawConflictingLines(illegalPoints, this.color);
             }
             this.trackValid = false;
         }
 
         return lines;
     }
-//TODO : Laurence string magique
-    public redrawConflictingLines(illegalPoints: THREE.Vector3[]): Array<THREE.Line> {
+
+    public redrawConflictingLines(illegalPoints: THREE.Vector3[], color: number): Array<THREE.Line> {
         const lines: Array<THREE.Line> = new Array<THREE.Line>();
         for (let i: number = 0; i < illegalPoints.length; i += MAX_SELECTION) {
             const lineGeometry: THREE.Geometry = new THREE.Geometry;
             lineGeometry.vertices.push(illegalPoints[i]);
             lineGeometry.vertices.push(illegalPoints[i + 1]);
-            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ "color": RED_COLOR }));
+            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
             lines.push(line);
         }
 
