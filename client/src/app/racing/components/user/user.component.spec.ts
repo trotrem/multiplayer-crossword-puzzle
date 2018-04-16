@@ -8,7 +8,7 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { GameComponent } from "../racing-game/game-component/game.component";
 
 // tslint:disable:no-floating-promises
-
+//TODO : pas de disable promises: Amal
 describe("UserComponent", () => {
     let component: UserComponent;
     let fixture: ComponentFixture<UserComponent>;
@@ -43,7 +43,7 @@ describe("UserComponent", () => {
         expect(component.tracks).toBeDefined();
     });
 
-    it('navigate to "race/name" takes you to  "race/name"', fakeAsync(() => {
+    it('when track chosen navigate to race page : "race/name"', fakeAsync(() => {
         const name: string = "Laurence";
         router.navigateByUrl("/race/" + name);
         /* tslint:disable */

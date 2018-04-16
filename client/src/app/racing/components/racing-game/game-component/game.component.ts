@@ -14,7 +14,7 @@ const DELAY_FOR_RED: number = 1500;
     styleUrls: ["./game.component.css"],
     providers: [GameManagerService, KeyboardService]
 })
-
+//TODO : string magiques: Sarah
 export class GameComponent implements AfterViewInit {
 
     @ViewChild("canvas")

@@ -14,7 +14,8 @@ import { SceneGameService } from "../scene-game-service/scene-game-service.servi
 import { ILine } from "../../../race-utils/race-utils";
 
 // "magic numbers" utilisés pour les tests
-/* tslint:disable:no-magic-numbers no-floating-promises await-promise */
+/* tslint:disable:no-magic-numbers  */
+//TODO : Laurence
 describe("RenderGameService", () => {
     const carLoader: CarLoader = new CarLoader();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();

@@ -43,7 +43,7 @@ export class AiController {
         if (this._car.checkpoint === this._checkPoints.length - 1) {
             if (RaceUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
                 this._car.checkpoint = 0;
-                if (this._car.getLabTimes().length < LAP_MAX) {
+                if (this._car.getLapTimes().length < LAP_MAX) {
                     return true;
                 }
             }
@@ -80,7 +80,6 @@ export class AiController {
             0)) * HALF_CIRCLE_DEGREES / Math.PI;
     }
 
-    // TODO : À vérifier, utils pour gridword et racing ? utilisé dans les 2
     private randomIntFromInterval(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }

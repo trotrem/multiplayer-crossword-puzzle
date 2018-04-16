@@ -12,8 +12,6 @@ import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
-/* tslint:disable:no-magic-numbers no-floating-promises */
-
 describe("AdminComponent", () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
@@ -34,7 +32,7 @@ describe("AdminComponent", () => {
     fixture = TestBed.createComponent(AdminComponent);
 
   }));
-
+// TODO: check tous les diasble: Amal
   beforeEach(inject([Router], (_router: Router) => {
     router = _router;
     fixture = TestBed.createComponent(AdminComponent);

@@ -2,8 +2,10 @@ import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { TrackCreator } from "./../trackcreator/track-creator";
 import { RenderEditorService } from "../render-editor.service/render-editor.service";
-
+//TODO : Dylan
 const MAX_SELECTION: number = 2;
+const FIRST_POINT_MATERIAL: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });
+const POINT_MATERIAL: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
 
 @Injectable()
 export class SceneEditorService {
@@ -27,9 +29,9 @@ export class SceneEditorService {
         const position: THREE.Vector3 =
             this.trackCreator.getPlacementPosition(new THREE.Vector3(event.x, event.y));
         if (this.trackCreator.points.length === 0) {
-            this.scene.add(this.trackCreator.createFirstPointContour(position));
+            this.scene.add(this.trackCreator.createPoint(position, FIRST_POINT_MATERIAL));
         }
-        this.scene.add(this.trackCreator.createPoint(position));
+        this.scene.add(this.trackCreator.createPoint(position, POINT_MATERIAL));
 
         if (this.trackCreator.points.length > 0) {
             this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
@@ -101,13 +103,12 @@ export class SceneEditorService {
             newPoints[newPoints.length - 1] = newPoints[0];
         }
         this.removeTrack();
-        this.scene.add(this.trackCreator.createFirstPointContour(newPoints[0]));
-        this.scene.add(this.trackCreator.createPoint(newPoints[0]));
+        this.scene.add(this.trackCreator.createPoint(newPoints[0], FIRST_POINT_MATERIAL));
         this.trackCreator.points.push(newPoints[0]);
 
         for (const position of newPoints.slice(1)) {
             this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
-            this.scene.add(this.trackCreator.createPoint(position));
+            this.scene.add(this.trackCreator.createPoint(position, POINT_MATERIAL));
             this.trackCreator.points.push(position);
             this.addLinesToScene();
         }

@@ -6,9 +6,9 @@
 <table>
     <caption>Lap Times for each car</caption>
   <tr *ngFor="let score of scores">
-      <th> Car number {{score.id}}  =></th>
+      <th> Car number {{score.idCar}}  =></th>
       <th> Scores for each lap :</th>
-      <ul *ngFor="let score of score.scores">
+      <ul *ngFor="let score of score.scoresCar">
           <td> {{score}}</td>
       </ul>
     </tr>
@@ -24,9 +24,9 @@
       <th> Best score:  </th>
   </tr>
       <tr *ngFor="let score of bestScores">
-      <td>{{score.name}} </td>
+      <td>{{score.namePlayer}} </td>
       <td></td>
-      <td> {{score.score}}  </td>
+      <td> {{score.scorePlayer}}  </td>
    </tr>
   </table>
 </div>
@@ -36,7 +36,7 @@
       <h1> ! You hit best score !</h1> 
   <div>
       Name:
-       <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.name" placeholder= "name"> 
+       <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.namePlayer" placeholder= "name"> 
 </div>
 <button [disabled]="isAdded"(click)="saveBestScore()">Submit</button>
 </form>  
