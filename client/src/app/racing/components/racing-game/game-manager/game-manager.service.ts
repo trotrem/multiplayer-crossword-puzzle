@@ -15,6 +15,7 @@ import { AiController } from "./../ai-controller/ai-controller";
 import { KeyboardService } from "../commands/keyboard.service";
 
 const AI_PLAYERS_MAX: number = 3;
+const RESULTS: string = "/gameResults/";
 
 @Injectable()
 export class GameManagerService {
@@ -143,7 +144,7 @@ export class GameManagerService {
     }
 
     private navigateToGameResults(): void {
-        this.router.navigateByUrl("/gameResults/" + this.track.name);
+        this.router.navigateByUrl(RESULTS + this.track.name);
     }
 
     private initializeControllers(): void {

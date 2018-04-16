@@ -8,7 +8,9 @@ import { ITrack } from "../../track";
 import { ResultsManager } from "./resultsManager/results-manager";
 const DELAY: number = 100;
 const BEST_SCORES_MAX: number = 5;
-
+const NAME: string = "name";
+const RACE: string = "/race/";
+const SEPARATOR: string = "/";
 @Component({
     selector: "app-game-results",
     templateUrl: "./game-results.component.html",
@@ -35,7 +37,7 @@ export class GameResultsComponent implements OnInit {
     }
     private initializeBestScores(): void {
         this._bestScores = new Array<IBestScores>();
-        this._bestScores.push({namePlayer: "", scorePlayer : 0});
+        this._bestScores.push({ namePlayer: "", scorePlayer: 0 });
         this.newBestScore = { namePlayer: "", scorePlayer: 0 };
     }
     private initializeNewScores(): void {
@@ -53,7 +55,7 @@ export class GameResultsComponent implements OnInit {
     }
 
     public async ngOnInit(): Promise<void> {
-        const name: string = this.route.snapshot.paramMap.get("name");
+        const name: string = this.route.snapshot.paramMap.get(NAME);
         if (name !== null) {
             await this.getTrack(name);
         }
@@ -96,10 +98,10 @@ export class GameResultsComponent implements OnInit {
 
     }
     public replay(): void {
-        this.router.navigateByUrl("/race/" + this._track.name);
+        this.router.navigateByUrl(RACE + this._track.name);
     }
     public returnToMain(): void {
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl(SEPARATOR);
     }
 
     public saveBestScore(): void {

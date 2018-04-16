@@ -8,6 +8,7 @@ import * as THREE from "three";
 import { ITrack } from "../../track";
 import { RenderEditorService } from "./render-editor.service/render-editor.service";
 const TRACK_NAME: string = "name";
+const CANVAS: string = "canvas";
 @Component({
     selector: "app-editor",
     templateUrl: "./editor.component.html",
@@ -17,7 +18,7 @@ const TRACK_NAME: string = "name";
 
 export class EditorComponent implements OnInit {
 
-    @ViewChild("canvas")
+    @ViewChild(CANVAS)
 
     private canvasRef: ElementRef;
     private submitValid: boolean;

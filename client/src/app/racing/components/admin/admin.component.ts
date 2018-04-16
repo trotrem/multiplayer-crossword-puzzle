@@ -5,6 +5,8 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { ITrack } from "../../track";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 import * as THREE from "three";
+
+const EDITOR: string = "/editor/";
 @Component({
     selector: "app-admin",
     templateUrl: "./admin.component.html",
@@ -20,8 +22,10 @@ export class AdminComponent implements OnInit {
     public constructor(private communicationService: RacingCommunicationService, private router: Router) {
         this.tracks = new Array<ITrack>();
         this.isSelected = false;
-        this.selectedTrack = {name: "", description: "", startingZone: new THREE.Line3(), points:  new Array <THREE.Vector3>(),
-                              usesNumber: 0, INewScores: new Array <INewScores>(), IBestScores: new Array < IBestScores>()};
+        this.selectedTrack = {
+            name: "", description: "", startingZone: new THREE.Line3(), points: new Array<THREE.Vector3>(),
+            usesNumber: 0, INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
+        };
     }
 
     public ngOnInit(): void {
@@ -42,7 +46,7 @@ export class AdminComponent implements OnInit {
     }
 
     public editTrack(): ITrack {
-        this.router.navigateByUrl("/editor/" + this.selectedTrack.name);
+        this.router.navigateByUrl(EDITOR + this.selectedTrack.name);
 
         return this.selectedTrack;
     }
