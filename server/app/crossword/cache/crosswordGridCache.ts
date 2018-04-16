@@ -3,9 +3,9 @@ import { GridUtils } from "../models/grid/gridUtils";
 import { IGridData, CrosswordLobbyGame } from "../../../../common/communication/events";
 import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
 
-// TODO sortir
-
 // TODO: renommer fichier
+
+// TODO: split en deux (cache et logique)
 
 interface ICacheGame {
     words: Array<IValidationWord>;
@@ -46,6 +46,23 @@ export class CrosswordGamesCache {
         }
 
         return null;
+    }
+
+    public getGameWinner(id: string): SocketIO.Socket {
+        const game: ICacheGame = this.getGame(id);
+        if (game.words.filter((w: IValidationWord) => w.validatedBy === undefined).length !== 0) {
+            return null;
+        }
+        const firstPlayerWordCount: number = game.words.filter((w: IValidationWord) => w.validatedBy === game.players[0].socket.id).length;
+        console.log(firstPlayerWordCount)
+        if (firstPlayerWordCount > game.words.length / 2) {
+            return game.players[0].socket;
+        }
+        if (firstPlayerWordCount < game.words.length / 2) {
+            return game.players[1].socket;
+        }
+
+        return undefined;
     }
 
     public getPlayersSockets(id: string): SocketIO.Socket[] {

@@ -1,4 +1,4 @@
-import { IPoint, IWordInfo } from "./types";
+import { IPoint, IWordInfo, GameResult } from "./types";
 
 export enum CrosswordEvents {
     Connected = "connection",
@@ -12,7 +12,9 @@ export enum CrosswordEvents {
     FetchedOpenGames = "fetched-open-games",
     OpponentFound = "opponent-found",
     SelectedWord = "selected-word",
-    OpponentSelectedWord = "opponent-selected-word"
+    OpponentSelectedWord = "opponent-selected-word",
+    GameEnded = "game-ended",
+    Rematch = "rematch"
 }
 
 export interface IEventPayload {
@@ -36,4 +38,8 @@ export interface IValidationData extends IEventPayload {
 
 export interface IWordSelection extends IEventPayload {
     wordId: number;
+}
+
+export interface IGameResult extends IEventPayload {
+    result: GameResult;
 }

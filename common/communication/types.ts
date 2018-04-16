@@ -20,6 +20,12 @@ export enum Difficulty {
     Hard
 }
 
+export enum GameResult {
+    Victory,
+    Defeat,
+    Tie
+}
+
 export enum NbPlayers {
     One = 1,
     Two = 2

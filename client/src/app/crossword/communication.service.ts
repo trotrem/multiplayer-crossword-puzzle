@@ -4,7 +4,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
 import { Difficulty, IWordValidationParameters, ICrosswordSettings } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData, IValidationData, IWordSelection } from "../../../../common/communication/events";
+import { CrosswordEvents, IGridData, IValidationData, IWordSelection, IGameResult } from "../../../../common/communication/events";
 
 const SERVER_URL: string = "http://localhost:3000"
 
@@ -53,5 +53,9 @@ export class CommunicationService {
 
     public onOpponentSelectedWord(): Observable<IWordSelection> {
         return this.socketsService.onEvent(CrosswordEvents.OpponentSelectedWord) as Observable<IWordSelection>;
+    }
+
+    public onGameEnded(): Observable<IGameResult> {
+        return this.socketsService.onEvent(CrosswordEvents.GameEnded).first() as Observable<IGameResult>;
     }
 }

@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { GameResult } from "../../../../../common/communication/types";
 
 @Component({
   selector: "app-end-game",
@@ -8,13 +9,22 @@ import { Router } from "@angular/router";
 })
 export class EndGameComponent {
 
-  public constructor(private router: Router) { }
+    public constructor(private router: Router, private route: ActivatedRoute) { }
 
-  public playSameCongif(): void {
-    this.router.navigate(["/crossword/game"]);
-  }
+    public get message(): string {
+        const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
 
-  public returnHome(): void {
-    this.router.navigateByUrl("crossword/homePage");
-  }
+        return result === GameResult.Victory ? "Congratulations!!! You won!" :
+            result === GameResult.Defeat ? "Aw you lost.. Better luck next time!" :
+            result === GameResult.Tie ? "It's a tie!" :
+             "Something's wrong";
+    }
+
+    public playSameCongif(): void {
+        this.router.navigate(["/crossword/game"]);
+    }
+
+    public returnHome(): void {
+        this.router.navigateByUrl("crossword/homePage");
+    }
 }

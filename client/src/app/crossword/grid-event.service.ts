@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { WordDescription } from "./wordDescription";
-import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers } from "../../../../common/communication/types";
+import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers, GameResult } from "../../../../common/communication/types";
 import { Cell, AssociatedPlayers } from "./cell";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
-import { IValidationData, IWordSelection } from "../../../../common/communication/events";
+import { IValidationData, IWordSelection, IGameResult } from "../../../../common/communication/events";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -42,6 +42,14 @@ export class GridEventService {
         if (nbPlayers === 2) {
             this.subscribeToOpponentSelection();
         }
+        this.subscribeToGameEnded();
+    }
+
+    private subscribeToGameEnded(): void {
+        this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
+            console.log(data.result + " gg")
+            this.openEndGame(data.result);
+        });
     }
 
     private subscribeToOpponentSelection(): void {
@@ -176,7 +184,6 @@ export class GridEventService {
             }
             word.found = foundStatus;
         }
-        this.validateGrid();
     }
 
     // TODO only check crossing word
@@ -186,17 +193,8 @@ export class GridEventService {
         }
     }
 
-    private validateGrid(): void {
-        for (const word of this._words) {
-            if (!word.found) {
-                return;
-            }
-        }
-        this.openEndGame();
-    }
-
-    private openEndGame(): void {
-        this.router.navigate(["/crossword/endGame"]);
+    private openEndGame(result: GameResult): void {
+        this.router.navigate(["/crossword/endGame/" + result]);
     }
 
     public setNbPlayers(nbPlayers: NbPlayers): void {
@@ -209,10 +207,6 @@ export class GridEventService {
 
     public getDifficulty(): Difficulty {
         return this._crosswordSettings.difficulty;
-    }
-
-    public setId(id: string): void {
-        this._id = id;
     }
 
     public getId(): string {

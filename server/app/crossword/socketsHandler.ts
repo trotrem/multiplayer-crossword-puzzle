@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
 import * as socketIo from "socket.io";
 import * as http from "http";
-import { ICrosswordSettings, Difficulty, IWordValidationParameters } from "../../../common/communication/types";
+import { ICrosswordSettings, Difficulty, IWordValidationParameters, GameResult } from "../../../common/communication/types";
 import { GridFetcher } from "./gridFetcher";
 import { CrosswordGamesCache } from "./cache/crosswordGridCache";
-import { CrosswordEvents, IEventPayload, IGridData, IValidationData, IWordSelection } from "../../../common/communication/events";
+import { CrosswordEvents, IEventPayload, IGridData, IValidationData, IWordSelection, IGameResult } from "../../../common/communication/events";
 import { IValidationWord, IGrid } from "./dataStructures";
 
 @injectable()
@@ -99,13 +99,34 @@ export class SocketsHandler {
                     CrosswordGamesCache.Instance.getOpponentSocket(parameters.gridId.toString(), socket)
                         .emit(CrosswordEvents.WordValidated, validationPayload);
                 }
+                this.checkForEndGame(parameters.gridId);
             }
         });
     }
 
     private onSelectedWord(socket: SocketIO.Socket): void {
         socket.on(CrosswordEvents.SelectedWord, (selectedWord: IWordSelection) => {
-            CrosswordGamesCache.Instance.getOpponentSocket(selectedWord.gameId, socket).emit(CrosswordEvents.OpponentSelectedWord, selectedWord);
+            CrosswordGamesCache.Instance.getOpponentSocket(selectedWord.gameId, socket)
+                .emit(CrosswordEvents.OpponentSelectedWord, selectedWord);
         });
+    }
+
+    private checkForEndGame(gameId: string): void {
+        const winner: SocketIO.Socket = CrosswordGamesCache.Instance.getGameWinner(gameId);
+        if (winner === null) {
+            return;
+        }
+
+        if (winner !== undefined) {
+            winner.emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Victory} as IGameResult);
+            if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2)
+            {
+                CrosswordGamesCache.Instance.getOpponentSocket(gameId, winner)
+                    .emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Defeat} as IGameResult);
+            }
+
+            return;
+        }
+        this.emitToGamePlayers(gameId, CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Tie } as IGameResult);
     }
 }
