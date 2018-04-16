@@ -1,4 +1,4 @@
-// tslint:disable:no-magic-numbers
+/* tslint:disable:no-magic-numbers*/
 import { expect } from "chai";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
 import { IGrid } from "./dataStructures";

@@ -1,7 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import * as THREE from "three";
-
 import { PositionsDefiner } from "./position-definer";
+
 /* tslint:disable:no-magic-numbers */
 describe("PositionsDefinerService", () => {
   beforeEach(() => {

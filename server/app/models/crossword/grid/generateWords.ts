@@ -9,7 +9,6 @@ import { Difficulty } from "../../../../../common/communication/types";
 
 export module GenerateWords {
 
-    // exported for testing purposes only, should be called through generateGrid
     export const filterRepeatedWords: ({ }: WordDictionaryData[], { }: IGrid) => WordDictionaryData[] =
         (words: WordDictionaryData[], grid: IGrid) => {
             if (words.length > 0) {
@@ -21,7 +20,6 @@ export module GenerateWords {
             return words;
         };
 
-    // exported for testing purposes only, should be called through generateGrid
     export const addWord: ({ }: number, { }: IGrid, { }: Difficulty) =>
         Promise<IGrid> = async (index: number, grid: IGrid, difficulty: Difficulty) => {
             if (index === grid.words.length) {
@@ -32,7 +30,6 @@ export module GenerateWords {
             words = filterRepeatedWords(words, grid);
             for ({} of words) {
 
-                // check if word fits correctly in grid since the api sometimes sends words that don't
                 const newWordData: WordDictionaryData = words[Utils.randomIntFromInterval(0, words.length - 1)];
                 if (GridUtils.wordFitsInGrid(newWordData.word, grid.words[index].gridSquares, grid)) {
                     GridUtils.setData(newWordData, grid.words[index], grid);

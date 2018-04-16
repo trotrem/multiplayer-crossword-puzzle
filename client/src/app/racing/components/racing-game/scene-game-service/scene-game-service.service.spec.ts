@@ -6,7 +6,7 @@ import { KeyboardService } from "../commands/keyboard.service";
 import { Car } from "./../car/car";
 import { ILine } from "../../../race-utils/race-utils";
 import { WallService } from "../walls-collisions-service/walls";
-// "magic numbers" utilisés pour les tests
+
 /* tslint:disable:no-magic-numbers*/
 describe("SceneGameService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();

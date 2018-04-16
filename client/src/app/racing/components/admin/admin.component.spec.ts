@@ -7,11 +7,11 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { ITrack } from "../../track";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { FormsModule } from "@angular/forms";
-
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
+/* tslint:disable:no-magic-numbers*/
 describe("AdminComponent", () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
@@ -72,7 +72,6 @@ describe("AdminComponent", () => {
   it('navigate to " "editor/:name"" takes you to  "editor/:name"', fakeAsync(() => {
     const name: string = "Laurence";
     router.navigateByUrl("/editor/" + name);
-    // tslint:disable-next-line:no-magic-numbers
     tick(50);
     expect(router.url).toBe("/editor/" + name);
   }));

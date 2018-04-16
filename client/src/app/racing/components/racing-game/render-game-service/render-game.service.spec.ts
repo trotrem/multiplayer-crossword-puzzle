@@ -19,8 +19,7 @@ describe("RenderGameService", () => {
     const keyboard: KeyboardService = new KeyboardService;
     const sceneService: SceneGameService = new SceneGameService();
     const wallService: WallService = new WallService();
-    // tslint:disable-next-line:prefer-const
-    let canvas: HTMLCanvasElement;
+    const canvas: HTMLCanvasElement = undefined;
     const startingZone: THREE.Line3 = new THREE.Line3;
     const points: THREE.Vector3[] = new Array<THREE.Vector3>();
     const service: RenderGameService = new RenderGameService(sceneService);

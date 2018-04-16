@@ -16,9 +16,9 @@ const LOWER_Z: number = 122;
 export class GridEventService {
     private selectedWord: WordDescription = null;
     private words: WordDescription[];
-    private id: number;
     private nbPlayers: string;
     private _difficulty: Difficulty = "easy";
+    public id: number;
 
     public constructor(private communicationService: CommunicationService, private router: Router) {
     }
@@ -93,7 +93,6 @@ export class GridEventService {
         }
     }
 
-    // public for test purposes
     public write(char: string, word: WordDescription): void {
         for (const cell of word.cells) {
             if (cell.content === "") {
@@ -162,14 +161,5 @@ export class GridEventService {
 
     public set difficulty(difficulty: Difficulty) {
         this._difficulty = difficulty;
-    }
-
-    // TODO : public ??
-    public set Id(id: number) {
-        this.id = id;
-    }
-
-    public get Id(): number {
-        return this.id;
     }
 }

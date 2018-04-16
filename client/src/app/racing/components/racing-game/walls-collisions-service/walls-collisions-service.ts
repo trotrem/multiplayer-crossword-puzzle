@@ -3,7 +3,6 @@ import { RaceUtils, ILine } from "../../../race-utils/race-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
-// Sides may be inverted depending on the orientation of the track (clockwise or counter-clockwise)
 enum WallSide {
     exterior = -1,
     interior = 1

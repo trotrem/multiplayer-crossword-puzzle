@@ -47,8 +47,6 @@ describe("Car", () => {
     });
 
     it("should decelerate when brake is pressed", () => {
-        // Remove rolling resistance and drag force so the only force slowing down the car is the brakes.
-
         car.isAcceleratorPressed = true;
         car.update(MS_BETWEEN_FRAMES);
         car.isAcceleratorPressed = false;

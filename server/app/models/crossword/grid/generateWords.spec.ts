@@ -1,4 +1,3 @@
-// tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
@@ -7,6 +6,7 @@ import { GridUtils } from "./gridUtils";
 import { Direction } from "../../../../../common/communication/types";
 import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
 
+/* tslint:disable:no-magic-numbers */
 describe("addWord", () => {
 
     it("Should add words", async () => {

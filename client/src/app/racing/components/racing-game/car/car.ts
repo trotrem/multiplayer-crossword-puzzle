@@ -51,7 +51,7 @@ export class Car extends Object3D {
     private weightRear: number;
     private updatedPosition: Vector3;
     private lapTimes: number[];
-    public  checkpoint: number;
+    public checkpoint: number;
 
     public get Engine(): Engine {
         return this.engine;
@@ -146,6 +146,16 @@ export class Car extends Object3D {
         this.lapTimes = new Array<number>();
         this.checkpoint = 0;
     }
+    private initializeCar(): void { 
+        this.engine = engine;
+        this.rearWheel = rearWheel;
+        this.wheelbase = wheelbase;
+        this.mass = mass;
+        this.dragCoefficient = dragCoefficient;
+    }
+    private initializeExtern(): void { 
+
+    }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
         this.mesh = await this.carLoader.load();
@@ -157,13 +167,9 @@ export class Car extends Object3D {
     }
     public update(deltaTime: number): void {
         deltaTime = deltaTime / MS_TO_SECONDS;
-        // Move to car coordinates (extract)
         this._speed.applyMatrix4(this.setRotationMatrix());
-        // Physics calculations
         this.physicsUpdate(deltaTime);
-        // Move back to world coordinates
         this._speed = this.speed.applyQuaternion(this.setRotationQuaternion().inverse());
-        // Angular rotation of the car
         this.setAngularRotation(deltaTime);
     }
     private setRotationMatrix(): Matrix4 {

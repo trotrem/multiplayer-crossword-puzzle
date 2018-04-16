@@ -9,7 +9,7 @@ import { WordDescription } from "./wordDescription";
 import { Direction } from "../../../../common/communication/types";
 import { Cell } from "./cell";
 
-// tslint:disable:no-magic-numbers
+/* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {
     let http: HttpClient;
     let router: Router;
@@ -41,27 +41,27 @@ describe("GridEventService", () => {
         spyOn(service, "write");
         const keyboardEvent: KeyboardEvent = new KeyboardEvent("keydown");
         service.setSelectedWord({ id: 1, direction: 0, cells: [], definition: "", found: false }, true);
-        for (let keyCode: number = 0; keyCode <= 64; keyCode++) { // random character
+        for (let keyCode: number = 0; keyCode <= 64; keyCode++) {
             Object.defineProperty(keyboardEvent, "keyCode", { value: keyCode });
             service.onKeyPress(keyboardEvent);
             expect(service.write).not.toHaveBeenCalled();
         }
-        for (let keyCode: number = 91; keyCode <= 96; keyCode++) { // random character
+        for (let keyCode: number = 91; keyCode <= 96; keyCode++) {
             Object.defineProperty(keyboardEvent, "keyCode", { value: keyCode });
             service.onKeyPress(keyboardEvent);
             expect(service.write).not.toHaveBeenCalled();
         }
-        for (let keyCode: number = 123; keyCode <= 2000; keyCode++) { // random character
+        for (let keyCode: number = 123; keyCode <= 2000; keyCode++) {
             Object.defineProperty(keyboardEvent, "keyCode", { value: keyCode });
             service.onKeyPress(keyboardEvent);
             expect(service.write).not.toHaveBeenCalled();
         }
-        for (let keyCode: number = 65; keyCode <= 90; keyCode++) { // A à Z
+        for (let keyCode: number = 65; keyCode <= 90; keyCode++) {
             Object.defineProperty(keyboardEvent, "keyCode", { value: keyCode });
             service.onKeyPress(keyboardEvent);
             expect(service.write).toHaveBeenCalled();
         }
-        for (let keyCode: number = 97; keyCode <= 122; keyCode++) { // a à z
+        for (let keyCode: number = 97; keyCode <= 122; keyCode++) {
             Object.defineProperty(keyboardEvent, "keyCode", { value: keyCode });
             service.onKeyPress(keyboardEvent);
             expect(service.write).toHaveBeenCalled();

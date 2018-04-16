@@ -7,6 +7,7 @@ import { HomePageComponent } from "../home-page/home-page.component";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { Difficulty } from "../../../../../common/communication/types";
 
+/* tslint:disable:no-magic-numbers*/
 describe("EndGameComponent", () => {
   let router: Router;
   let route: ActivatedRoute;
@@ -37,7 +38,6 @@ describe("EndGameComponent", () => {
 
   it('navigate to "homePage" takes you to /homePage', fakeAsync(() => {
     router.navigateByUrl("/homePage");
-    /* tslint:disable */
     tick(50);
     expect(router.url).toBe("/homePage");
   }));
@@ -46,7 +46,6 @@ describe("EndGameComponent", () => {
     const difficulty: Difficulty = "easy";
     const nbPlayers: string = "one";
     router.navigateByUrl("/crossword/" + nbPlayers + "/" + difficulty);
-    /* tslint:disable */
     tick(50);
     expect(router.url).toBe("/crossword/" + nbPlayers + "/" + difficulty);
   }));
