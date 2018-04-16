@@ -37,7 +37,7 @@ export class RenderGameService extends RenderService {
         super.initializeSuper(canvas);
         this.sceneGameService.initialize(points, startingZone, cars, walls);
 
-        this.initStats();
+        // this.initStats();
         this.initializeCamera();
         this.initCameraCommands(keyboard);
     }
@@ -47,12 +47,12 @@ export class RenderGameService extends RenderService {
         this.cameras[1] = new OrthographicCamera();
         this.cameras[0].up.set(0, 0, 1);
     }
-
-    private initStats(): void {
+    // TODO : check si necessaire
+   /* private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
         this.canvas.appendChild(this.stats.dom);
-    }
+    }*/
 
     public render(player: Car): void {
         if (this.cameraID === 0) {
