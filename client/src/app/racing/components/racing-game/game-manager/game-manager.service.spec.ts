@@ -9,13 +9,14 @@ import { WallsCollisionsService } from "../walls-collisions-service/walls-collis
 import { KeyboardService } from "../commands/keyboard.service";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { WallService } from "../walls-collisions-service/walls";
+import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 
 describe("GameManagerService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         GameManagerService, WallService, RenderGameService, RacingCommunicationService,
-        WallsCollisionsService, KeyboardService, SceneGameService],
+        WallsCollisionsService, KeyboardService, SceneGameService, CarsCollisionService],
       imports: [
         HttpClientModule,
         HttpClientTestingModule,
