@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { SocketsService } from "../sockets.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CrosswordEvents, CrosswordLobbyGame } from "../../../../../common/communication/events";
+import { CrosswordEvents, ILobbyGames, ICrosswordSettings, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
+import { CommunicationService } from "../communication.service";
 
 @Component({
     selector: "app-multiplayer-lobby",
@@ -11,26 +11,27 @@ import { GameConfigurationService } from "../game-configuration.service";
 })
 export class MultiplayerLobbyComponent implements OnInit {
 
-    public lobbyGames: CrosswordLobbyGame[];
-    private _playerName: string;
+    public lobbyGames: IConnectionInfo[];
+    private _settings: IConnectionInfo;
 
-    public constructor(private socketsService: SocketsService,
+    public constructor(private communicationService: CommunicationService,
                        private gameConfiguration: GameConfigurationService,
                        private router: Router) {
         this.lobbyGames = [];
+        this._settings = { player: this.gameConfiguration.playerName, gameId: undefined };
     }
 
-    // TODO passr par le communication service
     public ngOnInit(): void {
-        this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames)
-            .first()
-            .subscribe((games: CrosswordLobbyGame[]) => { this.lobbyGames = games; });
-        this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, this.gameConfiguration.difficulty);
-        this._playerName = this.gameConfiguration.playerName;
+        this.communicationService.onGamesFetched()
+            .subscribe((lobby: ILobbyGames) => {
+                this.lobbyGames = lobby.games; });
+
+        this.communicationService.fetchOpenGames({gameId: undefined, difficulty: this.gameConfiguration.difficulty} as ILobbyRequest);
     }
 
-    public joinGame(game: CrosswordLobbyGame): void {
-        this.socketsService.sendEvent(CrosswordEvents.JoinGame, { name: this._playerName, gridId: game.gameId });
+    public joinGame(game: IConnectionInfo): void {
+        this._settings.gameId = game.gameId;
+        this.communicationService.joinGame(this._settings);
         this.router.navigate(["/crossword/game/"]);
     }
 }

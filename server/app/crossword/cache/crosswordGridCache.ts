@@ -1,6 +1,6 @@
 import { IWordInfo, Difficulty } from "../../../../common/communication/types";
 import { GridUtils } from "../models/grid/gridUtils";
-import { IGridData, CrosswordLobbyGame } from "../../../../common/communication/events";
+import { IGridData, ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
 import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
 
 // TODO: renommer fichier
@@ -31,11 +31,14 @@ export class CrosswordGamesCache {
         return this._instance || (this._instance = new this());
     }
 
-    public getOpenMultiplayerGames(difficulty: Difficulty): CrosswordLobbyGame[] {
-        return Object.keys(this._grids[difficulty])
-            .map((index: string) => ({ grid: this._grids[difficulty][index], id: index }))
-            .filter((grid: { grid: ICacheGame, id: string }) => grid.grid.maxPlayers === 2 && grid.grid.players.length === 1)
-            .map((grid: { grid: ICacheGame, id: string }) => ({ creator: grid.grid.players[0].name, gameId: grid.id }));
+    public getOpenMultiplayerGames(difficulty: Difficulty): ILobbyGames {
+        return {gameId: undefined, games: Object.keys(this._grids[difficulty])
+            .map((index: string) => ({ game: this._grids[difficulty][index], id: index }))
+            .filter((gameEntry: { game: ICacheGame, id: string }) => gameEntry.game.maxPlayers === 2 && gameEntry.game.players.length === 1)
+                .map((gameEntry: { game: ICacheGame, id: string }) => ({
+                    player: gameEntry.game.players[0].name,
+                    gameId: gameEntry.id
+                } as IConnectionInfo))} as ILobbyGames;
     }
 
     public getDifficulty(id: string): Difficulty {
@@ -54,7 +57,6 @@ export class CrosswordGamesCache {
             return null;
         }
         const firstPlayerWordCount: number = game.words.filter((w: IValidationWord) => w.validatedBy === game.players[0].socket.id).length;
-        console.log(firstPlayerWordCount)
         if (firstPlayerWordCount > game.words.length / 2) {
             return game.players[0].socket;
         }
@@ -70,7 +72,6 @@ export class CrosswordGamesCache {
     }
 
     public getOpponentSocket(id: string, socket: SocketIO.Socket): SocketIO.Socket {
-        console.log(id)
         const sockets: SocketIO.Socket[] = this.getPlayersSockets(id);
         if (sockets.length === 2) {
             return sockets.filter((p: SocketIO.Socket) => p.id !== socket.id)[0];
@@ -85,7 +86,6 @@ export class CrosswordGamesCache {
 
     public createGame(creator: IPlayer, difficulty: Difficulty, nbPlayers: number): string {
         const id: string = this.gridUniqueKey();
-        console.log(id)
         this._grids[difficulty][id] = {
             gridData: null,
             words: null,

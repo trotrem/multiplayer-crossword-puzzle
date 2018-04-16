@@ -8,12 +8,6 @@ export enum Direction {
     Horizontal
 }
 
-export interface IWordValidationParameters {
-    gridId: string;
-    word: string;
-    wordIndex: number;
-}
-
 export enum Difficulty {
     Easy,
     Medium,
@@ -43,11 +37,5 @@ export interface IWordInfo {
 export class Message {
     public title: string;
     public body: string;
-}
-
-export interface ICrosswordSettings {
-    difficulty: Difficulty;
-    nbPlayers: number;
-    playerName?: string;
 }
 

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
-import { WordDescription } from "../wordDescription";
-import { Cell, AssociatedPlayers } from "../cell";
 import { CommunicationService } from "../communication.service";
 import { GridEventService } from "../grid-event.service";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
+import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -101,8 +100,6 @@ export class CrosswordGridComponent implements OnInit {
     private createGrid(gridData: IGridData): void {
         console.log(gridData.gameId)
         this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
-        this.gridEventService.setNbPlayers(this.nbPlayers);
-        this.gridEventService.setDifficulty(this.gameConfiguration.difficulty);
         gridData.blackCells.forEach((cell: IPoint) => {
             this.cells[cell.y][cell.x].isBlack = true;
         });

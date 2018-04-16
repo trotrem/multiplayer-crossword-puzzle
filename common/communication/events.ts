@@ -1,4 +1,4 @@
-import { IPoint, IWordInfo, GameResult } from "./types";
+import { IPoint, IWordInfo, GameResult, Difficulty } from "./types";
 
 export enum CrosswordEvents {
     Connected = "connection",
@@ -21,8 +21,8 @@ export interface IEventPayload {
     gameId: string;
 }
 
-export interface CrosswordLobbyGame extends IEventPayload {
-    creator: string;
+export interface IConnectionInfo extends IEventPayload {
+    player: string;
 }
 
 export interface IGridData extends IEventPayload {
@@ -42,4 +42,23 @@ export interface IWordSelection extends IEventPayload {
 
 export interface IGameResult extends IEventPayload {
     result: GameResult;
+}
+
+export interface IWordValidationPayload extends IEventPayload {
+    word: string;
+    wordIndex: number;
+}
+
+export interface ICrosswordSettings extends IEventPayload {
+    difficulty: Difficulty;
+    nbPlayers: number;
+    playerName?: string;
+}
+
+export interface ILobbyGames extends IEventPayload {
+    games: IConnectionInfo[];
+}
+
+export interface ILobbyRequest extends IEventPayload {
+    difficulty: Difficulty;
 }

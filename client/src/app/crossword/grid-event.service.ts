@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
-import { WordDescription } from "./wordDescription";
-import { IWordValidationParameters, Difficulty, ICrosswordSettings, NbPlayers, GameResult } from "../../../../common/communication/types";
-import { Cell, AssociatedPlayers } from "./cell";
+import { Difficulty, NbPlayers, GameResult } from "../../../../common/communication/types";
 import { CommunicationService } from "./communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
-import { IValidationData, IWordSelection, IGameResult } from "../../../../common/communication/events";
+import { IValidationData, IWordSelection, IGameResult, ICrosswordSettings, IWordValidationPayload } from "../../../../common/communication/events";
+import { WordDescription, Cell, AssociatedPlayers } from "./dataStructures";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -27,7 +26,6 @@ export class GridEventService {
     private _words: WordDescription[];
     private _id: string;
     private _nbPlayers: number;
-    private _crosswordSettings: ICrosswordSettings;
 
     public constructor(
         private communicationService: CommunicationService,
@@ -37,7 +35,6 @@ export class GridEventService {
     public initialize(words: WordDescription[], nbPlayers: NbPlayers, id: string): void {
         this._id = id;
         this._words = words;
-        this._crosswordSettings = { difficulty: Difficulty.Easy, nbPlayers: nbPlayers };
         this._nbPlayers = nbPlayers;
         if (nbPlayers === 2) {
             this.subscribeToOpponentSelection();
@@ -163,8 +160,8 @@ export class GridEventService {
     }
 
     private validate(word: WordDescription): void {
-        const parameters: IWordValidationParameters = {
-            gridId: this._id,
+        const parameters: IWordValidationPayload = {
+            gameId: this._id,
             wordIndex: word.id,
             word: word.cells.map((elem) => elem.content).join("")
         };
@@ -195,18 +192,6 @@ export class GridEventService {
 
     private openEndGame(result: GameResult): void {
         this.router.navigate(["/crossword/endGame/" + result]);
-    }
-
-    public setNbPlayers(nbPlayers: NbPlayers): void {
-        this._crosswordSettings.nbPlayers = nbPlayers;
-    }
-
-    public setDifficulty(difficulty: Difficulty): void {
-        this._crosswordSettings.difficulty = difficulty;
-    }
-
-    public getDifficulty(): Difficulty {
-        return this._crosswordSettings.difficulty;
     }
 
     public getId(): string {
