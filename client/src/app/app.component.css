@@ -17,10 +17,11 @@ a:hover, a:active {
     background-color: green;
 }
 .crossword {
-    float: left;
-    margin: 10px 450px;
+    float: left; 
+    margin: 00px 10px ;
 }
+ 
 .racing {
     float: center;
-    margin: 20px 30px;
+   
 }
