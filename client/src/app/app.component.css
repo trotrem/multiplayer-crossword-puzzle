@@ -1,6 +1,8 @@
 div {text-align:center;
     font-family: courier;
     color: crimson;
+    top: 50%;
+    left: 50%; 
 }
 
 a {font-family: courier;}
@@ -11,16 +13,17 @@ a:link, a:visited {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    align-items: center ;
+    
 }
 
 a:hover, a:active {
     background-color: green;
 }
 .crossword {
-    float: left;
-    margin: 10px 450px;
+    float: left;  
 }
+ 
 .racing {
-    float: center;
-    margin: 20px 30px;
+    margin: 00px 200px;  
 }

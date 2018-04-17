@@ -14,6 +14,6 @@ a:hover, a:active {
 
 
 nav {
-    float: right;
-    margin: 100px 700px;
+    float: center; 
+    margin: 10vh 45vmax;
 }

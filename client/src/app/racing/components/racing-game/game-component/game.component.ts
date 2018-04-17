@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GameManagerService } from "../game-manager/game-manager.service";
 import { KeyboardEventService } from "../commands/keyboard-event.service";
 const LIGHTS: number = 3;
@@ -14,6 +14,7 @@ const KEYDOWN: string = "document:keydown";
 const KEYUP: string = "document:keyup";
 const NAME: string = "name";
 const CANVAS: string = "canvas";
+const USER: string = "/user";
 @Component({
     moduleId: module.id,
     selector: "app-game-component",
@@ -28,7 +29,8 @@ export class GameComponent implements AfterViewInit {
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
+    public constructor(private route: ActivatedRoute, private router: Router,
+                       private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -84,5 +86,8 @@ export class GameComponent implements AfterViewInit {
     public async play(): Promise<void> {
         this.playButtonEnabled = false;
         await this.visualSignal();
+    }
+    public return(): void {
+        this.router.navigateByUrl(USER);
     }
 }

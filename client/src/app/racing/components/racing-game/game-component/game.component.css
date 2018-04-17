@@ -29,9 +29,9 @@ li{
   }
 button {
     font-family: courier;
-    background-color:#f78f08;
+    background-color:green;
     border: none;
-    color: blue;
+    color: white;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
@@ -40,4 +40,10 @@ button {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
+    margin: 1vmax; 
+}
+.return{
+  background-color: black;
+  padding: 15px 20px;
+  color: white; 
 }
