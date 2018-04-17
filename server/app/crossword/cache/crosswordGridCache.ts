@@ -106,7 +106,7 @@ export class CrosswordGamesCache {
         cacheGrid.gridData = this.convertIGridToGridData(grid, id);
         cacheGrid.words = grid.words.map((w: IWordContainer): IValidationWord => {
             return {
-                word: GridUtils.getText(w, grid).toUpperCase(),
+                word: GridUtils.getText(w.gridSquares, grid).toUpperCase(),
                 validatedBy: undefined
             };
         });

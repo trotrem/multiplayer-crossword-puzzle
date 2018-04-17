@@ -37,7 +37,6 @@ export class RenderEditorService extends RenderService {
         requestAnimationFrame(() => this.animate(scene));
         this.renderer.render(scene, this.camera);
     }
-
     public convertToWorldPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
         const canvasPosition: THREE.Vector3 =

@@ -7,14 +7,13 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { GameComponent } from "../racing-game/game-component/game.component";
 
-// tslint:disable:no-floating-promises
-
+/* tslint:disable:no-magic-numbers*/
 describe("UserComponent", () => {
     let component: UserComponent;
     let fixture: ComponentFixture<UserComponent>;
     let router: Router;
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [UserComponent, GameComponent],
             imports: [
                 HttpClientModule,
@@ -43,32 +42,35 @@ describe("UserComponent", () => {
         expect(component.tracks).toBeDefined();
     });
 
-    it('navigate to "race/name" takes you to  "race/name"', fakeAsync(() => {
+    it('when track chosen navigate to race page : "race/name"', fakeAsync(() => {
         const name: string = "Laurence";
         router.navigateByUrl("/race/" + name);
-        /* tslint:disable */
         tick(50);
         expect(router.url).toBe("/race/" + name);
     }));
     it("each track containts a name ", () => {
         component.ngOnInit();
-        for(const track of component.tracks)
-        expect(track.name).toBeDefined();
+        for (const track of component.tracks) {
+            expect(track.name).toBeDefined();
+        }
     });
     it("each track containts a description ", () => {
         component.ngOnInit();
-        for(const track of component.tracks)
-        expect(track.description).toBeDefined();
+        for (const track of component.tracks) {
+            expect(track.description).toBeDefined();
+        }
     });
     it("each track containts a number of uses ", () => {
         component.ngOnInit();
-        for(const track of component.tracks)
-        expect(track.usesNumber).toBeDefined();
+        for (const track of component.tracks) {
+            expect(track.usesNumber).toBeDefined();
+        }
     });
     it("each track containts a best scores table ", () => {
         component.ngOnInit();
-        for(const track of component.tracks)
-        expect(track.IBestScores).toBeDefined();
+        for (const track of component.tracks) {
+            expect(track.IBestScores).toBeDefined();
+        }
     });
-    
+
 });

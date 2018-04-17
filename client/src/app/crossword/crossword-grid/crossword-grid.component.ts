@@ -36,7 +36,7 @@ export class CrosswordGridComponent implements OnInit {
     public selectedWord: WordDescription = null;
     public opponentSelectedWord: WordDescription = null;
     // needed so the html recognizes the enum
-    private TipMode: typeof TipMode = TipMode;// tslint:disable-line
+    public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode = TipMode.Definitions;
     private isStated: boolean;
 

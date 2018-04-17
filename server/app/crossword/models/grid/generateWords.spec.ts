@@ -1,4 +1,3 @@
-// tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
@@ -6,6 +5,7 @@ import { GridUtils } from "./gridUtils";
 import { Direction, Difficulty } from "../../../../../common/communication/types";
 import { WordDictionaryData, IGrid } from "../../dataStructures";
 
+/* tslint:disable:no-magic-numbers */
 describe("addWord", () => {
 
     it("Should add words", async () => {
@@ -21,12 +21,12 @@ describe("addWord", () => {
 
         WordsPositionsHelper.createListOfWord(grid);
         grid = await GenerateWords.addWord(0, grid, Difficulty.Hard);
-        expect(GridUtils.getText(grid.words[0], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[1], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[2], grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[0], grid).length).equals(4);
-        expect(GridUtils.getText(grid.words[1], grid).length).equals(3);
-        expect(GridUtils.getText(grid.words[2], grid).length).equals(3);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid).length).equals(4);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid).length).equals(3);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid).length).equals(3);
     });
 
     it("Should return null if unable to fill grid", async () => {

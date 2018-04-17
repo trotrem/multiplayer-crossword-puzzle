@@ -9,21 +9,21 @@ const ROTATION_ANGLE_DIVIDER: number = 2;
 @Injectable()
 export class CarsPositionsHandler {
 
-  public static insertCars(line: THREE.Line3, cars: Car[]): Car[] {
+    public static insertCars(line: THREE.Line3, cars: Car[]): Car[] {
 
-    const positions: THREE.Vector3[] = PositionsDefiner.getCarsPositions(line);
-    for (let i: number = 0; i < CARS_MAX; i++) {
-      const randomPosition: THREE.Vector3 = positions[Math.floor(Math.random() * positions.length)];
-      cars[i].mesh.rotateZ(Math.PI / ROTATION_ANGLE_DIVIDER);
-      cars[i].mesh.rotateY(this.getRotateCarPosition(line));
-      cars[i].mesh.position.set(randomPosition.x, randomPosition.y, 0);
-      positions.splice(positions.indexOf(randomPosition), 1);
+        const positions: THREE.Vector3[] = PositionsDefiner.getCarsPositions(line);
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            const randomPosition: THREE.Vector3 = positions[Math.floor(Math.random() * positions.length)];
+            cars[i].mesh.rotateZ(Math.PI / ROTATION_ANGLE_DIVIDER);
+            cars[i].mesh.rotateY(this.getRotateCarPosition(line));
+            cars[i].mesh.position.set(randomPosition.x, randomPosition.y, 0);
+            positions.splice(positions.indexOf(randomPosition), 1);
+        }
+
+        return cars;
     }
+    private static getRotateCarPosition(line: THREE.Line3): number {
 
-    return cars;
-  }
-  private static getRotateCarPosition(line: THREE.Line3): number {
-
-    return Math.atan2(PositionsDefiner.getDeltaLine(line).y, PositionsDefiner.getDeltaLine(line).x);
-  }
+        return Math.atan2(PositionsDefiner.getDeltaLine(line).y, PositionsDefiner.getDeltaLine(line).x);
+    }
 }
