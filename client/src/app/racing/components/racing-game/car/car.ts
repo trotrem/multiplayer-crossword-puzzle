@@ -43,6 +43,22 @@ export class Car extends Object3D {
     private lapTimes: number[];
     public checkpoint: number;
 
+    public constructor(
+        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardEventService,
+        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
+        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
+        super();
+        wheelbase = this.handleWheelBaseError(wheelbase);
+        mass = this.handleMassError(mass);
+        dragCoefficient = this.handleDragError(dragCoefficient);
+        this.engine = engine;
+        this.rearWheel = rearWheel;
+        this.wheelbase = wheelbase;
+        this.mass = mass;
+        this.dragCoefficient = dragCoefficient;
+        this._velocity = new Vector3();
+        this.initializeCar();
+    }
     public get Engine(): Engine {
         return this.engine;
     }
@@ -84,21 +100,6 @@ export class Car extends Object3D {
     }
     public set steeringWheel(direction: number) {
         this.steeringWheelDirection = direction;
-    }
-    public constructor(
-        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardEventService,
-        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
-        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
-        super();
-        wheelbase = this.handleWheelBaseError(wheelbase);
-        mass = this.handleMassError(mass);
-        dragCoefficient = this.handleDragError(dragCoefficient);
-        this.engine = engine;
-        this.rearWheel = rearWheel;
-        this.wheelbase = wheelbase;
-        this.mass = mass;
-        this.dragCoefficient = dragCoefficient;
-        this.initializeCar();
     }
     private initializeCar(): void {
         this.updatedPosition = new Vector3();
