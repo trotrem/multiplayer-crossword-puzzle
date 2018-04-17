@@ -6,13 +6,19 @@ import { GameConfigurationService } from "../game-configuration.service";
 @Injectable()
 export class WordStatusManagerService {
 
-    public constructor(private communicationService: CommunicationService, private gameConfigurationService: GameConfigurationService) { }
+    private gameConfigurationService: GameConfigurationService;
 
+    public constructor(private communicationService: CommunicationService) {
+    }
+
+    public initialize(gameConfigurationService: GameConfigurationService): void {
+        this.gameConfigurationService = gameConfigurationService;
+    }
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string, nbPlayers: number): WordDescription {
-        if (nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
+        // console.log(this.gameConfigurationService.nbPlayers);
+        if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
             console.log("sending");
-           // console.log(this.gameConfigurationService.nbPlayers);
             this.communicationService.sendSelectionStatus({ gameId: id, wordId: word !== null ? word.id : null });
         }
 

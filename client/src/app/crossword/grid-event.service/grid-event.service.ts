@@ -32,6 +32,7 @@ export class GridEventService {
     }
 
     public initialize(words: WordDescription[], id: string): void {
+        this.wordStatusManagerService.initialize(this.gameConfigurationService);
         this._id = id;
         this._words = words;
         this._nbPlayers = this.gameConfigurationService.nbPlayers;
