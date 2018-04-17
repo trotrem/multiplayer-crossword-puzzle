@@ -91,7 +91,7 @@ export class GameResultsComponent implements OnInit {
         this.router.navigateByUrl("/race/" + this._track.name);
     }
     public returnToMain(): void {
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl("/user");
     }
 
     public saveBestScore(): void {

@@ -1,43 +1,46 @@
-<button (click)="replay()">Replay</button>
-<button (click)="returnToMain()">Retrun to Main Page</button>
 
-<div class="Left">
 
-<table>
+
+
+<table class="Left">
     <caption>Lap Times for each car</caption>
-  <tr *ngFor="let score of scores">
-      <th> Car number {{score.idCar}}  =></th>
+  <tr>
+      <th> Car's id </th>
       <th> Scores for each lap :</th>
+    </tr>
+    <tr *ngFor="let score of scores" class = "line">
+      <td>{{score.idCar}}</td>
+      <td> 
       <ul *ngFor="let score of score.scoresCar">
-          <td> {{score}}</td>
+          {{score}}
       </ul>
+    </td>
     </tr>
 </table>
-</div>
-<div class="Right">
   
-<table>
+<table class="Right">
     <caption>Your car's best scores</caption>
   <tr>
       <th> Player's name:  </th>
-      <th>  </th>
       <th> Best score:  </th>
   </tr>
       <tr *ngFor="let score of bestScores">
       <td>{{score.namePlayer}} </td>
-      <td></td>
       <td> {{score.scorePlayer}}  </td>
    </tr>
   </table>
-</div>
   <div [hidden]="isNotBestScore()">
-   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <h1> !! Congratulations !! </h1>
-      <h1> ! You hit best score !</h1> 
-  <div>
-      Name:
-       <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.namePlayer" placeholder= "name"> 
-</div>
-<button [disabled]="isAdded"(click)="saveBestScore()">Submit</button>
-</form>  
-</div>
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+         <h1> !! Congratulations !! </h1>
+           <h1> ! You hit best score !</h1> 
+       <div>
+           Name:
+            <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.namePlayer" placeholder= "name"> 
+     </div>
+     <button [disabled]="isAdded"(click)="saveBestScore()" class= "submit">Submit</button>
+     </form>  
+     </div>
+
+     <button (click)="replay()">Replay</button>
+     <button (click)="returnToMain()">Retrun to Main Page</button>
+

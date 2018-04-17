@@ -1,14 +1,16 @@
 
-h1 {color: goldenrod}
+h1 {color: blue;
+    font-family: courier;
+
+}
 [hidden] { display: none !important;}
-.Left {width: 500px; float: left; }
-.Right {width: 500px; float: right; }
+.Left {width: 50%; float: left; }
+.Right {width: 50%; float: right; } 
 button {
     font-family: courier;
     background-color:#f78f08;
-    border: none;
+    /* border: none; */
     color: blue;
-    padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -17,3 +19,31 @@ button {
     cursor: pointer;
     border-radius: 8px;
 }
+table {
+    font-family: courier;
+    border: 1px solid black;
+    border-radius: 8px;
+    float: left;
+    background: rgb(235, 232, 232); 
+  } 
+  td, th {
+    text-align: center;
+    border-bottom: 1px solid gray;
+}
+caption {
+    font-size: 16px;
+    color: blue;
+}
+.submit {
+    background-color :white;
+    color:green;
+    border: 1px solid black;
+}
+div {font-family: courier;
+    width: 50%; float: left; 
+}
+input{font-family: courier;
+    border: 1px solid black;
+    border-radius: 8px;
+    margin: 4px 2px;
+    font-size: 16px;}
