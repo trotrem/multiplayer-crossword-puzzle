@@ -13,7 +13,7 @@ describe("HomePageComponent", () => {
     let fixture: ComponentFixture<HomePageComponent>;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [HomePageComponent, CrosswordGridComponent],
             imports: [FormsModule, RouterTestingModule.withRoutes([
                 { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent }])]
