@@ -7,41 +7,42 @@ import { Difficulty } from "../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { CommunicationService } from "../communication.service";
 import { GameConfigurationService } from "../game-configuration.service";
+import { HttpClient } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { SocketsService } from "../sockets.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("HomePageComponent", () => {
+    let component: HomePageComponent;
     let router: Router;
-    let config: GameConfigurationService;
-    let communcation: CommunicationService;
-    let component: HomePageComponent = new HomePageComponent(router, communcation, config);
-    let fixture: ComponentFixture<HomePageComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [HomePageComponent, CrosswordGridComponent],
             imports: [FormsModule, RouterTestingModule.withRoutes([
-                { path: "crossword/game", component: CrosswordGridComponent }])]
+                { path: "crossword/game", component: CrosswordGridComponent }]),
+                      HttpClientTestingModule],
+            providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
     }));
 
     beforeEach(inject([Router], (_router: Router) => {
         router = _router;
-        communcation = new CommunicationService();
-        fixture = TestBed.createComponent(HomePageComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+        component = TestBed.createComponent(HomePageComponent).componentInstance;
     }));
 
     it("should create", () => {
         expect(component).toBeTruthy();
     });
 
-    it('navigate to "crossword/nbPlayers/difficulty" takes you to /crossword/nbPlayers/difficulty', fakeAsync(() => {
-        const difficulty: Difficulty = Difficulty.Easy;
-        const nbPlayers: string = "one";
-        router.navigateByUrl("/crossword/game");
-        tick(50);
+    // TODO: rajouter des test
+
+    it("play with 1 player takes you to /crossword/game", fakeAsync(() => {
+        component.EasyMediumHard = Difficulty.Easy;
+        component.oneTwo = 1;
+        component.play();
+        tick(100);
         expect(router.url).toBe("/crossword/game");
     }));
 });

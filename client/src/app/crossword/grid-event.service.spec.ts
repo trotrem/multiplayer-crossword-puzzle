@@ -11,12 +11,9 @@ import { SocketsService } from "./sockets.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {
-    let http: HttpClient;
-    let router: Router;
-    let sockets: SocketsService;
-    const communicationService: CommunicationService = new CommunicationService(http, sockets);
 
-    const service: GridEventService = new GridEventService(communicationService, router);
+    let service: GridEventService;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -24,14 +21,12 @@ describe("GridEventService", () => {
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([]),
             ],
-            providers: [GridEventService, CommunicationService]
+            providers: [GridEventService, CommunicationService, CommunicationService, SocketsService]
         });
     });
 
-    beforeEach(inject([Router, HttpClient, SocketsService], (_router: Router, _http: HttpClient) => {
-        router = _router;
-        http = _http;
-        sockets = new SocketsService();
+    beforeEach(inject([GridEventService], (_service: GridEventService) => {
+        service = _service;
     }));
 
     it("should be created", () => {

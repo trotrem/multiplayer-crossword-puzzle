@@ -4,20 +4,20 @@ import { HttpClientTestingModule, HttpTestingController } from "@angular/common/
 import { Difficulty } from "../../../../common/communication/types";
 
 import { CommunicationService } from "./communication.service";
+import { SocketsService } from "./sockets.service";
 
 describe("CommunicationService", () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        HttpClientTestingModule
-      ],
-      providers: [
-        CommunicationService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                HttpClientModule,
+                HttpClientTestingModule
+            ],
+            providers: [CommunicationService, SocketsService]
+        });
     });
-  });
 
-  it("should be created", inject([CommunicationService], (service: CommunicationService) => {
-    expect(service).toBeTruthy();
-  }));
+    it("should be created", inject([CommunicationService], (service: CommunicationService) => {
+        expect(service).toBeTruthy();
+    }));
 });
