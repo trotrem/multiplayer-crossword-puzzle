@@ -11,17 +11,21 @@ a:link, a:visited {
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    margin: 0vh 45vmax; 
 }
 
 a:hover, a:active {
     background-color: green;
 }
 .crossword {
-    float: left; 
-    margin: 00px 10px ;
+    float: left;  
+     
+    /* margin: 0vh 45vmax; */
 }
  
 .racing {
-    float: center;
+    float: center; 
+    /* margin: 0vh 45vmax; */
+    margin: 00 px 10px; 
    
 }
