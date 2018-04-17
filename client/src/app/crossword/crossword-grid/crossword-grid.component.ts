@@ -38,11 +38,14 @@ export class CrosswordGridComponent implements OnInit {
     // needed so the html recognizes the enum
     private TipMode: typeof TipMode = TipMode;// tslint:disable-line
     public tipMode: TipMode = TipMode.Definitions;
+    private isStated: boolean;
 
     @HostListener("document:click")
     // (listens to document event so it's not called in the code)
     private onBackgroundClick(): void {  // tslint:disable-line
-        this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        if (this.isStated) {
+            this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        }
     }
 
     public get horizontalWords(): WordDescription[] {
@@ -69,15 +72,17 @@ export class CrosswordGridComponent implements OnInit {
         this.cells = new Array<Array<Cell>>();
         this.words = new Array<WordDescription>();
         for (let i: number = 0; i < GRID_HEIGHT; i++) {
+            this.isStated = false;
             this.cells[i] = new Array<Cell>();
             for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({ content: "",
-                                     selectedBy: AssociatedPlayers.NONE,
-                                     isBlack: false,
-                                     letterFound: AssociatedPlayers.NONE });
+                this.cells[i].push({
+                    content: "",
+                    selectedBy: AssociatedPlayers.NONE,
+                    isBlack: false,
+                    letterFound: AssociatedPlayers.NONE
+                });
             }
         }
-
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
@@ -101,9 +106,10 @@ export class CrosswordGridComponent implements OnInit {
 
     private createGrid(gridData: IGridData): void {
         console.log(gridData.gameId);
-        this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
+        this.gridEventService.initialize(this.words, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
             this.cells[cell.y][cell.x].isBlack = true;
+            this.isStated = true;
         });
         this.fillWords(gridData);
     }
@@ -131,11 +137,13 @@ export class CrosswordGridComponent implements OnInit {
                     cells.push(this.cells[word.y + i][word.x]);
                 }
             }
-            this.words.push({ id: index,
-                              direction: word.direction,
-                              cells: cells,
-                              definition: word.definition,
-                              found: AssociatedPlayers.NONE });
+            this.words.push({
+                id: index,
+                direction: word.direction,
+                cells: cells,
+                definition: word.definition,
+                found: AssociatedPlayers.NONE
+            });
         });
     }
 
