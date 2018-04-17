@@ -1,6 +1,18 @@
 
-
-
+  <button (click)="replay()">Replay</button>
+  <button (click)="returnToMain()"class ="return">Retrun to Main Page</button>
+ <div [hidden]="isNotBestScore()">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+         <h1>  Congratulations  <br>
+             You hit best score </h1> 
+       <div>
+           Player's Name:
+            <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.namePlayer" placeholder= " Enter your name"> 
+    
+     <button [disabled]="isAdded"(click)="saveBestScore()" class= "submit">Submit</button> 
+    </div>
+     </form>  
+     </div>
 
 <table class="Left">
     <caption>Lap Times for each car</caption>
@@ -29,18 +41,5 @@
       <td> {{score.scorePlayer}}  </td>
    </tr>
   </table>
-  <div [hidden]="isNotBestScore()">
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-         <h1> !! Congratulations !! </h1>
-           <h1> ! You hit best score !</h1> 
-       <div>
-           Name:
-            <input [disabled]="isAdded" name ="name" [(ngModel)]="newBestScore.namePlayer" placeholder= "name"> 
-     </div>
-     <button [disabled]="isAdded"(click)="saveBestScore()" class= "submit">Submit</button>
-     </form>  
-     </div>
 
-     <button (click)="replay()">Replay</button>
-     <button (click)="returnToMain()">Retrun to Main Page</button>
 
