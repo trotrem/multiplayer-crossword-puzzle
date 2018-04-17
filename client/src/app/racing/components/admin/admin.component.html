@@ -1,5 +1,5 @@
 
-<h4>Please select the name of the desired track  </h4>
+<h2>List of tracks </h2>
 <ol class="tracks">
   <li *ngFor="let track of tracks">
   <a class="name"
@@ -8,5 +8,5 @@
   </li>
 </ol>
 
-<button [disabled]="!isSelected" (click)="editTrack()">edit Track</button>
-<button [disabled]="!isSelected"  (click)="deleteTrack()">delete Track</button>
+<button [disabled]="!isSelected" (click)="editTrack()" class = "right">edit Track</button>
+<button [disabled]="!isSelected"  (click)="deleteTrack()"class = "left">delete Track</button>

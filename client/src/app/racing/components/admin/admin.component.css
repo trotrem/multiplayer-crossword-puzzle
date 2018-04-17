@@ -1,4 +1,38 @@
 a:hover{
     color: blue;
     cursor: pointer;
+    font-family: courier;
+}
+h2 {font-family: courier;
+    float :right;
+    margin: 100px 650px;
+}
+
+  li {
+    width: 70%;
+    padding: 0;
+    margin: 10px 750px;
+    font-family: courier;
+    font-size: 20px;
+  }
+  button {
+    font-family: courier;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 10px 750px;
+    border: 2px solid blue;
+}
+.right{
+    float :right;
+    margin: 10px 380px;
+}
+.left{
+    float: right;
+    margin: 10px 10px; 
 }

@@ -1,7 +1,7 @@
 import { Car } from "../car/car";
 import { Vector3 } from "three";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { RaceUtils } from "../../../race-utils/race-utils";
+import { VectorUtils } from "../../../race-utils/vector-utils";
 import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
 import { WallService } from "../walls-collisions-service/walls";
 const MAX_SPEED: number = 50;
@@ -46,7 +46,7 @@ export class AiController {
 
     private updateCheckPoint(): boolean {
         if (this._car.checkpoint === this._checkPoints.length - 1) {
-            if (RaceUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
+            if (VectorUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
                 this._car.checkpoint = 0;
                 if (this._car.getLapTimes().length < LAP_MAX) {
                     return true;
@@ -58,7 +58,7 @@ export class AiController {
     }
 
     private turnCorner(): void {
-        if (RaceUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
+        if (VectorUtils.getDistance(this._car.mesh.position, this._checkPoints[this._car.checkpoint]) < this.distanceToCorner) {
             this.turn(this._car.checkpoint + 1);
             this.hasTurned = true;
         } else if (this.hasTurned) {

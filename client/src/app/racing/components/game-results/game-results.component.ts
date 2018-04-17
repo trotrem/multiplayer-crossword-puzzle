@@ -10,7 +10,7 @@ const DELAY: number = 100;
 const BEST_SCORES_MAX: number = 5;
 const NAME: string = "name";
 const RACE: string = "/race/";
-const SEPARATOR: string = "/";
+const USER: string = "/user";
 @Component({
     selector: "app-game-results",
     templateUrl: "./game-results.component.html",
@@ -101,7 +101,7 @@ export class GameResultsComponent implements OnInit {
         this.router.navigateByUrl(RACE + this._track.name);
     }
     public returnToMain(): void {
-        this.router.navigateByUrl(SEPARATOR);
+        this.router.navigateByUrl(USER);
     }
 
     public saveBestScore(): void {

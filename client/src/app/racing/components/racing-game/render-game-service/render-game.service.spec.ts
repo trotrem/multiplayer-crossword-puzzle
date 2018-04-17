@@ -7,16 +7,16 @@ import { GameResultsComponent } from "../../game-results/game-results.component"
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule } from "@angular/common/http";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
-import { ILine } from "../../../race-utils/race-utils";
+import { ILine } from "../../../race-utils/vector-utils";
 import { FormsModule } from "@angular/forms";
 import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers  */
 describe("RenderGameService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
-    const keyboard: KeyboardService = new KeyboardService;
+    const keyboard: KeyboardEventService = new KeyboardEventService;
     const sceneService: SceneGameService = new SceneGameService();
     const wallService: WallService = new WallService();
     const canvas: HTMLCanvasElement = undefined;
@@ -34,7 +34,7 @@ describe("RenderGameService", () => {
                 RouterTestingModule.withRoutes([{ path: "gameResults/:CarIndex", component: GameResultsComponent }])]
 
             ,
-            providers: [RenderGameService, KeyboardService, SceneGameService]
+            providers: [RenderGameService, KeyboardEventService, SceneGameService]
         });
 
     }));

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { ICommand, IMap } from "./command";
 
 @Injectable()
-export class KeyboardService {
+export class KeyboardEventService {
     private _commands: IMap<Array<ICommand>>;
 
     public constructor() {

@@ -13,7 +13,7 @@ import { WallService } from "../walls-collisions-service/walls";
 import { Car } from "../car/car";
 import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 import { AiController } from "./../ai-controller/ai-controller";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 
 const AI_PLAYERS_MAX: number = 3;
 const RESULTS: string = "/gameResults/";
@@ -40,7 +40,7 @@ export class GameManagerService {
         this._aiControllers = new Array<AiController>();
     }
 
-    public async initializeGame(trackName: string, canvas: ElementRef, keyboard: KeyboardService): Promise<void> {
+    public async initializeGame(trackName: string, canvas: ElementRef, keyboard: KeyboardEventService): Promise<void> {
         this._cars = new Array<Car>();
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName);
@@ -53,7 +53,7 @@ export class GameManagerService {
         });
     }
 
-    private async initializeCars(keyboard: KeyboardService): Promise<void> {
+    private async initializeCars(keyboard: KeyboardEventService): Promise<void> {
         for (let i: number = 0; i < CARS_MAX; i++) {
             this._cars[i] = new Car(this.collisionService, this.wallService, keyboard);
             await this._cars[i].init().then(() => { });

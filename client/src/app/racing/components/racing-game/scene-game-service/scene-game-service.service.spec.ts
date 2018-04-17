@@ -2,22 +2,22 @@ import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 import { SceneGameService } from "./scene-game-service.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { Car } from "./../car/car";
-import { ILine } from "../../../race-utils/race-utils";
+import { ILine } from "../../../race-utils/vector-utils";
 import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers*/
 describe("SceneGameService", () => {
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
-    const keyboard: KeyboardService = new KeyboardService;
+    const keyboard: KeyboardEventService = new KeyboardEventService;
     const points: THREE.Vector3[] = new Array<THREE.Vector3>();
     const startingZone: THREE.Line3 = new THREE.Line3;
     const wallService: WallService = new WallService();
     let car: Car;
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [SceneGameService, WallsCollisionsService, WallService, KeyboardService]
+            providers: [SceneGameService, WallsCollisionsService, WallService, KeyboardEventService]
         });
     });
 

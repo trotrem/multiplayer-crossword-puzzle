@@ -4,8 +4,8 @@ import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../const
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardService } from "../commands/keyboard.service";
-import * as Command from "../commands/concrete-commands/headers";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
+import * as Command from "../commands/command";
 import * as KeyCode from "../commands/key-code";
 import { CarPhysics } from "./carPhysics";
 import { CarController } from "./carController";
@@ -97,7 +97,7 @@ export class Car extends Object3D {
         this.steeringWheelDirection = direction;
     }
     public constructor(
-        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardService,
+        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardEventService,
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
         mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();

@@ -48,6 +48,7 @@ export class CarsCollisionService {
         const resultsQ: IProjection[] = [];
         const resultsR: IProjection[] = [];
         const resultsS: IProjection[] = [];
+
         for (let i: number = 0; i < cars.length; i++) {
             resultsP[i] = this.getMinMax(this._vecCars[i], this._normals[0][1]);
             resultsQ[i] = this.getMinMax(this._vecCars[i], this._normals[0][0]);
@@ -89,7 +90,7 @@ export class CarsCollisionService {
         resultsR: IProjection[],
         resultsS: IProjection[]): boolean {
 
-            return !(this.getResult(resultsP) || this.getResult(resultsQ) || this.getResult(resultsR) || this.getResult(resultsS));
+        return !(this.getResult(resultsP) || this.getResult(resultsQ) || this.getResult(resultsR) || this.getResult(resultsS));
     }
     private getResult(results: IProjection[]): boolean {
         return results[0].maxProj < results[1].minProj || results[1].maxProj < results[0].minProj;

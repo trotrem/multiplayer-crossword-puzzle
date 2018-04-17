@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { RaceUtils, ILine } from "../../../race-utils/race-utils";
+import { VectorUtils, ILine } from "../../../race-utils/vector-utils";
 import {HALF_CIRCLE_DEGREES} from "./../../../../constants";
 const ANGLE_TRESHOLD: number = 45;
 const MAX_LENGTH: number = 25;
@@ -8,7 +8,7 @@ export class TrackValidator {
 
     private static lessThan45Degres(position1: THREE.Vector3, position2: THREE.Vector3, position3: THREE.Vector3,
                                     illegalPoints: Array<THREE.Vector3>): void {
-        if ((HALF_CIRCLE_DEGREES * (RaceUtils.getAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
+        if ((HALF_CIRCLE_DEGREES * (VectorUtils.getAngle(position1, position2, position3)) / Math.PI) < ANGLE_TRESHOLD) {
             this.setPoints(position3, position2, illegalPoints);
         }
 
@@ -18,13 +18,13 @@ export class TrackValidator {
         if (line1.pos1 === line2.pos1 || line1.pos1 === line2.pos2 || line1.pos2 === line2.pos1 || line1.pos2 === line2.pos2) {
             return;
         }
-        if (RaceUtils.doLinesIntersect(line1, line2)) {
+        if (VectorUtils.doLinesIntersect(line1, line2)) {
             this.setPoints(line2.pos1, line2.pos2, illegalPoints);
         }
     }
 
     private static lessThanLength(position1: THREE.Vector3, position2: THREE.Vector3, illegalPoints: Array<THREE.Vector3>): void {
-        if (RaceUtils.getDistance(position1, position2) < (MAX_LENGTH)) {
+        if (VectorUtils.getDistance(position1, position2) < (MAX_LENGTH)) {
             illegalPoints.push(new THREE.Vector3(0, 0, 0));
         }
     }
