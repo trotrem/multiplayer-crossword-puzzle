@@ -4,6 +4,8 @@ import { Difficulty } from "../../../../../common/communication/types";
 import { DatamuseObject } from "./datamuse-object";
 
 const OFFSET_FREQUENCY: number = 2;		// Tag format : f:xxxx
+const NOUN: string = "n";
+const VERB: string = "v";
 const NUMERICAL_VALUES: RegExp = /d/;
 
 export class WordRetriever {
@@ -130,7 +132,7 @@ export class WordRetriever {
         wordsWithDefinitions.forEach(
             (wordInfo: WordDictionaryData, index: number) => {
                 wordInfo.definitions = wordInfo.definitions.filter(
-                    (def: string) => def.charAt(0) === "n" || def.charAt(0) === "v"
+                    (def: string) => def.charAt(0) === NOUN || def.charAt(0) === VERB
                 );
                 wordInfo.definitions = wordInfo.definitions.filter(
                     (def: string) => !(def.indexOf(wordInfo.word) >= 0)
