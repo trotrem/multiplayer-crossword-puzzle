@@ -6,6 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
 import { IValidationData, IWordSelection, IGameResult, ICrosswordSettings, IWordValidationPayload } from "../../../../../common/communication/events";
 import { WordDescription, Cell, AssociatedPlayers } from "./../dataStructures";
+import { PlayManager } from "./../Nouveau/play-manager";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -59,7 +60,7 @@ export class GridEventService {
     public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         return this.setSelectedWord(this._selectedWord, word, selected);
     }
-// dans data-structure
+    // dans data-structure
     // TODO: selected inutile
     public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
         if (this._nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
@@ -81,7 +82,7 @@ export class GridEventService {
 
         return target.word;
     }
-// dans data-structure
+    // dans data-structure
     private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
             if (selected) {
@@ -128,46 +129,15 @@ export class GridEventService {
                 event.keyCode <= UPPER_Z ||
                 event.keyCode >= LOWER_A &&
                 event.keyCode <= LOWER_Z) {
-                this.write(String.fromCharCode(event.keyCode).toUpperCase(), this._selectedWord.word);
+                PlayManager.write(
+                    String.fromCharCode(event.keyCode).toUpperCase(),
+                    this._selectedWord.word, this._words, this._id, this.communicationService);
             }
             if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
-                this.erase(this._selectedWord.word);
+                PlayManager.erase(this._selectedWord.word);
             }
         }
     }
- // dans valide-crossword
-    private write(char: string, word: WordDescription): void {
-        for (const cell of word.cells) {
-            if (cell.content === "") {
-                cell.content = char;
-                this.validate(word);
-                this.wordFoundByOtherWord();
-
-                return;
-            }
-        }
-    }
- // dans valide-crossword
-    private erase(word: WordDescription): void {
-        let i: number;
-        for (i = word.cells.length - 1; i >= 0; i--) {
-            if (word.cells[i].content !== "" && !word.cells[i].letterFound) {
-                word.cells[i].content = "";
-
-                return;
-            }
-        }
-    }
- // dans valide-crossword
-    private validate(word: WordDescription): void {
-        const parameters: IWordValidationPayload = {
-            gameId: this._id,
-            wordIndex: word.id,
-            word: word.cells.map((elem) => elem.content).join("")
-        };
-        this.communicationService.validate(parameters);
-    }
-
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
         const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT;
@@ -181,13 +151,6 @@ export class GridEventService {
                 word.cells[i].content = data.word[i];
             }
             word.found = foundStatus;
-        }
-    }
- // dans valide-crossword
-    // TODO only check crossing word
-    private wordFoundByOtherWord(): void {
-        for (const word of this._words) {
-            this.validate(word);
         }
     }
 

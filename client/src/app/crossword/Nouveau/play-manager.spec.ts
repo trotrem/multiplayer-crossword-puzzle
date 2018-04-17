@@ -1,7 +1,7 @@
-import { PlayManager } from './play-manager';
+import { PlayManager } from "./play-manager";
 
-describe('PlayManager', () => {
-  it('should create an instance', () => {
+describe("PlayManager", () => {
+  it("should create an instance", () => {
     expect(new PlayManager()).toBeTruthy();
   });
 });
