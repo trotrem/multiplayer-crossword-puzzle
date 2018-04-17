@@ -1,11 +1,13 @@
 h1 {
     
     font-family: courier;
-    float: right;
-    margin: 10px 650px;
+    float: center;
+    align-items: center; 
+    margin: 3vmax;
 }
 h3 {
   font-family: courier;
+  align-items: center; 
 }
   ol {
 

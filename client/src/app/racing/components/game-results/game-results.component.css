@@ -1,6 +1,7 @@
 
 h1 {color: blue;
     font-family: courier;
+    align-items: center ; 
 
 }
 [hidden] { display: none !important;}
@@ -9,7 +10,6 @@ h1 {color: blue;
 button {
     font-family: courier;
     background-color:#f78f08;
-    /* border: none; */
     color: blue;
     text-align: center;
     text-decoration: none;

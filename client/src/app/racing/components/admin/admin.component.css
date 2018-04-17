@@ -4,14 +4,13 @@ a:hover{
     font-family: courier;
 }
 h2 {font-family: courier;
-    float :right;
-    margin: 100px 650px;
+    margin: 10vh;
+
 }
 
   li {
-    width: 70%;
+    width: 100%;
     padding: 0;
-    margin: 10px 750px;
     font-family: courier;
     font-size: 20px;
   }
@@ -25,14 +24,10 @@ h2 {font-family: courier;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-    margin: 10px 750px;
     border: 2px solid blue;
 }
-.right{
-    float :right;
-    margin: 10px 380px;
+
+div {width: 50%;
+    align-items: center;
 }
-.left{
-    float: right;
-    margin: 10px 10px; 
-}
+.track{margin: 10vh;}
