@@ -2,10 +2,9 @@ import { GridLayoutHandler } from "./gridLayoutHandler";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
 import { GridUtils } from "./gridUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
-import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
-import { IGrid, IWordContainer } from "./dataStructures";
 import { Utils } from "../../..//utils";
 import { Difficulty } from "../../../../../common/communication/types";
+import { WordDictionaryData, IGrid, IWordContainer } from "../../dataStructures";
 
 export module GenerateWords {
 

@@ -1,27 +1,30 @@
 <h1>Crossword!</h1>
 <h2>Number of players: {{nbPlayers}}</h2>
 <h2>Difficulty: {{_difficulty}}</h2>
-
 <div class="layout">
     <div>
         <div class="crossword-grid">
             <div class="crossword-row" *ngFor="let row of cells">
-                <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)" [ngClass]="{'selected': cell.selected === true, 'cell': cell.selected === false, 'black': cell.isBlack === true, 'wordFound': cell.letterFound === true}">
+                <div *ngFor="let cell of row" (click)="onCellClicked($event, cell)"
+                     [ngClass]="{'selectedByOpponent': cell.selectedBy === 1, 'selectedByPlayer': cell.selectedBy === 2, 'selectedByBoth': cell.selectedBy === 3, 'cell': cell.selectedBy === 0, 'black': cell.isBlack === true, 'letterFoundByPlayer': cell.letterFound === 2, 'letterFoundByOpponent': cell.letterFound === 1, 'letterFoundByBoth': cell.letterFound === 3}" >
                     {{cell.content}}
                 </div>
             </div>
         </div>
+        <h2 *ngIf="nbPlayers === 2">you found {{nbPlayerFoundWords}} words and your opponent found {{nbOpponentFoundWords}} words!</h2>
         <h2>{{tipMode === TipMode.Definitions ? "definitions mode" : "cheat mode"}}</h2>
         <button (click)="toggleTipMode()">toggle cheat mode</button>
     </div>
     <div>
         <h2>horizontal</h2>
-        <p *ngFor="let word of getHorizontalWords(); let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.found === true}">
+        <p *ngFor="let word of horizontalWords; let i = index" (click)="onIndexClicked($event, word)"
+           [ngClass]="{'definition-foundByOpponent': word.found === 1, 'definition-foundByPlayer': word.found === 2, 'definition-selectedByBoth': selectedWord === word && opponentSelectedWord === word && word.found === 0, 'definition-selectedByPlayer': selectedWord === word && word.found === 0, 'definition-selectedByOpponent': opponentSelectedWord === word && word.found === 0, 'definition': selectedWord !== word && opponentSelectedWord !== word && word.found === 0}">
             {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
     </div>
     <div>
         <h2>vertical</h2>
-        <p *ngFor="let word of getVerticalWords(); let i = index" (click)="onIndexClicked($event, word)" [ngClass]="{'definition-selected': selectedWord === word, 'definition': selectedWord !== word, 'definition-found': word.found === true}">
+        <p *ngFor="let word of verticalWords; let i = index" (click)="onIndexClicked($event, word)"
+           [ngClass]="{'definition-foundByOpponent': word.found === 1, 'definition-foundByPlayer': word.found === 2, 'definition-selectedByBoth': selectedWord === word && opponentSelectedWord === word && word.found === 0, 'definition-selectedByPlayer': selectedWord === word && word.found === 0, 'definition-selectedByOpponent': opponentSelectedWord === word && word.found === 0, 'definition': selectedWord !== word && opponentSelectedWord !== word && word.found === 0}">
             {{i+1}}. {{tipMode === TipMode.Definitions ? word.definition : word.word}}</p>
     </div>
 </div>

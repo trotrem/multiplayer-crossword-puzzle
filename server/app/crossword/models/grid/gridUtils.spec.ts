@@ -1,9 +1,8 @@
 /* tslint:disable:no-magic-numbers*/
 import { expect } from "chai";
-import { IGrid } from "./dataStructures";
 import { GridUtils } from "./gridUtils";
 import { Direction } from "../../../../../common/communication/types";
-import { WordDictionaryData } from "../lexiconAPI/word-dictionnary-data";
+import { IGrid, WordDictionaryData } from "../../dataStructures";
 
 describe("getText", () => {
     it("Should return the text from the grid", async () => {

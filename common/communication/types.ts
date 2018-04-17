@@ -8,13 +8,22 @@ export enum Direction {
     Horizontal
 }
 
-export interface IWordValidationParameters {
-    gridId: number;
-    word: string;
-    wordIndex: number;
+export enum Difficulty {
+    Easy,
+    Medium,
+    Hard
 }
 
-export type Difficulty = "easy" | "medium" | "hard";
+export enum GameResult {
+    Victory,
+    Defeat,
+    Tie
+}
+
+export enum NbPlayers {
+    One = 1,
+    Two = 2
+}
 
 export interface IWordInfo {
     id: number;
@@ -30,8 +39,3 @@ export class Message {
     public body: string;
 }
 
-export interface IGridData {
-    id: number;
-    blackCells: Array<IPoint>;
-    wordInfos: Array<IWordInfo>;
-}

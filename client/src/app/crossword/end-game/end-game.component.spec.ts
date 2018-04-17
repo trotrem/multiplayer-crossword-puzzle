@@ -11,14 +11,14 @@ import { Difficulty } from "../../../../../common/communication/types";
 describe("EndGameComponent", () => {
     let router: Router;
     let route: ActivatedRoute;
-    let component: EndGameComponent = new EndGameComponent(route, router);
+    let component: EndGameComponent = new EndGameComponent(router, route);
     let fixture: ComponentFixture<EndGameComponent>;
 
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
             imports: [FormsModule, RouterTestingModule.withRoutes([
-                { path: "homePage", component: HomePageComponent },
-                { path: "crossword/:nbPlayers/:Difficulty", component: CrosswordGridComponent }])],
+                { path: "crossword/homePage", component: HomePageComponent },
+                { path: "crossword/game", component: CrosswordGridComponent }])],
             declarations: [EndGameComponent, HomePageComponent, CrosswordGridComponent]
         })
             .compileComponents();
@@ -36,17 +36,15 @@ describe("EndGameComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it('navigate to "homePage" takes you to /homePage', fakeAsync(() => {
-        router.navigateByUrl("/homePage");
+    it("returnHome takes you to /crossword/homePage", fakeAsync(() => {
+        component.returnHome();
         tick(50);
-        expect(router.url).toBe("/homePage");
+        expect(router.url).toBe("/crossword/homePage");
     }));
 
-    it('navigate to "crossword/nbPlayers/difficulty" takes you to /crossword/nbPlayers/difficulty', fakeAsync(() => {
-        const difficulty: Difficulty = "easy";
-        const nbPlayers: string = "one";
-        router.navigateByUrl("/crossword/" + nbPlayers + "/" + difficulty);
+    it("playSameConfig takes you to /crossword/game", fakeAsync(() => {
+        component.playSameCongif();
         tick(50);
-        expect(router.url).toBe("/crossword/" + nbPlayers + "/" + difficulty);
+        expect(router.url).toBe("/crossword/game");
     }));
 });

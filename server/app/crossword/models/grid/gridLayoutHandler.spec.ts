@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { GridLayoutHandler, MINBLACK, MAXBLACK } from "./gridLayoutHandler";
-import { IGrid } from "./dataStructures";
+import { IGrid } from "../../dataStructures";
 
 /* tslint:disable:no-magic-numbers */
 describe("makeGrid", () => {

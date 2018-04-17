@@ -1,24 +1,24 @@
 <p>
   Home Page. Welcome to the crossword
 </p>
-<form #form = "ngForm" (ngSubmit)= play(form)>
+<form #form = "ngForm" (ngSubmit)=play(form) >
 <label>Choose the difficulty</label>
 <div class="form-group">
   <div class="radio">
       <label>
-          <input type="radio" name="EasyMediumHard" value="easy" [(ngModel)] ="EasyMediumHard">
+          <input type="radio" name="EasyMediumHard" [value]=0 [(ngModel)] ="EasyMediumHard">
           Easy
       </label>
   </div>
   <div class="radio">
       <label>
-          <input type="radio" name="EasyMediumHard" value="medium" [(ngModel)] ="EasyMediumHard">
+          <input type="radio" name="EasyMediumHard" [value]=1 [(ngModel)] ="EasyMediumHard">
           Medium
       </label>
   </div>
   <div class="radio">
     <label>
-        <input type="radio" name="EasyMediumHard" value="hard" [(ngModel)] ="EasyMediumHard">
+        <input type="radio" name="EasyMediumHard" [value]=2 [(ngModel)] ="EasyMediumHard">
         Hard
     </label>
   </div>
@@ -28,16 +28,18 @@
 <div class="form-group">
   <div class="radio">
       <label>
-          <input type="radio" name="oneTwo" value="one" [(ngModel)] = "oneTwo">
+          <input type="radio" name="oneTwo" [value]=1 [(ngModel)] = "oneTwo">
           One
       </label>
   </div>
-  <!--<div class="radio">
+  <div class="radio">
       <label>
-          <input type="radio" name="oneTwo" value="two" [(ngModel)] = "oneTwo">
+          <input type="radio" name="oneTwo" [value]=2 [(ngModel)] = "oneTwo">
           Two
       </label>
-  </div>-->
+  </div>
 </div>
-<button type="submit" >Play</button>
+<button [disabled]="disablePlayButton()" type="submit" >Play</button>
+<button [disabled]="disableJoinButton()" (click)="joinExisting(form)" >Join Existing</button>
+<input type="text" name="playerName" [(ngModel)]="playerName" />
 </form>

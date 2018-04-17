@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Car } from "../Car";
+import { Car } from "../car";
 import { Injectable } from "@angular/core";
 
 export interface IProjection {

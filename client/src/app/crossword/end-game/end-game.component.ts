@@ -1,30 +1,30 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Difficulty } from "./../../../../../common/communication/types";
+import { Component } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { GameResult } from "../../../../../common/communication/types";
 
 @Component({
     selector: "app-end-game",
     templateUrl: "./end-game.component.html",
     styleUrls: ["./end-game.component.css"]
 })
-export class EndGameComponent implements OnInit {
-    private _difficulty: Difficulty = "easy";
-    private nbPlayers: string;
+export class EndGameComponent {
 
-    public constructor(private route: ActivatedRoute, private router: Router) { }
+    public constructor(private router: Router, private route: ActivatedRoute) { }
 
-    public ngOnInit(): void {
-        this.route.params.subscribe((params) => {
-            this._difficulty = params["Difficulty"];
-            this.nbPlayers = params["nbPlayers"];
-        });
+    public get message(): string {
+        const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
+
+        return result === GameResult.Victory ? "Congratulations!!! You won!" :
+            result === GameResult.Defeat ? "Aw you lost.. Better luck next time!" :
+            result === GameResult.Tie ? "It's a tie!" :
+             "Something's wrong";
     }
 
     public playSameCongif(): void {
-        this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
+        this.router.navigate(["crossword/game"]);
     }
 
     public returnHome(): void {
-        this.router.navigateByUrl("/homePage");
+        this.router.navigateByUrl("crossword/homePage");
     }
 }

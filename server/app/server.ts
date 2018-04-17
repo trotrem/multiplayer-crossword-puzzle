@@ -3,6 +3,7 @@ import * as http from "http";
 import Types from "./types";
 import { injectable, inject } from "inversify";
 import { IServerAddress } from "./iserver.address";
+import { SocketsHandler } from "./crossword/socketsHandler";
 
 @injectable()
 export class Server {
@@ -11,7 +12,8 @@ export class Server {
     private readonly baseDix: number = 10;
     private server: http.Server;
 
-    constructor(@inject(Types.Application) private application: Application) { }
+    constructor(@inject(Types.Application) private application: Application,
+                @inject(Types.SocketsHandler) private socketsHandler: SocketsHandler) { }
 
     public init(): void {
         this.application.app.set("port", this.appPort);
@@ -21,6 +23,8 @@ export class Server {
         this.server.listen(this.appPort);
         this.server.on("error", (error: NodeJS.ErrnoException) => this.onError(error));
         this.server.on("listening", () => this.onListening());
+
+        this.socketsHandler.initialize(this.server);
     }
 
     private normalizePort(val: number | string): number | string | boolean {
