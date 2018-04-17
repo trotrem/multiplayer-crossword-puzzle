@@ -4,7 +4,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router } from "@angular/router";
-import { CommunicationService } from "./communication.service";
+import { CommunicationService } from "./../communication.service";
 
 describe("GridEventService", () => {
   let http: HttpClient;

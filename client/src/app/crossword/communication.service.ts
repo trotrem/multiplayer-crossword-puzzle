@@ -27,7 +27,9 @@ export class CommunicationService {
 
     // TODO: type safety
     public createGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
-        this.socketsService.sendEvent(CrosswordEvents.NewGame, { gameId: undefined, difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers } as ICrosswordSettings);
+        this.socketsService.sendEvent(
+            CrosswordEvents.NewGame,
+            { gameId: undefined, difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers } as ICrosswordSettings);
     }
 
     public onGridFetched(): Promise<IGridData> {
