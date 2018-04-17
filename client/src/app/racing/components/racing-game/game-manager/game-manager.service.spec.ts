@@ -12,19 +12,19 @@ import { WallService } from "../walls-collisions-service/walls";
 import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 
 describe("GameManagerService", () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        GameManagerService, WallService, RenderGameService, RacingCommunicationService,
-        WallsCollisionsService, KeyboardEventService, SceneGameService, CarsCollisionService],
-      imports: [
-        HttpClientModule,
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes([])]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                GameManagerService, WallService, RenderGameService, RacingCommunicationService,
+                WallsCollisionsService, KeyboardEventService, SceneGameService, CarsCollisionService],
+            imports: [
+                HttpClientModule,
+                HttpClientTestingModule,
+                RouterTestingModule.withRoutes([])]
+        });
     });
-  });
 
-  it("should be created", inject([GameManagerService], (service: GameManagerService) => {
-    expect(service).toBeTruthy();
-  }));
+    it("should be created", inject([GameManagerService], (service: GameManagerService) => {
+        expect(service).toBeTruthy();
+    }));
 });

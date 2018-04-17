@@ -3,28 +3,28 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Difficulty } from "./../../../../../common/communication/types";
 
 @Component({
-  selector: "app-end-game",
-  templateUrl: "./end-game.component.html",
-  styleUrls: ["./end-game.component.css"]
+    selector: "app-end-game",
+    templateUrl: "./end-game.component.html",
+    styleUrls: ["./end-game.component.css"]
 })
 export class EndGameComponent implements OnInit {
-  private _difficulty: Difficulty = "easy";
-  private nbPlayers: string;
+    private _difficulty: Difficulty = "easy";
+    private nbPlayers: string;
 
-  public constructor(private route: ActivatedRoute, private router: Router) { }
+    public constructor(private route: ActivatedRoute, private router: Router) { }
 
-  public ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this._difficulty = params["Difficulty"];
-      this.nbPlayers = params["nbPlayers"];
-    });
-  }
+    public ngOnInit(): void {
+        this.route.params.subscribe((params) => {
+            this._difficulty = params["Difficulty"];
+            this.nbPlayers = params["nbPlayers"];
+        });
+    }
 
-  public playSameCongif(): void {
-    this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
-  }
+    public playSameCongif(): void {
+        this.router.navigate(["/crossword/" + this.nbPlayers + "/", { Difficulty: this._difficulty }]);
+    }
 
-  public returnHome(): void {
-    this.router.navigateByUrl("/homePage");
-  }
+    public returnHome(): void {
+        this.router.navigateByUrl("/homePage");
+    }
 }

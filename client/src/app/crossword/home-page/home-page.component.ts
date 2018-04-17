@@ -3,18 +3,18 @@ import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-home-page",
-  templateUrl: "./home-page.component.html",
-  styleUrls: ["./home-page.component.css"]
+    selector: "app-home-page",
+    templateUrl: "./home-page.component.html",
+    styleUrls: ["./home-page.component.css"]
 })
 export class HomePageComponent implements OnInit {
 
-  public constructor(private router: Router) { }
+    public constructor(private router: Router) { }
 
-  public ngOnInit(): void {
-  }
+    public ngOnInit(): void {
+    }
 
-  public play(form: NgForm): void {
-    this.router.navigate(["/crossword/" + form.value.oneTwo + "/", { Difficulty: form.value.EasyMediumHard }]);
-  }
+    public play(form: NgForm): void {
+        this.router.navigate(["/crossword/" + form.value.oneTwo + "/", { Difficulty: form.value.EasyMediumHard }]);
+    }
 }

@@ -1,11 +1,10 @@
+<button (click)="play()" [ngClass]="{'disapear': playButtonEnabled === false }"> PLAY </button>
 
-<button (click)="play()" [ngClass] = "{'disapear': playButtonEnabled === false }"> PLAY </button>
-
-<div *ngFor="let light of lights" >
-  <ul>
-    <li *ngIf="light === 'red'" class="red"> </li>
-    <li *ngIf="light === 'green'" class="green"></li>
+<div *ngFor="let light of lights">
+    <ul>
+        <li *ngIf="light === 'red'" class="red"> </li>
+        <li *ngIf="light === 'green'" class="green"></li>
     </ul>
-  </div>
+</div>
 
 <canvas #canvas class="canvas"></canvas>
