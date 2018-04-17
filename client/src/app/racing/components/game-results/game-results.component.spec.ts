@@ -31,7 +31,7 @@ describe("GameResultsComponent", () => {
     track.IBestScores.push({ namePlayer: "Amal", scorePlayer: 30 });
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
             imports: [
                 BrowserDynamicTestingModule,
@@ -73,12 +73,12 @@ describe("GameResultsComponent", () => {
     });
 
     it(" IsNotBestScore() return true when the human car is not in first position   ", () => {
-        component.getTrack(track.name);
+        void component.getTrack(track.name);
         expect(component.isNotBestScore()).toBeFalsy();
     });
     it(" IsNotBestScore() return false when the human car is in first position and have the best score  ", () => {
         component.newBestScore = { namePlayer: "Amal", scorePlayer: 10 };
-        component.getTrack(track.name);
+        void component.getTrack(track.name);
         expect(component.isNotBestScore()).toBeFalsy();
     });
 

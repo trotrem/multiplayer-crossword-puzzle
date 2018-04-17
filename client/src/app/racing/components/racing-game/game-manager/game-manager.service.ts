@@ -44,7 +44,7 @@ export class GameManagerService {
         this.lastDate = Date.now();
         this.track = await this.getTrack(trackName);
         this.track.INewScores = new Array<INewScores>();
-        this.initializeCars(keyboard).then(() => {
+        void this.initializeCars(keyboard).then(() => {
             this.renderService.initialize(
                 canvas.nativeElement, this.track.points, this.track.startingZone,
                 this._cars, this.wallService.createWalls(this.track.points), keyboard);

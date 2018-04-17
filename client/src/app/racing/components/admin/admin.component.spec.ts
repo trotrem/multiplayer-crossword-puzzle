@@ -21,7 +21,7 @@ describe("AdminComponent", () => {
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [AdminComponent, EditorComponent],
             imports: [
                 FormsModule,

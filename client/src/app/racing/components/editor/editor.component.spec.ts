@@ -22,7 +22,7 @@ describe("EditorComponent", () => {
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [EditorComponent],
             imports: [
                 FormsModule,

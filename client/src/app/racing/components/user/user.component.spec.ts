@@ -13,7 +13,7 @@ describe("UserComponent", () => {
     let fixture: ComponentFixture<UserComponent>;
     let router: Router;
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [UserComponent, GameComponent],
             imports: [
                 HttpClientModule,
