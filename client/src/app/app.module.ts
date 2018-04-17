@@ -27,6 +27,7 @@ import { CommunicationService } from "./crossword/communication.service";
 import { GameConfigurationService } from "./crossword/game-configuration.service";
 import { RenderGameService } from "./racing/components/racing-game/render-game-service/render-game.service";
 import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
+import { GridService } from "./crossword/grid-service";
 
 const appRoutes: Routes = [
     { path: "gameResults", component: GameResultsComponent },
@@ -82,6 +83,7 @@ const appRoutes: Routes = [
         GameConfigurationService,
         RenderGameService,
         SceneGameService,
+        GridService,
         { provide: APP_BASE_HREF, useValue: "/" }
     ],
     bootstrap: [AppComponent]

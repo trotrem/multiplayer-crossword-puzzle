@@ -6,6 +6,8 @@ import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
+import { GridService } from "../grid-service";
+import { GridCreator } from "../grid-creator";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -19,7 +21,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [GridEventService]
+    providers: [GridEventService, GridService]
 })
 
 // TODO: initialiser attributs dans le constructeur (et checker à d'autres places)
@@ -63,16 +65,19 @@ export class CrosswordGridComponent implements OnInit {
         private communicationService: CommunicationService,
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
+        private gridService: GridService,
         private socketsService: SocketsService) {
         this.cells = new Array<Array<Cell>>();
         this.words = new Array<WordDescription>();
         for (let i: number = 0; i < GRID_HEIGHT; i++) {
             this.cells[i] = new Array<Cell>();
             for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({ content: "",
-                                     selectedBy: AssociatedPlayers.NONE,
-                                     isBlack: false,
-                                     letterFound: AssociatedPlayers.NONE });
+                this.cells[i].push({
+                    content: "",
+                    selectedBy: AssociatedPlayers.NONE,
+                    isBlack: false,
+                    letterFound: AssociatedPlayers.NONE
+                });
             }
         }
 
@@ -89,15 +94,16 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.nbPlayers = this.gameConfiguration.nbPlayers;
+        /*this.nbPlayers = this.gameConfiguration.nbPlayers;
         this._difficulty = this.gameConfiguration.difficulty;
         this._playerName = this.gameConfiguration.playerName;
         // TODO sketch
         this.subscribeToGridFetched();
-        this.subscribeToValidation();
+        this.subscribeToValidation();*/
+        this.gridService = new GridService(this.gameConfiguration, this.communicationService, this.gridEventService);
     }
 
-    private createGrid(gridData: IGridData): void {
+    /*private createGrid(gridData: IGridData): void {
         console.log(gridData.gameId)
         this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
@@ -111,9 +117,9 @@ export class CrosswordGridComponent implements OnInit {
             .then((data) => {
                 this.createGrid(data);
             });
-    }
+    }*/
 
-    private subscribeToValidation(): void {
+    /*private subscribeToValidation(): void {
         this.communicationService.onValidation().subscribe((data) => {
             this.gridEventService.onWordValidated(data);
         });
@@ -129,17 +135,19 @@ export class CrosswordGridComponent implements OnInit {
                     cells.push(this.cells[word.y + i][word.x]);
                 }
             }
-            this.words.push({ id: index,
-                              direction: word.direction,
-                              cells: cells,
-                              definition: word.definition,
-                              found: AssociatedPlayers.NONE });
+            this.words.push({
+                id: index,
+                direction: word.direction,
+                cells: cells,
+                definition: word.definition,
+                found: AssociatedPlayers.NONE
+            });
         });
-    }
+    }*/
 
     public toggleTipMode(): void {
         if (this.horizontalWords[0].word === undefined) {
-            this.fetchCheatModeWords();
+            this.gridService.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
         }
         this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions;
     }
@@ -157,7 +165,7 @@ export class CrosswordGridComponent implements OnInit {
         this.gridEventService.onKeyPress(event);
     }
 
-    private fetchCheatModeWords(): void {
+    /*private fetchCheatModeWords(): void {
         this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
             .subscribe((data: string[]) => {
                 const words: string[] = data as string[];
@@ -167,6 +175,6 @@ export class CrosswordGridComponent implements OnInit {
                     i++;
                 }
             });
-    }
+    }*/
 
 }
