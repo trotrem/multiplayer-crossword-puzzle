@@ -21,7 +21,6 @@ export class GridEventService {
     private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
     private _words: WordDescription[];
     private _id: string;
-    private _nbPlayers: number;
 
     public constructor(
         private communicationService: CommunicationService,
@@ -35,9 +34,7 @@ export class GridEventService {
         this.wordStatusManagerService.initialize(this.gameConfigurationService);
         this._id = id;
         this._words = words;
-        this._nbPlayers = this.gameConfigurationService.nbPlayers;
-        console.log(this._nbPlayers);
-        if (this._nbPlayers === 2) {
+        if (this.gameConfigurationService.nbPlayers === 2) {
             this.subscribeToOpponentSelection();
         }
         this.subscribeToGameEnded();
@@ -55,13 +52,13 @@ export class GridEventService {
             console.log("received");
             this.wordStatusManagerService.setSelectedWord(
                 this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
-                true, this._id, this._nbPlayers);
+                true, this._id);
         });
     }
 
     public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         return this.wordStatusManagerService.setSelectedWord(
-            this._selectedWord, word, selected, this._id, this._nbPlayers);
+            this._selectedWord, word, selected, this._id);
     }
 
     public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {
@@ -73,14 +70,14 @@ export class GridEventService {
             if (word.cells[0] === cell && word !== this._selectedWord.word) {
 
                 return this.wordStatusManagerService.setSelectedWord(
-                    this._selectedWord, word, true, this._id, this._nbPlayers);
+                    this._selectedWord, word, true, this._id);
             }
         }
         for (const word of this._words) {
             if (word.cells.indexOf(cell) !== -1 && word !== this._selectedWord.word) {
 
                 return this.wordStatusManagerService.setSelectedWord(
-                    this._selectedWord, word, true, this._id, this._nbPlayers);
+                    this._selectedWord, word, true, this._id);
             }
         }
 
@@ -94,7 +91,7 @@ export class GridEventService {
         event.stopPropagation();
 
         return this.wordStatusManagerService.setSelectedWord(
-            this._selectedWord, word, true, this._id, this._nbPlayers);
+            this._selectedWord, word, true, this._id);
     }
 
     public onKeyPress(event: KeyboardEvent): void {
