@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { NbPlayers, GameResult } from "../../../../../common/communication/types";
 import { CommunicationService } from "./../communication.service";
 import { Router } from "@angular/router";
-import { IValidationData, IWordSelection, IGameResult} from "../../../../../common/communication/events";
+import { IValidationData, IWordSelection, IGameResult } from "../../../../../common/communication/events";
 import { WordDescription, Cell, AssociatedPlayers, SelectedWord } from "./../dataStructures";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
+import { GameConfigurationService } from "../game-configuration.service";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -26,14 +27,16 @@ export class GridEventService {
         private communicationService: CommunicationService,
         private playManagerService: PlayManagerService,
         private wordStatusManagerService: WordStatusManagerService,
+        private gameConfigurationService: GameConfigurationService,
         private router: Router) {
     }
 
-    public initialize(words: WordDescription[], nbPlayers: NbPlayers, id: string): void {
+    public initialize(words: WordDescription[], id: string): void {
         this._id = id;
         this._words = words;
-        this._nbPlayers = nbPlayers;
-        if (nbPlayers === 2) {
+        this._nbPlayers = this.gameConfigurationService.nbPlayers;
+        console.log(this._nbPlayers);
+        if (this._nbPlayers === 2) {
             this.subscribeToOpponentSelection();
         }
         this.subscribeToGameEnded();
@@ -50,7 +53,8 @@ export class GridEventService {
         this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
             console.log("received");
             this.wordStatusManagerService.setSelectedWord(
-                this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null, true, this._id, this._nbPlayers);
+                this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
+                true, this._id, this._nbPlayers);
         });
     }
 
