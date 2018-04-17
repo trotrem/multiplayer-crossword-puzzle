@@ -11,6 +11,7 @@ import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { WallService } from "../walls-collisions-service/walls";
 import { Car } from "../car/car";
+import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 import { AiController } from "./../ai-controller/ai-controller";
 import { KeyboardEventService } from "../commands/keyboard-event.service";
 
@@ -31,6 +32,8 @@ export class GameManagerService {
         private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
+        private keyboard: KeyboardEventService,
+        private carsCollisionService: CarsCollisionService,
         private wallService: WallService,
         private router: Router) {
         this.timer = 0;
@@ -60,6 +63,7 @@ export class GameManagerService {
     public startRace(): void {
         this._cars[0].initCommands();
         this.initializeControllers();
+        this.carsCollisionService.initializeCars(this._cars);
         this.gameStarted = true;
     }
 
@@ -90,6 +94,7 @@ export class GameManagerService {
             this.updateAI();
 
         }
+        this.carsCollisionService.checkCarsCollisions();
         this.renderService.render(this._cars[0]);
 
     }

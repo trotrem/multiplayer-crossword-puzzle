@@ -1,12 +1,13 @@
-
-<h4>Please select the name of the desired track  </h4>
-<ol class="tracks">
-  <li *ngFor="let track of tracks">
-  <a class="name"
-      [class.selected]="track === selectedTrack"
-      (click)="onSelect(track)">{{track.name}}</a>
-  </li>
+<h2>
+    List of tracks </h2>
+<div class="track">
+<ol>
+    <li *ngFor="let track of tracks">
+        <a class="name" [class.selected]="track === selectedTrack" (click)="onSelect(track)">{{track.name}}</a>
+    </li>
 </ol>
-
-<button [disabled]="!isSelected" (click)="editTrack()">edit Track</button>
-<button [disabled]="!isSelected"  (click)="deleteTrack()">delete Track</button>
+</div>
+<div class="button">
+<button [disabled]="!isSelected" (click)="editTrack()" >edit Track</button>
+<button [disabled]="!isSelected" (click)="deleteTrack()" >delete Track</button>
+</div>

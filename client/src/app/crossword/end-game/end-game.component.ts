@@ -3,9 +3,9 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { GameResult } from "../../../../../common/communication/types";
 
 @Component({
-  selector: "app-end-game",
-  templateUrl: "./end-game.component.html",
-  styleUrls: ["./end-game.component.css"]
+    selector: "app-end-game",
+    templateUrl: "./end-game.component.html",
+    styleUrls: ["./end-game.component.css"]
 })
 export class EndGameComponent {
 

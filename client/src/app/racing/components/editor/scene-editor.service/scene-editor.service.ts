@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import * as THREE from "three";
 import { TrackCreator } from "./../trackcreator/track-creator";
 import { RenderEditorService } from "../render-editor.service/render-editor.service";
-// TODO : Dylan
 const MAX_SELECTION: number = 2;
 const FIRST_POINT_MATERIAL: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 5, color: 0xFAA61A });
 const POINT_MATERIAL: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });

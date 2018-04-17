@@ -1,4 +1,4 @@
-import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
+import { Vector3, Matrix4, Object3D, Euler, Quaternion, Raycaster, Mesh } from "three";
 import { Engine } from "./engine";
 import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
@@ -29,6 +29,7 @@ const COEFFICIENT_USE: number = 0.0095;
 const COEFFICIENT_USES: number = 0.005;
 const WALL_SPEED_LOSS: number = 0.5;
 const MIN_WALL_SPEED: number = 4;
+const COLLISION_SPEED_LOSS: number = 10;
 
 const WIDTH: number = 0.9741033263794181;
 const LENGTH: number = 3.3948105126565693;
@@ -41,7 +42,6 @@ export class Car extends Object3D {
     private readonly rearWheel: Wheel;
     private readonly wheelbase: number;
     private readonly dragCoefficient: number;
-    private carLoader: CarLoader;
 
     private _speed: Vector3;
     private _velocity: Vector3;
@@ -74,8 +74,14 @@ export class Car extends Object3D {
     public get speed(): Vector3 {
         return this._speed.clone();
     }
+    public setSpeed(speed: Vector3): void {
+        this._speed = speed;
+    }
     public get velocity(): Vector3 {
         return this._velocity.clone();
+    }
+    public set velocity(velocity: Vector3) {
+        this._velocity = velocity;
     }
     public get currentGear(): number {
         return this.engine.currentGear;
@@ -105,7 +111,6 @@ export class Car extends Object3D {
         this.initializeCar();
     }
     private initializeCar(): void {
-        this.carLoader = new CarLoader();
         this.updatedPosition = new Vector3();
         this.isBraking = false;
         this.steeringWheelDirection = 0;
@@ -153,7 +158,16 @@ export class Car extends Object3D {
             pos.clone().sub(this.direction.multiplyScalar(LENGTH / 2).sub(
                 this.direction.cross(new Vector3(0, 0, 1).normalize().multiplyScalar(WIDTH / 2))))];
     }
+    public getNormals(): Vector3[] {
+        const corners: Vector3[] = this.getCorners(this.getUpdatedPosition().add(this.velocity));
+        const normals: Vector3[] = [];
+        for (let i: number = 1; i < corners.length - 1; i++) {
+            normals.push(corners[i + 1].clone().sub(corners[i]).cross(new Vector3(0, 0, 1)).normalize());
+        }
+        normals.push(corners[1].clone().sub(corners[corners.length - 1]).cross(new Vector3(0, 0, 1)).normalize());
 
+        return normals;
+    }
     public get direction(): Vector3 {
         const rotationMatrix: Matrix4 = new Matrix4();
         const carDirection: Vector3 = new Vector3(0, 0, -1);
@@ -168,7 +182,7 @@ export class Car extends Object3D {
     }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
-        this.mesh = await this.carLoader.load();
+        this.mesh = await CarLoader.load();
         this.mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this.mesh);
     }
