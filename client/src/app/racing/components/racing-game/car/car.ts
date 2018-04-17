@@ -42,7 +42,6 @@ export class Car extends Object3D {
     private readonly rearWheel: Wheel;
     private readonly wheelbase: number;
     private readonly dragCoefficient: number;
-    private carLoader: CarLoader;
 
     private _speed: Vector3;
     private _velocity: Vector3;
@@ -112,7 +111,6 @@ export class Car extends Object3D {
         this.initializeCar();
     }
     private initializeCar(): void {
-        this.carLoader = new CarLoader();
         this.updatedPosition = new Vector3();
         this.isBraking = false;
         this.steeringWheelDirection = 0;
@@ -184,7 +182,7 @@ export class Car extends Object3D {
     }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
-        this.mesh = await this.carLoader.load();
+        this.mesh = await CarLoader.load();
         this.mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this.mesh);
     }
