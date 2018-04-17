@@ -1,0 +1,26 @@
+div {text-align:center;
+    font-family: courier;
+    color: crimson;
+}
+
+a {font-family: courier;}
+a:link, a:visited {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover, a:active {
+    background-color: green;
+}
+.crossword {
+    float: left;
+    margin: 10px 450px;
+}
+.racing {
+    float: center;
+    margin: 20px 30px;
+}
