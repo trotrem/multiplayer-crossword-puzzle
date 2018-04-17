@@ -4,8 +4,8 @@ import { CommunicationService } from "./../communication.service";
 import { Router } from "@angular/router";
 import { IValidationData, IWordSelection, IGameResult} from "../../../../../common/communication/events";
 import { WordDescription, Cell, AssociatedPlayers, SelectedWord } from "./../dataStructures";
-import { PlayManager } from "./../play-manager/play-manager";
 import { WordStatusManager } from "./../word-status-manager/word-status-manager";
+import { PlayManagerService } from "../play-manager.service/play-manager.service";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -24,6 +24,7 @@ export class GridEventService {
 
     public constructor(
         private communicationService: CommunicationService,
+        private playManagerService: PlayManagerService,
         private router: Router) {
     }
 
@@ -95,12 +96,12 @@ export class GridEventService {
                 event.keyCode <= UPPER_Z ||
                 event.keyCode >= LOWER_A &&
                 event.keyCode <= LOWER_Z) {
-                PlayManager.write(
+                this.playManagerService.write(
                     String.fromCharCode(event.keyCode).toUpperCase(),
-                    this._selectedWord.word, this._words, this._id, this.communicationService);
+                    this._selectedWord.word, this._words, this._id);
             }
             if (event.keyCode === BACKSPACE || event.keyCode === DELETE) {
-                PlayManager.erase(this._selectedWord.word);
+                this.playManagerService.erase(this._selectedWord.word);
             }
         }
     }
