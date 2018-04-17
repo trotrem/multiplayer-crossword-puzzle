@@ -4,12 +4,12 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { OrthographicCamera } from "../camera/topView-camera";
 import { PerspectiveCamera } from "../camera/rearView-camera";
-import { ILine } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardService } from "../commands/keyboard.service";
-import * as Command from "../commands/concrete-commands/headers";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
+import * as Command from "../commands/command";
 import * as KeyCode from "../commands/key-code";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
 import { RenderService } from "../../render.service/render.service";
+import { ILine } from "../../../race-utils/vector-utils";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;
@@ -33,11 +33,11 @@ export class RenderGameService extends RenderService {
     }
 
     public initialize(canvas: HTMLCanvasElement, points: THREE.Vector3[], startingZone: THREE.Line3,
-                      cars: Car[], walls: ILine[], keyboard: KeyboardService): void {
+                      cars: Car[], walls: ILine[], keyboard: KeyboardEventService): void {
         super.initializeSuper(canvas);
         this.sceneGameService.initialize(points, startingZone, cars, walls);
 
-        this.initStats();
+        // this.initStats();
         this.initializeCamera();
         this.initCameraCommands(keyboard);
     }
@@ -47,12 +47,12 @@ export class RenderGameService extends RenderService {
         this.cameras[1] = new OrthographicCamera();
         this.cameras[0].up.set(0, 0, 1);
     }
-
-    private initStats(): void {
+    // TODO : check si necessaire
+   /* private initStats(): void {
         this.stats = new Stats();
         this.stats.dom.style.position = "absolute";
         this.canvas.appendChild(this.stats.dom);
-    }
+    }*/
 
     public render(player: Car): void {
         if (this.cameraID === 0) {
@@ -61,7 +61,7 @@ export class RenderGameService extends RenderService {
             this.cameras[1].updatePosition(player.getUpdatedPosition());
         }
         this.renderer.render(this.sceneGameService.scene, this.cameras[this.cameraID]);
-        this.stats.update();
+        // this.stats.update();
     }
     public onResize(): void {
         if (this.cameraID === 0) {
@@ -107,7 +107,7 @@ export class RenderGameService extends RenderService {
             }
         }
     }
-    public initCameraCommands(keyboard: KeyboardService): void {
+    public initCameraCommands(keyboard: KeyboardEventService): void {
         keyboard.addCommand(KeyCode.ZOOM_IN_KEYCODE, new Command.ZoomInCommand(this));
         keyboard.addCommand(KeyCode.ZOOM_OUT_KEYCODE, new Command.ZoomOutCommand(this));
         keyboard.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(this));

@@ -16,7 +16,7 @@ describe("Wheel", () => {
         expect(wheel.frictionCoefficient).toBeCloseTo(frictionCoefficient);
         expect(wheel.radius).toBeCloseTo(radius);
         expect(wheel.mass).toBeCloseTo(mass);
-        expect(wheel.angularVelocity).toBeCloseTo(0);
+        expect(wheel._angularVelocity).toBeCloseTo(0);
     });
 
     it("can't be instantiated with a negative mass", () => {
@@ -50,10 +50,10 @@ describe("Wheel", () => {
 
     it("angular velocity is properly modified", () => {
         const wheel: Wheel = new Wheel();
-        expect(wheel.angularVelocity).toBeCloseTo(0);
+        expect(wheel._angularVelocity).toBeCloseTo(0);
 
         const newAngularVelocity: number = 100;
-        wheel.angularVelocity = newAngularVelocity;
-        expect(wheel.angularVelocity).toBeCloseTo(newAngularVelocity);
+        wheel._angularVelocity = newAngularVelocity;
+        expect(wheel._angularVelocity).toBeCloseTo(newAngularVelocity);
     });
 });

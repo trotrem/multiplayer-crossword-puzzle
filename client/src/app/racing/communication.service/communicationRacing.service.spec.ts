@@ -2,7 +2,7 @@ import { TestBed, inject, async } from "@angular/core/testing";
 import * as THREE from "three";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Track } from "../track";
+import { ITrack } from "../track";
 import { RacingCommunicationService } from "./communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../common/communication/interfaces";
 
@@ -35,7 +35,7 @@ describe("RacingCommunicationService", () => {
 
   it("should issue a POST request", async(
     inject([HttpClient, HttpTestingController], (http: HttpClient, backend: HttpTestingController) => {
-      const track: Track = {
+      const track: ITrack = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };

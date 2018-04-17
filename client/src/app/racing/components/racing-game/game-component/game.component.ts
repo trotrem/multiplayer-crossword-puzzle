@@ -1,28 +1,34 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { GameManagerService } from "../game-manager/game-manager.service";
-import { KeyboardService } from "../commands/keyboard.service";
+import { KeyboardEventService } from "../commands/keyboard-event.service";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;
 const DELAY_FOR_RED: number = 1500;
-
+const EVENT: string = "$event";
+const RED: string = "red";
+const GREEN: string = "green";
+const RESIZE: string = "window:resize";
+const KEYDOWN: string = "document:keydown";
+const KEYUP: string = "document:keyup";
+const NAME: string = "name";
+const CANVAS: string = "canvas";
 @Component({
     moduleId: module.id,
     selector: "app-game-component",
     templateUrl: "./game.component.html",
     styleUrls: ["./game.component.css"],
-    providers: [GameManagerService, KeyboardService]
+    providers: [GameManagerService, KeyboardEventService]
 })
-
 export class GameComponent implements AfterViewInit {
 
-    @ViewChild("canvas")
+    @ViewChild(CANVAS)
     private canvasRef: ElementRef;
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: KeyboardService ) {
+    public constructor(private route: ActivatedRoute, private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -30,23 +36,23 @@ export class GameComponent implements AfterViewInit {
         this.playButtonEnabled = true;
     }
 
-    @HostListener("window:resize", ["$event"])
+    @HostListener(RESIZE, [EVENT])
     public onResize(): void {
         this.gameManager.onResize();
     }
 
-    @HostListener("document:keydown", ["$event"])
+    @HostListener(KEYDOWN, [EVENT])
     public onKeyPressed(event: KeyboardEvent): void {
         this.keyboard.executeKeyUpCommands(event.keyCode);
     }
 
-    @HostListener("document:keyup", ["$event"])
+    @HostListener(KEYUP, [EVENT])
     public onKeyReleased(event: KeyboardEvent): void {
         this.keyboard.executeKeyDownCommands(event.keyCode);
     }
 
     public async ngAfterViewInit(): Promise<void> {
-        const name: string = this.route.snapshot.paramMap.get("name");
+        const name: string = this.route.snapshot.paramMap.get(NAME);
         if (name !== null) {
             await this.gameManager.initializeGame(name, this.canvasRef, this.keyboard);
         }
@@ -60,11 +66,11 @@ export class GameComponent implements AfterViewInit {
 
     }
     private async visualSignal(): Promise<void> {
-        await this.changeLightColor("red", DELAY_BETWEEN_RED);
-        await this.delay(DELAY_FOR_RED).then(async() => {
-        await this.changeLightColor("green", 0);
+        await this.changeLightColor(RED, DELAY_BETWEEN_RED);
+        await this.delay(DELAY_FOR_RED).then(async () => {
+            await this.changeLightColor(GREEN, 0);
         });
-        await this.delay(DELAY).then(async() => {
+        await this.delay(DELAY).then(async () => {
             await this.changeLightColor("", 0);
             this.gameManager.startRace();
         });

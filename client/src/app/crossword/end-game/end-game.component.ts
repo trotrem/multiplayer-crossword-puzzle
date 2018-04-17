@@ -21,7 +21,7 @@ export class EndGameComponent {
     }
 
     public playSameCongif(): void {
-        this.router.navigate(["/crossword/game"]);
+        this.router.navigate(["crossword/game"]);
     }
 
     public returnHome(): void {

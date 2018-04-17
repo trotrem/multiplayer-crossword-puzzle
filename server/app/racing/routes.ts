@@ -71,21 +71,6 @@ module Route {
                     }
                 });
         }
-        public updateIBestScoreByName(req: Request, res: Response, next: NextFunction): void {
-            trackDocument.update(
-                { name: req.body.name },
-                { $set: { IBestScores: req.body.IBestScores } },
-                (err: Error): void => {
-                    if (!err) {
-                        console.warn("update ");
-                        res.send("update IBestScore");
-                    } else {
-                        console.error("unable to update");
-                        res.status(BAD_REQUEST_ERROR).send("unable to update");
-
-                    }
-                });
-        }
     }
 }
 

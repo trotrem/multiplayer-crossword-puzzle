@@ -34,12 +34,11 @@ export class CrosswordGridComponent implements OnInit {
     public selectedWord: WordDescription = null;
     public opponentSelectedWord: WordDescription = null;
     // needed so the html recognizes the enum
-    private TipMode: typeof TipMode = TipMode;// tslint:disable-line
+    public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode = TipMode.Definitions;
 
     @HostListener("document:click")
-    // (listens to document event so it's not called in the code)
-    private onBackgroundClick(): void {  // tslint:disable-line
+    public onBackgroundClick(): void {
         this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
     }
 

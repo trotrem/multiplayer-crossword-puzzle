@@ -9,7 +9,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Track } from "../../track";
+import { ITrack } from "../../track";
 import * as THREE from "three";
 import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
 
@@ -17,7 +17,7 @@ describe("EditorComponent", () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
   let route: ActivatedRoute;
-  const track: Track = {
+  const track: ITrack = {
     name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
     INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
   };
