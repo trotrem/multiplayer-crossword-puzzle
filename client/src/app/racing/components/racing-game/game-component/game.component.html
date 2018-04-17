@@ -1,5 +1,5 @@
 <button (click)="play()" [ngClass]="{'disapear': playButtonEnabled === false }"> PLAY </button>
-
+<button (click)="return()" class ="return"> RETURN </button>
 <div *ngFor="let light of lights">
     <ul>
         <li *ngIf="light === 'red'" class="red"> </li>

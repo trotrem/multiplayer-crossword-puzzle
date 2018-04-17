@@ -30,4 +30,5 @@ h2 {font-family: courier;
 div {width: 50%;
     align-items: center;
 }
-.track{margin: 10vh;}
+.track{margin: 15vh;}
+.button {margin: 5vh;}
