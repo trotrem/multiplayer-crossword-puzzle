@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { VectorUtils, ILine } from "../../../race-utils/vector-utils";
-import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
 enum WallSide {

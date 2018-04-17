@@ -1,4 +1,4 @@
-import { Vector3, Euler } from "three";
+import { Vector3 } from "three";
 import { Wheel } from "./wheel";
 import { Car } from "./car";
 import { GRAVITY } from "../../../../constants";

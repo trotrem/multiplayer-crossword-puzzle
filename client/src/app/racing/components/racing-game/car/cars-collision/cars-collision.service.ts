@@ -8,7 +8,6 @@ export interface IProjection {
 }
 
 const CAR_1_MOMENTUM_FACTOR: number = 3.9;
-const CAR_2_MOMENTUM_FACTOR: number = 4.1;
 const MINIMUM_SPEED: number = 0.05;
 const SPEED_FACTOR: number = 2.5;
 const SPEED_VECTOR_FACTOR: THREE.Vector3 = new THREE.Vector3(SPEED_FACTOR, 0, SPEED_FACTOR);

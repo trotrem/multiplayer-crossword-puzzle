@@ -17,7 +17,7 @@ describe("GameResultsComponent", () => {
     let component: GameResultsComponent;
     let fixture: ComponentFixture<GameResultsComponent>;
     let route: ActivatedRoute;
-    const track: ITrack = {
+    let track: ITrack = {
         name: "Laurence", description: "", startingZone: new THREE.Line3, points: new Array<THREE.Vector3>(), usesNumber: 0,
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
@@ -62,13 +62,13 @@ describe("GameResultsComponent", () => {
     });
     it("should return the track's newScores  ", async () => {
         route.snapshot.params = { params: track.name };
-        const track2: ITrack = await component.getTrack(track.name);
+        track = await component.getTrack(track.name);
         expect(component.scores === track.INewScores).toBe(true);
     });
 
     it("should return the track's BestScores  ", async () => {
         route.snapshot.params = { params: track.name };
-        const track2: ITrack = await component.getTrack(track.name);
+        track = await component.getTrack(track.name);
         expect(component.bestScores === track.IBestScores).toBe(true);
     });
 

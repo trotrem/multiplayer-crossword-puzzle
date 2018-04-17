@@ -14,7 +14,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { APP_BASE_HREF } from "@angular/common";
 import { UserComponent } from "./racing/components/user/user.component";
-import { SceneEditorService } from "./racing/components/editor/scene-editor.service/scene-editor.service";
 import { RacingCommunicationService } from "./racing/communication.service/communicationRacing.service";
 import { HomePageComponent } from "./crossword/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/end-game/end-game.component";
@@ -23,7 +22,6 @@ import { WallsCollisionsService } from "./racing/components/racing-game/walls-co
 import { CarsCollisionService } from "./racing/components/racing-game/car/cars-collision/cars-collision.service";
 import { KeyboardEventService } from "./racing/components/racing-game/commands/keyboard-event.service";
 import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
-import { RenderEditorService } from "./racing/components/editor/render-editor.service/render-editor.service";
 import { CommunicationService } from "./crossword/communication.service";
 import { GridEventService } from "./crossword/grid-event.service";
 import { WallService } from "./racing/components/racing-game/walls-collisions-service/walls";

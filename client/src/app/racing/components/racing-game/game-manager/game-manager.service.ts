@@ -32,7 +32,6 @@ export class GameManagerService {
         private renderService: RenderGameService,
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
-        private keyboard: KeyboardEventService,
         private carsCollisionService: CarsCollisionService,
         private wallService: WallService,
         private router: Router) {

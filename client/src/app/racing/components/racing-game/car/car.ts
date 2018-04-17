@@ -1,6 +1,6 @@
-import { Vector3, Matrix4, Object3D, Euler, Quaternion, Raycaster, Mesh } from "three";
+import { Vector3, Matrix4, Object3D, Euler, Quaternion } from "three";
 import { Engine } from "./engine";
-import { MS_TO_SECONDS, GRAVITY, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
+import { MS_TO_SECONDS, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
@@ -15,21 +15,11 @@ export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
 export const DEFAULT_DRAG_COEFFICIENT: number = 0.35;
 
-const MAXIMUM_STEERING_ANGLE: number = 0.25;
 const INITIAL_MODEL_ROTATION: Euler = new Euler(0, PI_OVER_2, 0);
 const INITIAL_WEIGHT_DISTRIBUTION: number = 0.5;
-const MAX_WEIGHT_DISTRIBUTION: number = 0.75;
 const MINIMUM_SPEED: number = 0.05;
-const NUMBER_REAR_WHEELS: number = 2;
-const NUMBER_WHEELS: number = 4;
-const RADIUS: number = 3.6;
-const PERCENTAGE: number = 100;
-const COEFFICIENT_DEGREE: number = 0.01;
-const COEFFICIENT_USE: number = 0.0095;
-const COEFFICIENT_USES: number = 0.005;
 const WALL_SPEED_LOSS: number = 0.5;
 const MIN_WALL_SPEED: number = 4;
-const COLLISION_SPEED_LOSS: number = 10;
 
 const WIDTH: number = 0.9741033263794181;
 const LENGTH: number = 3.3948105126565693;
