@@ -55,7 +55,7 @@ export class CarsCollisionService {
             resultsS[i] = this.getMinMax(this._vecCars[i], this._normals[1][0]);
         }
 
-        return !this.getCollisionDetection(resultsP, resultsQ, resultsR, resultsS);
+        return this.getCollisionDetection(resultsP, resultsQ, resultsR, resultsS);
     }
     private shapeAroundCar(cars: Car[]): void {
         for (let i: number = 0; i < cars.length; i++) {
@@ -88,12 +88,8 @@ export class CarsCollisionService {
         resultsQ: IProjection[],
         resultsR: IProjection[],
         resultsS: IProjection[]): boolean {
-            const separateP: boolean = this.getResult(resultsP);
-            const separateQ: boolean = this.getResult(resultsQ);
-            const separateR: boolean = this.getResult(resultsR);
-            const separateS: boolean = this.getResult(resultsS);
 
-            return !(separateP || separateQ || separateR || separateS);
+            return !(this.getResult(resultsP) || this.getResult(resultsQ) || this.getResult(resultsR) || this.getResult(resultsS));
     }
     private getResult(results: IProjection[]): boolean {
         return results[0].maxProj < results[1].minProj || results[1].maxProj < results[0].minProj;
