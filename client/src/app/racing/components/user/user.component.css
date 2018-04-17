@@ -1,12 +1,19 @@
-h3 , h1 {
+h1 {
     
     font-family: courier;
+    float: right;
+    margin: 10px 650px;
+}
+h3 {
+  font-family: courier;
 }
   ol {
+
     width: 100%;
     overflow: hidden;
     padding: 0;
-    margin: 0
+    float: left;
+    margin: 10px 250px;
   }
   li {
     width: 70%;

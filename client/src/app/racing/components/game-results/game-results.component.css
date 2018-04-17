@@ -4,7 +4,8 @@ h1 {color: goldenrod}
 .Left {width: 500px; float: left; }
 .Right {width: 500px; float: right; }
 button {
-    background-color:#36f456;
+    font-family: courier;
+    background-color:#f78f08;
     border: none;
     color: blue;
     padding: 15px 32px;
