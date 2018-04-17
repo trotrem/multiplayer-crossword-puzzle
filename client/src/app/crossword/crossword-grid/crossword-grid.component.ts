@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { CommunicationService } from "../communication.service";
-import { GridEventService } from "../grid-event.service";
+import { GridEventService } from "../grid-event.service/grid-event.service";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
@@ -79,12 +79,12 @@ export class CrosswordGridComponent implements OnInit {
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
-                console.warn('connected');
+                console.warn("connected");
             });
 
         this.socketsService.onEvent(CrosswordEvents.Disconnected)
             .subscribe(() => {
-                console.warn('disconnected');
+                console.warn("disconnected");
             });
     }
 
@@ -98,7 +98,7 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private createGrid(gridData: IGridData): void {
-        console.log(gridData.gameId)
+        console.log(gridData.gameId);
         this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
             this.cells[cell.y][cell.x].isBlack = true;

@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Difficulty, NbPlayers, GameResult } from "../../../../common/communication/types";
-import { CommunicationService } from "./communication.service";
+import { Difficulty, NbPlayers, GameResult } from "../../../../../common/communication/types";
+import { CommunicationService } from "./../communication.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Subscription } from "rxjs/Subscription";
-import { IValidationData, IWordSelection, IGameResult, ICrosswordSettings, IWordValidationPayload } from "../../../../common/communication/events";
-import { WordDescription, Cell, AssociatedPlayers } from "./dataStructures";
+import { IValidationData, IWordSelection, IGameResult, ICrosswordSettings, IWordValidationPayload } from "../../../../../common/communication/events";
+import { WordDescription, Cell, AssociatedPlayers } from "./../dataStructures";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -21,8 +21,8 @@ interface SelectedWord {
 
 @Injectable()
 export class GridEventService {
-    private _selectedWord: SelectedWord = { player: AssociatedPlayers.PLAYER, word: null};
-    private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null};
+    private _selectedWord: SelectedWord = { player: AssociatedPlayers.PLAYER, word: null };
+    private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
     private _words: WordDescription[];
     private _id: string;
     private _nbPlayers: number;
@@ -44,7 +44,7 @@ export class GridEventService {
 
     private subscribeToGameEnded(): void {
         this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
-            console.log(data.result + " gg")
+            console.log(data.result + " gg");
             this.openEndGame(data.result);
         });
     }
@@ -63,8 +63,8 @@ export class GridEventService {
     // TODO: selected inutile
     public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
         if (this._nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
-            console.log("sending")
-            this.communicationService.sendSelectionStatus({gameId: this._id, wordId: word !== null ? word.id : null});
+            console.log("sending");
+            this.communicationService.sendSelectionStatus({ gameId: this._id, wordId: word !== null ? word.id : null });
         }
 
         if (target.word === word) {
@@ -87,7 +87,7 @@ export class GridEventService {
             if (selected) {
                 cell.selectedBy = cell.selectedBy | target.player;
             } else {
-                cell.selectedBy = cell.selectedBy & ~ target.player;
+                cell.selectedBy = cell.selectedBy & ~target.player;
             }
         }
     }
@@ -173,9 +173,10 @@ export class GridEventService {
         const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT;
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
-                word.cells[i].letterFound = (foundStatus !== word.cells[i].letterFound && word.cells[i].letterFound !== AssociatedPlayers.NONE) ?
-                    AssociatedPlayers.BOTH :
-                    foundStatus;
+                word.cells[i].letterFound =
+                    (foundStatus !== word.cells[i].letterFound && word.cells[i].letterFound !== AssociatedPlayers.NONE) ?
+                        AssociatedPlayers.BOTH :
+                        foundStatus;
 
                 word.cells[i].content = data.word[i];
             }
