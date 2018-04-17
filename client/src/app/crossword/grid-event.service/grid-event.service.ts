@@ -59,7 +59,7 @@ export class GridEventService {
     public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         return this.setSelectedWord(this._selectedWord, word, selected);
     }
-
+// dans data-structure
     // TODO: selected inutile
     public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
         if (this._nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
@@ -81,7 +81,7 @@ export class GridEventService {
 
         return target.word;
     }
-
+// dans data-structure
     private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
             if (selected) {
@@ -135,7 +135,7 @@ export class GridEventService {
             }
         }
     }
-
+ // dans valide-crossword
     private write(char: string, word: WordDescription): void {
         for (const cell of word.cells) {
             if (cell.content === "") {
@@ -147,7 +147,7 @@ export class GridEventService {
             }
         }
     }
-
+ // dans valide-crossword
     private erase(word: WordDescription): void {
         let i: number;
         for (i = word.cells.length - 1; i >= 0; i--) {
@@ -158,7 +158,7 @@ export class GridEventService {
             }
         }
     }
-
+ // dans valide-crossword
     private validate(word: WordDescription): void {
         const parameters: IWordValidationPayload = {
             gameId: this._id,
@@ -183,7 +183,7 @@ export class GridEventService {
             word.found = foundStatus;
         }
     }
-
+ // dans valide-crossword
     // TODO only check crossing word
     private wordFoundByOtherWord(): void {
         for (const word of this._words) {
