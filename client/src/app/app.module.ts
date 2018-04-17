@@ -21,7 +21,7 @@ import { EndGameComponent } from "./crossword/end-game/end-game.component";
 import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { CarsCollisionService } from "./racing/components/racing-game/car/cars-collision/cars-collision.service";
-import { KeyboardService } from "./racing/components/racing-game/commands/keyboard.service";
+import { KeyboardEventService } from "./racing/components/racing-game/commands/keyboard-event.service";
 import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
 import { RenderEditorService } from "./racing/components/editor/render-editor.service/render-editor.service";
 import { CommunicationService } from "./crossword/communication.service";
@@ -81,7 +81,7 @@ const appRoutes: Routes = [
         RenderGameService,
         WallsCollisionsService,
         CarsCollisionService,
-        KeyboardService,
+        KeyboardEventService,
         WallService,
         {provide: APP_BASE_HREF, useValue : "/" }
     ],
