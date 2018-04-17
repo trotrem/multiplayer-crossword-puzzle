@@ -7,6 +7,7 @@ import { CrosswordEvents, IGridData } from "../../../../../common/communication/
 import { GameConfigurationService } from "../game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
+import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -20,7 +21,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [GridEventService, PlayManagerService]
+    providers: [GridEventService, PlayManagerService, WordStatusManagerService]
 })
 
 // TODO: initialiser attributs dans le constructeur (et checker à d'autres places)
