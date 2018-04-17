@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { CommunicationService } from "../communication.service";
-import { GridEventService } from "../grid-event.service";
+import { GridEventService } from "../grid-event.service/grid-event.service";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
+import { PlayManagerService } from "../play-manager.service/play-manager.service";
+import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -19,7 +21,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [GridEventService]
+    providers: [GridEventService, PlayManagerService, WordStatusManagerService]
 })
 
 // TODO: initialiser attributs dans le constructeur (et checker à d'autres places)
@@ -36,10 +38,14 @@ export class CrosswordGridComponent implements OnInit {
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode = TipMode.Definitions;
+    private isStated: boolean;
 
     @HostListener("document:click")
-    public onBackgroundClick(): void {
-        this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+    // (listens to document event so it's not called in the code)
+    private onBackgroundClick(): void {  // tslint:disable-line
+        if (this.isStated) {
+            this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        }
     }
 
     public get horizontalWords(): WordDescription[] {
@@ -66,24 +72,26 @@ export class CrosswordGridComponent implements OnInit {
         this.cells = new Array<Array<Cell>>();
         this.words = new Array<WordDescription>();
         for (let i: number = 0; i < GRID_HEIGHT; i++) {
+            this.isStated = false;
             this.cells[i] = new Array<Cell>();
             for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({ content: "",
-                                     selectedBy: AssociatedPlayers.NONE,
-                                     isBlack: false,
-                                     letterFound: AssociatedPlayers.NONE });
+                this.cells[i].push({
+                    content: "",
+                    selectedBy: AssociatedPlayers.NONE,
+                    isBlack: false,
+                    letterFound: AssociatedPlayers.NONE
+                });
             }
         }
 
-
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
-                console.warn('connected');
+                console.warn("connected");
             });
 
         this.socketsService.onEvent(CrosswordEvents.Disconnected)
             .subscribe(() => {
-                console.warn('disconnected');
+                console.warn("disconnected");
             });
     }
 
@@ -97,10 +105,11 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private createGrid(gridData: IGridData): void {
-        console.log(gridData.gameId)
-        this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
+        console.log(gridData.gameId);
+        this.gridEventService.initialize(this.words, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
             this.cells[cell.y][cell.x].isBlack = true;
+            this.isStated = true;
         });
         this.fillWords(gridData);
     }
@@ -128,11 +137,13 @@ export class CrosswordGridComponent implements OnInit {
                     cells.push(this.cells[word.y + i][word.x]);
                 }
             }
-            this.words.push({ id: index,
-                              direction: word.direction,
-                              cells: cells,
-                              definition: word.definition,
-                              found: AssociatedPlayers.NONE });
+            this.words.push({
+                id: index,
+                direction: word.direction,
+                cells: cells,
+                definition: word.definition,
+                found: AssociatedPlayers.NONE
+            });
         });
     }
 

@@ -22,3 +22,8 @@ export interface WordDescription {
     word?: string;
     found: AssociatedPlayers;
 }
+
+export interface SelectedWord {
+    player: AssociatedPlayers;
+    word: WordDescription;
+}
