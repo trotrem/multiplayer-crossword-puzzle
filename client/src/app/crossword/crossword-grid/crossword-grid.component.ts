@@ -9,8 +9,8 @@ import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
 import { GridService } from "../grid-service";
 import { GridCreator } from "../grid-creator";
 
-const GRID_WIDTH: number = 10;
-const GRID_HEIGHT: number = 10;
+const CONNECTED: string = "connected";
+const DISCONNECTED: string = "disconnected";
 
 enum TipMode {
     Definitions,
@@ -24,7 +24,6 @@ enum TipMode {
     providers: [GridEventService, GridService]
 })
 
-// TODO: initialiser attributs dans le constructeur (et checker à d'autres places)
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
     // needed so the html recognizes the enum
@@ -46,19 +45,19 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public get horizontalWords(): WordDescription[] {
-        return this.words.filter((word) => word.direction === Direction.Horizontal);
+        return this.gridService.getHorizontalWords();
     }
 
     public get verticalWords(): WordDescription[] {
-        return this.words.filter((word) => word.direction === Direction.Vertical);
+        return this.gridService.getVerticalWords();
     }
 
     public get nbPlayerFoundWords(): number {
-        return this.words.filter((word) => word.found === AssociatedPlayers.PLAYER).length;
+        return this.gridService.getNbPlayerFoundWords();
     }
 
     public get nbOpponentFoundWords(): number {
-        return this.words.filter((word) => word.found === AssociatedPlayers.OPPONENT).length;
+        return this.gridService.getNbOpponentFoundWords();
     }
 
     public constructor(
@@ -67,84 +66,29 @@ export class CrosswordGridComponent implements OnInit {
         private gameConfiguration: GameConfigurationService,
         private gridService: GridService,
         private socketsService: SocketsService) {
-        this.cells = new Array<Array<Cell>>();
-        this.words = new Array<WordDescription>();
-        for (let i: number = 0; i < GRID_HEIGHT; i++) {
-            this.cells[i] = new Array<Cell>();
-            for (let j: number = 0; j < GRID_WIDTH; j++) {
-                this.cells[i].push({
-                    content: "",
-                    selectedBy: AssociatedPlayers.NONE,
-                    isBlack: false,
-                    letterFound: AssociatedPlayers.NONE
-                });
-            }
-        }
-
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
-                console.warn('connected');
+                console.warn(CONNECTED);
             });
 
         this.socketsService.onEvent(CrosswordEvents.Disconnected)
             .subscribe(() => {
-                console.warn('disconnected');
+                console.warn(DISCONNECTED);
             });
     }
 
     public ngOnInit(): void {
-        /*this.nbPlayers = this.gameConfiguration.nbPlayers;
-        this._difficulty = this.gameConfiguration.difficulty;
-        this._playerName = this.gameConfiguration.playerName;
-        // TODO sketch
-        this.subscribeToGridFetched();
-        this.subscribeToValidation();*/
         this.gridService = new GridService(this.gameConfiguration, this.communicationService, this.gridEventService);
+        this.nbPlayers = this.gridService.nbPlayers;
+        this._difficulty = this.gridService.difficulty;
+        this._playerName = this.gridService.playerName;
+        this.cells = this.gridService.cells;
+        this.words = this.gridService.words;
+        this.selectedWord = this.gridService.selectedWord;
+        this.opponentSelectedWord = this.gridService.opponentSelectedWord;
+
     }
-
-    /*private createGrid(gridData: IGridData): void {
-        console.log(gridData.gameId)
-        this.gridEventService.initialize(this.words, this.nbPlayers, gridData.gameId);
-        gridData.blackCells.forEach((cell: IPoint) => {
-            this.cells[cell.y][cell.x].isBlack = true;
-        });
-        this.fillWords(gridData);
-    }
-
-    private subscribeToGridFetched(): void {
-        this.communicationService.gridPromise
-            .then((data) => {
-                this.createGrid(data);
-            });
-    }*/
-
-    /*private subscribeToValidation(): void {
-        this.communicationService.onValidation().subscribe((data) => {
-            this.gridEventService.onWordValidated(data);
-        });
-    }
-
-    private fillWords(gridData: IGridData): void {
-        gridData.wordInfos.forEach((word: IWordInfo, index: number) => {
-            const cells: Cell[] = new Array<Cell>();
-            for (let i: number = 0; i < word.length; i++) {
-                if (word.direction === Direction.Horizontal) {
-                    cells.push(this.cells[word.y][word.x + i]);
-                } else if (word.direction === Direction.Vertical) {
-                    cells.push(this.cells[word.y + i][word.x]);
-                }
-            }
-            this.words.push({
-                id: index,
-                direction: word.direction,
-                cells: cells,
-                definition: word.definition,
-                found: AssociatedPlayers.NONE
-            });
-        });
-    }*/
-
     public toggleTipMode(): void {
         if (this.horizontalWords[0].word === undefined) {
             this.gridService.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
@@ -164,17 +108,4 @@ export class CrosswordGridComponent implements OnInit {
     public onKeyPress(event: KeyboardEvent): void {
         this.gridEventService.onKeyPress(event);
     }
-
-    /*private fetchCheatModeWords(): void {
-        this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
-            .subscribe((data: string[]) => {
-                const words: string[] = data as string[];
-                let i: number = 0;
-                for (const word of this.horizontalWords.concat(this.verticalWords)) {
-                    word.word = words[i];
-                    i++;
-                }
-            });
-    }*/
-
 }

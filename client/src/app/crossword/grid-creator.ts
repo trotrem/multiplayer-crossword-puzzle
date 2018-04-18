@@ -7,7 +7,6 @@ import { GameConfigurationService } from "./game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 
 export class GridCreator {
-    // modifie cells
     public static createGrid(
         gridData: IGridData,
         gridEventService: GridEventService,
@@ -15,16 +14,13 @@ export class GridCreator {
         nbPlayers: number,
         cells: Cell[][]): Cell[][] {
 
-        console.log(gridData.gameId)
         gridEventService.initialize(words, nbPlayers, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
             cells[cell.y][cell.x].isBlack = true;
         });
 
         return cells;
-        //this.fillWords(gridData);
     }
-    //modifie words
     public static fillWords(gridData: IGridData, filledCells: Cell[][], words: WordDescription[]): WordDescription[] {
         gridData.wordInfos.forEach((word: IWordInfo, index: number) => {
             const cells: Cell[] = new Array<Cell>();

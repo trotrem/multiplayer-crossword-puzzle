@@ -3,48 +3,74 @@ import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "./../../../
 import { CommunicationService } from "./communication.service";
 import { GridEventService } from "./grid-event.service";
 import { GameConfigurationService } from "./game-configuration.service";
-import { WordDescription, Cell } from "./dataStructures";
+import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 import { GridCreator } from "./grid-creator";
 
+const GRID_WIDTH: number = 10;
+const GRID_HEIGHT: number = 10;
+
 @Injectable()
-export class GridService implements OnInit {
-    public cells: Cell[][];
-    // needed so the html recognizes the enum
-    public NbPlayers: typeof NbPlayers = NbPlayers;
-    public nbPlayers: number;
-    private words: WordDescription[];
-    private _difficulty: Difficulty = Difficulty.Easy;
+export class GridService {
+    private _cells: Cell[][];
+    private NbPlayers: typeof NbPlayers = NbPlayers;
+    private _nbPlayers: number;
+    private _words: WordDescription[];
+    private _difficulty: Difficulty;
     private _playerName: string;
-    public selectedWord: WordDescription = null;
-    public opponentSelectedWord: WordDescription = null;
+    private _selectedWord: WordDescription = null;
+    private _opponentSelectedWord: WordDescription = null;
+
+    public get cells(): Cell[][] {
+        return this._cells;
+    }
+    public get nbPlayers(): number {
+        return this._nbPlayers;
+    }
+    public get words(): WordDescription[] {
+        return this._words;
+    }
+    public get difficulty(): Difficulty {
+        return this._difficulty;
+    }
+    public get playerName(): string {
+        return this._playerName;
+    }
+    public get selectedWord(): WordDescription {
+        return this._selectedWord;
+    }
+    public get opponentSelectedWord(): WordDescription {
+        return this._opponentSelectedWord;
+    }
+    public getHorizontalWords(): WordDescription[] {
+        return this._words.filter((word) => word.direction === Direction.Horizontal);
+    }
+
+    public getVerticalWords(): WordDescription[] {
+        return this._words.filter((word) => word.direction === Direction.Vertical);
+    }
+
+    public getNbPlayerFoundWords(): number {
+        return this._words.filter((word) => word.found === AssociatedPlayers.PLAYER).length;
+    }
+
+    public getNbOpponentFoundWords(): number {
+        return this._words.filter((word) => word.found === AssociatedPlayers.OPPONENT).length;
+    }
 
     public constructor(
         private gameConfiguration: GameConfigurationService,
         private communicationService: CommunicationService,
         private gridEventService: GridEventService,
-    ) { }
+    ) {
+        this._cells = this.formGrid();
+        this._words = new Array<WordDescription>();
+        this._difficulty = Difficulty.Easy;
+        this._selectedWord = null;
+        this._opponentSelectedWord = null;
+        this.configureGame();
+        this.subscriptions();
+    }
 
-    public ngOnInit(): void {
-        this.nbPlayers = this.gameConfiguration.nbPlayers;
-        this._difficulty = this.gameConfiguration.difficulty;
-        this._playerName = this.gameConfiguration.playerName;
-        // TODO sketch
-        this.subscribeToGridFetched();
-        this.subscribeToValidation();
-    }
-    // modifie cells et words
-    private subscribeToGridFetched(): void {
-        this.communicationService.gridPromise
-            .then((data) => {
-                this.cells = GridCreator.createGrid(data, this.gridEventService, this.words, this.nbPlayers, this.cells);
-                this.words = GridCreator.fillWords(data, this.cells, this.words);
-            });
-    }
-    private subscribeToValidation(): void {
-        this.communicationService.onValidation().subscribe((data) => {
-            this.gridEventService.onWordValidated(data);
-        });
-    }
     public fetchCheatModeWords(horizontalWords: WordDescription[], verticalWords: WordDescription[]): void {
         this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
             .subscribe((data: string[]) => {
@@ -57,4 +83,41 @@ export class GridService implements OnInit {
             });
     }
 
+    private formGrid(): Cell[][] {
+        const cells: Cell[][] = new Array<Array<Cell>>();
+        for (let i: number = 0; i < GRID_HEIGHT; i++) {
+            this._cells[i] = new Array<Cell>();
+            for (let j: number = 0; j < GRID_WIDTH; j++) {
+                cells[i].push({
+                    content: "",
+                    selectedBy: AssociatedPlayers.NONE,
+                    isBlack: false,
+                    letterFound: AssociatedPlayers.NONE
+                });
+            }
+        }
+
+        return cells;
+    }
+    private configureGame(): void {
+        this._nbPlayers = this.gameConfiguration.nbPlayers;
+        this._difficulty = this.gameConfiguration.difficulty;
+        this._playerName = this.gameConfiguration.playerName;
+    }
+    private subscriptions(): void {
+        this.subscribeToGridFetched();
+        this.subscribeToValidation();
+    }
+    private subscribeToGridFetched(): void {
+        this.communicationService.gridPromise
+            .then((data) => {
+                this._cells = GridCreator.createGrid(data, this.gridEventService, this._words, this._nbPlayers, this._cells);
+                this._words = GridCreator.fillWords(data, this._cells, this._words);
+            });
+    }
+    private subscribeToValidation(): void {
+        this.communicationService.onValidation().subscribe((data) => {
+            this.gridEventService.onWordValidated(data);
+        });
+    }
 }
