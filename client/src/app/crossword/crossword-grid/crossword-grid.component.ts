@@ -6,7 +6,7 @@ import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
-import { GridService } from "../grid-service";
+import { GridManager } from "../grid-manager.service";
 import { GridCreator } from "../grid-creator";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
@@ -23,7 +23,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [GridEventService, GridService, PlayManagerService, WordStatusManagerService]
+    providers: [GridEventService, GridManager, PlayManagerService, WordStatusManagerService]
 })
 
 export class CrosswordGridComponent implements OnInit {
@@ -50,26 +50,26 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public get horizontalWords(): WordDescription[] {
-        return this.gridService.getHorizontalWords();
+        return this.gridManager.getHorizontalWords();
     }
 
     public get verticalWords(): WordDescription[] {
-        return this.gridService.getVerticalWords();
+        return this.gridManager.getVerticalWords();
     }
 
     public get nbPlayerFoundWords(): number {
-        return this.gridService.getNbPlayerFoundWords();
+        return this.gridManager.getNbPlayerFoundWords();
     }
 
     public get nbOpponentFoundWords(): number {
-        return this.gridService.getNbOpponentFoundWords();
+        return this.gridManager.getNbOpponentFoundWords();
     }
 
     public constructor(
         private communicationService: CommunicationService,
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
-        private gridService: GridService,
+        private gridManager: GridManager,
         private socketsService: SocketsService) {
 
         this.socketsService.onEvent(CrosswordEvents.Connected)
@@ -84,19 +84,19 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.gridService = new GridService(this.gameConfiguration, this.communicationService, this.gridEventService);
-        this.nbPlayers = this.gridService.nbPlayers;
-        this._difficulty = this.gridService.difficulty;
-        this._playerName = this.gridService.playerName;
-        this.cells = this.gridService.cells;
-        this.words = this.gridService.words;
-        this.selectedWord = this.gridService.selectedWord;
-        this.opponentSelectedWord = this.gridService.opponentSelectedWord;
+        this.gridManager = new GridManager(this.gameConfiguration, this.communicationService, this.gridEventService);
+        this.nbPlayers = this.gridManager.nbPlayers;
+        this._difficulty = this.gridManager.difficulty;
+        this._playerName = this.gridManager.playerName;
+        this.cells = this.gridManager.cells;
+        this.words = this.gridManager.words;
+        this.selectedWord = this.gridManager.selectedWord;
+        this.opponentSelectedWord = this.gridManager.opponentSelectedWord;
 
     }
     public toggleTipMode(): void {
         if (this.horizontalWords[0].word === undefined) {
-            this.gridService.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
+            this.gridManager.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
         }
         this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions;
     }

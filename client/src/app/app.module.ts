@@ -27,7 +27,7 @@ import { CommunicationService } from "./crossword/communication.service";
 import { GameConfigurationService } from "./crossword/game-configuration.service";
 import { RenderGameService } from "./racing/components/racing-game/render-game-service/render-game.service";
 import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
-import { GridService } from "./crossword/grid-service";
+import { GridManager } from "./crossword/grid-manager.service";
 import { SceneEditorService } from "./racing/components/editor/scene-editor.service/scene-editor.service";
 import { KeyboardEventService } from "./racing/components/racing-game/commands/keyboard-event.service";
 import { WallService } from "./racing/components/racing-game/walls-collisions-service/walls";
@@ -87,7 +87,7 @@ const appRoutes: Routes = [
         GameConfigurationService,
         RenderGameService,
         SceneGameService,
-        GridService,
+        GridManager,
         SceneEditorService,
         KeyboardEventService,
         CarsCollisionService,
