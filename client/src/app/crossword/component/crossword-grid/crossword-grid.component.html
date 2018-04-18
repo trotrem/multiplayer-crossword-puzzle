@@ -1,6 +1,11 @@
 <h1>Crossword!</h1>
-<h2>Number of players: {{nbPlayers}}</h2>
-<h2>Difficulty: {{_difficulty}}</h2>
+<div *ngIf="nbPlayers === 2">
+    <span class="player-name">{{playerName}}</span>
+    <span class="title-span"> VS </span>
+    <span class="opponent-name">{{opponentName}}</span>
+</div>
+<h2 *ngIf="nbPlayers === 1">Solo Game</h2>
+<h2>Difficulty: {{difficultyString}}</h2>
 <div class="layout">
     <div>
         <div class="crossword-grid">

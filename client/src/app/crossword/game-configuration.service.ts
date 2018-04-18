@@ -4,6 +4,7 @@ import { Difficulty } from "../../../../common/communication/types";
 @Injectable()
 export class GameConfigurationService {
 
+    public opponentName: string;
     private _difficulty: Difficulty;
     private _playerName: string;
     // TODO: ENUM
