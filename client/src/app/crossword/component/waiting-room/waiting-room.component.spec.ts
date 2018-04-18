@@ -19,21 +19,19 @@ describe("WaitingRoomComponent", () => {
         void TestBed.configureTestingModule({
             declarations: [CrosswordGridComponent, WaitingRoomComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
-            { path: "crossword/game", component: CrosswordGridComponent }])],
+                { path: "crossword/game", component: CrosswordGridComponent }])],
             providers: [CommunicationService, SocketsService]
         })
             .compileComponents();
     }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(WaitingRoomComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
-
     beforeEach(inject([Router, CommunicationService], (_router: Router, _communicationService: CommunicationService) => {
         communicationService = _communicationService;
         router = _router;
+        communicationService.initialize();
+        fixture = TestBed.createComponent(WaitingRoomComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     }));
 
     it("should create", () => {

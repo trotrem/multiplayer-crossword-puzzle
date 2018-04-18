@@ -14,22 +14,26 @@ describe("MultiplayerLobbyComponent", () => {
     let component: MultiplayerLobbyComponent;
     let fixture: ComponentFixture<MultiplayerLobbyComponent>;
     let router: Router;
+    let communicationService: CommunicationService;
 
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
             declarations: [MultiplayerLobbyComponent, CrosswordGridComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
-            { path: "crossword/game", component: CrosswordGridComponent }])],
-            providers: [CommunicationService, SocketsService, GameConfigurationService]
+                { path: "crossword/game", component: CrosswordGridComponent }])],
+            providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
     }));
 
-    beforeEach(inject([Router], (_router: Router) => {
+    beforeEach(inject([Router, CommunicationService], (_router: Router, _communicationService: CommunicationService) => {
         router = _router;
+        communicationService = _communicationService;
+        communicationService.initialize();
         fixture = TestBed.createComponent(MultiplayerLobbyComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+
     }));
 
     it("should create", () => {
@@ -37,7 +41,7 @@ describe("MultiplayerLobbyComponent", () => {
     });
 
     it("When a player tries to join a game, it should put him in a game with the other player", fakeAsync(() => {
-        const game: IConnectionInfo = {gameId: "50", player: "Marc-Antoine"}; // Game to join
+        const game: IConnectionInfo = { gameId: "50", player: "Marc-Antoine" }; // Game to join
         component.joinGame(game);
         tick(100);
         expect(router.url).toBe("/crossword/game");

@@ -51,6 +51,7 @@ describe("GridEventService", () => {
             playManagerService = _playManagerService;
             communicationService = _communicationService;
             wordStatusManagerService = _wordStatusManagerService;
+            communicationService.initialize();
             component = TestBed.createComponent(CrosswordGridComponent).componentInstance;
         }));
 

@@ -16,23 +16,27 @@ import { MultiplayerLobbyComponent } from "../multiplayer-lobby/multiplayer-lobb
 describe("HomePageComponent", () => {
     let component: HomePageComponent;
     let router: Router;
+    let communicationService: CommunicationService;
 
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
             declarations: [HomePageComponent, CrosswordGridComponent, WaitingRoomComponent, MultiplayerLobbyComponent],
-            imports: [FormsModule, HttpClientTestingModule,
-                      RouterTestingModule.withRoutes([
-                        { path: "crossword/game", component: CrosswordGridComponent },
-                        { path: "crossword/waiting", component: WaitingRoomComponent },
-                        { path: "crossword/lobby", component: MultiplayerLobbyComponent }])],
+            imports: [
+                FormsModule, HttpClientTestingModule,
+                RouterTestingModule.withRoutes([
+                    { path: "crossword/game", component: CrosswordGridComponent },
+                    { path: "crossword/waiting", component: WaitingRoomComponent },
+                    { path: "crossword/lobby", component: MultiplayerLobbyComponent }])],
             providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
     }));
 
-    beforeEach(inject([Router], (_router: Router) => {
+    beforeEach(inject([Router, CommunicationService], (_router: Router, _communicationService: CommunicationService) => {
         router = _router;
+        communicationService = _communicationService;
         component = TestBed.createComponent(HomePageComponent).componentInstance;
+        communicationService.initialize();
     }));
 
     it("should create", () => {

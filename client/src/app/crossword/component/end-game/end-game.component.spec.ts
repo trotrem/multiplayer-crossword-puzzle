@@ -31,17 +31,20 @@ describe("EndGameComponent", () => {
             .compileComponents();
     }));
 
-    beforeEach(inject([Router, ActivatedRoute, CommunicationService, GameConfigurationService], 
-                     (_router: Router, _route: ActivatedRoute, 
-                      _communicationService: CommunicationService, _gameConfigurationService: GameConfigurationService) => {
-        route = _route;
-        router = _router;
-        communicationService = _communicationService;
-        gameConfigurationService = _gameConfigurationService;
-        fixture = TestBed.createComponent(EndGameComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    }));
+    beforeEach(inject(
+        [Router, ActivatedRoute, CommunicationService, GameConfigurationService],
+        (
+            _router: Router, _route: ActivatedRoute,
+            _communicationService: CommunicationService, _gameConfigurationService: GameConfigurationService) => {
+            route = _route;
+            router = _router;
+            communicationService = _communicationService;
+            gameConfigurationService = _gameConfigurationService;
+            fixture = TestBed.createComponent(EndGameComponent);
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            communicationService.initialize();
+        }));
 
     it("should create", () => {
         expect(component).toBeTruthy();

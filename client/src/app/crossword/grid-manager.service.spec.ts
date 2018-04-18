@@ -10,6 +10,7 @@ import { SocketsService } from "./sockets.service";
 import { PlayManagerService } from "./play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "./word-status-manager.service/word-status-manager.service";
 
+let communicationService: CommunicationService;
 describe("GridManager", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -18,14 +19,21 @@ describe("GridManager", () => {
                 HttpClientTestingModule,
                 RouterTestingModule.withRoutes([]),
             ],
-            providers: [GridManager, CommunicationService,
-                        SocketsService, GameConfigurationService,
-                        GridEventService, PlayManagerService,
-                        WordStatusManagerService]
+            providers: [
+                GridManager, CommunicationService,
+                SocketsService, GameConfigurationService,
+                GridEventService, PlayManagerService,
+                WordStatusManagerService]
         });
     });
 
-    it("should create an instance",  inject([GridManager], (service: GridManager) => {
+    beforeEach(inject([ CommunicationService], ( _communicationService: CommunicationService) => {
+        communicationService = _communicationService;
+        communicationService.initialize();
+
+    }));
+
+    it("should create an instance", inject([GridManager], (service: GridManager) => {
         expect(service).toBeTruthy();
     }));
 });
