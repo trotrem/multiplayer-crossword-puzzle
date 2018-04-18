@@ -16,15 +16,15 @@ import { GameConfigurationService } from "../game-configuration.service";
 export class HomePageComponent implements OnInit {
 
     // TODO changer les noms osti
-    public oneTwo: number;
-    public EasyMediumHard: number;
+    public playersNumber: number;
+    public difficultyGrade: number;
     public playerName: string;
 
     public constructor(private router: Router,
                        private communicationService: CommunicationService,
                        private gameConfiguration: GameConfigurationService) {
-        this.oneTwo = 2;
-        this.EasyMediumHard = 0;
+        this.playersNumber = 2;
+        this.difficultyGrade = 0;
         this.playerName = "";
     }
 
@@ -32,17 +32,17 @@ export class HomePageComponent implements OnInit {
     }
 
     public disablePlayButton(): boolean {
-        return this.oneTwo === 2 && this.playerName.length === 0;
+        return this.playersNumber === 2 && this.playerName.length === 0;
     }
 
     public disableJoinButton(): boolean {
-        return this.oneTwo === 1 || this.playerName.length === 0;
+        return this.playersNumber === 1 || this.playerName.length === 0;
     }
 
     public play(): void {
-        this.communicationService.intiateGame(this.EasyMediumHard, this.playerName, this.oneTwo);
-        this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
-        if (this.oneTwo === 1) {
+        this.communicationService.intiateGame(this.difficultyGrade, this.playerName, this.playersNumber);
+        this.gameConfiguration.configureGame(this.difficultyGrade, this.playerName, this.playersNumber);
+        if (this.playersNumber === 1) {
             this.router.navigate(["/crossword/game"]);
         } else {
             this.router.navigate(["/crossword/waiting"]);
@@ -51,7 +51,7 @@ export class HomePageComponent implements OnInit {
 
     // todo rename
     public joinExisting(): void {
-        this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
+        this.gameConfiguration.configureGame(this.difficultyGrade, this.playerName, this.playersNumber);
         this.router.navigate(["/crossword/lobby"]);
     }
 }

@@ -39,8 +39,8 @@ describe("HomePageComponent", () => {
     // TODO: rajouter des test
 
     it("play with 1 player takes you to /crossword/game", fakeAsync(() => {
-        component.EasyMediumHard = Difficulty.Easy;
-        component.oneTwo = 1;
+        component.difficultyGrade = Difficulty.Easy;
+        component.playersNumber = 1;
         component.play();
         tick(100);
         expect(router.url).toBe("/crossword/game");
