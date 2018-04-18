@@ -112,11 +112,12 @@ export class SocketsHandler {
         if (winner === null) {
             return;
         }
-
+        if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2) {
+            this.onRematch(gameId);
+        }
         if (winner !== undefined) {
             winner.emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Victory} as IGameResult);
-            if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2)
-            {
+            if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2) {
                 CrosswordGamesCache.Instance.getOpponentSocket(gameId, winner)
                     .emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Defeat} as IGameResult);
             }
@@ -124,5 +125,28 @@ export class SocketsHandler {
             return;
         }
         this.emitToGamePlayers(gameId, CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Tie } as IGameResult);
+    }
+
+    private onRematch(gameId: string): void {
+        const requestCountClosure: () => number = this.rematchRequestClosure();
+        const sockets: SocketIO.Socket[] = CrosswordGamesCache.Instance.getPlayersSockets(gameId);
+
+        for (const socket of sockets) {
+            socket.once(CrosswordEvents.RematchRequested, (payload: IEventPayload) => {
+                if (requestCountClosure() === 2) {
+                    this.sendGridToPlayers(gameId);
+                }
+            });
+        }
+    }
+
+    private rematchRequestClosure(): () => number {
+        let requestCount: number = 0;
+
+        return () => {
+            requestCount ++;
+
+            return requestCount;
+        };
     }
 }

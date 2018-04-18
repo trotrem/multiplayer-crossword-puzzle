@@ -14,7 +14,8 @@ export enum CrosswordEvents {
     SelectedWord = "selected-word",
     OpponentSelectedWord = "opponent-selected-word",
     GameEnded = "game-ended",
-    Rematch = "rematch"
+    RequestRematch = "request-rematch",
+    RematchRequested = "rematch-requested"
 }
 
 export interface IEventPayload {

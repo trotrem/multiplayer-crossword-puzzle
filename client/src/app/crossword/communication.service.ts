@@ -74,4 +74,12 @@ export class CommunicationService {
     public onGamesFetched(): Observable<ILobbyGames> {
         return this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first() as Observable<ILobbyGames>;
     }
+
+    public sendRequestRematch(): void {
+        this.socketsService.sendEvent(CrosswordEvents.RequestRematch, null);
+    }
+
+    public onRematchRequested(): Observable<null> {
+        return this.socketsService.onEvent(CrosswordEvents.RematchRequested).first() as Observable<null>;
+    }
 }
