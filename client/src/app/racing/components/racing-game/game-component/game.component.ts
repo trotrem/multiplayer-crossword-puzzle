@@ -29,8 +29,9 @@ export class GameComponent implements AfterViewInit {
     private lights: string[];
     private playButtonEnabled: boolean;
 
-    public constructor(private route: ActivatedRoute, private router: Router,
-                       private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
+    public constructor(
+        private route: ActivatedRoute, private router: Router,
+        private gameManager: GameManagerService, private keyboard: KeyboardEventService) {
         this.lights = new Array<string>();
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights.push("");
@@ -60,6 +61,14 @@ export class GameComponent implements AfterViewInit {
         }
     }
 
+    public async play(): Promise<void> {
+        this.playButtonEnabled = false;
+        await this.visualSignal();
+    }
+    public return(): void {
+        this.router.navigateByUrl(USER);
+    }
+
     private async changeLightColor(color: string, delay: number): Promise<void> {
         for (let i: number = 0; i < LIGHTS; i++) {
             this.lights[i] = color;
@@ -81,13 +90,5 @@ export class GameComponent implements AfterViewInit {
 
     private async delay(ms: number): Promise<{}> {
         return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
-    public async play(): Promise<void> {
-        this.playButtonEnabled = false;
-        await this.visualSignal();
-    }
-    public return(): void {
-        this.router.navigateByUrl(USER);
     }
 }

@@ -14,11 +14,30 @@ export class SceneEditorService {
     private dragIndex: number;
     private trackCreator: TrackCreator;
 
+    public get scene(): THREE.Scene {
+        return this._scene;
+    }
+
     public constructor(private renderService: RenderEditorService) {
         this.dragIndex = -1;
         this.trackCreator = new TrackCreator(this.renderService);
         this.lines = new Array<THREE.Line>();
         this._scene = new THREE.Scene();
+    }
+    public getPoints(): Array<THREE.Vector3> {
+        return this.trackCreator.points;
+    }
+
+    public getTrackValid(): boolean {
+        return this.trackCreator.trackValid;
+    }
+
+    public getIsClosed(): boolean {
+        return this.trackCreator.isClosed;
+    }
+
+    public setIsClosed(isClosed: boolean): void {
+        this.trackCreator.isClosed = isClosed;
     }
 
     public onLeftClick(event: MouseEvent): void {
@@ -30,26 +49,6 @@ export class SceneEditorService {
         this.drawPoints(position);
         this.drawLines(position);
         this.trackCreator.points.push(position);
-    }
-
-    private drawPoints(position: THREE.Vector3): void {
-        if (this.trackCreator.points.length === 0) {
-            this.scene.add(this.trackCreator.createPoint(position, FIRST_POINT_MATERIAL));
-        }
-        this.scene.add(this.trackCreator.createPoint(position, POINT_MATERIAL));
-    }
-
-    private drawLines(position: THREE.Vector3): void {
-        if (this.trackCreator.points.length > 0) {
-            this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
-            this.addLinesToScene();
-        }
-    }
-
-    private addLinesToScene(): void {
-        for (const line of this.lines) {
-            this.scene.add(line);
-        }
     }
 
     public onRightClick(event: MouseEvent): void {
@@ -87,18 +86,6 @@ export class SceneEditorService {
         this.dragIndex = index;
     }
 
-    private removePoint(): void {
-        this.trackCreator.isClosed = false;
-        const newPoints: THREE.Vector3[] = this.trackCreator.points;
-        this.trackCreator.points = [];
-        newPoints.pop();
-        if (newPoints.length > 0) {
-            this.redrawTrack(newPoints);
-        } else {
-            this.removeTrack();
-        }
-    }
-
     public redrawTrack(newPoints: THREE.Vector3[]): void {
         this.trackCreator.trackValid = true;
         if (!newPoints) {
@@ -119,29 +106,41 @@ export class SceneEditorService {
         }
 
     }
+    private removePoint(): void {
+        this.trackCreator.isClosed = false;
+        const newPoints: THREE.Vector3[] = this.trackCreator.points;
+        this.trackCreator.points = [];
+        newPoints.pop();
+        if (newPoints.length > 0) {
+            this.redrawTrack(newPoints);
+        } else {
+            this.removeTrack();
+        }
+    }
+    private drawPoints(position: THREE.Vector3): void {
+        if (this.trackCreator.points.length === 0) {
+            this.scene.add(this.trackCreator.createPoint(position, FIRST_POINT_MATERIAL));
+        }
+        this.scene.add(this.trackCreator.createPoint(position, POINT_MATERIAL));
+    }
+
+    private drawLines(position: THREE.Vector3): void {
+        if (this.trackCreator.points.length > 0) {
+            this.lines = this.trackCreator.createLine(this.trackCreator.points[this.trackCreator.points.length - 1], position);
+            this.addLinesToScene();
+        }
+    }
+
+    private addLinesToScene(): void {
+        for (const line of this.lines) {
+            this.scene.add(line);
+        }
+    }
 
     private removeTrack(): void {
         while (this.scene.children.length > 0) {
             this.scene.remove(this.scene.children[0]);
         }
-    }
-    public getPoints(): Array<THREE.Vector3> {
-        return this.trackCreator.points;
-    }
-
-    public getTrackValid(): boolean {
-        return this.trackCreator.trackValid;
-    }
-
-    public getIsClosed(): boolean {
-        return this.trackCreator.isClosed;
-    }
-
-    public setIsClosed(isClosed: boolean): void {
-        this.trackCreator.isClosed = isClosed;
-    }
-    public get scene(): THREE.Scene {
-        return this._scene;
     }
 
 }

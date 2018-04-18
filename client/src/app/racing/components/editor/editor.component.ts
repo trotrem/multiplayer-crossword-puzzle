@@ -19,7 +19,6 @@ const CANVAS: string = "canvas";
 export class EditorComponent implements OnInit {
 
     @ViewChild(CANVAS)
-
     private canvasRef: ElementRef;
     private submitValid: boolean;
     public track: ITrack;
@@ -76,7 +75,7 @@ export class EditorComponent implements OnInit {
         this.submitValid = true;
     }
 
-    public async getTrack(name: string): Promise<void> {
+    public  async getTrack(name: string): Promise<void> {
         await this.communicationService.getTrackByName(name)
             .then((res: ITrack[]) => {
                 this.track = res[0];

@@ -17,11 +17,6 @@ export class RaceValidator {
         }
     }
 
-    private static setNextLapParameters(car: Car, timer: number): void {
-        car.setLapTimes(timer / MS_TO_SECONDS);
-        car.checkpoint = 0;
-    }
-
     public static addScoreToTrack(car: Car, scores: INewScores[], carIndex: number): void {
         const newScore: INewScores = { idCar: carIndex, scoresCar: new Array<number>() };
         scores.push(newScore);
@@ -44,5 +39,9 @@ export class RaceValidator {
             car.getLapTimes().push(time);
         }
 
+    }
+    private static setNextLapParameters(car: Car, timer: number): void {
+        car.setLapTimes(timer / MS_TO_SECONDS);
+        car.checkpoint = 0;
     }
 }

@@ -35,9 +35,6 @@ export class TrackCreator {
 
         return position;
     }
-    private verifieDistance(position: THREE.Vector3): boolean {
-        return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
-    }
 
     public createPoint(position: THREE.Vector3, material: THREE.PointsMaterial): THREE.Points {
         const pointGeometry: THREE.Geometry = new THREE.Geometry();
@@ -59,6 +56,10 @@ export class TrackCreator {
         return lines;
     }
 
+    private verifieDistance(position: THREE.Vector3): boolean {
+        return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
+    }
+
     private verifyTrack(lastPos: THREE.Vector3, newPos: THREE.Vector3): Array<THREE.Line> {
         let lines: Array<THREE.Line> = new Array<THREE.Line>();
         this.illegalPoints = TrackValidator.isValid(this.points, lastPos, newPos);
@@ -76,7 +77,7 @@ export class TrackCreator {
         return lines;
     }
 
-    public redrawConflictingLines( color: number): Array<THREE.Line> {
+    private redrawConflictingLines(color: number): Array<THREE.Line> {
         const lines: Array<THREE.Line> = new Array<THREE.Line>();
         for (let i: number = 0; i < this.illegalPoints.length; i += MAX_SELECTION) {
             const lineGeometry: THREE.Geometry = new THREE.Geometry;
