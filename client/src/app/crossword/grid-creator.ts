@@ -1,6 +1,6 @@
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "./../../../../common/communication/types";
 import { CommunicationService } from "./communication.service";
-import { GridEventService } from "./grid-event.service";
+import { GridEventService } from "./grid-event.service/grid-event.service";
 import { SocketsService } from "./sockets.service";
 import { CrosswordEvents, IGridData } from "./../../../../common/communication/events";
 import { GameConfigurationService } from "./game-configuration.service";
@@ -14,7 +14,7 @@ export class GridCreator {
         nbPlayers: number,
         cells: Cell[][]): Cell[][] {
 
-        gridEventService.initialize(words, nbPlayers, gridData.gameId);
+        gridEventService.initialize(words, gridData.gameId);
         gridData.blackCells.forEach((cell: IPoint) => {
             cells[cell.y][cell.x].isBlack = true;
         });

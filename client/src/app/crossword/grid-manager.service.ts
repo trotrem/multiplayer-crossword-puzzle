@@ -1,7 +1,7 @@
 import { OnInit, Injectable } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "./../../../../common/communication/types";
 import { CommunicationService } from "./communication.service";
-import { GridEventService } from "./grid-event.service";
+import { GridEventService } from "./grid-event.service/grid-event.service";
 import { GameConfigurationService } from "./game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 import { GridCreator } from "./grid-creator";
@@ -10,7 +10,7 @@ const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
 
 @Injectable()
-export class GridService {
+export class GridManager {
     private _cells: Cell[][];
     private NbPlayers: typeof NbPlayers = NbPlayers;
     private _nbPlayers: number;
