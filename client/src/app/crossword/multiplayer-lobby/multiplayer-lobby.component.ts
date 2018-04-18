@@ -22,7 +22,7 @@ export class MultiplayerLobbyComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.communicationService.onGamesFetched()
+        this.communicationService.sendEventOnGamesFetched()
             .subscribe((lobby: ILobbyGames) => {
                 this.lobbyGames = lobby.games; });
 

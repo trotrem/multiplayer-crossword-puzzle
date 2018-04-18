@@ -116,7 +116,7 @@ export class GridManager {
             });
     }
     private subscribeToValidation(): void {
-        this.communicationService.onValidation().subscribe((data) => {
+        this.communicationService.returnDataOnWordValidation().subscribe((data) => {
             this.gridEventService.onWordValidated(data);
         });
     }

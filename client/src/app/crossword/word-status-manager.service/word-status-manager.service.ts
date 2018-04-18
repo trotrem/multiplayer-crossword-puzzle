@@ -17,7 +17,6 @@ export class WordStatusManagerService {
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
-            console.log("sending");
             this.communicationService.sendSelectionStatus({ gameId: id, wordId: word !== null ? word.id : null });
         }
 

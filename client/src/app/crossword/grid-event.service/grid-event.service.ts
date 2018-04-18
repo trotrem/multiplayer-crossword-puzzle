@@ -41,15 +41,14 @@ export class GridEventService {
     }
 
     private subscribeToGameEnded(): void {
-        this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
-            console.log(data.result + " gg");
+        this.communicationService.sendEventOnGameEnded().subscribe((data: IGameResult) => {
+
             this.openEndGame(data.result);
         });
     }
 
     private subscribeToOpponentSelection(): void {
-        this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
-            console.log("received");
+        this.communicationService.sendEventOnOpponentSelectedWord().subscribe((word: IWordSelection) => {
             this.wordStatusManagerService.setSelectedWord(
                 this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
                 true, this._id);
