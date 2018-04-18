@@ -56,6 +56,19 @@ export class TrackCreator {
         return lines;
     }
 
+    public redrawConflictingLines(color: number): Array<THREE.Line> {
+        const lines: Array<THREE.Line> = new Array<THREE.Line>();
+        for (let i: number = 0; i < this.illegalPoints.length; i += MAX_SELECTION) {
+            const lineGeometry: THREE.Geometry = new THREE.Geometry;
+            lineGeometry.vertices.push(this.illegalPoints[i]);
+            lineGeometry.vertices.push(this.illegalPoints[i + 1]);
+            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
+            lines.push(line);
+        }
+
+        return lines;
+    }
+
     private verifieDistance(position: THREE.Vector3): boolean {
         return this.points.length > MAX_SELECTION && position.distanceTo(this.points[0]) < MAX_SELECTION;
     }
@@ -77,17 +90,5 @@ export class TrackCreator {
         return lines;
     }
 
-    private redrawConflictingLines(color: number): Array<THREE.Line> {
-        const lines: Array<THREE.Line> = new Array<THREE.Line>();
-        for (let i: number = 0; i < this.illegalPoints.length; i += MAX_SELECTION) {
-            const lineGeometry: THREE.Geometry = new THREE.Geometry;
-            lineGeometry.vertices.push(this.illegalPoints[i]);
-            lineGeometry.vertices.push(this.illegalPoints[i + 1]);
-            const line: THREE.Line = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color }));
-            lines.push(line);
-        }
-
-        return lines;
-    }
 
 }
