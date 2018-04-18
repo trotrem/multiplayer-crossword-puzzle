@@ -9,6 +9,7 @@ import { CrosswordEvents, IGridData, IValidationData,
         IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest } from "../../../../common/communication/events";
 
 const SERVER_URL: string = "http://localhost:3000";
+const CHEAT_WORDS_URL: string = "/crossword/cheatwords/";
 
 @Injectable()
 export class CommunicationService {
@@ -24,11 +25,11 @@ export class CommunicationService {
     }
 
     public fetchCheatModeWords(id: string): Observable<string[]> {
-        return this.http.get<string[]>(SERVER_URL + "/crossword/cheatwords/" + id);
+        return this.http.get<string[]>(SERVER_URL + CHEAT_WORDS_URL + id);
     }
 
     // TODO: type safety
-    public intiateGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
+    public initiateGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this.socketsService.sendEvent(
             CrosswordEvents.NewGame,
             { gameId: undefined, difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers } as ICrosswordSettings);

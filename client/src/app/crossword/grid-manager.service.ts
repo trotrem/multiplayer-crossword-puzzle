@@ -104,6 +104,7 @@ export class GridManager {
         this._difficulty = this.gameConfiguration.difficulty;
         this._playerName = this.gameConfiguration.playerName;
     }
+    
     private subscriptions(): void {
         this.subscribeToGridFetched();
         this.subscribeToValidation();

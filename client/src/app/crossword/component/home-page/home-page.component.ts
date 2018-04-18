@@ -42,7 +42,7 @@ export class HomePageComponent implements OnInit {
     }
 
     public play(): void {
-        this.communicationService.intiateGame(this.difficultyGrade, this.playerName, this.numberPlayers);
+        this.communicationService.initiateGame(this.difficultyGrade, this.playerName, this.numberPlayers);
         this.gameConfiguration.configureGame(this.difficultyGrade, this.playerName, this.numberPlayers);
         if (this.numberPlayers === 1) {
             this.router.navigate(["/crossword/game"]);

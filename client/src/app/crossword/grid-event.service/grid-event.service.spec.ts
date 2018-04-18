@@ -86,7 +86,7 @@ describe("GridEventService", () => {
     });
 
     it(" should validate a word automatically without entering a key", () => {
-        spyOn(communicationService, "validate");
+        spyOn(communicationService, "sendEventOnValidatedWord");
         const cells: Cell[] =
             [{ isBlack: false, content: "H", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
             { isBlack: false, content: "A", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
@@ -101,7 +101,7 @@ describe("GridEventService", () => {
         const words: WordDescription[] = [word];
         service.initialize(words, "");
         playManagerService.write("L", word, words, "");
-        expect(communicationService.validate).toHaveBeenCalled();
+        expect(communicationService.sendEventOnValidatedWord).toHaveBeenCalled();
         expect(word.cells[3].content).toEqual("L");
     });
 
