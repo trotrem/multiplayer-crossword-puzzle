@@ -1,8 +1,6 @@
-import { TestBed, inject, async } from "@angular/core/testing";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Difficulty } from "../../../../common/communication/types";
-
+import { TestBed, inject } from "@angular/core/testing";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CommunicationService } from "./communication.service";
 import { SocketsService } from "./sockets.service";
 

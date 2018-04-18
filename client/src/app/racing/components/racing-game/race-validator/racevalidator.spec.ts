@@ -34,8 +34,8 @@ describe("Racevalidator", () => {
     let router: Router;
     const keyboard: KeyboardEventService = new KeyboardEventService;
     let car: MockCar;
-    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
     const wallService: WallService = new WallService();
+    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService(wallService);
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [GameResultsComponent],
@@ -47,7 +47,7 @@ describe("Racevalidator", () => {
     });
 
     beforeEach(async (done: () => void) => {
-        car = new MockCar(wallsCollisionsService, wallService, keyboard, new MockEngine());
+        car = new MockCar(wallsCollisionsService, keyboard, new MockEngine());
         done();
 
     });

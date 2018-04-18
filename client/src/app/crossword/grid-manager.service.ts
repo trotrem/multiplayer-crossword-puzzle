@@ -1,5 +1,5 @@
-import { OnInit, Injectable } from "@angular/core";
-import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "./../../../../common/communication/types";
+import { Injectable } from "@angular/core";
+import { Direction, Difficulty } from "./../../../../common/communication/types";
 import { CommunicationService } from "./communication.service";
 import { GridEventService } from "./grid-event.service/grid-event.service";
 import { GameConfigurationService } from "./game-configuration.service";
@@ -12,7 +12,6 @@ const GRID_HEIGHT: number = 10;
 @Injectable()
 export class GridManager {
     private _cells: Cell[][];
-    private NbPlayers: typeof NbPlayers = NbPlayers;
     private _nbPlayers: number;
     private _words: WordDescription[];
     private _difficulty: Difficulty;
@@ -109,14 +108,14 @@ export class GridManager {
         this.subscribeToValidation();
     }
     private subscribeToGridFetched(): void {
-        this.communicationService.gridPromise
+        void this.communicationService.gridPromise
             .then((data) => {
                 this._cells = GridCreator.createGrid(data, this.gridEventService, this._words, this._nbPlayers, this._cells);
                 this._words = GridCreator.fillWords(data, this._cells, this._words);
             });
     }
     private subscribeToValidation(): void {
-        this.communicationService.onValidation().subscribe((data) => {
+        this.communicationService.returnDataOnWordValidation().subscribe((data) => {
             this.gridEventService.onWordValidated(data);
         });
     }

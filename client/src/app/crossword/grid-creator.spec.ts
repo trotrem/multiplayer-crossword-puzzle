@@ -1,7 +1,7 @@
-import { GridCreator } from './grid-creator';
+import { GridCreator } from "./grid-creator";
 
-describe('GridCreator', () => {
-  it('should create an instance', () => {
+describe("GridCreator", () => {
+  it("should create an instance", () => {
     expect(new GridCreator()).toBeTruthy();
   });
 });

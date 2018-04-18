@@ -15,10 +15,10 @@ import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers  */
 describe("RenderGameService", () => {
-    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
-    const keyboard: KeyboardEventService = new KeyboardEventService;
-    const sceneService: SceneGameService = new SceneGameService();
     const wallService: WallService = new WallService();
+    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService(wallService);
+    const keyboard: KeyboardEventService = new KeyboardEventService;
+    const sceneService: SceneGameService = new SceneGameService(wallService);
     const canvas: HTMLCanvasElement = undefined;
     const startingZone: THREE.Line3 = new THREE.Line3;
     const points: THREE.Vector3[] = new Array<THREE.Vector3>();
@@ -40,7 +40,7 @@ describe("RenderGameService", () => {
     }));
 
     beforeEach(async (done: () => void) => {
-        car = new Car(wallsCollisionsService, wallService, keyboard);
+        car = new Car(wallsCollisionsService, keyboard);
         await car.init();
 
         points.push(new THREE.Vector3(2, 3, 0));
@@ -54,24 +54,22 @@ describe("RenderGameService", () => {
         expect(service).toBeTruthy();
     });
     it("should follow car with top view camera", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         expect(service.getTopCamera().position.x === cars[0].getUpdatedPosition().x &&
             service.getTopCamera().position.y === cars[0].getUpdatedPosition().y).toBeTruthy();
     });
 
     it("should rotate a rear camera with the car", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         const vectorCam: THREE.Vector3 = new THREE.Vector3;
         service.getRearCamera().getWorldDirection(vectorCam);
@@ -80,12 +78,11 @@ describe("RenderGameService", () => {
     });
 
     it("should follow car with top view camera", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         cars[0].mesh.position.set(cars[0].getUpdatedPosition().x + 50, cars[0].getUpdatedPosition().y + 20, 0);
         const vectorCam: THREE.Vector3 = new THREE.Vector3;
         service.getTopCamera().getWorldDirection(vectorCam);
@@ -101,12 +98,11 @@ describe("RenderGameService", () => {
         }
     });
     it("should zoom in", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomIn();
@@ -115,12 +111,11 @@ describe("RenderGameService", () => {
         expect(initialZoom[1]).toBeLessThan(service.RearCamera.zoom);
     });
     it("should not exceed a zoom of 2", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomIn();
         }
@@ -128,12 +123,11 @@ describe("RenderGameService", () => {
         expect(service.RearCamera.zoom.toFixed(2)).toBeLessThanOrEqual(2);
     });
     it("should zoom out", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         const initialZoom: number[] = [service.TopCamera.zoom, service.RearCamera.zoom];
         for (let i: number = 0; i < 20; i++) {
             service.zoomOut();
@@ -142,12 +136,11 @@ describe("RenderGameService", () => {
         expect(initialZoom[1]).toBeGreaterThan(service.RearCamera.zoom);
     });
     it("should not go under a zoom of 0.75", () => {
-        const walls: ILine[] = new Array<ILine>();
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
             cars.push(car);
         }
-        service.initialize(canvas, points, startingZone, cars, walls, keyboard);
+        service.initialize(canvas, points, startingZone, cars, keyboard);
         for (let i: number = 0; i < 1000; i++) {
             service.zoomOut();
         }

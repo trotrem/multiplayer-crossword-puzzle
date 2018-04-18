@@ -37,17 +37,29 @@ export class RenderEditorService extends RenderService {
         requestAnimationFrame(() => this.animate(scene));
         this.renderer.render(scene, this.camera);
     }
-    public convertToWorldPosition(positionEvent: THREE.Vector3): THREE.Vector3 {
+
+    public convertToWorldPosition(mousePosition: THREE.Vector3): THREE.Vector3 {
+        const canvasPosition: THREE.Vector3 = this.convertMouseToCanvas(mousePosition);
+        const direction: THREE.Vector3 = this.getDirection(canvasPosition);
+
+        return this.convertToCameraPosition(direction);
+    }
+    private convertMouseToCanvas(mousePosition: THREE.Vector3): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
-        const canvasPosition: THREE.Vector3 =
-            new THREE.Vector3(positionEvent.x - canvasRectangle.left, positionEvent.y - canvasRectangle.top);
+
+        return (
+            new THREE.Vector3(mousePosition.x - canvasRectangle.left, mousePosition.y - canvasRectangle.top));
+    }
+    private getDirection(canvasPosition: THREE.Vector3): THREE.Vector3 {
         const canvasVector: THREE.Vector3 = new THREE.Vector3(
             (canvasPosition.x / this.canvas.width) * MAX_SELECTION - 1,
             -(canvasPosition.y / this.canvas.height) * MAX_SELECTION + 1,
             0);
         canvasVector.unproject(this.camera);
-        const direction: THREE.Vector3 = canvasVector.sub(this.camera.position);
 
+        return canvasVector.sub(this.camera.position);
+    }
+    private convertToCameraPosition(direction: THREE.Vector3): THREE.Vector3 {
         return this.camera.position.clone().add(direction.multiplyScalar(- this.camera.position.z / direction.z));
     }
 

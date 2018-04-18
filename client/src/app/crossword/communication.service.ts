@@ -1,10 +1,12 @@
 import { Injectable } from "@angular/core";
-import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
 import { Difficulty } from "../../../../common/communication/types";
 import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData, IValidationData, IWordSelection, IGameResult, ICrosswordSettings, IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest } from "../../../../common/communication/events";
+import { CrosswordEvents, IGridData, IValidationData,
+        IWordSelection, IGameResult, ICrosswordSettings,
+        IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest } from "../../../../common/communication/events";
 
 const SERVER_URL: string = "http://localhost:3000";
 
@@ -25,7 +27,7 @@ export class CommunicationService {
     }
 
     public prepareGridFetching(): void {
-        this._gridPromise = this.onGridFetched();
+        this._gridPromise = this.sendPromiseOnGridFetched();
     }
 
     public fetchCheatModeWords(id: string): Observable<string[]> {
@@ -33,25 +35,25 @@ export class CommunicationService {
     }
 
     // TODO: type safety
-    public createGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
+    public intiateGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this.socketsService.sendEvent(
             CrosswordEvents.NewGame,
             { gameId: undefined, difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers } as ICrosswordSettings);
     }
 
-    public onGridFetched(): Promise<IGridData> {
+    public async sendPromiseOnGridFetched(): Promise<IGridData> {
         return this.socketsService.onEvent(CrosswordEvents.GridFetched).first().toPromise() as Promise<IGridData>;
     }
 
-    public validate(parameters: IWordValidationPayload): void {
+    public sendEventOnValidatedWord(parameters: IWordValidationPayload): void {
         this.socketsService.sendEvent(CrosswordEvents.ValidateWord, parameters);
     }
 
-    public onValidation(): Observable<IValidationData> {
+    public returnDataOnWordValidation(): Observable<IValidationData> {
         return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<IValidationData>;
     }
 
-    public onOpponentFound(): Observable<null> {
+    public sendEventOnOpponentFound(): Observable<null> {
         return this.socketsService.onEvent(CrosswordEvents.OpponentFound).first() as Observable<null>;
     }
 
@@ -59,11 +61,11 @@ export class CommunicationService {
         this.socketsService.sendEvent(CrosswordEvents.SelectedWord, selectedWord);
     }
 
-    public onOpponentSelectedWord(): Observable<IWordSelection> {
+    public sendEventOnOpponentSelectedWord(): Observable<IWordSelection> {
         return this.socketsService.onEvent(CrosswordEvents.OpponentSelectedWord) as Observable<IWordSelection>;
     }
 
-    public onGameEnded(): Observable<IGameResult> {
+    public sendEventOnGameEnded(): Observable<IGameResult> {
         return this.socketsService.onEvent(CrosswordEvents.GameEnded).first() as Observable<IGameResult>;
     }
 
@@ -75,7 +77,7 @@ export class CommunicationService {
         this.socketsService.sendEvent(CrosswordEvents.GetOpenGames, settings);
     }
 
-    public onGamesFetched(): Observable<ILobbyGames> {
+    public sendEventOnGamesFetched(): Observable<ILobbyGames> {
         return this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first() as Observable<ILobbyGames>;
     }
 

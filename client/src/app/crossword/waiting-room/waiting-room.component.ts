@@ -12,6 +12,6 @@ export class WaitingRoomComponent implements OnInit {
     public constructor(private router: Router, private communicationService: CommunicationService) { }
 
     public ngOnInit(): void {
-        this.communicationService.onOpponentFound().subscribe(() => this.router.navigate(["/crossword/game"]));
+        this.communicationService.sendEventOnOpponentFound().subscribe(() => this.router.navigate(["/crossword/game"]));
     }
 }
