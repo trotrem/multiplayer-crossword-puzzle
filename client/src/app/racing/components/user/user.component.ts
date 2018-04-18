@@ -28,14 +28,15 @@ export class UserComponent implements OnInit {
     public ngOnInit(): void {
         this.getTracks();
     }
+    public showTrack(track: ITrack): void {
+        this.selectedTrack = track;
+        this.router.navigateByUrl(RACE + this.selectedTrack.name);
+    }
+
     private getTracks(): void {
         this.communicationService.getTracks()
             .subscribe((res: Array<ITrack>) => {
                 this.tracks = res;
             });
-    }
-    public showTrack(track: ITrack): void {
-        this.selectedTrack = track;
-        this.router.navigateByUrl(RACE + this.selectedTrack.name);
     }
 }

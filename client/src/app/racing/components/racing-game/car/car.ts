@@ -42,22 +42,6 @@ export class Car extends Object3D {
     private lapTimes: number[];
     public checkpoint: number;
 
-    public constructor(
-        private collisionService: WallsCollisionsService, private keyboard: KeyboardEventService,
-        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
-        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
-        super();
-        wheelbase = this.handleWheelBaseError(wheelbase);
-        mass = this.handleMassError(mass);
-        dragCoefficient = this.handleDragError(dragCoefficient);
-        this.engine = engine;
-        this.rearWheel = rearWheel;
-        this.wheelbase = wheelbase;
-        this.mass = mass;
-        this.dragCoefficient = dragCoefficient;
-        this._velocity = new Vector3();
-        this.initializeCar();
-    }
     public get Engine(): Engine {
         return this.engine;
     }
@@ -79,9 +63,6 @@ export class Car extends Object3D {
     public get speed(): Vector3 {
         return this._speed.clone();
     }
-    public setSpeed(speed: Vector3): void {
-        this._speed = speed;
-    }
     public get velocity(): Vector3 {
         return this._velocity.clone();
     }
@@ -100,43 +81,52 @@ export class Car extends Object3D {
     public set steeringWheel(direction: number) {
         this.steeringWheelDirection = direction;
     }
-    private initializeCar(): void {
-        this.updatedPosition = new Vector3();
-        this.isBraking = false;
-        this.steeringWheelDirection = 0;
-        this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
-        this._speed = new Vector3(0, 0, 0);
-        this.lapTimes = new Array<number>();
-        this.checkpoint = 0;
+    public get updatePosition(): Vector3 {
+        return this.updatedPosition;
     }
-    private handleWheelBaseError(wheelbase: number): number {
-        if (wheelbase <= 0) {
-            console.error("Wheelbase should be greater than 0.");
-
-            return DEFAULT_WHEELBASE;
+    public getUpdatedPosition(): Vector3 {
+        return this.updatedPosition.clone();
+    }
+    public getDeltaPosition(deltaTime: number): Vector3 {
+        return this.speed.multiplyScalar(deltaTime);
+    }
+    public getLapTimes(): number[] {
+        return this.lapTimes;
+    }
+    public constructor(
+        private collisionService: WallsCollisionsService, private keyboard: KeyboardEventService,
+        engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
+        mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
+        super();
+        wheelbase = this.handleWheelBaseError(wheelbase);
+        mass = this.handleMassError(mass);
+        dragCoefficient = this.handleDragError(dragCoefficient);
+        this.engine = engine;
+        this.rearWheel = rearWheel;
+        this.wheelbase = wheelbase;
+        this.mass = mass;
+        this.dragCoefficient = dragCoefficient;
+        this._velocity = new Vector3();
+        this.initializeCar();
+    }
+    public setLapTimes(time: number): number {
+        for (let i: number = 1; i < this.lapTimes.length + 1; i++) {
+            time -= this.lapTimes[this.lapTimes.length - i];
         }
+        this.lapTimes.push(time);
 
-        return wheelbase;
+        return time;
     }
-    private handleMassError(mass: number): number {
-        if (mass <= 0) {
-            console.error("Mass should be greater than 0.");
-
-            return DEFAULT_MASS;
-        }
-
-        return mass;
+    public initCommands(): void {
+        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.AccelerationCommand(this));
+        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.SteerLeftCommand(this));
+        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.SteerRightCommand(this));
+        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.BrakeCommand(this));
+        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.ReleaseSteerCommand(this));
+        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.ReleaseSteerCommand(this));
+        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.DecelerateCommand(this));
+        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.ReleaseBrakesCommand(this));
     }
-    private handleDragError(dragCoefficient: number): number {
-        if (dragCoefficient <= 0) {
-            console.error("Drag coefficient should be greater than 0.");
-
-            return DEFAULT_DRAG_COEFFICIENT;
-        }
-
-        return dragCoefficient;
-    }
-
     public getCorners(pos: Vector3): Vector3[] {
         return [
             pos.clone().add(this.direction.multiplyScalar(LENGTH / 2).add(
@@ -167,17 +157,11 @@ export class Car extends Object3D {
 
         return carDirection;
     }
-    public get updatePosition(): Vector3 {
-        return this.updatedPosition;
-    }
     public async init(): Promise<void> {
         this.carController = new CarController(this);
         this.mesh = await CarLoader.load();
         this.mesh.setRotationFromEuler(INITIAL_MODEL_ROTATION);
         this.add(this.mesh);
-    }
-    public getUpdatedPosition(): Vector3 {
-        return this.updatedPosition.clone();
     }
     public update(deltaTime: number): void {
         deltaTime = deltaTime / MS_TO_SECONDS;
@@ -186,26 +170,14 @@ export class Car extends Object3D {
         this._speed = this.speed.applyQuaternion(this.setRotationQuaternion().inverse());
         this.setAngularRotation(deltaTime);
     }
-    private setRotationMatrix(): Matrix4 {
-        const rotationMatrix: Matrix4 = new Matrix4();
-        rotationMatrix.extractRotation(this.mesh.matrix);
-
-        return rotationMatrix;
-    }
-    private setRotationQuaternion(): Quaternion {
-        const rotationQuaternion: Quaternion = new Quaternion();
-        rotationQuaternion.setFromRotationMatrix(this.setRotationMatrix());
-
-        return rotationQuaternion;
-    }
-    private setAngularRotation(deltaTime: number): void {
-        const R: number =
-            DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
-        const omega: number = this._speed.length() / R;
-        this.mesh.rotateY(omega);
-    }
-    public getDeltaPosition(deltaTime: number): Vector3 {
-        return this.speed.multiplyScalar(deltaTime);
+    private initializeCar(): void {
+        this.updatedPosition = new Vector3();
+        this.isBraking = false;
+        this.steeringWheelDirection = 0;
+        this.weightRear = INITIAL_WEIGHT_DISTRIBUTION;
+        this._speed = new Vector3(0, 0, 0);
+        this.lapTimes = new Array<number>();
+        this.checkpoint = 0;
     }
     private physicsUpdate(deltaTime: number): void {
         this.rearWheel._angularVelocity += CarPhysics.getAngularAcceleration(this) * deltaTime;
@@ -224,25 +196,51 @@ export class Car extends Object3D {
         this.rearWheel.update(this.speed.length());
         this.updatedPosition = this.mesh.position;
     }
-    public getLapTimes(): number[] {
-        return this.lapTimes;
-    }
-    public setLapTimes(time: number): number {
-        for (let i: number = 1; i < this.lapTimes.length + 1; i++) {
-            time -= this.lapTimes[this.lapTimes.length - i];
-        }
-        this.lapTimes.push(time);
+    private handleWheelBaseError(wheelbase: number): number {
+        if (wheelbase <= 0) {
+            console.error("Wheelbase should be greater than 0.");
 
-        return time;
+            return DEFAULT_WHEELBASE;
+        }
+
+        return wheelbase;
     }
-    public initCommands(): void {
-        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.AccelerationCommand(this));
-        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.SteerLeftCommand(this));
-        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.SteerRightCommand(this));
-        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.BrakeCommand(this));
-        this.keyboard.addCommand(KeyCode.LEFT_KEYCODE, new Command.ReleaseSteerCommand(this));
-        this.keyboard.addCommand(KeyCode.RIGHT_KEYCODE, new Command.ReleaseSteerCommand(this));
-        this.keyboard.addCommand(KeyCode.ACCELERATE_KEYCODE, new Command.DecelerateCommand(this));
-        this.keyboard.addCommand(KeyCode.BRAKE_KEYCODE, new Command.ReleaseBrakesCommand(this));
+    private handleMassError(mass: number): number {
+        if (mass <= 0) {
+            console.error("Mass should be greater than 0.");
+
+            return DEFAULT_MASS;
+        }
+
+        return mass;
     }
+    private handleDragError(dragCoefficient: number): number {
+        if (dragCoefficient <= 0) {
+            console.error("Drag coefficient should be greater than 0.");
+
+            return DEFAULT_DRAG_COEFFICIENT;
+        }
+
+        return dragCoefficient;
+    }
+
+    private setRotationMatrix(): Matrix4 {
+        const rotationMatrix: Matrix4 = new Matrix4();
+        rotationMatrix.extractRotation(this.mesh.matrix);
+
+        return rotationMatrix;
+    }
+    private setRotationQuaternion(): Quaternion {
+        const rotationQuaternion: Quaternion = new Quaternion();
+        rotationQuaternion.setFromRotationMatrix(this.setRotationMatrix());
+
+        return rotationQuaternion;
+    }
+    private setAngularRotation(deltaTime: number): void {
+        const R: number =
+            DEFAULT_WHEELBASE / Math.sin(this.steeringWheelDirection * deltaTime);
+        const omega: number = this._speed.length() / R;
+        this.mesh.rotateY(omega);
+    }
+
 }

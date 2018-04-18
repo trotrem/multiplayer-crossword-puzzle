@@ -3,14 +3,10 @@ import * as socketIo from "socket.io";
 import * as http from "http";
 import { GameResult } from "../../../common/communication/types-crossword";
 import { GridFetcher } from "./gridFetcher";
-import { CrosswordGamesCache } from "./cache/crosswordGridCache";
-import {
-    CrosswordEvents, IEventPayload, IGridData, IValidationData,
-    IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings,
-    IConnectionInfo, ILobbyRequest
-} from "../../../common/communication/events-crossword";
+import { CrosswordGamesCache } from "./cache/crosswordGamesCache";
+import * as events from "../../../common/communication/events-crossword";
 import { IValidationWord, IGrid } from "./dataStructures";
-// TODO import*
+import { CacheUtils } from "./cache/cacheUtils";
 @injectable()
 export class SocketsHandler {
 
@@ -18,8 +14,8 @@ export class SocketsHandler {
 
     public initialize(server: http.Server): void {
         this.io = socketIo(server);
-        this.io.on(CrosswordEvents.Connected, (socket: SocketIO.Socket) => {
-            socket.emit(CrosswordEvents.Connected);
+        this.io.on(events.CrosswordEvents.Connected, (socket: SocketIO.Socket) => {
+            socket.emit(events.CrosswordEvents.Connected);
             this.onCreateGame(socket);
             this.onGetGamesList(socket);
             this.onJoinGame(socket);
@@ -29,8 +25,8 @@ export class SocketsHandler {
     }
 
     private onCreateGame(socket: SocketIO.Socket): void {
-        socket.on(CrosswordEvents.NewGame, async (creationParameters: ICrosswordSettings) => {
-            const gameId: string = CrosswordGamesCache.Instance.createGame(
+        socket.on(events.CrosswordEvents.NewGame, async (creationParameters: events.ICrosswordSettings) => {
+            const gameId: string = CacheUtils.createGame(
                 { name: creationParameters.playerName, socket: socket, selectedWord: null },
                 creationParameters.difficulty,
                 creationParameters.nbPlayers);
@@ -42,14 +38,15 @@ export class SocketsHandler {
     }
 
     private onJoinGame(socket: SocketIO.Socket): void {
-        socket.on(CrosswordEvents.JoinGame, (joinParameters: IConnectionInfo) => {
-            CrosswordGamesCache.Instance.joinGame(joinParameters.gameId, {
+        socket.on(events.CrosswordEvents.JoinGame, (joinParameters: events.IConnectionInfo) => {
+            CacheUtils.joinGame(joinParameters.gameId, {
                 name: joinParameters.player,
                 socket: socket,
                 selectedWord: null
             });
 
-            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(CrosswordEvents.OpponentFound, joinParameters);
+            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(  events.CrosswordEvents.OpponentFound,
+                                                                                            joinParameters);
 
             this.sendGridToPlayers(joinParameters.gameId);
         });
@@ -57,12 +54,12 @@ export class SocketsHandler {
 
     private sendGridToPlayers(gameId: string): void {
         GridFetcher.fetchGrid(CrosswordGamesCache.Instance.getDifficulty(gameId), (grid: IGrid) => {
-            const gridData: IGridData = CrosswordGamesCache.Instance.addGrid(grid, gameId);
-            this.emitToGamePlayers(gameId, CrosswordEvents.GridFetched, gridData);
+            const gridData: events.IGridData = CacheUtils.addGrid(grid, gameId);
+            this.emitToGamePlayers(gameId, events.CrosswordEvents.GridFetched, gridData);
         }).catch(() => console.warn("error in grid fetching"));
     }
 
-    private emitToGamePlayers(gameId: string, event: CrosswordEvents, data: IEventPayload): void {
+    private emitToGamePlayers(gameId: string, event: events.CrosswordEvents, data: events.IEventPayload): void {
         CrosswordGamesCache.Instance.getPlayersSockets(gameId).map(
             (socket: SocketIO.Socket) => {
                 socket.emit(event, data);
@@ -70,32 +67,32 @@ export class SocketsHandler {
     }
 
     private onGetGamesList(socket: SocketIO.Socket): void {
-        socket.on(CrosswordEvents.GetOpenGames, (request: ILobbyRequest) => {
-            socket.emit(CrosswordEvents.FetchedOpenGames, CrosswordGamesCache.Instance.getOpenMultiplayerGames(request.difficulty));
+        socket.on(events.CrosswordEvents.GetOpenGames, (request: events.ILobbyRequest) => {
+            socket.emit(events.CrosswordEvents.FetchedOpenGames, CrosswordGamesCache.Instance.getOpenMultiplayerGames(request.difficulty));
         });
     }
 
     private onValidateWord(socket: SocketIO.Socket): void {
-        socket.on(CrosswordEvents.ValidateWord, (parameters: IWordValidationPayload) => {
+        socket.on(events.CrosswordEvents.ValidateWord, (parameters: events.IWordValidationPayload) => {
             const validationWords: IValidationWord[] = CrosswordGamesCache.Instance.getWords(parameters.gameId);
 
             if (validationWords.length > parameters.wordIndex &&
                 validationWords[parameters.wordIndex].validatedBy === undefined &&
                 validationWords[parameters.wordIndex].word === parameters.word) {
-                CrosswordGamesCache.Instance.validateWord(parameters.gameId, parameters.wordIndex, socket.id);
+                CacheUtils.validateWord(parameters.gameId, parameters.wordIndex, socket.id);
 
-                const validationPayload: IValidationData = {
+                const validationPayload: events.IValidationData = {
                     word: parameters.word,
                     index: parameters.wordIndex,
                     validatedByReceiver: true,
                     gameId: parameters.gameId
                 };
 
-                socket.emit(CrosswordEvents.WordValidated, validationPayload);
+                socket.emit(events.CrosswordEvents.WordValidated, validationPayload);
                 if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(parameters.gameId) === 2) {
                     validationPayload.validatedByReceiver = false;
                     CrosswordGamesCache.Instance.getOpponentSocket(parameters.gameId, socket)
-                        .emit(CrosswordEvents.WordValidated, validationPayload);
+                        .emit(events.CrosswordEvents.WordValidated, validationPayload);
                 }
                 this.checkForEndGame(parameters.gameId);
             }
@@ -103,9 +100,9 @@ export class SocketsHandler {
     }
 
     private onSelectedWord(socket: SocketIO.Socket): void {
-        socket.on(CrosswordEvents.SelectedWord, (selectedWord: IWordSelection) => {
+        socket.on(events.CrosswordEvents.SelectedWord, (selectedWord: events.IWordSelection) => {
             CrosswordGamesCache.Instance.getOpponentSocket(selectedWord.gameId, socket)
-                .emit(CrosswordEvents.OpponentSelectedWord, selectedWord);
+                .emit(events.CrosswordEvents.OpponentSelectedWord, selectedWord);
         });
     }
 
@@ -121,30 +118,30 @@ export class SocketsHandler {
 
         // The game is a tie
         if (winner !== undefined) {
-            winner.emit(CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Victory } as IGameResult);
+            winner.emit(events.CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Victory } as events.IGameResult);
             if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2) {
                 CrosswordGamesCache.Instance.getOpponentSocket(gameId, winner)
-                    .emit(CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Defeat } as IGameResult);
+                    .emit(events.CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Defeat } as events.IGameResult);
             }
 
             return;
         }
 
         // A player won the game
-        this.emitToGamePlayers(gameId, CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Tie } as IGameResult);
+        this.emitToGamePlayers(gameId, events.CrosswordEvents.GameEnded, { gameId: gameId, result: GameResult.Tie } as events.IGameResult);
     }
 
     private onRematch(gameId: string): void {
         const incrementRequestCount: () => number = this.rematchRequestClosure();
         const sockets: SocketIO.Socket[] = CrosswordGamesCache.Instance.getPlayersSockets(gameId);
         for (const socket of sockets) {
-            socket.once(CrosswordEvents.RequestRematch, (payload: IEventPayload) => {
+            socket.once(events.CrosswordEvents.RequestRematch, (payload: events.IEventPayload) => {
                 if (incrementRequestCount() === CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId)) {
                     this.sendGridToPlayers(gameId);
-                    this.emitToGamePlayers(gameId, CrosswordEvents.OpponentFound, null);
+                    this.emitToGamePlayers(gameId, events.CrosswordEvents.OpponentFound, null);
                 } else {
                     CrosswordGamesCache.Instance.getOpponentSocket(gameId, socket)
-                        .emit(CrosswordEvents.RematchRequested, null);
+                        .emit(events.CrosswordEvents.RematchRequested, null);
 
                 }
             });

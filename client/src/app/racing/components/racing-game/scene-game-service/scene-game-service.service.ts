@@ -16,13 +16,14 @@ export class SceneGameService {
 
     private _scene: THREE.Scene;
 
+    public get scene(): THREE.Scene {
+        return this._scene;
+    }
+
     public constructor(private wallsService: WallService ) {
         this._scene = new THREE.Scene;
     }
 
-    public get scene(): THREE.Scene {
-        return this._scene;
-    }
     public initialize(points: THREE.Vector3[], startingZone: THREE.Line3, cars: Car[]): void {
         this.createScene(points, cars);
         for (const car of CarsPositionsHandler.insertCars(startingZone, cars)) {

@@ -24,6 +24,16 @@ export class GameResultsComponent implements OnInit {
     private _track: ITrack;
     private _isAdded: boolean;
 
+    public get scores(): INewScores[] {
+        return this._scores;
+    }
+    public get bestScores(): IBestScores[] {
+        return this._bestScores;
+    }
+    public get isAdded(): boolean {
+        return this._isAdded;
+    }
+
     public constructor(
         private router: Router, private route: ActivatedRoute,
         private communicationService: RacingCommunicationService) {
@@ -35,24 +45,6 @@ export class GameResultsComponent implements OnInit {
         };
         this._isAdded = false;
     }
-    private initializeBestScores(): void {
-        this._bestScores = new Array<IBestScores>();
-        this._bestScores.push({ namePlayer: "", scorePlayer: 0 });
-        this.newBestScore = { namePlayer: "", scorePlayer: 0 };
-    }
-    private initializeNewScores(): void {
-        this._scores = new Array<INewScores>();
-        this._scores.push({ idCar: 0, scoresCar: new Array<number>() });
-    }
-    public get scores(): INewScores[] {
-        return this._scores;
-    }
-    public get bestScores(): IBestScores[] {
-        return this._bestScores;
-    }
-    public get isAdded(): boolean {
-        return this._isAdded;
-    }
 
     public async ngOnInit(): Promise<void> {
         const name: string = this.route.snapshot.paramMap.get(NAME);
@@ -60,10 +52,6 @@ export class GameResultsComponent implements OnInit {
             await this.getTrack(name);
         }
 
-    }
-
-    private async delay(ms: number): Promise<{}> {
-        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     public async getTrack(name: string): Promise<ITrack> {
@@ -113,5 +101,18 @@ export class GameResultsComponent implements OnInit {
         ResultsManager.bestScoresSort(this.bestScores);
         this.communicationService.updateScores(this._track);
 
+    }
+
+    private initializeBestScores(): void {
+        this._bestScores = new Array<IBestScores>();
+        this._bestScores.push({ namePlayer: "", scorePlayer: 0 });
+        this.newBestScore = { namePlayer: "", scorePlayer: 0 };
+    }
+    private initializeNewScores(): void {
+        this._scores = new Array<INewScores>();
+        this._scores.push({ idCar: 0, scoresCar: new Array<number>() });
+    }
+    private async delay(ms: number): Promise<{}> {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 }
