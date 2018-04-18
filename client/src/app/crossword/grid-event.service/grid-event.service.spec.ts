@@ -1,4 +1,6 @@
 import { TestBed, inject } from "@angular/core/testing";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/of";
 import { GridEventService } from "./grid-event.service";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -11,7 +13,7 @@ import { PlayManagerService } from "../play-manager.service/play-manager.service
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 import { GameConfigurationService } from "../game-configuration.service";
 import { CrosswordGridComponent } from "../component/crossword-grid/crossword-grid.component";
-import { IValidationData } from "../../../../../common/communication/events";
+import { IValidationData, IGameResult, IWordSelection } from "../../../../../common/communication/events";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {
@@ -21,6 +23,7 @@ describe("GridEventService", () => {
     let playManagerService: PlayManagerService;
     let communicationService: CommunicationService;
     let wordStatusManagerService: WordStatusManagerService;
+    let gameConfigurationService: GameConfigurationService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -36,12 +39,15 @@ describe("GridEventService", () => {
         });
     });
 
-    beforeEach(inject([GridEventService, PlayManagerService, CommunicationService, WordStatusManagerService],
+    beforeEach(inject([GridEventService, PlayManagerService,
+                       CommunicationService, WordStatusManagerService, GameConfigurationService],
                       (_service: GridEventService,
                        _playManagerService: PlayManagerService,
                        _communicationService: CommunicationService,
-                       _wordStatusManagerService: WordStatusManagerService) => {
+                       _wordStatusManagerService: WordStatusManagerService,
+                       _gameConfigurationService: GameConfigurationService) => {
             service = _service;
+            gameConfigurationService = _gameConfigurationService;
             playManagerService = _playManagerService;
             communicationService = _communicationService;
             wordStatusManagerService = _wordStatusManagerService;
@@ -50,6 +56,36 @@ describe("GridEventService", () => {
 
     it("should be created", () => {
         expect(service).toBeTruthy();
+    });
+
+    it("should initialize: id and words, subscription on game ended and opponent found word", () => {
+        gameConfigurationService.configureGame(0, "Marc", 2);
+        wordStatusManagerService.initialize(gameConfigurationService);
+        const gameResultMock: IGameResult = {gameId: "4", result: 0};
+        const selectionMock: IWordSelection = {gameId: "4", wordId: 0};
+        spyOn(wordStatusManagerService, "initialize");
+        spyOn(communicationService, "sendEventOnGameEnded").and.returnValue(Observable.of(gameResultMock));
+        spyOn(communicationService, "sendEventOnOpponentSelectedWord").and.returnValue(Observable.of(selectionMock));
+        const cells: Cell[] =
+            [{ isBlack: false, content: "H", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+             { isBlack: false, content: "A", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+             { isBlack: false, content: "L", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+             { isBlack: false, content: "", selectedBy: AssociatedPlayers.PLAYER, letterFound: AssociatedPlayers.NONE }];
+        const word: WordDescription = {
+            id: 0,
+            direction: Direction.Vertical,
+            cells: cells, definition: "entrance",
+            found: AssociatedPlayers.NONE
+        };
+        const words: WordDescription[] = [word];
+        const id: string = "4";
+        service.initialize(words, id);
+        expect(service.id).toEqual(id);
+        expect(service.words).toEqual(words);
+        expect(gameConfigurationService.nbPlayers).toEqual(2);
+        expect(wordStatusManagerService.initialize).toHaveBeenCalled();
+        expect(communicationService.sendEventOnGameEnded).toHaveBeenCalled();
+        expect(communicationService.sendEventOnOpponentSelectedWord).toHaveBeenCalled();
     });
 
     it("should only allow letter to be written on the grid", () => {

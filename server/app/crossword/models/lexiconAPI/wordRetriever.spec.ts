@@ -10,7 +10,6 @@ let words: WordDictionaryData[] = [];
 describe("Test to see if wordRetrieve correctly create object of the word 'hall'.", () => {
 
     it("The word should be : 'hall'. ", async () => {
-        console.log("hi");
         words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
         const word: string = words[0].word;
         const expectedWord: string = "hall";

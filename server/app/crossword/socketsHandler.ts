@@ -4,7 +4,8 @@ import * as http from "http";
 import { GameResult } from "../../../common/communication/types";
 import { GridFetcher } from "./gridFetcher";
 import { CrosswordGamesCache } from "./cache/crosswordGridCache";
-import { CrosswordEvents, IEventPayload, IGridData, IValidationData, IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings, IConnectionInfo, ILobbyRequest } from "../../../common/communication/events";
+import { CrosswordEvents, IEventPayload, IGridData, 
+         IValidationData, IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings, IConnectionInfo, ILobbyRequest } from "../../../common/communication/events";
 import { IValidationWord, IGrid } from "./dataStructures";
 
 @injectable()
@@ -113,8 +114,7 @@ export class SocketsHandler {
 
         if (winner !== undefined) {
             winner.emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Victory} as IGameResult);
-            if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2)
-            {
+            if (CrosswordGamesCache.Instance.getGameNumberOfPlayers(gameId) === 2) {
                 CrosswordGamesCache.Instance.getOpponentSocket(gameId, winner)
                     .emit(CrosswordEvents.GameEnded, {gameId: gameId, result: GameResult.Defeat} as IGameResult);
             }

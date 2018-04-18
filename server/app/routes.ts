@@ -8,7 +8,7 @@ export class Routes {
     private racing: Racing;
 
     public constructor(private crossword: CrosswordHandler = new CrosswordHandler()) {
-        this.racing = new Racing();;
+        this.racing = new Racing();
     }
 
     public get routes(): Router {
