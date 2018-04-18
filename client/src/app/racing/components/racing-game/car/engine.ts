@@ -1,5 +1,11 @@
 import { MIN_TO_SEC } from "../../../../constants";
 import { InvalidArgumentError } from "../invalidArgumentError";
+const DEFAULT_GEAR_FIRST_RATIOS: number = 4.4;
+const DEFAULT_GEAR_SECOND_RATIOS: number = 2.59;
+const DEFAULT_GEAR_THIRD_RATIOS: number = 1.8;
+const DEFAULT_GEAR_FOURTH_RATIOS: number = 1.34;
+const DEFAULT_GEAR_FIFTH_RATIOS: number = 1;
+const DEFAULT_GEAR_SIXTH_RATIOS: number = 0.75;
 
 export const DEFAULT_DRIVE_RATIO: number = 3.27;
 export const DEFAULT_DOWNSHIFT_RPM: number = 2500;
@@ -7,8 +13,9 @@ export const DEFAULT_MINIMUM_RPM: number = 800;
 export const DEFAULT_SHIFT_RPM: number = 5500;
 export const DEFAULT_TRANSMISSION_EFFICIENCY: number = 0.7;
 export const DEFAULT_MAX_RPM: number = 7000;
-// tslint:disable-next-line:no-magic-numbers
-export const DEFAULT_GEAR_RATIOS: number[] = [ 4.4 , 2.59 , 1.8 , 1.34 , 1 , 0.75];
+export const DEFAULT_GEAR_RATIOS: number[] = [
+    DEFAULT_GEAR_FIRST_RATIOS, DEFAULT_GEAR_SECOND_RATIOS, DEFAULT_GEAR_THIRD_RATIOS, DEFAULT_GEAR_FOURTH_RATIOS,
+    DEFAULT_GEAR_FIFTH_RATIOS, DEFAULT_GEAR_SIXTH_RATIOS];
 const RPM_COEFFICIENT: number = 2;
 
 export class Engine {
@@ -96,7 +103,7 @@ export class Engine {
 
         const wheelAngularVelocity: number = speed / wheelRadius;
         let rpm: number = (wheelAngularVelocity / (Math.PI * RPM_COEFFICIENT)) *
-        MIN_TO_SEC * this.driveRatio * this.gearRatios[this._currentGear];
+            MIN_TO_SEC * this.driveRatio * this.gearRatios[this._currentGear];
         rpm = rpm < this.minimumRPM ? this.minimumRPM : rpm;
 
         return rpm > DEFAULT_MAX_RPM ? DEFAULT_MAX_RPM : rpm;

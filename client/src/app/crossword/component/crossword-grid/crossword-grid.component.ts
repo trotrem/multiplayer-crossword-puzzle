@@ -38,8 +38,7 @@ export class CrosswordGridComponent implements OnInit {
     private isStated: boolean;
 
     @HostListener("document:click")
-    // (listens to document event so it's not called in the code)
-    private onBackgroundClick(): void {  // tslint:disable-line
+    public onBackgroundClick(): void {
         if (this.isStated) {
             this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
         }
