@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { ILobbyGames, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { CommunicationService } from "../communication.service";
+import { Difficulty } from "../../../../../common/communication/types";
 
 @Component({
     selector: "app-multiplayer-lobby",
@@ -12,26 +13,29 @@ import { CommunicationService } from "../communication.service";
 export class MultiplayerLobbyComponent implements OnInit {
 
     public lobbyGames: IConnectionInfo[];
-    private _settings: IConnectionInfo;
+
+    public get difficulty(): string {
+        return Difficulty[this.gameConfiguration.difficulty];
+    }
 
     public constructor(private communicationService: CommunicationService,
-                       private gameConfiguration: GameConfigurationService,
-                       private router: Router) {
+        private gameConfiguration: GameConfigurationService,
+        private router: Router) {
         this.lobbyGames = [];
-        this._settings = { player: this.gameConfiguration.playerName, gameId: undefined };
     }
 
     public ngOnInit(): void {
         this.communicationService.sendEventOnGamesFetched()
             .subscribe((lobby: ILobbyGames) => {
-                this.lobbyGames = lobby.games; });
+                this.lobbyGames = lobby.games;
+            });
 
-        this.communicationService.fetchOpenGames({gameId: undefined, difficulty: this.gameConfiguration.difficulty} as ILobbyRequest);
+        this.communicationService.fetchOpenGames({ gameId: undefined, difficulty: this.gameConfiguration.difficulty } as ILobbyRequest);
     }
 
     public joinGame(game: IConnectionInfo): void {
-        this._settings.gameId = game.gameId;
-        this.communicationService.joinGame(this._settings);
+        this.gameConfiguration.opponentName = game.player;
+        this.communicationService.joinGame({ player: this.gameConfiguration.playerName, gameId: game.gameId });
         this.router.navigate(["/crossword/game/"]);
     }
 }

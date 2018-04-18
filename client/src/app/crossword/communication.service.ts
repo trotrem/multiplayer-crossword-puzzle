@@ -53,7 +53,7 @@ export class CommunicationService {
         return this.socketsService.onEvent(CrosswordEvents.WordValidated) as Observable<IValidationData>;
     }
 
-    public sendEventOnOpponentFound(): Observable<null> {
+    public sendEventOnOpponentFound(): Observable<IConnectionInfo> {
         return this.socketsService.onEvent(CrosswordEvents.OpponentFound).first() as Observable<null>;
     }
 

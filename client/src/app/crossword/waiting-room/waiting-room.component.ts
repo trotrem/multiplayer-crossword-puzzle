@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { CommunicationService } from "../communication.service";
 import { Router } from "@angular/router";
+import { GameConfigurationService } from "../game-configuration.service";
+import { IConnectionInfo } from "../../../../../common/communication/events";
 
 @Component({
   selector: "app-waiting-room",
@@ -9,9 +11,16 @@ import { Router } from "@angular/router";
 })
 export class WaitingRoomComponent implements OnInit {
 
-    public constructor(private router: Router, private communicationService: CommunicationService) { }
+    public constructor(private router: Router,
+                       private communicationService: CommunicationService,
+                       private gameConfig: GameConfigurationService) { }
 
     public ngOnInit(): void {
-        this.communicationService.sendEventOnOpponentFound().subscribe(() => this.router.navigate(["/crossword/game"]));
+        this.communicationService.sendEventOnOpponentFound().subscribe((opponent: IConnectionInfo) => {
+            if (opponent !== undefined) {
+                this.gameConfig.opponentName = opponent.player;
+            }
+            this.router.navigate(["/crossword/game"]);
+        });
     }
 }

@@ -49,7 +49,7 @@ export class SocketsHandler {
                 selectedWord: null
             });
 
-            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(CrosswordEvents.OpponentFound);
+            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(CrosswordEvents.OpponentFound, joinParameters);
 
             this.sendGridToPlayers(joinParameters.gameId);
         });

@@ -4,6 +4,19 @@
     grid-template-columns: 600px 0.5fr 0.5fr;
 }
 
+.title-span, .player-name, .opponent-name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.player-name {
+    color: #0099cc
+}
+
+.opponent-name {
+    color: #ff9900
+}
+
 .crossword-grid {
     display: grid;
     grid-template-rows: repeat(10, 50px);
