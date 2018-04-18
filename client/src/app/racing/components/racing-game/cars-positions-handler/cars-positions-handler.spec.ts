@@ -9,9 +9,9 @@ import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers */
 describe("CarsPositionsHandler", () => {
-    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService();
-    const keyboard: KeyboardEventService = new KeyboardEventService;
     const wallService: WallService = new WallService();
+    const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService(wallService);
+    const keyboard: KeyboardEventService = new KeyboardEventService;
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [CarsPositionsHandler, WallsCollisionsService, WallService, KeyboardEventService]
@@ -23,7 +23,7 @@ describe("CarsPositionsHandler", () => {
         const position2: THREE.Vector3 = new THREE.Vector3(-12, 9, 0);
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService, wallService, keyboard));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await CarLoader.load();
 
         }
@@ -37,7 +37,7 @@ describe("CarsPositionsHandler", () => {
     it("should define a unique position for each car", async () => {
         const cars: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars.push(new Car(wallsCollisionsService, wallService, keyboard));
+            cars.push(new Car(wallsCollisionsService, keyboard));
             cars[i].mesh = await CarLoader.load();
         }
         const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);
@@ -57,12 +57,12 @@ describe("CarsPositionsHandler", () => {
     it("the cars shouldn't have the same random position for each service call", async () => {
         const cars1: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars1.push(new Car(wallsCollisionsService, wallService, keyboard));
+            cars1.push(new Car(wallsCollisionsService, keyboard));
             cars1[i].mesh = await CarLoader.load();
         }
         const cars2: Car[] = new Array<Car>();
         for (let i: number = 0; i < 4; i++) {
-            cars2.push(new Car(wallsCollisionsService, wallService, keyboard));
+            cars2.push(new Car(wallsCollisionsService, keyboard));
             cars2[i].mesh = await CarLoader.load();
         }
         const position1: THREE.Vector3 = new THREE.Vector3(-23, -2, 0);

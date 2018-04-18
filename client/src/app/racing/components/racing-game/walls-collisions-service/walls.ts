@@ -17,18 +17,16 @@ export class WallService {
         return this._walls;
     }
 
-    public createWalls(trackPoints: THREE.Vector3[]): ILine[] {
+    public createWalls(trackPoints: THREE.Vector3[]): void {
         const exteriorWalls: ILine[] = [{ pos1: null, pos2: null }];
         const interiorWalls: ILine[] = [{ pos1: null, pos2: null }];
 
         const points: THREE.Vector3[] = this.copyPoints(trackPoints);
         points.pop();
-        this.setExtIntWalls(exteriorWalls, interiorWalls, points);
-
-        return this._walls;
+        this._walls = this.setExtIntWalls(exteriorWalls, interiorWalls, points);
     }
 
-    private setExtIntWalls(exteriorWalls: ILine[], interiorWalls: ILine[], points: THREE.Vector3[]): void {
+    private setExtIntWalls(exteriorWalls: ILine[], interiorWalls: ILine[], points: THREE.Vector3[]): ILine[] {
         for (let i: number = 0; i < points.length; i++) {
             const interiorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.interior);
             const exteriorCrossing: THREE.Vector3 = this.findWallPairIntersection(points, i, WallSide.exterior);
@@ -43,7 +41,8 @@ export class WallService {
                 interiorWalls.push({ pos1: interiorCrossing, pos2: null });
             }
         }
-        this._walls = interiorWalls.concat(exteriorWalls);
+
+        return interiorWalls.concat(exteriorWalls);
     }
 
     private copyPoints(points: THREE.Vector3[]): THREE.Vector3[] {
