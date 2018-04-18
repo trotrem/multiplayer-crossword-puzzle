@@ -42,14 +42,12 @@ export class GridEventService {
 
     private subscribeToGameEnded(): void {
         this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
-            console.log(data.result + " gg");
             this.openEndGame(data.result);
         });
     }
 
     private subscribeToOpponentSelection(): void {
         this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
-            console.log("received");
             this.wordStatusManagerService.setSelectedWord(
                 this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
                 true, this._id);

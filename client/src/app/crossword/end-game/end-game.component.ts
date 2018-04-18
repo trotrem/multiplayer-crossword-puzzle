@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { GameResult } from "../../../../../common/communication/types";
 import { CommunicationService } from "../communication.service";
+import { GameConfigurationService } from "../game-configuration.service";
 
 @Component({
     selector: "app-end-game",
@@ -10,7 +11,11 @@ import { CommunicationService } from "../communication.service";
 })
 export class EndGameComponent {
 
-    public constructor(private router: Router, private route: ActivatedRoute, private communicationService: CommunicationService) {}
+    public constructor(private router: Router, private route: ActivatedRoute, private communicationService: CommunicationService, private gameConfig: GameConfigurationService) {
+        if (gameConfig.nbPlayers === 2) {
+            this.onRematchRequest();
+        }
+    }
 
     public get message(): string {
         const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
@@ -24,7 +29,11 @@ export class EndGameComponent {
     public playSameCongif(): void {
         this.communicationService.prepareGridFetching();
         this.communicationService.sendRequestRematch();
-        this.router.navigate(["crossword/waiting"]);
+        if (this.gameConfig.nbPlayers === 2) {
+            this.router.navigate(["crossword/waiting"]);
+        } else {
+            this.router.navigate(["crossword/game"]);
+        }
     }
 
     public returnHome(): void {
