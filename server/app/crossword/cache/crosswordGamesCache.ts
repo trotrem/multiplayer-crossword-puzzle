@@ -3,7 +3,7 @@ import { GridUtils } from "../models/grid/gridUtils";
 import { IGridData, ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
 import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
 
-// TODO: renommer fichier
+// TODO: renommer fichier (done)
 
 // TODO: split en deux (cache et logique)
 
@@ -32,13 +32,16 @@ export class CrosswordGamesCache {
     }
 
     public getOpenMultiplayerGames(difficulty: Difficulty): ILobbyGames {
-        return {gameId: undefined, games: Object.keys(this._grids[difficulty])
-            .map((index: string) => ({ game: this._grids[difficulty][index], id: index }))
-            .filter((gameEntry: { game: ICacheGame, id: string }) => gameEntry.game.maxPlayers === 2 && gameEntry.game.players.length === 1)
+        return {
+            gameId: undefined, games: Object.keys(this._grids[difficulty])
+                .map((index: string) => ({ game: this._grids[difficulty][index], id: index }))
+                .filter((gameEntry: { game: ICacheGame, id: string }) =>
+                    gameEntry.game.maxPlayers === 2 && gameEntry.game.players.length === 1)
                 .map((gameEntry: { game: ICacheGame, id: string }) => ({
                     player: gameEntry.game.players[0].name,
                     gameId: gameEntry.id
-                } as IConnectionInfo))} as ILobbyGames;
+                } as IConnectionInfo))
+        } as ILobbyGames;
     }
 
     public getDifficulty(id: string): Difficulty {
@@ -65,7 +68,7 @@ export class CrosswordGamesCache {
         }
 
         return undefined;
-    } 
+    }
 
     public getPlayersSockets(id: string): SocketIO.Socket[] {
         return this.getGame(id).players.map((player: IPlayer) => player.socket);
@@ -87,7 +90,7 @@ export class CrosswordGamesCache {
     public getWords(id: string): IValidationWord[] {
         return this.getGame(id).words.slice();
     }
-
+    //deplacer ??
     public createGame(creator: IPlayer, difficulty: Difficulty, nbPlayers: number): string {
         const id: string = this.gridUniqueKey();
         this._grids[difficulty][id] = {
@@ -99,7 +102,7 @@ export class CrosswordGamesCache {
 
         return id;
     }
-
+    // deplacer ??
     public joinGame(id: string, player: IPlayer): void {
         this.getGame(id).players.push(player);
     }
@@ -117,12 +120,7 @@ export class CrosswordGamesCache {
 
         return cacheGrid.gridData;
     }
-
-    // TODO: utiliser
-    public removeGrid(id: number): void {
-        delete this._grids[id];
-    }
-
+    //deplacer ??
     public validateWord(gridId: string, wordIndex: number, playerSocketId: string): void {
         const game: ICacheGame = this.getGame(gridId);
         game.words[wordIndex].validatedBy = playerSocketId;
@@ -141,7 +139,7 @@ export class CrosswordGamesCache {
 
         return null;
     }
-
+    //deplacer ??
     private gridUniqueKey(): string {
         let key: number;
         do {
@@ -150,7 +148,7 @@ export class CrosswordGamesCache {
 
         return key.toString();
     }
-
+    //deplacer ??
     private convertIGridToGridData(grid: IGrid, id: string): IGridData {
         const sortedWords: IWordContainer[] = grid.words.sort(
             (w1: IWordContainer, w2: IWordContainer) => w1.id - w2.id
