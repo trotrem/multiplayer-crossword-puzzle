@@ -17,15 +17,13 @@ export class WallService {
         return this._walls;
     }
 
-    public createWalls(trackPoints: THREE.Vector3[]): ILine[] {
+    public createWalls(trackPoints: THREE.Vector3[]): void {
         const exteriorWalls: ILine[] = [{ pos1: null, pos2: null }];
         const interiorWalls: ILine[] = [{ pos1: null, pos2: null }];
 
         const points: THREE.Vector3[] = this.copyPoints(trackPoints);
         points.pop();
         this._walls = this.setExtIntWalls(exteriorWalls, interiorWalls, points);
-
-        return this._walls;
     }
 
     private setExtIntWalls(exteriorWalls: ILine[], interiorWalls: ILine[], points: THREE.Vector3[]): ILine[] {

@@ -53,6 +53,6 @@ describe("SceneGameService", () => {
             cars.push(car);
         }
         service.initialize(points, startingZone, cars);
-        expect(service.scene.children.length).toEqual(33);
+        expect(service.scene.children.length).toEqual(19);
     }));
 });

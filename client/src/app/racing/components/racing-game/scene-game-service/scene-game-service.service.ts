@@ -30,15 +30,6 @@ export class SceneGameService {
         }
     }
 
-    private showWalls(points: THREE.Vector3[]): void {
-        for (const line of this.wallsService.createWalls(points)) {
-            const geo: THREE.Geometry = new THREE.Geometry();
-            geo.vertices.push(line.pos1);
-            geo.vertices.push(line.pos2);
-            this.scene.add(new THREE.Line(geo, new THREE.LineBasicMaterial({ visible: false })));
-        }
-    }
-
     private createScene(points: THREE.Vector3[], cars: Car[]): void {
         this._scene = new THREE.Scene();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(points);
@@ -48,7 +39,7 @@ export class SceneGameService {
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.scene.add(cars[i]);
         }
-        this.showWalls(points);
+        this.wallsService.createWalls(points);
         points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         this.scene.add(Skybox.instance.createSkybox());
