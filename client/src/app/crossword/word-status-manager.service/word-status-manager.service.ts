@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { CommunicationService } from "../communication.service";
 import { SelectedWord, AssociatedPlayers, WordDescription } from "./../dataStructures";
 import { GameConfigurationService } from "../game-configuration.service";
+import { BinaryOperator } from "@angular/compiler";
 
 @Injectable()
 export class WordStatusManagerService {
@@ -37,11 +38,8 @@ export class WordStatusManagerService {
 
     private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
-            if (selected) {
-                cell.selectedBy = cell.selectedBy | target.player;
-            } else {
-                cell.selectedBy = cell.selectedBy & ~target.player;
-            }
+
+            cell.selectedBy = (selected) ? (cell.selectedBy | target.player) : (cell.selectedBy & ~target.player);
         }
     }
 }

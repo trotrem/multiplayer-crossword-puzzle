@@ -28,18 +28,18 @@
 <div class="form-group">
   <div class="radio">
       <label>
-          <input type="radio" name="playersNumber" [value]=1 [(ngModel)] = "playersNumber">
+          <input type="radio" name="numberPlayers" [value]=1 [(ngModel)] = "numberPlayers">
           One
       </label>
   </div>
   <div class="radio">
       <label>
-          <input type="radio" name="playersNumber" [value]=2 [(ngModel)] = "playersNumber">
+          <input type="radio" name="numberPlayers" [value]=2 [(ngModel)] = "numberPlayers">
           Two
       </label>
   </div>
 </div>
 <button [disabled]="disablePlayButton()" type="submit" >Play</button>
-<button [disabled]="disableJoinButton()" (click)="joinExisting(form)" >Join Existing</button>
+<button [disabled]="disableJoinButton()" (click)="joinGame(form)" >Join Existing</button>
 <input type="text" name="playerName" [(ngModel)]="playerName" />
 </form>
