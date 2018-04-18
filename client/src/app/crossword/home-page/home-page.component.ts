@@ -29,6 +29,7 @@ export class HomePageComponent implements OnInit {
     }
 
     public ngOnInit(): void {
+        this.communicationService.initialize();
     }
 
     public disablePlayButton(): boolean {

@@ -4,9 +4,11 @@ import * as http from "http";
 import { GameResult } from "../../../common/communication/types";
 import { GridFetcher } from "./gridFetcher";
 import { CrosswordGamesCache } from "./cache/crosswordGridCache";
-import { CrosswordEvents, IEventPayload, IGridData, IValidationData, IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings, IConnectionInfo, ILobbyRequest } from "../../../common/communication/events";
+import { CrosswordEvents, IEventPayload, IGridData, IValidationData,
+         IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings,
+         IConnectionInfo, ILobbyRequest } from "../../../common/communication/events";
 import { IValidationWord, IGrid } from "./dataStructures";
-
+// TODO import*
 @injectable()
 export class SocketsHandler {
 

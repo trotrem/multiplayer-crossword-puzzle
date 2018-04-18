@@ -17,7 +17,10 @@ export class CommunicationService {
         return this._gridPromise;
     }
 
-    public constructor(private http: HttpClient, private socketsService: SocketsService) {
+    public constructor(private http: HttpClient, private socketsService: SocketsService) {}
+
+    public initialize(): void {
+        this.socketsService.initialize();
         this._gridPromise = this.onGridFetched();
     }
 
