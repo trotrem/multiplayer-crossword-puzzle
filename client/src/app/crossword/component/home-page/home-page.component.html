@@ -1,14 +1,14 @@
-<p>
+<h2>
   Home Page. Welcome to the crossword
-</p>
+</h2>
 <form #form = "ngForm" (ngSubmit)=play(form) >
 <label>Choose the difficulty</label>
-<div class="form-group">
+
   <div class="radio">
-      <label>
+      
           <input type="radio" name="difficultyGrade" [value]=0 [(ngModel)] ="difficultyGrade">
           Easy
-      </label>
+      
   </div>
   <div class="radio">
       <label>
@@ -22,7 +22,7 @@
         Hard
     </label>
   </div>
-</div>
+
 
 <label>Number of players : </label>
 <div class="form-group">
