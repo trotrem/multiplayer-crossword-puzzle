@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
+import { async, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
 import { HomePageComponent } from "./home-page.component";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
@@ -7,7 +7,6 @@ import { Difficulty } from "../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { CommunicationService } from "../communication.service";
 import { GameConfigurationService } from "../game-configuration.service";
-import { HttpClient } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { SocketsService } from "../sockets.service";
 

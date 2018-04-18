@@ -1,10 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { SocketsService } from "../sockets.service";
-import { inject } from "inversify";
-import { CrosswordEvents } from "../../../../../common/communication/events";
-import { Difficulty } from "../../../../../common/communication/types";
 import { CommunicationService } from "../communication.service";
 import { GameConfigurationService } from "../game-configuration.service";
 

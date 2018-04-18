@@ -11,7 +11,7 @@ describe("WaitingRoomComponent", () => {
     let fixture: ComponentFixture<WaitingRoomComponent>;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             imports: [RouterTestingModule, HttpClientModule],
             declarations: [WaitingRoomComponent],
             providers: [CommunicationService, SocketsService]

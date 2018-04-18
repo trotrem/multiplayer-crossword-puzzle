@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { NbPlayers, GameResult } from "../../../../../common/communication/types";
+import { GameResult } from "../../../../../common/communication/types";
 import { CommunicationService } from "./../communication.service";
 import { Router } from "@angular/router";
 import { IValidationData, IWordSelection, IGameResult } from "../../../../../common/communication/events";

@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { CommunicationService } from "../communication.service";
 import { SelectedWord, AssociatedPlayers, WordDescription } from "./../dataStructures";
 import { GameConfigurationService } from "../game-configuration.service";
-import { BinaryOperator } from "@angular/compiler";
 
 @Injectable()
 export class WordStatusManagerService {

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
 import { Difficulty } from "../../../../common/communication/types";
@@ -34,7 +34,7 @@ export class CommunicationService {
             { gameId: undefined, difficulty: difficulty, playerName: playerName, nbPlayers: nbPlayers } as ICrosswordSettings);
     }
 
-    public sendPromiseOnGridFetched(): Promise<IGridData> {
+    public async sendPromiseOnGridFetched(): Promise<IGridData> {
         return this.socketsService.onEvent(CrosswordEvents.GridFetched).first().toPromise() as Promise<IGridData>;
     }
 
