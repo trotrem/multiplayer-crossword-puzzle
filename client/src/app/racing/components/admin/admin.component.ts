@@ -2,8 +2,11 @@ import { Component, OnInit } from "@angular/core";
 
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { Track } from "../../track";
+import { ITrack } from "../../track";
+import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import * as THREE from "three";
 
+const EDITOR: string = "/editor/";
 @Component({
     selector: "app-admin",
     templateUrl: "./admin.component.html",
@@ -11,15 +14,18 @@ import { Track } from "../../track";
 })
 export class AdminComponent implements OnInit {
 
-    public tracks: Track[];
-
-    public selectedTrack: Track;
+    public tracks: ITrack[];
+    public selectedTrack: ITrack;
 
     public isSelected: boolean;
 
     public constructor(private communicationService: RacingCommunicationService, private router: Router) {
-        this.tracks = new Array<Track>();
+        this.tracks = new Array<ITrack>();
         this.isSelected = false;
+        this.selectedTrack = {
+            name: "", description: "", startingZone: new THREE.Line3(), points: new Array<THREE.Vector3>(),
+            usesNumber: 0, INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
+        };
     }
 
     public ngOnInit(): void {
@@ -28,25 +34,25 @@ export class AdminComponent implements OnInit {
 
     private getTracks(): void {
         this.communicationService.getTracks()
-            .subscribe((res: Array<Track>) => {
+            .subscribe((res: Array<ITrack>) => {
                 this.tracks = res;
             });
     }
 
-    public onSelect(track: Track): void {
+    public onSelect(track: ITrack): void {
         this.selectedTrack = track;
         this.isSelected = true;
 
     }
 
-    public editTrack(): Track {
-        this.router.navigateByUrl("/editor/" + this.selectedTrack.name);
+    public editTrack(): ITrack {
+        this.router.navigateByUrl(EDITOR + this.selectedTrack.name);
 
         return this.selectedTrack;
     }
 
-    public deleteTrack(): Track {
-        this.communicationService.deleteTrack(this.selectedTrack);
+    public deleteTrack(): ITrack {
+        void this.communicationService.deleteTrack(this.selectedTrack);
 
         return this.selectedTrack;
     }

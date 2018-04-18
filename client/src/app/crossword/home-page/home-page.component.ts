@@ -15,7 +15,7 @@ import { GameConfigurationService } from "../game-configuration.service";
 })
 export class HomePageComponent implements OnInit {
 
-    // todo changer les noms osti
+    // TODO changer les noms osti
     public oneTwo: number;
     public EasyMediumHard: number;
     public playerName: string;
@@ -39,19 +39,19 @@ export class HomePageComponent implements OnInit {
         return this.oneTwo === 1 || this.playerName.length === 0;
     }
 
-    public play(form: NgForm): void {
+    public play(): void {
         this.communicationService.createGame(this.EasyMediumHard, this.playerName, this.oneTwo);
         this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
         if (this.oneTwo === 1) {
-            this.router.navigate(["/crossword/game/"]);
+            this.router.navigate(["/crossword/game"]);
         } else {
             this.router.navigate(["/crossword/waiting"]);
         }
     }
 
     // todo rename
-    public joinExisting(form: NgForm): void {
+    public joinExisting(): void {
         this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
-        this.router.navigate(["/crossword/lobby/"]);
+        this.router.navigate(["/crossword/lobby"]);
     }
 }

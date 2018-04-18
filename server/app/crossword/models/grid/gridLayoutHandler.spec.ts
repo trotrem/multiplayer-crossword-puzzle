@@ -1,14 +1,14 @@
-// tslint:disable:no-magic-numbers
 import { expect } from "chai";
 import { GridLayoutHandler, MINBLACK, MAXBLACK } from "./gridLayoutHandler";
 import { IGrid } from "../../dataStructures";
 
+/* tslint:disable:no-magic-numbers */
 describe("makeGrid", () => {
     let grid: IGrid = { cells: [], words: [], blackCells: [] };
     beforeEach(() => {
         grid = { cells: [], words: [], blackCells: [] };
         GridLayoutHandler.makeGrid(grid);
-      });
+    });
 
     it("Should be 10 witdh and 10 height", () => {
         expect(grid.cells.length).equals(10);

@@ -73,8 +73,8 @@ export class TrackDisplay {
                 sub(this.SetPointFromMatrix(points[0]))).
                 multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[0])),
             WIDTH_START, START);
-        floor.translateX(-WIDTH_START);
-        floor.translateZ(START_LINE);
+        floor.translateOnAxis(new THREE.Vector3(1, 0, 0), -WIDTH_START);
+        floor.translateOnAxis(new THREE.Vector3(0, 0, 1), START_LINE);
 
         return floor;
     }

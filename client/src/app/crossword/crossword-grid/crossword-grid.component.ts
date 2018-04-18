@@ -1,13 +1,15 @@
 import { Component, OnInit, Input, HostListener } from "@angular/core";
 import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../common/communication/types";
 import { CommunicationService } from "../communication.service";
-import { GridEventService } from "../grid-event.service";
+import { GridEventService } from "../grid-event.service/grid-event.service";
 import { SocketsService } from "../sockets.service";
 import { CrosswordEvents, IGridData } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
 import { GridService } from "../grid-service";
 import { GridCreator } from "../grid-creator";
+import { PlayManagerService } from "../play-manager.service/play-manager.service";
+import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 
 const CONNECTED: string = "connected";
 const DISCONNECTED: string = "disconnected";
@@ -21,7 +23,7 @@ enum TipMode {
     selector: "app-crossword-grid",
     templateUrl: "./crossword-grid.component.html",
     styleUrls: ["./crossword-grid.component.css"],
-    providers: [GridEventService, GridService]
+    providers: [GridEventService, GridService, PlayManagerService, WordStatusManagerService]
 })
 
 export class CrosswordGridComponent implements OnInit {
@@ -35,13 +37,16 @@ export class CrosswordGridComponent implements OnInit {
     public selectedWord: WordDescription = null;
     public opponentSelectedWord: WordDescription = null;
     // needed so the html recognizes the enum
-    private TipMode: typeof TipMode = TipMode;// tslint:disable-line
+    public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode = TipMode.Definitions;
+    private isStated: boolean;
 
     @HostListener("document:click")
     // (listens to document event so it's not called in the code)
     private onBackgroundClick(): void {  // tslint:disable-line
-        this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        if (this.isStated) {
+            this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        }
     }
 
     public get horizontalWords(): WordDescription[] {

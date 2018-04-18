@@ -27,10 +27,7 @@ export class GridEventService {
     private _id: string;
     private _nbPlayers: number;
 
-    public constructor(
-        private communicationService: CommunicationService,
-        private router: Router) {
-    }
+    public constructor(private communicationService: CommunicationService, private router: Router) {}
 
     public initialize(words: WordDescription[], nbPlayers: NbPlayers, id: string): void {
         this._id = id;
@@ -44,14 +41,12 @@ export class GridEventService {
 
     private subscribeToGameEnded(): void {
         this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
-            console.log(data.result + " gg")
             this.openEndGame(data.result);
         });
     }
 
     private subscribeToOpponentSelection(): void {
         this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
-            console.log("received");
             this.setSelectedWord(this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null, true);
         });
     }
@@ -63,7 +58,6 @@ export class GridEventService {
     // TODO: selected inutile
     public setSelectedWord(target: SelectedWord, word: WordDescription, selected: boolean): WordDescription {
         if (this._nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
-            console.log("sending")
             this.communicationService.sendSelectionStatus({gameId: this._id, wordId: word !== null ? word.id : null});
         }
 
@@ -136,7 +130,7 @@ export class GridEventService {
         }
     }
 
-    private write(char: string, word: WordDescription): void {
+    public write(char: string, word: WordDescription): void {
         for (const cell of word.cells) {
             if (cell.content === "") {
                 cell.content = char;
@@ -159,7 +153,7 @@ export class GridEventService {
         }
     }
 
-    private validate(word: WordDescription): void {
+    public validate(word: WordDescription): void {
         const parameters: IWordValidationPayload = {
             gameId: this._id,
             wordIndex: word.id,
