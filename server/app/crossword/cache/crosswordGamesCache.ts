@@ -1,22 +1,6 @@
-import { IWordInfo, Difficulty } from "../../../../common/communication/types";
-import { GridUtils } from "../models/grid/gridUtils";
-import { IGridData, ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
-import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
-
-// TODO: renommer fichier (done)
-
-// TODO: split en deux (cache et logique)
-
-interface ICacheGame {
-    words: Array<IValidationWord>;
-    gridData: IGridData;
-    players: IPlayer[];
-    maxPlayers: number;
-}
-
-interface IGameDictionary {
-    [id: string]: ICacheGame;
-}
+import { Difficulty } from "../../../../common/communication/types";
+import { ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
+import { IValidationWord, IPlayer, IGameDictionary, ICacheGame } from "../dataStructures";
 
 export class CrosswordGamesCache {
     private static _instance: CrosswordGamesCache;
@@ -29,6 +13,12 @@ export class CrosswordGamesCache {
 
     public static get Instance(): CrosswordGamesCache {
         return this._instance || (this._instance = new this());
+    }
+    public set grids(grids: IGameDictionary[]) {
+        this._grids = grids;
+    }
+    public get grids(): IGameDictionary[] {
+        return this._grids;
     }
 
     public getOpenMultiplayerGames(difficulty: Difficulty): ILobbyGames {
@@ -74,10 +64,6 @@ export class CrosswordGamesCache {
         return this.getGame(id).players.map((player: IPlayer) => player.socket);
     }
 
-    public getPlayers(id: string): IPlayer[] {
-        return this.getGame(id).players;
-    }
-
     public getOpponentSocket(id: string, socket: SocketIO.Socket): SocketIO.Socket {
         const sockets: SocketIO.Socket[] = this.getPlayersSockets(id);
         if (sockets.length === 2) {
@@ -90,47 +76,12 @@ export class CrosswordGamesCache {
     public getWords(id: string): IValidationWord[] {
         return this.getGame(id).words.slice();
     }
-    //deplacer ??
-    public createGame(creator: IPlayer, difficulty: Difficulty, nbPlayers: number): string {
-        const id: string = this.gridUniqueKey();
-        this._grids[difficulty][id] = {
-            gridData: null,
-            words: null,
-            players: [creator],
-            maxPlayers: nbPlayers
-        };
-
-        return id;
-    }
-    // deplacer ??
-    public joinGame(id: string, player: IPlayer): void {
-        this.getGame(id).players.push(player);
-    }
-
-    // TODO: séparer
-    public addGrid(grid: IGrid, id: string): IGridData {
-        const cacheGrid: ICacheGame = this.getGame(id);
-        cacheGrid.gridData = this.convertIGridToGridData(grid, id);
-        cacheGrid.words = grid.words.map((w: IWordContainer): IValidationWord => {
-            return {
-                word: GridUtils.getText(w.gridSquares, grid).toUpperCase(),
-                validatedBy: undefined
-            };
-        });
-
-        return cacheGrid.gridData;
-    }
-    //deplacer ??
-    public validateWord(gridId: string, wordIndex: number, playerSocketId: string): void {
-        const game: ICacheGame = this.getGame(gridId);
-        game.words[wordIndex].validatedBy = playerSocketId;
-    }
 
     public getGameNumberOfPlayers(gameId: string): number {
         return this.getGame(gameId).maxPlayers;
     }
 
-    private getGame(id: string): ICacheGame {
+    public getGame(id: string): ICacheGame {
         for (const difficulty in Difficulty) {
             if (this._grids[difficulty][id] !== undefined) {
                 return this._grids[difficulty][id];
@@ -138,35 +89,5 @@ export class CrosswordGamesCache {
         }
 
         return null;
-    }
-    //deplacer ??
-    private gridUniqueKey(): string {
-        let key: number;
-        do {
-            key = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-        } while (key in this._grids[Difficulty.Easy] || key in this._grids[Difficulty.Medium] || key in this._grids[Difficulty.Hard]);
-
-        return key.toString();
-    }
-    //deplacer ??
-    private convertIGridToGridData(grid: IGrid, id: string): IGridData {
-        const sortedWords: IWordContainer[] = grid.words.sort(
-            (w1: IWordContainer, w2: IWordContainer) => w1.id - w2.id
-        );
-
-        return {
-            gameId: id,
-            blackCells: grid.blackCells,
-            wordInfos: sortedWords.map((word: IWordContainer): IWordInfo => {
-                return {
-                    id: word.id,
-                    direction: word.direction,
-                    x: word.gridSquares[0].x,
-                    y: word.gridSquares[0].y,
-                    definition: (word.data as WordDictionaryData).definitions[0],
-                    length: word.gridSquares.length
-                };
-            })
-        };
     }
 }
