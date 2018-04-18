@@ -10,9 +10,6 @@ import { GridManager } from "../../grid-manager.service";
 import { PlayManagerService } from "../../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../../word-status-manager.service/word-status-manager.service";
 
-const CONNECTED: string = "connected";
-const DISCONNECTED: string = "disconnected";
-
 enum TipMode {
     Definitions,
     Cheat
@@ -69,17 +66,7 @@ export class CrosswordGridComponent implements OnInit {
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
         private gridManager: GridManager,
-        private socketsService: SocketsService) {
-
-        this.socketsService.onEvent(CrosswordEvents.Connected)
-            .subscribe(() => {
-                console.warn(CONNECTED);
-            });
-        this.socketsService.onEvent(CrosswordEvents.Disconnected)
-            .subscribe(() => {
-                console.warn(DISCONNECTED);
-            });
-    }
+        private socketsService: SocketsService) {}
 
     public ngOnInit(): void {
         this.gridManager = new GridManager(this.gameConfiguration, this.communicationService, this.gridEventService);
@@ -90,7 +77,6 @@ export class CrosswordGridComponent implements OnInit {
         this.words = this.gridManager.words;
         this.selectedWord = this.gridManager.selectedWord;
         this.opponentSelectedWord = this.gridManager.opponentSelectedWord;
-
     }
 
     public toggleTipMode(): void {

@@ -1,11 +1,15 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { GameResult } from "../../../../../../common/communication/types";
+import { CommunicationService } from "../../communication.service";
+import { GameConfigurationService } from "../../game-configuration.service";
 
 const VICTORY_MESSAGE: string = "Congratulations!!! You won!";
 const DEFEAT_MESSAGE: string = "Aw you lost.. Better luck next time!";
 const TIE_MESSAGE: string = "It's a tie!";
 const ERROR_MESSAGE: string = "Something's wrong";
+
+
 
 @Component({
     selector: "app-end-game",
@@ -14,7 +18,11 @@ const ERROR_MESSAGE: string = "Something's wrong";
 })
 export class EndGameComponent {
 
-    public constructor(private router: Router, private route: ActivatedRoute) { }
+    public constructor(private router: Router, private route: ActivatedRoute, private communicationService: CommunicationService, private gameConfig: GameConfigurationService) {
+        if (gameConfig.nbPlayers === 2) {
+            this.onRematchRequest();
+        }
+    }
 
     public get message(): string {
         const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
@@ -26,10 +34,24 @@ export class EndGameComponent {
     }
 
     public playSameCongif(): void {
-        this.router.navigate(["crossword/game"]);
+        this.communicationService.prepareGridFetching();
+        this.communicationService.sendRequestRematch();
+        if (this.gameConfig.nbPlayers === 2) {
+            this.router.navigate(["crossword/waiting"]);
+        } else {
+            this.router.navigate(["crossword/game"]);
+        }
     }
 
     public returnHome(): void {
         this.router.navigateByUrl("crossword/homePage");
+    }
+    // TODO: montrer la séléection de l'index dans le ui du crossword
+    private onRematchRequest(): void {
+        this.communicationService.onRematchRequested().subscribe(() => {
+            if (confirm("Your opponent requested a rematch!\nPlay again?")) {
+                this.playSameCongif();
+            }
+        });
     }
 }

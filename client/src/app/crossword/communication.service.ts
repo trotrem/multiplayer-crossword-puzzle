@@ -20,7 +20,14 @@ export class CommunicationService {
         return this._gridPromise;
     }
 
-    public constructor(private http: HttpClient, private socketsService: SocketsService) {
+    public constructor(private http: HttpClient, private socketsService: SocketsService) {}
+
+    public initialize(): void {
+        this.socketsService.initialize();
+        this.prepareGridFetching();
+    }
+
+    public prepareGridFetching(): void {
         this._gridPromise = this.sendPromiseOnGridFetched();
     }
 
@@ -73,5 +80,13 @@ export class CommunicationService {
 
     public sendEventOnGamesFetched(): Observable<ILobbyGames> {
         return this.socketsService.onEvent(CrosswordEvents.FetchedOpenGames).first() as Observable<ILobbyGames>;
+    }
+
+    public sendRequestRematch(): void {
+        this.socketsService.sendEvent(CrosswordEvents.RequestRematch, null);
+    }
+
+    public onRematchRequested(): Observable<null> {
+        return this.socketsService.onEvent(CrosswordEvents.RematchRequested).first() as Observable<null>;
     }
 }

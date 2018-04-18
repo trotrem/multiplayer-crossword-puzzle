@@ -65,10 +65,14 @@ export class CrosswordGamesCache {
         }
 
         return undefined;
-    }
+    } 
 
     public getPlayersSockets(id: string): SocketIO.Socket[] {
         return this.getGame(id).players.map((player: IPlayer) => player.socket);
+    }
+
+    public getPlayers(id: string): IPlayer[] {
+        return this.getGame(id).players;
     }
 
     public getOpponentSocket(id: string, socket: SocketIO.Socket): SocketIO.Socket {
