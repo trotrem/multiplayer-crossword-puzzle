@@ -168,7 +168,7 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     private fetchCheatModeWords(): void {
-        this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
+        this.communicationService.fetchCheatModeWords(this.gridEventService.id)
             .subscribe((data: string[]) => {
                 const words: string[] = data as string[];
                 let i: number = 0;

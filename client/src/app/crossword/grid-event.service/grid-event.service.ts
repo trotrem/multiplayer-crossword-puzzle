@@ -17,8 +17,8 @@ const LOWER_Z: number = 122;
 
 @Injectable()
 export class GridEventService {
-    private _selectedWord: SelectedWord = { player: AssociatedPlayers.PLAYER, word: null };
-    private _opponentSelectedWord: SelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
+    private _selectedWord: SelectedWord;
+    private _opponentSelectedWord: SelectedWord;
     private _words: WordDescription[];
     private _id: string;
 
@@ -28,8 +28,12 @@ export class GridEventService {
         private wordStatusManagerService: WordStatusManagerService,
         private gameConfigurationService: GameConfigurationService,
         private router: Router) {
+
+        this._selectedWord = { player: AssociatedPlayers.PLAYER, word: null };
+        this._opponentSelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
     }
 
+    /*******************************************************************************************************************************************************************************************************/
     public initialize(words: WordDescription[], id: string): void {
         this.wordStatusManagerService.initialize(this.gameConfigurationService);
         this._id = id;
@@ -40,28 +44,29 @@ export class GridEventService {
         this.subscribeToGameEnded();
     }
 
-    private subscribeToGameEnded(): void {
+    /*******************************************************************************************************************************************************************************************************/
+    private subscribeToGameEnded(): void { //PEUT ETRE A TESTER
         this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
-            console.log(data.result + " gg");
             this.openEndGame(data.result);
         });
     }
 
-    private subscribeToOpponentSelection(): void {
+    /*******************************************************************************************************************************************************************************************************/
+    private subscribeToOpponentSelection(): void { //PEUT ETRE A TESTER
         this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
-            console.log("received");
             this.wordStatusManagerService.setSelectedWord(
                 this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
                 true, this._id);
         });
     }
 
-    public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
+    /*******************************************************************************************************************************************************************************************************/
+    public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription { //A regarder
         return this.wordStatusManagerService.setSelectedWord(
             this._selectedWord, word, selected, this._id);
     }
 
-    public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {
+    public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {//CORRECT
         if (cell.letterFound) {
             return null;
         }
@@ -84,7 +89,7 @@ export class GridEventService {
         return this._selectedWord.word;
     }
 
-    public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {
+    public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {//CORRECT
         if (word.found) {
             return null;
         }
@@ -94,7 +99,7 @@ export class GridEventService {
             this._selectedWord, word, true, this._id);
     }
 
-    public onKeyPress(event: KeyboardEvent): void {
+    public onKeyPress(event: KeyboardEvent): void {//TESTED
         if (this._selectedWord !== null) {
             if (event.keyCode >= UPPER_A &&
                 event.keyCode <= UPPER_Z ||
@@ -109,9 +114,11 @@ export class GridEventService {
             }
         }
     }
+
+    /*******************************************************************************************************************************************************************************************************/
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
-        const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT;
+        const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT; // ICI ON VOIT QUI A VALIDATED
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
                 word.cells[i].letterFound =
@@ -129,7 +136,7 @@ export class GridEventService {
         this.router.navigate(["/crossword/endGame/" + result]);
     }
 
-    public getId(): string {
+    public get id(): string {
         return this._id;
     }
 }

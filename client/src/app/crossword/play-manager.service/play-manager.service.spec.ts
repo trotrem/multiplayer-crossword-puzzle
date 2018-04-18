@@ -1,11 +1,21 @@
 import { TestBed, inject } from "@angular/core/testing";
-
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { Router } from "@angular/router";
 import { PlayManagerService } from "./play-manager.service";
+import { CommunicationService } from "../communication.service";
+import { SocketsService } from "./../sockets.service";
 
 describe("PlayManagerService", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [PlayManagerService]
+            imports: [
+                HttpClientModule,
+                HttpClientTestingModule,
+                RouterTestingModule.withRoutes([]),
+            ],
+            providers: [PlayManagerService, CommunicationService, SocketsService]
         });
     });
 
