@@ -24,24 +24,30 @@ enum TipMode {
 
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
+    // TODO: use enum
     // needed so the html recognizes the enum
     public NbPlayers: typeof NbPlayers = NbPlayers;
     public nbPlayers: number;
-    private words: WordDescription[];
-    private _difficulty: Difficulty = Difficulty.Easy;
-    private _playerName: string;
+    public playerName: string;
+    public opponentName: string;
     public selectedWord: WordDescription = null;
     public opponentSelectedWord: WordDescription = null;
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
-    public tipMode: TipMode = TipMode.Definitions;
-    private isStated: boolean;
+    public tipMode: TipMode;
+    private isStarted: boolean;
+    private words: WordDescription[];
 
+    // TODO: fix
     @HostListener("document:click")
     public onBackgroundClick(): void {
-        if (this.isStated) {
+        if (this.isStarted) {
             this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
         }
+    }
+
+    public get difficultyString(): string {
+        return Difficulty[this.gameConfiguration.difficulty];
     }
 
     public get horizontalWords(): WordDescription[] {
@@ -68,14 +74,14 @@ export class CrosswordGridComponent implements OnInit {
         private socketsService: SocketsService) {}
 
     public ngOnInit(): void {
-        this.gridManager = new GridManager(this.gameConfiguration, this.communicationService, this.gridEventService);
-        this.nbPlayers = this.gridManager.nbPlayers;
-        this._difficulty = this.gridManager.difficulty;
-        this._playerName = this.gridManager.playerName;
+        this.nbPlayers = this.gameConfiguration.nbPlayers;
+        this.playerName = this.gameConfiguration.playerName;
+        this.opponentName = this.gameConfiguration.opponentName;
         this.cells = this.gridManager.cells;
         this.words = this.gridManager.words;
         this.selectedWord = this.gridManager.selectedWord;
         this.opponentSelectedWord = this.gridManager.opponentSelectedWord;
+        this.tipMode = TipMode.Definitions;
     }
 
     public toggleTipMode(): void {

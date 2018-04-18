@@ -12,27 +12,15 @@ const GRID_HEIGHT: number = 10;
 @Injectable()
 export class GridManager {
     private _cells: Cell[][];
-    private _nbPlayers: number;
     private _words: WordDescription[];
-    private _difficulty: Difficulty;
-    private _playerName: string;
     private _selectedWord: WordDescription = null;
     private _opponentSelectedWord: WordDescription = null;
 
     public get cells(): Cell[][] {
         return this._cells;
     }
-    public get nbPlayers(): number {
-        return this._nbPlayers;
-    }
     public get words(): WordDescription[] {
         return this._words;
-    }
-    public get difficulty(): Difficulty {
-        return this._difficulty;
-    }
-    public get playerName(): string {
-        return this._playerName;
     }
     public get selectedWord(): WordDescription {
         return this._selectedWord;
@@ -63,10 +51,8 @@ export class GridManager {
     ) {
         this._cells = this.formGrid();
         this._words = new Array<WordDescription>();
-        this._difficulty = Difficulty.Easy;
         this._selectedWord = null;
         this._opponentSelectedWord = null;
-        this.configureGame();
         this.subscriptions();
     }
 
@@ -99,12 +85,6 @@ export class GridManager {
         return cells;
     }
 
-    private configureGame(): void {
-        this._nbPlayers = this.gameConfiguration.nbPlayers;
-        this._difficulty = this.gameConfiguration.difficulty;
-        this._playerName = this.gameConfiguration.playerName;
-    }
-
     private subscriptions(): void {
         this.subscribeToGridFetched();
         this.subscribeToValidation();
@@ -112,7 +92,7 @@ export class GridManager {
     private subscribeToGridFetched(): void {
         void this.communicationService.gridPromise
             .then((data) => {
-                this._cells = GridCreator.createGrid(data, this.gridEventService, this._words, this._nbPlayers, this._cells);
+                this._cells = GridCreator.createGrid(data, this.gridEventService, this._words, this.gameConfiguration.nbPlayers, this._cells);
                 this._words = GridCreator.fillWords(data, this._cells, this._words);
             });
     }
