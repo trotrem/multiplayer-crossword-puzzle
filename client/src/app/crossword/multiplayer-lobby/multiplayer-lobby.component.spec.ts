@@ -12,7 +12,7 @@ describe("MultiplayerLobbyComponent", () => {
     let fixture: ComponentFixture<MultiplayerLobbyComponent>;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [MultiplayerLobbyComponent],
             imports: [HttpClientModule, RouterTestingModule],
             providers: [CommunicationService, SocketsService, GameConfigurationService]

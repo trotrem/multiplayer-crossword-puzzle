@@ -5,7 +5,6 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { EndGameComponent } from "./end-game.component";
 import { HomePageComponent } from "../home-page/home-page.component";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
-import { Difficulty } from "../../../../../common/communication/types";
 
 /* tslint:disable:no-magic-numbers*/
 describe("EndGameComponent", () => {
