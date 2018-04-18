@@ -15,6 +15,7 @@ export class WordStatusManagerService {
         this.gameConfigurationService = gameConfigurationService;
     }
 
+    // TODO: enlever selected
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
@@ -35,9 +36,11 @@ export class WordStatusManagerService {
         return target.word;
     }
 
-    private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
+    private setWordSelectedState(target: SelectedWord, word: WordDescription, setSelected: boolean): void {
         for (const cell of word.cells) {
-            cell.selectedBy = (selected) ? (cell.selectedBy | target.player) : (cell.selectedBy & ~target.player);
+            cell.selectedBy = setSelected ?
+                cell.selectedBy | target.player :
+                cell.selectedBy & ~target.player;
         }
     }
 }

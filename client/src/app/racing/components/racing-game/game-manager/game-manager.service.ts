@@ -50,13 +50,6 @@ export class GameManagerService {
         });
     }
 
-    private async initializeCars(keyboard: KeyboardEventService): Promise<void> {
-        for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService, keyboard);
-            await this._cars[i].init().then(() => { });
-        }
-    }
-
     public startRace(): void {
         this._cars[0].initCommands();
         this.initializeControllers();
@@ -66,6 +59,18 @@ export class GameManagerService {
 
     public onResize(): void {
         this.renderService.onResize();
+    }
+    private async initializeCars(keyboard: KeyboardEventService): Promise<void> {
+        for (let i: number = 0; i < CARS_MAX; i++) {
+            this._cars[i] = new Car(this.collisionService, keyboard);
+            await this._cars[i].init().then(() => { });
+        }
+    }
+
+    private initializeControllers(): void {
+        for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
+            this._aiControllers.push(new AiController(this._cars[i], this.track.points, this.collisionService));
+        }
     }
 
     private async getTrack(name: string): Promise<ITrack> {
@@ -147,11 +152,5 @@ export class GameManagerService {
 
     private navigateToGameResults(): void {
         this.router.navigateByUrl(RESULTS + this.track.name);
-    }
-
-    private initializeControllers(): void {
-        for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
-            this._aiControllers.push(new AiController(this._cars[i], this.track.points, this.collisionService));
-        }
     }
 }

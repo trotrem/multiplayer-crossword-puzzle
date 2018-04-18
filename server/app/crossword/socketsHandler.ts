@@ -45,7 +45,8 @@ export class SocketsHandler {
                 selectedWord: null
             });
 
-            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(events.CrosswordEvents.OpponentFound);
+            CrosswordGamesCache.Instance.getPlayersSockets(joinParameters.gameId)[0].emit(  events.CrosswordEvents.OpponentFound,
+                                                                                            joinParameters);
 
             this.sendGridToPlayers(joinParameters.gameId);
         });

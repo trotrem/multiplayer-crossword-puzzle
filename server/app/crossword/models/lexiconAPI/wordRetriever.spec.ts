@@ -33,8 +33,7 @@ describe("Test to see if wordRetrieve correctly create object of the word 'hall'
     it("The word 'hall' should be common. ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("hall", Difficulty.Easy);
         const isCommon: boolean = words[0].isCommon;
-        // Fonction Chai ne finissant pas avec des parantheses
-        expect(isCommon).to.be.true; // tslint:disable-line
+        expect(isCommon).to.equal(true);
     });
 
 });
@@ -133,8 +132,7 @@ describe("Querry of 5 letter words to check specific constraint", () => {
 describe("Test on words with non alpha character", () => {
     it("When we query the word 3d, the array should be empty ", async () => {
         words = await wordRetriever.getWordsWithDefinitions("3d", Difficulty.Hard);
-        // Fonction Chai ne finissant pas avec des parantheses
-        expect(words).to.be.empty; // tslint:disable-line
+        expect(words.length).to.equal(0);
 
     });
 });

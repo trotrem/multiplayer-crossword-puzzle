@@ -14,6 +14,26 @@ const GRASS: THREE.Texture = new THREE.TextureLoader().load("../../assets/models
 
 export class TrackDisplay {
 
+    public static drawTrack(points: THREE.Vector3[]): THREE.Mesh[] {
+        const addToScene: THREE.Mesh[] = new Array<THREE.Mesh>();
+        for (let i: number = 1; i < points.length; i++) {
+
+            addToScene.push(this.setPointMeshPosition(this.SetPointFromMatrix(points[i]), new THREE.CircleGeometry(WIDTH_SPHERE)));
+
+            const vector: THREE.Vector3 =
+                new THREE.Vector3().copy(this.SetPointFromMatrix(points[i])).sub(this.SetPointFromMatrix(points[i - 1]));
+            const point: THREE.Vector3 =
+                new THREE.Vector3().copy(vector).multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[i - 1]));
+
+            addToScene.push(this.setPlaneMesh(vector, point, vector.length(), TRACK));
+
+        }
+        addToScene.push(this.drawBackground());
+        addToScene.push(this.drawStartLine(points));
+
+        return addToScene;
+    }
+
     private static setPointMeshPosition(point: THREE.Vector3, circle: THREE.CircleGeometry): THREE.Mesh {
         const pointMesh: THREE.Mesh = new THREE.Mesh(circle, new THREE.MeshBasicMaterial({ map: TRACK }));
         pointMesh.position.copy(point);
@@ -37,27 +57,7 @@ export class TrackDisplay {
         return new THREE.Vector3().applyMatrix4(new THREE.Matrix4().makeTranslation(point.x, point.y, 0));
     }
 
-    public static drawTrack(points: THREE.Vector3[]): THREE.Mesh[] {
-        const addToScene: THREE.Mesh[] = new Array<THREE.Mesh>();
-        for (let i: number = 1; i < points.length; i++) {
-
-            addToScene.push(this.setPointMeshPosition(this.SetPointFromMatrix(points[i]), new THREE.CircleGeometry(WIDTH_SPHERE)));
-
-            const vector: THREE.Vector3 =
-                new THREE.Vector3().copy(this.SetPointFromMatrix(points[i])).sub(this.SetPointFromMatrix(points[i - 1]));
-            const point: THREE.Vector3 =
-                new THREE.Vector3().copy(vector).multiplyScalar(WIDTH_POINT).add(this.SetPointFromMatrix(points[i - 1]));
-
-            addToScene.push(this.setPlaneMesh(vector, point, vector.length(), TRACK));
-
-        }
-        addToScene.push(this.drawBackground());
-        addToScene.push(this.drawStartLine(points));
-
-        return addToScene;
-    }
-
-    public static drawBackground(): THREE.Mesh {
+    private static drawBackground(): THREE.Mesh {
         const floor: THREE.Mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 0), new THREE.MeshBasicMaterial({ map: GRASS }));
         floor.position.set(0, 0, SCENE);
         floor.scale.x = WIDTH_SCENE;

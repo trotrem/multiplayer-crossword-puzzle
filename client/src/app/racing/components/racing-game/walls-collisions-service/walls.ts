@@ -11,10 +11,14 @@ const WALL_WIDTH: number = 8;
 
 @Injectable()
 export class WallService {
-    private _walls: ILine[] = [];
+    private _walls: ILine[];
 
     public get walls(): ILine[] {
         return this._walls;
+    }
+
+    public constructor() {
+        this._walls = [];
     }
 
     public createWalls(trackPoints: THREE.Vector3[]): void {

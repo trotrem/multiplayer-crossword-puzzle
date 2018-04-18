@@ -8,6 +8,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { Router } from "@angular/router";
+import { GameConfigurationService } from "../../game-configuration.service";
 
 describe("WaitingRoomComponent", () => {
     let component: WaitingRoomComponent;
@@ -20,7 +21,7 @@ describe("WaitingRoomComponent", () => {
             declarations: [CrosswordGridComponent, WaitingRoomComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
                 { path: "crossword/game", component: CrosswordGridComponent }])],
-            providers: [CommunicationService, SocketsService]
+            providers: [CommunicationService, SocketsService, GameConfigurationService]
         })
             .compileComponents();
     }));
