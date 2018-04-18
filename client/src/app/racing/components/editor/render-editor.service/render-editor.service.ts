@@ -37,11 +37,12 @@ export class RenderEditorService extends RenderService {
         requestAnimationFrame(() => this.animate(scene));
         this.renderer.render(scene, this.camera);
     }
+
     public convertToWorldPosition(mousePosition: THREE.Vector3): THREE.Vector3 {
         const canvasPosition: THREE.Vector3 = this.convertMouseToCanvas(mousePosition);
         const direction: THREE.Vector3 = this.getDirection(canvasPosition);
 
-        return this.camera.position.clone().add(direction.multiplyScalar(- this.camera.position.z / direction.z));
+        return this.convertToCameraPosition(direction);
     }
     private convertMouseToCanvas(mousePosition: THREE.Vector3): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
@@ -57,6 +58,9 @@ export class RenderEditorService extends RenderService {
         canvasVector.unproject(this.camera);
 
         return canvasVector.sub(this.camera.position);
+    }
+    private convertToCameraPosition(direction: THREE.Vector3): THREE.Vector3 {
+        return this.camera.position.clone().add(direction.multiplyScalar(- this.camera.position.z / direction.z));
     }
 
 }
