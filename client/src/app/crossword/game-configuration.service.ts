@@ -27,6 +27,7 @@ export class GameConfigurationService {
         this._nbPlayers = null;
     }
 
+    /**********************************************************************************************************************************/
     public configureGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this._difficulty = difficulty;
         this._playerName = playerName;

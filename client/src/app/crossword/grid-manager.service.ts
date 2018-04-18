@@ -72,7 +72,7 @@ export class GridManager {
     }
 
     public fetchCheatModeWords(horizontalWords: WordDescription[], verticalWords: WordDescription[]): void {
-        this.communicationService.fetchCheatModeWords(this.gridEventService.getId())
+        this.communicationService.fetchCheatModeWords(this.gridEventService.id)
             .subscribe((data: string[]) => {
                 const words: string[] = data as string[];
                 let i: number = 0;
@@ -99,6 +99,7 @@ export class GridManager {
 
         return cells;
     }
+    
     private configureGame(): void {
         this._nbPlayers = this.gameConfiguration.nbPlayers;
         this._difficulty = this.gameConfiguration.difficulty;

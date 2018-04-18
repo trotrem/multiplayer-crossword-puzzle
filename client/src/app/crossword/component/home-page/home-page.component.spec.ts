@@ -3,13 +3,13 @@ import { HomePageComponent } from "./home-page.component";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Difficulty } from "../../../../../common/communication/types";
+import { Difficulty } from "../../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
-import { CommunicationService } from "../communication.service";
-import { GameConfigurationService } from "../game-configuration.service";
+import { CommunicationService } from "../../communication.service";
+import { GameConfigurationService } from "../../game-configuration.service";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SocketsService } from "../sockets.service";
+import { SocketsService } from "../../sockets.service";
 import { WaitingRoomComponent } from "../waiting-room/waiting-room.component";
 import { MultiplayerLobbyComponent } from "../multiplayer-lobby/multiplayer-lobby.component";
 
@@ -39,8 +39,6 @@ describe("HomePageComponent", () => {
     it("should create", () => {
         expect(component).toBeTruthy();
     });
-
-    // TODO: rajouter des test
 
     it("play with 1 player takes you to '/crossword/game'.", fakeAsync(() => {
         component.EasyMediumHard = Difficulty.Easy;

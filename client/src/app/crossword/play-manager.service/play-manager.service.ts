@@ -20,6 +20,7 @@ export class PlayManagerService {
             }
         }
     }
+
     public erase(word: WordDescription): void {
         let i: number;
         for (i = word.cells.length - 1; i >= 0; i--) {
@@ -30,6 +31,8 @@ export class PlayManagerService {
             }
         }
     }
+
+    /********************************************************************************************************* */
     private validate(word: WordDescription, id: string): void {
         const parameters: IWordValidationPayload = {
             gameId: id,

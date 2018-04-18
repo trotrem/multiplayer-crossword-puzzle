@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ILobbyGames, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events";
-import { GameConfigurationService } from "../game-configuration.service";
-import { CommunicationService } from "../communication.service";
+import { ILobbyGames, IConnectionInfo, ILobbyRequest } from "../../../../../../common/communication/events";
+import { GameConfigurationService } from "../../game-configuration.service";
+import { CommunicationService } from "../../communication.service";
+
+const GAME_URL: string = "/crossword/game";
 
 @Component({
     selector: "app-multiplayer-lobby",
@@ -32,6 +34,6 @@ export class MultiplayerLobbyComponent implements OnInit {
     public joinGame(game: IConnectionInfo): void {
         this._settings.gameId = game.gameId;
         this.communicationService.joinGame(this._settings);
-        this.router.navigate(["/crossword/game/"]);
+        this.router.navigate([GAME_URL]);
     }
 }

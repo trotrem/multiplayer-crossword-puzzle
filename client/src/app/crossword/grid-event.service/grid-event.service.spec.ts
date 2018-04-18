@@ -11,7 +11,7 @@ import { SocketsService } from "./../sockets.service";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 import { GameConfigurationService } from "../game-configuration.service";
-import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
+import { CrosswordGridComponent } from "../component/crossword-grid/crossword-grid.component";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {

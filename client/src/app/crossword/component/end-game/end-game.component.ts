@@ -1,6 +1,11 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { GameResult } from "../../../../../common/communication/types";
+import { GameResult } from "../../../../../../common/communication/types";
+
+const VICTORY_MESSAGE: string = "Congratulations!!! You won!";
+const DEFEAT_MESSAGE: string = "Aw you lost.. Better luck next time!";
+const TIE_MESSAGE: string = "It's a tie!";
+const ERROR_MESSAGE: string = "Something's wrong";
 
 @Component({
     selector: "app-end-game",
@@ -14,10 +19,10 @@ export class EndGameComponent {
     public get message(): string {
         const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
 
-        return result === GameResult.Victory ? "Congratulations!!! You won!" :
-            result === GameResult.Defeat ? "Aw you lost.. Better luck next time!" :
-            result === GameResult.Tie ? "It's a tie!" :
-             "Something's wrong";
+        return result === GameResult.Victory ? VICTORY_MESSAGE :
+               result === GameResult.Defeat ? DEFEAT_MESSAGE :
+               result === GameResult.Tie ? TIE_MESSAGE :
+               ERROR_MESSAGE;
     }
 
     public playSameCongif(): void {

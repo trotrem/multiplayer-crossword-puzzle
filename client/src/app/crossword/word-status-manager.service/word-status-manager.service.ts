@@ -14,13 +14,14 @@ export class WordStatusManagerService {
     public initialize(gameConfigurationService: GameConfigurationService): void {
         this.gameConfigurationService = gameConfigurationService;
     }
+
+    /***************************************************************************************************************************************/
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
-            console.warn("sending");
+            console.warn("sending...");
             this.communicationService.sendSelectionStatus({ gameId: id, wordId: word !== null ? word.id : null });
         }
-
         if (target.word === word) {
             return null;
         }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { CommunicationService } from "../communication.service";
+import { CommunicationService } from "../../communication.service";
 import { Router } from "@angular/router";
+
+const GAME_URL: string = "/crossword/game";
 
 @Component({
   selector: "app-waiting-room",
@@ -12,6 +14,6 @@ export class WaitingRoomComponent implements OnInit {
     public constructor(private router: Router, private communicationService: CommunicationService) { }
 
     public ngOnInit(): void {
-        this.communicationService.onOpponentFound().subscribe(() => this.router.navigate(["/crossword/game"]));
+        this.communicationService.onOpponentFound().subscribe(() => this.router.navigate([GAME_URL]));
     }
 }

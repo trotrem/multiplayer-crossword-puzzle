@@ -1,12 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
-import { SocketsService } from "../sockets.service";
+import { SocketsService } from "../../sockets.service";
 import { inject } from "inversify";
-import { CrosswordEvents } from "../../../../../common/communication/events";
-import { Difficulty } from "../../../../../common/communication/types";
-import { CommunicationService } from "../communication.service";
-import { GameConfigurationService } from "../game-configuration.service";
+import { CrosswordEvents } from "../../../../../../common/communication/events";
+import { Difficulty } from "../../../../../../common/communication/types";
+import { CommunicationService } from "../../communication.service";
+import { GameConfigurationService } from "../../game-configuration.service";
+
+const GAME_URL: string = "/crossword/game";
+const WAITING_ROOM_URL: string = "/crossword/waiting";
+const LOBBY_URL: string = "/crossword/lobby";
 
 @Component({
     selector: "app-home-page",
@@ -43,15 +47,15 @@ export class HomePageComponent implements OnInit {
         this.communicationService.createGame(this.EasyMediumHard, this.playerName, this.oneTwo);
         this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
         if (this.oneTwo === 1) {
-            this.router.navigate(["/crossword/game"]);
+            this.router.navigate([GAME_URL]);
         } else {
-            this.router.navigate(["/crossword/waiting"]);
+            this.router.navigate([WAITING_ROOM_URL]);
         }
     }
 
     // todo rename
     public joinExisting(): void {
         this.gameConfiguration.configureGame(this.EasyMediumHard, this.playerName, this.oneTwo);
-        this.router.navigate(["/crossword/lobby"]);
+        this.router.navigate([LOBBY_URL]);
     }
 }

@@ -7,6 +7,7 @@ import { GameConfigurationService } from "./game-configuration.service";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 
 export class GridCreator {
+    
     public static createGrid(
         gridData: IGridData,
         gridEventService: GridEventService,

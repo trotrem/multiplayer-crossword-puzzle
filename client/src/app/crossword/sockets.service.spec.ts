@@ -1,5 +1,4 @@
 import { TestBed, inject } from '@angular/core/testing';
-
 import { SocketsService } from './sockets.service';
 
 describe('SocketsService', () => {
