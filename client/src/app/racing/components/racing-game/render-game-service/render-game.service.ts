@@ -19,30 +19,38 @@ export class RenderGameService extends RenderService {
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
     private cameraID: number;
 
-    public constructor( private sceneGameService: SceneGameService) {
-        super();
-        this.cameraID = 0;
-    }
     public getTopCamera(): OrthographicCamera {
         return this.cameras[1];
     }
     public getRearCamera(): PerspectiveCamera {
         return this.cameras[0];
     }
+    public get CameraID(): number {
+        return this.cameraID;
+    }
 
-    public initialize(canvas: HTMLCanvasElement, points: THREE.Vector3[], startingZone: THREE.Line3,
-                      cars: Car[], keyboard: KeyboardEventService): void {
+    public get TopCamera(): OrthographicCamera {
+        return this.cameras[1];
+    }
+
+    public get RearCamera(): PerspectiveCamera {
+        return this.cameras[0];
+    }
+
+    public constructor(private sceneGameService: SceneGameService) {
+        super();
+        this.cameraID = 0;
+    }
+
+    public initialize(
+        canvas: HTMLCanvasElement, points: THREE.Vector3[], startingZone: THREE.Line3,
+        cars: Car[], keyboard: KeyboardEventService): void {
         super.initializeSuper(canvas);
         this.sceneGameService.initialize(points, startingZone, cars);
         this.initializeCamera();
         this.initCameraCommands(keyboard);
     }
 
-    private initializeCamera(): void {
-        this.cameras[0] = new PerspectiveCamera();
-        this.cameras[1] = new OrthographicCamera();
-        this.cameras[0].up.set(0, 0, 1);
-    }
     public render(player: Car): void {
         if (this.cameraID === 0) {
             this.cameras[0].updatePosition(player);
@@ -62,18 +70,6 @@ export class RenderGameService extends RenderService {
         }
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-    }
-
-    public get CameraID(): number {
-        return this.cameraID;
-    }
-
-    public get TopCamera(): OrthographicCamera {
-        return this.cameras[1];
-    }
-
-    public get RearCamera(): PerspectiveCamera {
-        return this.cameras[0];
     }
 
     public toggleCamera(): void {
@@ -101,4 +97,9 @@ export class RenderGameService extends RenderService {
         keyboard.addCommand(KeyCode.SWITCH_CAMERA_KEYCODE, new Command.SwitchCameraCommand(this));
     }
 
+    private initializeCamera(): void {
+        this.cameras[0] = new PerspectiveCamera();
+        this.cameras[1] = new OrthographicCamera();
+        this.cameras[0].up.set(0, 0, 1);
+    }
 }

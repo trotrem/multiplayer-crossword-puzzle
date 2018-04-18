@@ -22,6 +22,13 @@ export class RenderEditorService extends RenderService {
 
     }
 
+    public convertToWorldPosition(mousePosition: THREE.Vector3): THREE.Vector3 {
+        const canvasPosition: THREE.Vector3 = this.convertMouseToCanvas(mousePosition);
+        const direction: THREE.Vector3 = this.getDirection(canvasPosition);
+
+        return this.convertToCameraPosition(direction);
+    }
+
     private initializeCamera(): void {
         this.camera = new THREE.PerspectiveCamera(
             FIELD_OF_VIEW,
@@ -38,12 +45,6 @@ export class RenderEditorService extends RenderService {
         this.renderer.render(scene, this.camera);
     }
 
-    public convertToWorldPosition(mousePosition: THREE.Vector3): THREE.Vector3 {
-        const canvasPosition: THREE.Vector3 = this.convertMouseToCanvas(mousePosition);
-        const direction: THREE.Vector3 = this.getDirection(canvasPosition);
-
-        return this.convertToCameraPosition(direction);
-    }
     private convertMouseToCanvas(mousePosition: THREE.Vector3): THREE.Vector3 {
         const canvasRectangle: ClientRect = this.canvas.getBoundingClientRect();
 
@@ -59,6 +60,7 @@ export class RenderEditorService extends RenderService {
 
         return canvasVector.sub(this.camera.position);
     }
+
     private convertToCameraPosition(direction: THREE.Vector3): THREE.Vector3 {
         return this.camera.position.clone().add(direction.multiplyScalar(- this.camera.position.z / direction.z));
     }

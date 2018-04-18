@@ -32,9 +32,6 @@ export class CarPhysics {
     public static getDeltaSpeed(car: Car, deltaTime: number): Vector3 {
         return this.getAcceleration(car).multiplyScalar(deltaTime);
     }
-    private static getAcceleration(car: Car): Vector3 {
-        return this.getLongitudinalForce(car).divideScalar(car.Mass);
-    }
     public static getLongitudinalForce(car: Car): Vector3 {
         const resultingForce: Vector3 = new Vector3();
         if (car.speed.length() >= MINIMUM_SPEED) {
@@ -53,6 +50,9 @@ export class CarPhysics {
         }
 
         return resultingForce;
+    }
+    private static getAcceleration(car: Car): Vector3 {
+        return this.getLongitudinalForce(car).divideScalar(car.Mass);
     }
     private static getRollingResistance(speed: Vector3, direction: Vector3, mass: number): Vector3 {
         const tirePressure: number = 1;

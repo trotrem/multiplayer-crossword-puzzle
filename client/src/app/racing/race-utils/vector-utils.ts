@@ -26,28 +26,21 @@ export class VectorUtils {
         const intersection: Vector3 = new Vector3(0, 0, 0);
         intersection.x =
             ((line2.pos1.x - line2.pos2.x) *
-            ((line1.pos2.y - line1.pos1.y) * line1.pos1.x +
-            (line1.pos1.x - line1.pos2.x) * line1.pos1.y) -
-            (line1.pos1.x - line1.pos2.x) *
-            ((line2.pos2.y - line2.pos1.y) * line2.pos1.x +
-            (line2.pos1.x - line2.pos2.x) * line2.pos1.y)) / determinant;
+                ((line1.pos2.y - line1.pos1.y) * line1.pos1.x +
+                    (line1.pos1.x - line1.pos2.x) * line1.pos1.y) -
+                (line1.pos1.x - line1.pos2.x) *
+                ((line2.pos2.y - line2.pos1.y) * line2.pos1.x +
+                    (line2.pos1.x - line2.pos2.x) * line2.pos1.y)) / determinant;
 
         intersection.y =
             ((line1.pos2.y - line1.pos1.y) *
-            ((line2.pos2.y - line2.pos1.y) * line2.pos1.x +
-            (line2.pos1.x - line2.pos2.x) * line2.pos1.y) -
-            (line2.pos2.y - line2.pos1.y) *
-            ((line1.pos2.y - line1.pos1.y) * line1.pos1.x +
-            (line1.pos1.x - line1.pos2.x) * line1.pos1.y)) / determinant;
+                ((line2.pos2.y - line2.pos1.y) * line2.pos1.x +
+                    (line2.pos1.x - line2.pos2.x) * line2.pos1.y) -
+                (line2.pos2.y - line2.pos1.y) *
+                ((line1.pos2.y - line1.pos1.y) * line1.pos1.x +
+                    (line1.pos1.x - line1.pos2.x) * line1.pos1.y)) / determinant;
 
         return intersection;
-    }
-
-    private static getDet(line1: ILine, line2: ILine): number {
-        return (
-            (line1.pos2.y - line1.pos1.y) * (line2.pos1.x - line2.pos2.x) -
-            (line2.pos2.y - line2.pos1.y) * (line1.pos1.x - line1.pos2.x)
-        );
     }
 
     public static doLinesIntersect(line1: ILine, line2: ILine): boolean {
@@ -57,12 +50,18 @@ export class VectorUtils {
         const orientation4: number = this.getOrientation(line2.pos1, line2.pos2, line1.pos2);
 
         return (orientation1 !== orientation2 && orientation3 !== orientation4) ||
-               (orientation1 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos1, pos2: line1.pos2 })) ||
-               (orientation2 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos2, pos2: line1.pos2 })) ||
-               (orientation3 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos1, pos2: line2.pos2 })) ||
-               (orientation4 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos2, pos2: line2.pos2 }));
+            (orientation1 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos1, pos2: line1.pos2 })) ||
+            (orientation2 === 0 && this.isPointOnSegment(line1.pos1, { pos1: line2.pos2, pos2: line1.pos2 })) ||
+            (orientation3 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos1, pos2: line2.pos2 })) ||
+            (orientation4 === 0 && this.isPointOnSegment(line2.pos1, { pos1: line1.pos2, pos2: line2.pos2 }));
     }
 
+    private static getDet(line1: ILine, line2: ILine): number {
+        return (
+            (line1.pos2.y - line1.pos1.y) * (line2.pos1.x - line2.pos2.x) -
+            (line2.pos2.y - line2.pos1.y) * (line1.pos1.x - line1.pos2.x)
+        );
+    }
     private static getOrientation(p: Vector3, q: Vector3, r: Vector3): number {
         const val: number = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
         if (val === 0) {

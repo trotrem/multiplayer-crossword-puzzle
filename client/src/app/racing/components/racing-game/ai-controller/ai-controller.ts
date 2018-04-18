@@ -12,8 +12,8 @@ const MAX_ANGLE: number = 2;
 export class AiController {
 
     private _checkPoints: Vector3[] = new Array<Vector3>();
-    private hasTurned: boolean = false;
-    private hasCollided: boolean = false;
+    private hasTurned: boolean;
+    private hasCollided: boolean;
     private distanceToCorner: number;
 
     public constructor(
@@ -23,6 +23,8 @@ export class AiController {
             this._checkPoints.shift();
             this._checkPoints = points.slice().reverse();
             this.distanceToCorner = this.randomIntFromInterval(MIN_DISTANCE, MAX_DISTANCE);
+            this.hasCollided = false;
+            this.hasTurned = false;
     }
 
     public update(): boolean {
