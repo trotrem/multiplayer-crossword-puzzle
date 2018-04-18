@@ -1,6 +1,6 @@
 import { IGrid, ICell } from "../../dataStructures";
 import { Utils } from "../../../utils";
-import { IPoint } from "../../../../../common/communication/types";
+import { IPoint } from "../../../../../common/communication/types-crossword";
 
 const WIDTH: number = 10;
 const HEIGHT: number = 10;

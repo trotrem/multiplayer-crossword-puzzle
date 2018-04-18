@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { GameResult } from "../../../../../../common/communication/types";
+import { GameResult } from "../../../../../../common/communication/types-crossword";
 import { CommunicationService } from "../../communication.service";
 import { GameConfigurationService } from "../../game-configuration.service";
 

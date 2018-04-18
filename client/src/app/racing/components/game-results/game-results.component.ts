@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import { NgForm } from "@angular/forms";
 import * as THREE from "three";
 import { ITrack } from "../../track";

@@ -1,6 +1,6 @@
-import { IWordInfo, Difficulty } from "../../../../common/communication/types";
+import { IWordInfo, Difficulty } from "../../../../common/communication/types-crossword";
 import { GridUtils } from "../models/grid/gridUtils";
-import { IGridData, ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
+import { IGridData, ILobbyGames, IConnectionInfo } from "../../../../common/communication/events-crossword";
 import { IValidationWord, IPlayer, IGrid, IWordContainer, WordDictionaryData } from "../dataStructures";
 
 // TODO: renommer fichier

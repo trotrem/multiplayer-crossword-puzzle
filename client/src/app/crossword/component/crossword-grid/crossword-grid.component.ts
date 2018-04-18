@@ -1,9 +1,9 @@
 import { Component, OnInit, HostListener } from "@angular/core";
-import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types";
+import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types-crossword";
 import { CommunicationService } from "../../communication.service";
 import { GridEventService } from "../../grid-event.service/grid-event.service";
 import { SocketsService } from "../../sockets.service";
-import { CrosswordEvents, } from "../../../../../../common/communication/events";
+import { CrosswordEvents, } from "../../../../../../common/communication/events-crossword";
 import { GameConfigurationService } from "../../game-configuration.service";
 import { WordDescription, Cell } from "../../dataStructures";
 import { GridManager } from "../../grid-manager.service";

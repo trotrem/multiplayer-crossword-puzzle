@@ -1,14 +1,14 @@
 import { injectable } from "inversify";
 import * as socketIo from "socket.io";
 import * as http from "http";
-import { GameResult } from "../../../common/communication/types";
+import { GameResult } from "../../../common/communication/types-crossword";
 import { GridFetcher } from "./gridFetcher";
 import { CrosswordGamesCache } from "./cache/crosswordGridCache";
 import {
     CrosswordEvents, IEventPayload, IGridData, IValidationData,
     IWordSelection, IGameResult, IWordValidationPayload, ICrosswordSettings,
     IConnectionInfo, ILobbyRequest
-} from "../../../common/communication/events";
+} from "../../../common/communication/events-crossword";
 import { IValidationWord, IGrid } from "./dataStructures";
 // TODO import*
 @injectable()

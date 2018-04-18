@@ -1,4 +1,4 @@
-import { Direction } from "../../../../common/communication/types";
+import { Direction } from "../../../../common/communication/types-crossword";
 
 export enum AssociatedPlayers {
     NONE,

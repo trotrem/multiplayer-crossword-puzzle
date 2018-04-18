@@ -7,7 +7,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { FormsModule } from "@angular/forms";
 import { Car } from "../car/car";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../../common/communication/types-racing";
 import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { Engine } from "./../car/engine";
 import { ITrack } from "./../../../track";

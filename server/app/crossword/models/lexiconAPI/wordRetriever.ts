@@ -1,6 +1,6 @@
 import { WordDictionaryData } from "../../dataStructures";
 import { ExternalApiService } from "./externalApi.service";
-import { Difficulty } from "../../../../../common/communication/types";
+import { Difficulty } from "../../../../../common/communication/types-crossword";
 import { DatamuseObject } from "./datamuse-object";
 
 const OFFSET_FREQUENCY: number = 2;		// Tag format : f:xxxx

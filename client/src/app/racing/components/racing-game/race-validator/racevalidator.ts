@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Car } from "../car/car";
 import { MS_TO_SECONDS, LAP_MAX } from "./../../../../constants";
 import { VectorUtils } from "../../../race-utils/vector-utils";
-import { INewScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores } from "./../../../../../../../common/communication/types-racing";
 const ADD_TO_DISTANCE: number = 20;
 
 export class RaceValidator {

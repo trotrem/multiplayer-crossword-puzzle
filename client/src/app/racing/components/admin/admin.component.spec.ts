@@ -9,7 +9,7 @@ import { RacingCommunicationService } from "../../communication.service/communic
 import { FormsModule } from "@angular/forms";
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 
 /* tslint:disable:no-magic-numbers*/
 describe("AdminComponent", () => {

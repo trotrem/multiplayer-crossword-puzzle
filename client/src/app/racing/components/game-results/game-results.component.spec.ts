@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ITrack } from "./../../track";
 import * as THREE from "three";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 
 /* tslint:disable:no-magic-numbers */

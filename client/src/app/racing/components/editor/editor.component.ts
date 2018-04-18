@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import { ActivatedRoute } from "@angular/router";
 import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";

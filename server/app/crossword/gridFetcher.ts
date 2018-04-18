@@ -1,5 +1,5 @@
 import { GenerateWords } from "./models/grid/generateWords";
-import { Difficulty } from "../../../common/communication/types";
+import { Difficulty } from "../../../common/communication/types-crossword";
 import { Document } from "mongoose";
 import { crosswordDocument } from "./models/crosswordDbSchemas";
 import { Utils } from "../utils";

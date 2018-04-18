@@ -1,6 +1,6 @@
-import { Direction, IPoint, IWordInfo } from "./../../../../common/communication/types";
+import { Direction, IPoint, IWordInfo } from "./../../../../common/communication/types-crossword";
 import { GridEventService } from "./grid-event.service/grid-event.service";
-import { IGridData } from "./../../../../common/communication/events";
+import { IGridData } from "./../../../../common/communication/events-crossword";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 
 export class GridCreator {

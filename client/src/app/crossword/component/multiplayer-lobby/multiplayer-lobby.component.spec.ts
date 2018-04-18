@@ -7,7 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { GameConfigurationService } from "../../game-configuration.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
-import { IConnectionInfo } from "../../../../../../common/communication/events";
+import { IConnectionInfo } from "../../../../../../common/communication/events-crossword";
 
 /* tslint:disable:no-magic-numbers*/
 describe("MultiplayerLobbyComponent", () => {

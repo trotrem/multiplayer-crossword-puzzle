@@ -1,7 +1,7 @@
 /* tslint:disable:no-magic-numbers*/
 import { expect } from "chai";
 import { GridUtils } from "./gridUtils";
-import { Direction } from "../../../../../common/communication/types";
+import { Direction } from "../../../../../common/communication/types-crossword";
 import { IGrid, WordDictionaryData } from "../../dataStructures";
 
 describe("getText", () => {

@@ -1,4 +1,4 @@
-import { IPoint, IWordInfo, GameResult, Difficulty } from "./types";
+import { IPoint, IWordInfo, GameResult, Difficulty } from "./types-crossword";
 
 export enum CrosswordEvents {
     Connected = "connection",

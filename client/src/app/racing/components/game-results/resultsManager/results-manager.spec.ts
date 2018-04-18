@@ -1,5 +1,5 @@
 import { ResultsManager } from "./results-manager";
-import { IBestScores, INewScores } from "../../../../../../../common/communication/interfaces";
+import { IBestScores, INewScores } from "../../../../../../../common/communication/types-racing";
 
 /* tslint:disable:no-magic-numbers*/
 describe("ResultsManager", () => {

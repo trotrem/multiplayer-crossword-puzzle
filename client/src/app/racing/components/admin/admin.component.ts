@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
 import { ITrack } from "../../track";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import * as THREE from "three";
 
 const EDITOR: string = "/editor/";

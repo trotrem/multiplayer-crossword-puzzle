@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {INewScores, IBestScores} from "../../../../common/communication/interfaces";
+import {INewScores, IBestScores} from "../../../../common/communication/types-racing";
 
 export interface ITrack {
     name: string;

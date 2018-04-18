@@ -3,7 +3,7 @@ import { HomePageComponent } from "./home-page.component";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { RouterTestingModule } from "@angular/router/testing";
-import { Difficulty } from "../../../../../../common/communication/types";
+import { Difficulty } from "../../../../../../common/communication/types-crossword";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { CommunicationService } from "../../communication.service";
 import { GameConfigurationService } from "../../game-configuration.service";

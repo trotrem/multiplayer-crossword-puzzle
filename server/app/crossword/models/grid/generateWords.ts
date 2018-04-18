@@ -3,7 +3,7 @@ import { WordsPositionsHelper } from "./wordsPositionsHelper";
 import { GridUtils } from "./gridUtils";
 import { WordRetriever } from "../lexiconAPI/wordRetriever";
 import { Utils } from "../../..//utils";
-import { Difficulty } from "../../../../../common/communication/types";
+import { Difficulty } from "../../../../../common/communication/types-crossword";
 import { WordDictionaryData, IGrid, IWordContainer } from "../../dataStructures";
 
 export module GenerateWords {

@@ -1,4 +1,4 @@
-import { Direction, IPoint } from "../../../common/communication/types";
+import { Direction, IPoint } from "../../../common/communication/types-crossword";
 
 export interface ICell {
     isBlack: boolean;

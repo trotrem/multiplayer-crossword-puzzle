@@ -6,7 +6,7 @@ import { CommunicationService } from "../communication.service";
 import { WordStatusManagerService } from "./word-status-manager.service";
 import { SocketsService } from "./../sockets.service";
 import { SelectedWord, AssociatedPlayers, WordDescription, Cell } from "../dataStructures";
-import { Direction } from "../../../../../common/communication/types";
+import { Direction } from "../../../../../common/communication/types-crossword";
 import { GameConfigurationService } from "../game-configuration.service";
 
 /* tslint:disable:no-magic-numbers*/

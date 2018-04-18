@@ -6,14 +6,14 @@ import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { CommunicationService } from "./../communication.service";
-import { Direction } from "../../../../../common/communication/types";
+import { Direction } from "../../../../../common/communication/types-crossword";
 import { Cell, WordDescription, AssociatedPlayers } from "./../dataStructures";
 import { SocketsService } from "./../sockets.service";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 import { GameConfigurationService } from "../game-configuration.service";
 import { CrosswordGridComponent } from "../component/crossword-grid/crossword-grid.component";
-import { IValidationData, IGameResult, IWordSelection } from "../../../../../common/communication/events";
+import { IValidationData, IGameResult, IWordSelection } from "../../../../../common/communication/events-crossword";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {

@@ -11,7 +11,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ITrack } from "../../track";
 import * as THREE from "three";
-import { INewScores, IBestScores } from "../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 
 describe("EditorComponent", () => {
     let component: EditorComponent;

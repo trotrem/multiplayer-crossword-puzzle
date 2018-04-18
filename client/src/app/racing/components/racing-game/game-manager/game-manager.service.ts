@@ -4,7 +4,7 @@ import { RacingCommunicationService } from "../../../communication.service/commu
 import * as THREE from "three";
 import { ElementRef } from "@angular/core/src/linker/element_ref";
 import { ITrack } from "../../../track";
-import { INewScores } from "./../../../../../../../common/communication/interfaces";
+import { INewScores } from "./../../../../../../../common/communication/types-racing";
 import { RaceValidator } from "../race-validator/racevalidator";
 import { Router } from "@angular/router";
 import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";

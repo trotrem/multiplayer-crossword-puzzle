@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { Direction, Difficulty } from "../../../../../common/communication/types";
+import { Direction, Difficulty } from "../../../../../common/communication/types-crossword";
 import { WordDictionaryData, IGrid } from "../../dataStructures";
 import { GridUtils } from "./gridUtils";
 

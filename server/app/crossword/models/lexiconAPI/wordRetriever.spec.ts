@@ -1,7 +1,7 @@
 import { WordRetriever } from "./wordRetriever";
 import * as assert from "assert";
 import { expect } from "chai";
-import { Difficulty } from "../../../../../common/communication/types";
+import { Difficulty } from "../../../../../common/communication/types-crossword";
 import { WordDictionaryData } from "../../dataStructures";
 
 const wordRetriever: WordRetriever = WordRetriever.instance;

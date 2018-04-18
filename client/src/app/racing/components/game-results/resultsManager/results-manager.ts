@@ -1,4 +1,4 @@
-import { INewScores, IBestScores } from "../../../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../../../common/communication/types-racing";
 
 export class ResultsManager {
     public static calculateHumanScore(scores: INewScores[], bestScore: IBestScores): void {

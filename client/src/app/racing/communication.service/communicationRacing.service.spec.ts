@@ -4,7 +4,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { ITrack } from "../track";
 import { RacingCommunicationService } from "./communicationRacing.service";
-import { INewScores, IBestScores } from "../../../../../common/communication/interfaces";
+import { INewScores, IBestScores } from "../../../../../common/communication/types-racing";
 
 describe("RacingCommunicationService", () => {
     beforeEach(() => {
