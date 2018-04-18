@@ -41,6 +41,7 @@ describe("HomePageComponent", () => {
 
     it("play with 1 player takes you to /crossword/game", fakeAsync(() => {
         component.difficultyGrade = Difficulty.Easy;
+        component.playerName = "Marc";
         component.numberPlayers = 1;
         component.play();
         tick(100);

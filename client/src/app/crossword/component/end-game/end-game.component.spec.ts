@@ -5,27 +5,39 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { EndGameComponent } from "./end-game.component";
 import { HomePageComponent } from "../home-page/home-page.component";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
+import { CommunicationService } from "../../communication.service";
+import { GameConfigurationService } from "../../game-configuration.service";
+import { HttpClient } from "@angular/common/http";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { SocketsService } from "../../sockets.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("EndGameComponent", () => {
     let router: Router;
     let route: ActivatedRoute;
-    let component: EndGameComponent = new EndGameComponent(router, route);
+    let communicationService: CommunicationService;
+    let gameConfigurationService: GameConfigurationService;
+    let component: EndGameComponent;
     let fixture: ComponentFixture<EndGameComponent>;
 
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
-            imports: [FormsModule, RouterTestingModule.withRoutes([
+            imports: [FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([
                 { path: "crossword/homePage", component: HomePageComponent },
                 { path: "crossword/game", component: CrosswordGridComponent }])],
-            declarations: [EndGameComponent, HomePageComponent, CrosswordGridComponent]
+            declarations: [EndGameComponent, HomePageComponent, CrosswordGridComponent],
+            providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
     }));
 
-    beforeEach(inject([Router, ActivatedRoute], (_router: Router, _route: ActivatedRoute) => {
+    beforeEach(inject([Router, ActivatedRoute, CommunicationService, GameConfigurationService], 
+                     (_router: Router, _route: ActivatedRoute, 
+                      _communicationService: CommunicationService, _gameConfigurationService: GameConfigurationService) => {
         route = _route;
         router = _router;
+        communicationService = _communicationService;
+        gameConfigurationService = _gameConfigurationService;
         fixture = TestBed.createComponent(EndGameComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
