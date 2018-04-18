@@ -78,8 +78,8 @@ export class CrosswordGridComponent implements OnInit {
         this.words = this.gridManager.words;
         this.selectedWord = this.gridManager.selectedWord;
         this.opponentSelectedWord = this.gridManager.opponentSelectedWord;
-
     }
+
     public toggleTipMode(): void {
         if (this.horizontalWords[0].word === undefined) {
             this.gridManager.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
