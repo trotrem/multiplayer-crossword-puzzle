@@ -59,13 +59,12 @@ export class GridEventService {
         });
     }
 
-    /*******************************************************************************************************************************************************************************************************/
-    public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription { //A regarder
+    public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
         return this.wordStatusManagerService.setSelectedWord(
             this._selectedWord, word, selected, this._id);
     }
 
-    public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {//CORRECT
+    public onCellClicked(event: MouseEvent, cell: Cell): WordDescription {
         if (cell.letterFound) {
             return null;
         }
@@ -88,7 +87,7 @@ export class GridEventService {
         return this._selectedWord.word;
     }
 
-    public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {//CORRECT
+    public onIndexClicked(event: MouseEvent, word: WordDescription): WordDescription {
         if (word.found) {
             return null;
         }
@@ -98,7 +97,7 @@ export class GridEventService {
             this._selectedWord, word, true, this._id);
     }
 
-    public onKeyPress(event: KeyboardEvent): void {//TESTED
+    public onKeyPress(event: KeyboardEvent): void {
         if (this._selectedWord !== null) {
             if (event.keyCode >= UPPER_A &&
                 event.keyCode <= UPPER_Z ||
@@ -116,7 +115,7 @@ export class GridEventService {
 
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
-        const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT; // ICI ON VOIT QUI A VALIDATED
+        const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT;
         if (data) {
             for (let i: number = 0; i < word.cells.length; i++) {
                 word.cells[i].letterFound =

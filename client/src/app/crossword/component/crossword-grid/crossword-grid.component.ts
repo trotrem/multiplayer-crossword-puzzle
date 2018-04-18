@@ -1,13 +1,12 @@
-import { Component, OnInit, Input, HostListener } from "@angular/core";
-import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "../../../../../../common/communication/types";
+import { Component, OnInit, HostListener } from "@angular/core";
+import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types";
 import { CommunicationService } from "../../communication.service";
 import { GridEventService } from "../../grid-event.service/grid-event.service";
 import { SocketsService } from "../../sockets.service";
-import { CrosswordEvents, IGridData } from "../../../../../../common/communication/events";
+import { CrosswordEvents, } from "../../../../../../common/communication/events";
 import { GameConfigurationService } from "../../game-configuration.service";
-import { WordDescription, AssociatedPlayers, Cell } from "../../dataStructures";
+import { WordDescription, Cell } from "../../dataStructures";
 import { GridManager } from "../../grid-manager.service";
-import { GridCreator } from "../../grid-creator";
 import { PlayManagerService } from "../../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../../word-status-manager.service/word-status-manager.service";
 
@@ -71,7 +70,7 @@ export class CrosswordGridComponent implements OnInit {
         private gameConfiguration: GameConfigurationService,
         private gridManager: GridManager,
         private socketsService: SocketsService) {
-            
+
         this.socketsService.onEvent(CrosswordEvents.Connected)
             .subscribe(() => {
                 console.warn(CONNECTED);

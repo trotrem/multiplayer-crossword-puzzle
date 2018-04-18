@@ -4,8 +4,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CommunicationService } from "./communication.service";
 import { SocketsService } from "./sockets.service";
 import { Difficulty } from "../../../../common/communication/types";
-import { IWordValidationPayload, IValidationData, IWordSelection, IConnectionInfo, ILobbyRequest } from "../../../../common/communication/events";
-import { Observable } from "rxjs/Observable";
+import { IWordSelection, IConnectionInfo, ILobbyRequest } from "../../../../common/communication/events";
 
 describe("CommunicationService", () => {
 
@@ -26,7 +25,6 @@ describe("CommunicationService", () => {
         service = _service;
         socketsService = _socketsService;
     }));
-
 
     it("should be created", () => {
         expect(service).toBeTruthy();

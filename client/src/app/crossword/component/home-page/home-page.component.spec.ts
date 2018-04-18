@@ -7,7 +7,6 @@ import { Difficulty } from "../../../../../../common/communication/types";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { CommunicationService } from "../../communication.service";
 import { GameConfigurationService } from "../../game-configuration.service";
-import { HttpClient } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { SocketsService } from "../../sockets.service";
 import { WaitingRoomComponent } from "../waiting-room/waiting-room.component";
@@ -21,11 +20,11 @@ describe("HomePageComponent", () => {
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
             declarations: [HomePageComponent, CrosswordGridComponent, WaitingRoomComponent, MultiplayerLobbyComponent],
-            imports: [FormsModule, RouterTestingModule.withRoutes([
-                { path: "crossword/game", component: CrosswordGridComponent },
-                { path: "crossword/waiting", component: WaitingRoomComponent },
-                { path: "crossword/lobby", component: MultiplayerLobbyComponent }]),
-                HttpClientTestingModule],
+            imports: [FormsModule, HttpClientTestingModule,
+                      RouterTestingModule.withRoutes([
+                        { path: "crossword/game", component: CrosswordGridComponent },
+                        { path: "crossword/waiting", component: WaitingRoomComponent },
+                        { path: "crossword/lobby", component: MultiplayerLobbyComponent }])],
             providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();

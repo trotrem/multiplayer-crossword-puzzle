@@ -9,13 +9,14 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { IConnectionInfo } from "../../../../../../common/communication/events";
 
+/* tslint:disable:no-magic-numbers*/
 describe("MultiplayerLobbyComponent", () => {
     let component: MultiplayerLobbyComponent;
     let fixture: ComponentFixture<MultiplayerLobbyComponent>;
     let router: Router;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [MultiplayerLobbyComponent, CrosswordGridComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
             { path: "crossword/game", component: CrosswordGridComponent }])],
@@ -36,7 +37,7 @@ describe("MultiplayerLobbyComponent", () => {
     });
 
     it("When a player tries to join a game, it should put him in a game with the other player", fakeAsync(() => {
-        const game: IConnectionInfo = {gameId: "50", player: "Marc-Antoine"} // Game to join
+        const game: IConnectionInfo = {gameId: "50", player: "Marc-Antoine"}; // Game to join
         component.joinGame(game);
         tick(100);
         expect(router.url).toBe("/crossword/game");

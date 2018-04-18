@@ -4,7 +4,7 @@ import { IGridData } from "./../../../../common/communication/events";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 
 export class GridCreator {
-    
+
     public static createGrid(
         gridData: IGridData,
         gridEventService: GridEventService,

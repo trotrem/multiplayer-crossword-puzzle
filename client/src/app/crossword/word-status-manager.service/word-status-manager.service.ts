@@ -15,7 +15,6 @@ export class WordStatusManagerService {
         this.gameConfigurationService = gameConfigurationService;
     }
 
-    /***************************************************************************************************************************************/
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
@@ -38,7 +37,6 @@ export class WordStatusManagerService {
 
     private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
-
             cell.selectedBy = (selected) ? (cell.selectedBy | target.player) : (cell.selectedBy & ~target.player);
         }
     }

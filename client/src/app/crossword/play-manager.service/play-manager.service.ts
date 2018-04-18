@@ -32,7 +32,6 @@ export class PlayManagerService {
         }
     }
 
-    /********************************************************************************************************* */
     private validate(word: WordDescription, id: string): void {
         const parameters: IWordValidationPayload = {
             gameId: id,

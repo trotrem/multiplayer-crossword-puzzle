@@ -98,13 +98,13 @@ export class GridManager {
 
         return cells;
     }
-    
+
     private configureGame(): void {
         this._nbPlayers = this.gameConfiguration.nbPlayers;
         this._difficulty = this.gameConfiguration.difficulty;
         this._playerName = this.gameConfiguration.playerName;
     }
-    
+
     private subscriptions(): void {
         this.subscribeToGridFetched();
         this.subscribeToValidation();

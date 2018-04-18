@@ -29,7 +29,7 @@ describe("WaitingRoomComponent", () => {
     });
 
     it("should start a game when an opponent is found", () => {
-        expect(false).toBeTruthy;
-    })
+        expect(false).toBeTruthy();
+    });
 
 });

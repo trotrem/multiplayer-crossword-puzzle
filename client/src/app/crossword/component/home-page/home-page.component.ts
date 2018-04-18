@@ -1,9 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { SocketsService } from "../../sockets.service";
-import { inject } from "inversify";
-import { CrosswordEvents } from "../../../../../../common/communication/events";
-import { Difficulty } from "../../../../../../common/communication/types";
 import { CommunicationService } from "../../communication.service";
 import { GameConfigurationService } from "../../game-configuration.service";
 
@@ -45,7 +41,7 @@ export class HomePageComponent implements OnInit {
         this.communicationService.initiateGame(this.difficultyGrade, this.playerName, this.numberPlayers);
         this.gameConfiguration.configureGame(this.difficultyGrade, this.playerName, this.numberPlayers);
         if (this.numberPlayers === 1) {
-            this.router.navigate(["/crossword/game"]);
+            this.router.navigate([GAME_URL]);
         } else {
             this.router.navigate([WAITING_ROOM_URL]);
         }
@@ -53,6 +49,6 @@ export class HomePageComponent implements OnInit {
 
     public joinGame(): void {
         this.gameConfiguration.configureGame(this.difficultyGrade, this.playerName, this.numberPlayers);
-        this.router.navigate(["/crossword/lobby"]);
+        this.router.navigate([LOBBY_URL]);
     }
 }
