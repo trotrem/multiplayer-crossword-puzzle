@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { GenerateWords } from "./generateWords";
 import { WordsPositionsHelper } from "./wordsPositionsHelper";
-import { GridUtils } from "./gridUtils";
 import { Direction, Difficulty } from "../../../../../common/communication/types";
 import { WordDictionaryData, IGrid } from "../../dataStructures";
+import { GridUtils } from "./gridUtils";
 
 /* tslint:disable:no-magic-numbers */
 describe("addWord", () => {
@@ -18,9 +18,8 @@ describe("addWord", () => {
                                     [{isBlack: false, letter: "", x: 3, y: 0}, {isBlack: false, letter: "", x: 3, y: 1},
                                      {isBlack:  true, letter: "", x: 3, y: 2}, {isBlack: false, letter: "", x: 3, y: 3}]],
                             words: [], blackCells: [] };
-
         WordsPositionsHelper.createListOfWord(grid);
-        grid = await GenerateWords.addWord(0, grid, Difficulty.Hard);
+        grid = await GenerateWords.addWord(0, grid, Difficulty.Easy);
         expect(GridUtils.getText(grid.words[0].gridSquares, grid).indexOf("?")).equals(-1);
         expect(GridUtils.getText(grid.words[1].gridSquares, grid).indexOf("?")).equals(-1);
         expect(GridUtils.getText(grid.words[2].gridSquares, grid).indexOf("?")).equals(-1);
