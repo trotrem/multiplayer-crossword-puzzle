@@ -12,6 +12,7 @@ import { PlayManagerService } from "../play-manager.service/play-manager.service
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
 import { GameConfigurationService } from "../game-configuration.service";
 import { CrosswordGridComponent } from "../component/crossword-grid/crossword-grid.component";
+import { IValidationData } from "../../../../../common/communication/events";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {
@@ -85,7 +86,7 @@ describe("GridEventService", () => {
         expect(playManagerService.write).toHaveBeenCalledTimes(52);
     });
 
-    it(" should validate a word automatically without entering a key", () => {
+    it("should validate a word automatically without entering a key", () => {
         spyOn(communicationService, "sendEventOnValidatedWord");
         const cells: Cell[] =
             [{ isBlack: false, content: "H", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
@@ -106,5 +107,26 @@ describe("GridEventService", () => {
     });
 
     // TEST 3: DEUX JOUEURS Les bonnes réponses sont visibles pour les DEUX joueurs
+    it("should show opponent validated word to the other player: ", () => {
+        const cells: Cell[] =
+            [{ isBlack: false, content: "H", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+            { isBlack: false, content: "A", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+            { isBlack: false, content: "L", selectedBy: AssociatedPlayers.NONE, letterFound: AssociatedPlayers.PLAYER },
+            { isBlack: false, content: "L", selectedBy: AssociatedPlayers.PLAYER, letterFound: AssociatedPlayers.NONE }];
+        const word: WordDescription = {
+            id: 0,
+            direction: Direction.Vertical,
+            cells: cells,
+            definition: "entrance",
+            found: AssociatedPlayers.NONE
+        };
+        const words: WordDescription[] = [word];
+
+        service.initialize(words, "42");
+
+        const data: IValidationData = { gameId: "42", word: "hall", index: 0, validatedByReceiver: false };
+        service.onWordValidated(data);
+        expect(service.words[0].found).toEqual(AssociatedPlayers.OPPONENT);
+    });
 
 });

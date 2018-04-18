@@ -34,7 +34,6 @@ export class GridEventService {
         this._opponentSelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
     }
 
-    /*******************************************************************************************************************************************************************************************************/
     public initialize(words: WordDescription[], id: string): void {
         this.wordStatusManagerService.initialize(this.gameConfigurationService);
         this._id = id;
@@ -115,7 +114,6 @@ export class GridEventService {
         }
     }
 
-    /*******************************************************************************************************************************************************************************************************/
     public onWordValidated(data: IValidationData): void {
         const word: WordDescription = this._words[data.index];
         const foundStatus: AssociatedPlayers = data.validatedByReceiver ? AssociatedPlayers.PLAYER : AssociatedPlayers.OPPONENT; // ICI ON VOIT QUI A VALIDATED
@@ -139,4 +137,9 @@ export class GridEventService {
     public get id(): string {
         return this._id;
     }
+
+    public get words(): WordDescription[] {
+        return this._words;
+    }
+
 }
