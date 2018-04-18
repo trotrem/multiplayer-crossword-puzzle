@@ -6,6 +6,7 @@ import { CARS_MAX } from "../../../../constants";
 import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
 import {Skybox} from "./skybox";
 import { ILine } from "../../../race-utils/vector-utils";
+import { WallService } from "../walls-collisions-service/walls";
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
@@ -15,22 +16,22 @@ export class SceneGameService {
 
     private _scene: THREE.Scene;
 
-    public constructor() {
+    public constructor(private wallsService: WallService ) {
         this._scene = new THREE.Scene;
     }
 
     public get scene(): THREE.Scene {
         return this._scene;
     }
-    public initialize(points: THREE.Vector3[], startingZone: THREE.Line3, cars: Car[], walls: ILine[]): void {
-        this.createScene(points, cars, walls);
+    public initialize(points: THREE.Vector3[], startingZone: THREE.Line3, cars: Car[]): void {
+        this.createScene(points, cars);
         for (const car of CarsPositionsHandler.insertCars(startingZone, cars)) {
             this.scene.add(car);
         }
     }
 
-    private showWalls(walls: ILine[]): void {
-        for (const line of walls) {
+    private showWalls(points: THREE.Vector3[]): void {
+        for (const line of this.wallsService.createWalls(points)) {
             const geo: THREE.Geometry = new THREE.Geometry();
             geo.vertices.push(line.pos1);
             geo.vertices.push(line.pos2);
@@ -38,7 +39,7 @@ export class SceneGameService {
         }
     }
 
-    private createScene(points: THREE.Vector3[], cars: Car[], walls: ILine[]): void {
+    private createScene(points: THREE.Vector3[], cars: Car[]): void {
         this._scene = new THREE.Scene();
         const trackMeshs: THREE.Mesh[] = TrackDisplay.drawTrack(points);
         for (const mesh of trackMeshs) {
@@ -47,7 +48,7 @@ export class SceneGameService {
         for (let i: number = 0; i < CARS_MAX; i++) {
             this.scene.add(cars[i]);
         }
-        this.showWalls(walls);
+        this.showWalls(points);
         points.splice(0, 1, trackMeshs[trackMeshs.length - 1].position);
         this.scene.add(new THREE.AmbientLight(WHITE, AMBIENT_LIGHT_OPACITY));
         this.scene.add(Skybox.instance.createSkybox());
