@@ -21,6 +21,10 @@ export class CommunicationService {
 
     public initialize(): void {
         this.socketsService.initialize();
+        this.prepareGridFetching();
+    }
+
+    public prepareGridFetching(): void {
         this._gridPromise = this.onGridFetched();
     }
 
@@ -36,6 +40,7 @@ export class CommunicationService {
     }
 
     public onGridFetched(): Promise<IGridData> {
+        console.log("grid fetched")
         return this.socketsService.onEvent(CrosswordEvents.GridFetched).first().toPromise() as Promise<IGridData>;
     }
 
@@ -56,6 +61,7 @@ export class CommunicationService {
     }
 
     public onOpponentSelectedWord(): Observable<IWordSelection> {
+        console.log("opponent")
         return this.socketsService.onEvent(CrosswordEvents.OpponentSelectedWord) as Observable<IWordSelection>;
     }
 
@@ -76,10 +82,12 @@ export class CommunicationService {
     }
 
     public sendRequestRematch(): void {
+        console.log("I request a rematch!!!")
         this.socketsService.sendEvent(CrosswordEvents.RequestRematch, null);
     }
 
     public onRematchRequested(): Observable<null> {
+        console.log("oh shiiii you requested a rematch??")
         return this.socketsService.onEvent(CrosswordEvents.RematchRequested).first() as Observable<null>;
     }
 }

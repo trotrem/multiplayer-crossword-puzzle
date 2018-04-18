@@ -135,6 +135,7 @@ export class SocketsHandler {
             socket.once(CrosswordEvents.RematchRequested, (payload: IEventPayload) => {
                 if (requestCountClosure() === 2) {
                     this.sendGridToPlayers(gameId);
+                    this.emitToGamePlayers(gameId, CrosswordEvents.OpponentFound, null);
                 }
             });
         }
