@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
+import { async, TestBed, inject, fakeAsync, tick } from "@angular/core/testing";
 import { HomePageComponent } from "./home-page.component";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
@@ -40,26 +40,26 @@ describe("HomePageComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("play with 1 player takes you to '/crossword/game'.", fakeAsync(() => {
-        component.EasyMediumHard = Difficulty.Easy;
-        component.oneTwo = 1;
+    it("play with 1 player takes you to /crossword/game", fakeAsync(() => {
+        component.difficultyGrade = Difficulty.Easy;
+        component.numberPlayers = 1;
         component.play();
         tick(100);
         expect(router.url).toBe("/crossword/game");
     }));
 
     it("play with 2 player takes you to a waiting room on '/crossword/waiting'.", fakeAsync(() => {
-        component.EasyMediumHard = Difficulty.Easy;
-        component.oneTwo = 2;
+        component.difficultyGrade = Difficulty.Easy;
+        component.numberPlayers = 2;
         component.play();
         tick(100);
         expect(router.url).toBe("/crossword/waiting");
     }));
 
     it("A player who wants to join a game will be redirect to a lobby on '/crossword/lobby'.", fakeAsync(() => {
-        component.EasyMediumHard = Difficulty.Easy;
-        component.oneTwo = 2;
-        component.joinExisting();
+        component.difficultyGrade = Difficulty.Easy;
+        component.numberPlayers = 2;
+        component.joinGame();
         tick(100);
         expect(router.url).toBe("/crossword/lobby");
     }));

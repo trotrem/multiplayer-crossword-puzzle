@@ -39,7 +39,7 @@ export class PlayManagerService {
             wordIndex: word.id,
             word: word.cells.map((elem) => elem.content).join("")
         };
-        this.communicationService.validate(parameters);
+        this.communicationService.sendEventOnValidatedWord(parameters);
     }
 
     private wordFoundByOtherWord(words: WordDescription[], id: string): void {

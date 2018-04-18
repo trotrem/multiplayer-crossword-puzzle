@@ -9,7 +9,6 @@ import * as Command from "../commands/command";
 import * as KeyCode from "../commands/key-code";
 import { CarPhysics } from "./carPhysics";
 import { CarController } from "./carController";
-import { WallService } from "../walls-collisions-service/walls";
 
 export const DEFAULT_WHEELBASE: number = 2.78;
 export const DEFAULT_MASS: number = 1515;
@@ -44,7 +43,7 @@ export class Car extends Object3D {
     public checkpoint: number;
 
     public constructor(
-        private collisionService: WallsCollisionsService, private wallService: WallService, private keyboard: KeyboardEventService,
+        private collisionService: WallsCollisionsService, private keyboard: KeyboardEventService,
         engine: Engine = new Engine(), rearWheel: Wheel = new Wheel(), wheelbase: number = DEFAULT_WHEELBASE,
         mass: number = DEFAULT_MASS, dragCoefficient: number = DEFAULT_DRAG_COEFFICIENT) {
         super();
@@ -217,7 +216,7 @@ export class Car extends Object3D {
             this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
         );
         this._velocity = this.getDeltaPosition(deltaTime);
-        for (const collisionNormal of this.collisionService.getCollisionNormal(this, this.wallService.walls)) {
+        for (const collisionNormal of this.collisionService.getCollisionNormal(this)) {
             this._speed.setLength(Math.max(this._speed.length() - WALL_SPEED_LOSS, Math.min(this._speed.length(), MIN_WALL_SPEED)));
             this._velocity.sub(collisionNormal.clone().multiplyScalar(this._velocity.dot(collisionNormal)));
         }

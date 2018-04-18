@@ -1,9 +1,6 @@
-import { Direction, Difficulty, NbPlayers, IPoint, IWordInfo } from "./../../../../common/communication/types";
-import { CommunicationService } from "./communication.service";
+import { Direction, IPoint, IWordInfo } from "./../../../../common/communication/types";
 import { GridEventService } from "./grid-event.service/grid-event.service";
-import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData } from "./../../../../common/communication/events";
-import { GameConfigurationService } from "./game-configuration.service";
+import { IGridData } from "./../../../../common/communication/events";
 import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
 
 export class GridCreator {

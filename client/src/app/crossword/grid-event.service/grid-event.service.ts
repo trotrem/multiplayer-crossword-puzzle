@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { NbPlayers, GameResult } from "../../../../../common/communication/types";
+import { GameResult } from "../../../../../common/communication/types";
 import { CommunicationService } from "./../communication.service";
 import { Router } from "@angular/router";
 import { IValidationData, IWordSelection, IGameResult } from "../../../../../common/communication/events";
@@ -14,6 +14,7 @@ const UPPER_A: number = 65;
 const UPPER_Z: number = 90;
 const LOWER_A: number = 97;
 const LOWER_Z: number = 122;
+const END_GAME_URL: string = "/crossword/endGame/";
 
 @Injectable()
 export class GridEventService {
@@ -44,16 +45,15 @@ export class GridEventService {
         this.subscribeToGameEnded();
     }
 
-    /*******************************************************************************************************************************************************************************************************/
-    private subscribeToGameEnded(): void { //PEUT ETRE A TESTER
-        this.communicationService.onGameEnded().subscribe((data: IGameResult) => {
+    private subscribeToGameEnded(): void {
+        this.communicationService.sendEventOnGameEnded().subscribe((data: IGameResult) => {
+
             this.openEndGame(data.result);
         });
     }
 
-    /*******************************************************************************************************************************************************************************************************/
-    private subscribeToOpponentSelection(): void { //PEUT ETRE A TESTER
-        this.communicationService.onOpponentSelectedWord().subscribe((word: IWordSelection) => {
+    private subscribeToOpponentSelection(): void {
+        this.communicationService.sendEventOnOpponentSelectedWord().subscribe((word: IWordSelection) => {
             this.wordStatusManagerService.setSelectedWord(
                 this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
                 true, this._id);
@@ -133,7 +133,7 @@ export class GridEventService {
     }
 
     private openEndGame(result: GameResult): void {
-        this.router.navigate(["/crossword/endGame/" + result]);
+        this.router.navigate([END_GAME_URL + result]);
     }
 
     public get id(): string {

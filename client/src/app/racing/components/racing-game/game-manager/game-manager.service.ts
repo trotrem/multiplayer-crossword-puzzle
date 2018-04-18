@@ -9,7 +9,6 @@ import { RaceValidator } from "../race-validator/racevalidator";
 import { Router } from "@angular/router";
 import { CARS_MAX, MS_TO_SECONDS, LAP_MAX } from "../../../../constants";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { WallService } from "../walls-collisions-service/walls";
 import { Car } from "../car/car";
 import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
 import { AiController } from "./../ai-controller/ai-controller";
@@ -33,7 +32,6 @@ export class GameManagerService {
         private communicationService: RacingCommunicationService,
         private collisionService: WallsCollisionsService,
         private carsCollisionService: CarsCollisionService,
-        private wallService: WallService,
         private router: Router) {
         this.timer = 0;
         this._aiControllers = new Array<AiController>();
@@ -47,14 +45,14 @@ export class GameManagerService {
         void this.initializeCars(keyboard).then(() => {
             this.renderService.initialize(
                 canvas.nativeElement, this.track.points, this.track.startingZone,
-                this._cars, this.wallService.createWalls(this.track.points), keyboard);
+                this._cars, keyboard);
             this.update();
         });
     }
 
     private async initializeCars(keyboard: KeyboardEventService): Promise<void> {
         for (let i: number = 0; i < CARS_MAX; i++) {
-            this._cars[i] = new Car(this.collisionService, this.wallService, keyboard);
+            this._cars[i] = new Car(this.collisionService, keyboard);
             await this._cars[i].init().then(() => { });
         }
     }
@@ -153,7 +151,7 @@ export class GameManagerService {
 
     private initializeControllers(): void {
         for (let i: number = 1; i < AI_PLAYERS_MAX + 1; i++) {
-            this._aiControllers.push(new AiController(this._cars[i], this.track.points, this.collisionService, this.wallService));
+            this._aiControllers.push(new AiController(this._cars[i], this.track.points, this.collisionService));
         }
     }
 }

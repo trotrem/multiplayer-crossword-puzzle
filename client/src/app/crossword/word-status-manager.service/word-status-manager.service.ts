@@ -19,7 +19,6 @@ export class WordStatusManagerService {
     public setSelectedWord(
         target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
-            console.warn("sending...");
             this.communicationService.sendSelectionStatus({ gameId: id, wordId: word !== null ? word.id : null });
         }
         if (target.word === word) {
@@ -39,11 +38,8 @@ export class WordStatusManagerService {
 
     private setWordSelectedState(target: SelectedWord, word: WordDescription, selected: boolean): void {
         for (const cell of word.cells) {
-            if (selected) {
-                cell.selectedBy = cell.selectedBy | target.player;
-            } else {
-                cell.selectedBy = cell.selectedBy & ~target.player;
-            }
+
+            cell.selectedBy = (selected) ? (cell.selectedBy | target.player) : (cell.selectedBy & ~target.player);
         }
     }
 }

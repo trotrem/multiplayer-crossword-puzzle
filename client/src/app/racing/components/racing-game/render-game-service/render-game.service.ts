@@ -31,9 +31,9 @@ export class RenderGameService extends RenderService {
     }
 
     public initialize(canvas: HTMLCanvasElement, points: THREE.Vector3[], startingZone: THREE.Line3,
-                      cars: Car[], walls: ILine[], keyboard: KeyboardEventService): void {
+                      cars: Car[], keyboard: KeyboardEventService): void {
         super.initializeSuper(canvas);
-        this.sceneGameService.initialize(points, startingZone, cars, walls);
+        this.sceneGameService.initialize(points, startingZone, cars);
         this.initializeCamera();
         this.initCameraCommands(keyboard);
     }
