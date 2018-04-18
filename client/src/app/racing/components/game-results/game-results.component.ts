@@ -68,7 +68,7 @@ export class GameResultsComponent implements OnInit {
 
     public async getTrack(name: string): Promise<ITrack> {
         await this.delay(DELAY);
-        this.communicationService.getTrackByName(name)
+        void this.communicationService.getTrackByName(name)
             .then((res: ITrack[]) => {
                 this._track = res[0];
                 this._scores = res[0].INewScores;

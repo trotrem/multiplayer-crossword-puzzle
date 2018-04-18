@@ -1,5 +1,4 @@
-import { TestBed } from "@angular/core/testing";
-import * as THREE from "three";
+
 import { CarsCollisionService } from "./cars-collision.service";
 import { KeyboardEventService } from "../../commands/keyboard-event.service";
 import { WallsCollisionsService } from "../../walls-collisions-service/walls-collisions-service";

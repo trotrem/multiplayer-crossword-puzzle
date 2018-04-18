@@ -17,7 +17,7 @@ describe("HomePageComponent", () => {
     let router: Router;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [HomePageComponent, CrosswordGridComponent],
             imports: [FormsModule, RouterTestingModule.withRoutes([
                 { path: "crossword/game", component: CrosswordGridComponent }]),

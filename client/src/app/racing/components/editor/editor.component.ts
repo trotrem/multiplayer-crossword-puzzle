@@ -65,7 +65,7 @@ export class EditorComponent implements OnInit {
     public async savetrack(): Promise<void> {
         this.track.points = this.sceneService.getPoints();
         this.track.startingZone = new THREE.Line3(this.track.points[0], this.track.points[1]);
-        this.communicationService.deleteTrack(this.track).then(() => {
+        void this.communicationService.deleteTrack(this.track).then(() => {
             this.communicationService.saveTrack(this.track);
         });
 

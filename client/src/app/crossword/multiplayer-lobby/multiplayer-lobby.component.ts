@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CrosswordEvents, ILobbyGames, ICrosswordSettings, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events";
+import { ILobbyGames, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events";
 import { GameConfigurationService } from "../game-configuration.service";
 import { CommunicationService } from "../communication.service";
 

@@ -22,7 +22,7 @@ describe("EditorComponent", () => {
         INewScores: new Array<INewScores>(), IBestScores: new Array<IBestScores>()
     };
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             declarations: [EditorComponent],
             imports: [
                 FormsModule,
@@ -48,12 +48,12 @@ describe("EditorComponent", () => {
     });
     it("the track to edit should have a name", async () => {
         route.snapshot.params = { params: track.name };
-        await component.getTrack(track.name);
+        void component.getTrack(track.name);
         expect(component.track.name).toBe("Laurence");
     });
     it("the track to edit should have a description", async () => {
         route.snapshot.params = { params: track.name };
-        await component.getTrack(track.name);
+        void component.getTrack(track.name);
         expect(component.track.description).toBe(track.description);
     });
 });

@@ -52,7 +52,7 @@ export class AdminComponent implements OnInit {
     }
 
     public deleteTrack(): ITrack {
-        this.communicationService.deleteTrack(this.selectedTrack);
+        void this.communicationService.deleteTrack(this.selectedTrack);
 
         return this.selectedTrack;
     }

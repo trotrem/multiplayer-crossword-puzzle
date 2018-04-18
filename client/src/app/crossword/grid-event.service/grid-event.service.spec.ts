@@ -4,10 +4,10 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router } from "@angular/router";
-import { CommunicationService } from "./communication.service";
-import { Direction } from "../../../../common/communication/types";
-import { Cell, WordDescription, AssociatedPlayers } from "./dataStructures";
-import { SocketsService } from "./sockets.service";
+import { CommunicationService } from "./../communication.service";
+import { Direction } from "../../../../../common/communication/types";
+import { Cell, WordDescription, AssociatedPlayers } from "./../dataStructures";
+import { SocketsService } from "./../sockets.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("GridEventService", () => {

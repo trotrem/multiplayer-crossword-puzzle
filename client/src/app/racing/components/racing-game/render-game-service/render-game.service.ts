@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import Stats = require("stats.js");
 import * as THREE from "three";
 import { Car } from "../car/car";
 import { OrthographicCamera } from "../camera/topView-camera";
@@ -18,7 +17,6 @@ const ZOOM_MIN: number = 0.75;
 @Injectable()
 export class RenderGameService extends RenderService {
     private cameras: [PerspectiveCamera, OrthographicCamera] = [null, null];
-    private stats: Stats;
     private cameraID: number;
 
     public constructor( private sceneGameService: SceneGameService) {
@@ -36,8 +34,6 @@ export class RenderGameService extends RenderService {
                       cars: Car[], walls: ILine[], keyboard: KeyboardEventService): void {
         super.initializeSuper(canvas);
         this.sceneGameService.initialize(points, startingZone, cars, walls);
-
-        // this.initStats();
         this.initializeCamera();
         this.initCameraCommands(keyboard);
     }
@@ -47,13 +43,6 @@ export class RenderGameService extends RenderService {
         this.cameras[1] = new OrthographicCamera();
         this.cameras[0].up.set(0, 0, 1);
     }
-    // TODO : check si necessaire
-   /* private initStats(): void {
-        this.stats = new Stats();
-        this.stats.dom.style.position = "absolute";
-        this.canvas.appendChild(this.stats.dom);
-    }*/
-
     public render(player: Car): void {
         if (this.cameraID === 0) {
             this.cameras[0].updatePosition(player);
@@ -61,7 +50,6 @@ export class RenderGameService extends RenderService {
             this.cameras[1].updatePosition(player.getUpdatedPosition());
         }
         this.renderer.render(this.sceneGameService.scene, this.cameras[this.cameraID]);
-        // this.stats.update();
     }
     public onResize(): void {
         if (this.cameraID === 0) {

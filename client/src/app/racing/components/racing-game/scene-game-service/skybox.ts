@@ -61,7 +61,7 @@ export class Skybox {
     public createSkybox(): THREE.Mesh {
         this.skyMesh.rotateZ(Math.PI / 2);
         this.skyMesh.rotateX(Math.PI / 2);
-        this.skyMesh.translate(SKYBOX_POSITION, new THREE.Vector3(0, 1, 0));
+        this.skyMesh.translateOnAxis(new THREE.Vector3(0, 1, 0), SKYBOX_POSITION);
 
         return this.skyMesh;
     }

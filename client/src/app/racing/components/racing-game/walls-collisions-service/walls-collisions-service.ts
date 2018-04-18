@@ -3,17 +3,12 @@ import { VectorUtils, ILine } from "../../../race-utils/vector-utils";
 import { Car } from "../car/car";
 import { Injectable } from "@angular/core";
 
-enum WallSide {
-    exterior = -1,
-    interior = 1
-}
-
-const WALL_WIDTH: number = 8;
-
 @Injectable()
 export class WallsCollisionsService {
-    private _corners: THREE.Vector3[] = [];
-
+    private _corners: THREE.Vector3[];
+    public constructor() {
+        this._corners = new Array<THREE.Vector3>();
+    }
     public getCollisionNormal(car: Car, walls: ILine[]): THREE.Vector3[] {
         const normals: THREE.Vector3[] = [];
         this._corners = car.getCorners(car.getUpdatedPosition().add(car.velocity));

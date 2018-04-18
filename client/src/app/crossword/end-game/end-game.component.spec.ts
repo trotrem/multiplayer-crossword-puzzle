@@ -15,7 +15,7 @@ describe("EndGameComponent", () => {
     let fixture: ComponentFixture<EndGameComponent>;
 
     beforeEach(async(() => {
-        TestBed.configureTestingModule({
+        void TestBed.configureTestingModule({
             imports: [FormsModule, RouterTestingModule.withRoutes([
                 { path: "crossword/homePage", component: HomePageComponent },
                 { path: "crossword/game", component: CrosswordGridComponent }])],
