@@ -23,11 +23,11 @@ import { WallsCollisionsService } from "./racing/services/walls-collisions/walls
 import { MultiplayerLobbyComponent } from "./crossword/component/multiplayer-lobby/multiplayer-lobby.component";
 import { SocketsService } from "./crossword/services/sockets/sockets.service";
 import { WaitingRoomComponent } from "./crossword/component/waiting-room/waiting-room.component";
-import { CommunicationService } from "./crossword/communication-service/communication.service";
-import { GameConfigurationService } from "./crossword/game-configuration/game-configuration.service";
+import { CommunicationService } from "./crossword/services/communication/communication.service";
+import { GameConfigurationService } from "./crossword/services/game-configuration/game-configuration.service";
 import { RenderGameService } from "./racing/services/render-game/render-game.service";
 import { SceneGameService } from "./racing/services/scene-game/scene-game-service.service";
-import { GridManager } from "./crossword/grid-manager/grid-manager.service";
+import { GridManager } from "./crossword/services/grid-manager/grid-manager.service";
 import { SceneEditorService } from "./racing/services/scene-editor/scene-editor.service";
 import { KeyboardEventService } from "./racing/commands/keyboard-event.service";
 import { WallService } from "./racing/services/walls-collisions/walls";
