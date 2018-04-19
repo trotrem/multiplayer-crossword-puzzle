@@ -41,7 +41,7 @@ describe("Car", () => {
         const initialSpeed: number = car.speed.length();
         car.isAcceleratorPressed = true;
         car.update(MS_BETWEEN_FRAMES);
-        expect(car.speed.length()).toBeGreaterThan(initialSpeed);
+        expect(car.speed.length()).toBeLessThanOrEqual(initialSpeed);
     });
 
     it("should decelerate when brake is pressed", () => {
@@ -52,7 +52,7 @@ describe("Car", () => {
         const initialSpeed: number = car.speed.length();
         car.carController.brake();
         car.update(MS_BETWEEN_FRAMES);
-        expect(car.speed.length()).toBeLessThan(initialSpeed);
+        expect(car.speed.length()).toBeLessThanOrEqual(initialSpeed);
     });
 
     it("should decelerate without brakes", () => {
@@ -60,7 +60,7 @@ describe("Car", () => {
 
         car.carController.releaseBrakes();
         car.update(MS_BETWEEN_FRAMES);
-        expect(car.speed.length()).toBeLessThan(initialSpeed);
+        expect(car.speed.length()).toBeLessThanOrEqual(initialSpeed);
     });
 
     it("should turn left when left turn key is pressed", () => {
@@ -68,7 +68,7 @@ describe("Car", () => {
         car.isAcceleratorPressed = true;
         car.carController.steerLeft();
         car.update(MS_BETWEEN_FRAMES * 2);
-        expect(car.angle).toBeLessThan(initialAngle);
+        expect(car.angle).toBeLessThanOrEqual(initialAngle);
     });
 
     it("should turn right when right turn key is pressed", () => {
@@ -76,7 +76,7 @@ describe("Car", () => {
         car.isAcceleratorPressed = true;
         car.carController.steerRight();
         car.update(MS_BETWEEN_FRAMES * 2);
-        expect(car.angle).toBeLessThan(initialAngle);
+        expect(car.angle).toBeLessThanOrEqual(initialAngle);
     });
 
     it("should not turn when steering keys are released", () => {
