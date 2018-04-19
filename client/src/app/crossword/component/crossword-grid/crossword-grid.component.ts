@@ -35,13 +35,12 @@ export class CrosswordGridComponent implements OnInit {
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode;
-    private isStarted: boolean;
     private words: WordDescription[];
 
     // TODO: fix
     @HostListener("document:click")
     public onBackgroundClick(): void {
-        if (this.isStarted) {
+        if (this.gridManager.isStarted) {
             this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
         }
     }
@@ -71,7 +70,7 @@ export class CrosswordGridComponent implements OnInit {
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
         private gridManager: GridManager,
-        private socketsService: SocketsService) {}
+        private socketsService: SocketsService) { }
 
     public ngOnInit(): void {
         this.nbPlayers = this.gameConfiguration.nbPlayers;
