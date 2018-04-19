@@ -2,14 +2,14 @@ import { TestBed, inject } from "@angular/core/testing";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { GameManagerService } from "./game-manager.service";
-import { RenderGameService } from "../render-game-service/render-game.service";
+import { RenderGameService } from "../render-game/render-game.service";
 import { RouterTestingModule } from "@angular/router/testing";
-import { RacingCommunicationService } from "../../../communication.service/communicationRacing.service";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import { SceneGameService } from "../scene-game-service/scene-game-service.service";
-import { WallService } from "../walls-collisions-service/walls";
-import { CarsCollisionService } from "../car/cars-collision/cars-collision.service";
+import { RacingCommunicationService } from "../communication/communicationRacing.service";
+import { WallsCollisionsService } from "../walls-collisions/walls-collisions-service";
+import { KeyboardEventService } from "../../commands/keyboard-event.service";
+import { SceneGameService } from "../scene-game/scene-game-service.service";
+import { WallService } from "../walls-collisions/walls";
+import { CarsCollisionService } from "../../components/racing-game/car/cars-collision/cars-collision.service";
 
 describe("GameManagerService", () => {
     beforeEach(() => {

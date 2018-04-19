@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, HostListener } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { GameManagerService } from "../game-manager/game-manager.service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
+import { GameManagerService } from "../../../services/game-manager/game-manager.service";
+import { KeyboardEventService } from "../../../commands/keyboard-event.service";
 const LIGHTS: number = 3;
 const DELAY_BETWEEN_RED: number = 600;
 const DELAY: number = 1000;

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { RenderService } from "../../render.service/render.service";
+import { RenderService } from "../render/render.service";
 const MAX_SELECTION: number = 2;
 const FAR_CLIPPING_PLANE: number = 1000;
 const NEAR_CLIPPING_PLANE: number = 1;

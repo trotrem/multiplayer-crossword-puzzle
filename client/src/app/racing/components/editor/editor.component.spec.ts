@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed, inject } from "@angular/core/testing";
 
 import { EditorComponent } from "./editor.component";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
-import { RenderEditorService } from "./render-editor.service/render-editor.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
+import { RenderEditorService } from "../../services/render-editor/render-editor.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
+import { SceneEditorService } from "../../services/scene-editor/scene-editor.service";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";

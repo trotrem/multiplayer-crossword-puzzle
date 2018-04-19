@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { Car } from "../car/car";
-import { OrthographicCamera } from "../camera/topView-camera";
-import { PerspectiveCamera } from "../camera/rearView-camera";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import * as Command from "../commands/command";
-import * as KeyCode from "../commands/key-code";
-import { SceneGameService } from "../scene-game-service/scene-game-service.service";
-import { RenderService } from "../../render.service/render.service";
+import { Car } from "../../components/racing-game/car/car";
+import { OrthographicCamera } from "../../components/racing-game/camera/topView-camera";
+import { PerspectiveCamera } from "../../components/racing-game/camera/rearView-camera";
+import { KeyboardEventService } from "../../commands/keyboard-event.service";
+import * as Command from "../../commands/command";
+import * as KeyCode from "../../commands/key-code";
+import { SceneGameService } from "../scene-game/scene-game-service.service";
+import { RenderService } from "../render/render.service";
 
 const ZOOM_FACTOR: number = 0.05;
 const ZOOM_MAX: number = 2;

@@ -1,6 +1,6 @@
 import { TestBed, inject } from "@angular/core/testing";
 import { SceneEditorService } from "./scene-editor.service";
-import { RenderEditorService } from "../render-editor.service/render-editor.service";
+import { RenderEditorService } from "../render-editor/render-editor.service";
 /* tslint:disable:no-magic-numbers*/
 describe("SceneEditorService", () => {
     beforeEach(() => {

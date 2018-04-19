@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { TrackValidator } from "./track-validator";
-import { RenderEditorService } from "../render-editor.service/render-editor.service";
+import { RenderEditorService } from "../../../services/render-editor/render-editor.service";
 const MAX_SELECTION: number = 2;
 const RED_COLOR: number = 0xFF0000;
 const GREEN_COLOR: number = 0x88D8B0;

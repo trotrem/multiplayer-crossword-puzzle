@@ -1,10 +1,10 @@
 
 import { CarsCollisionService } from "./cars-collision.service";
-import { KeyboardEventService } from "../../commands/keyboard-event.service";
-import { WallsCollisionsService } from "../../walls-collisions-service/walls-collisions-service";
+import { KeyboardEventService } from "../../../../commands/keyboard-event.service";
+import { WallsCollisionsService } from "../../../../services/walls-collisions/walls-collisions-service";
 import { Car } from "../car";
 import { CarLoader } from "../car-loader";
-import { WallService } from "../../walls-collisions-service/walls";
+import { WallService } from "../../../../services/walls-collisions/walls";
 describe("CarsCollisionService", () => {
     const wallService: WallService = new WallService();
     const wallsCollisionsService: WallsCollisionsService = new WallsCollisionsService(wallService);

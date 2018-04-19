@@ -4,7 +4,7 @@ import { Response } from "@angular/http";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
-import { ITrack } from "../track";
+import { ITrack } from "../../track";
 
 export const URL_SERVER: string = "http://localhost:3000/racing/";
 const AUTHORIZATION: string = "Authorization";

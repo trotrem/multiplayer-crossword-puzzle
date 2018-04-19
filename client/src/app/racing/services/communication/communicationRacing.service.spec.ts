@@ -2,9 +2,9 @@ import { TestBed, inject, async } from "@angular/core/testing";
 import * as THREE from "three";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { ITrack } from "../track";
+import { ITrack } from "../../track";
 import { RacingCommunicationService } from "./communicationRacing.service";
-import { INewScores, IBestScores } from "../../../../../common/communication/types-racing";
+import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 
 describe("RacingCommunicationService", () => {
     beforeEach(() => {

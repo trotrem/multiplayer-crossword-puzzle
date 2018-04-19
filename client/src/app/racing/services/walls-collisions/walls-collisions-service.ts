@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { VectorUtils} from "../../../race-utils/vector-utils";
-import { Car } from "../car/car";
+import { VectorUtils} from "../../race-utils/vector-utils";
+import { Car } from "../../components/racing-game/car/car";
 import { Injectable } from "@angular/core";
 import { WallService } from "./walls";
 

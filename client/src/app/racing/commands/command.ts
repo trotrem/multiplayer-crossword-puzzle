@@ -1,5 +1,5 @@
-import { Car } from "./../car/car";
-import { RenderGameService } from "./../render-game-service/render-game.service";
+import { Car } from "../components/racing-game/car/car";
+import { RenderGameService } from "../services/render-game/render-game.service";
 
 // Reason to disable: All classes are simply concrete commands of ICommand.
 /* tslint:disable:max-classes-per-file*/

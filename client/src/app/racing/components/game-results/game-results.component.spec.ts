@@ -7,7 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ITrack } from "./../../track";
 import * as THREE from "three";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 

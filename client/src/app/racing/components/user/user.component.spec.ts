@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { UserComponent } from "./user.component";
 import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
 import { GameComponent } from "../racing-game/game-component/game.component";
 
 /* tslint:disable:no-magic-numbers*/

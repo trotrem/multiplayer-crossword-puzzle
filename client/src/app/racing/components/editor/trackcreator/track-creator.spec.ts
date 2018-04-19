@@ -1,6 +1,6 @@
 import { TrackCreator } from "./track-creator";
 import * as THREE from "three";
-import { RenderEditorService } from "../render-editor.service/render-editor.service";
+import { RenderEditorService } from "../../../services/render-editor/render-editor.service";
 const POINT_MATERIAL: THREE.PointsMaterial = new THREE.PointsMaterial({ size: 3, color: 0xFF00A7 });
 
 /* tslint:disable:no-magic-numbers*/

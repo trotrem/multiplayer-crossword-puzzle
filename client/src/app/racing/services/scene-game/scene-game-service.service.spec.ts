@@ -1,10 +1,10 @@
 import { TestBed, inject } from "@angular/core/testing";
 import * as THREE from "three";
 import { SceneGameService } from "./scene-game-service.service";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import { Car } from "./../car/car";
-import { WallService } from "../walls-collisions-service/walls";
+import { WallsCollisionsService } from "../walls-collisions/walls-collisions-service";
+import { KeyboardEventService } from "../../commands/keyboard-event.service";
+import { Car } from "../../components/racing-game/car/car";
+import { WallService } from "../walls-collisions/walls";
 
 /* tslint:disable:no-magic-numbers*/
 describe("SceneGameService", () => {

@@ -1,16 +1,16 @@
 import { TestBed, async } from "@angular/core/testing";
-import { Car } from "../car/car";
+import { Car } from "../../components/racing-game/car/car";
 import * as THREE from "three";
 import { RenderGameService } from "./render-game.service";
 import { RouterTestingModule } from "@angular/router/testing";
-import { GameResultsComponent } from "../../game-results/game-results.component";
+import { GameResultsComponent } from "../../components/game-results/game-results.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { HttpClientModule } from "@angular/common/http";
-import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import { SceneGameService } from "../scene-game-service/scene-game-service.service";
+import { WallsCollisionsService } from "./../walls-collisions/walls-collisions-service";
+import { KeyboardEventService } from "../../commands/keyboard-event.service";
+import { SceneGameService } from "../scene-game/scene-game-service.service";
 import { FormsModule } from "@angular/forms";
-import { WallService } from "../walls-collisions-service/walls";
+import { WallService } from "../walls-collisions/walls";
 
 /* tslint:disable:no-magic-numbers  */
 describe("RenderGameService", () => {

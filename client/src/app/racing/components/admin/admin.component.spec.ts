@@ -5,7 +5,7 @@ import { AdminComponent } from "./admin.component";
 import { Router } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ITrack } from "../../track";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
 import { FormsModule } from "@angular/forms";
 import * as THREE from "three";
 import { EditorComponent } from "../editor/editor.component";

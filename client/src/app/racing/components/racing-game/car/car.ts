@@ -3,10 +3,10 @@ import { Engine } from "./engine";
 import { MS_TO_SECONDS, PI_OVER_2, RAD_TO_DEG } from "../../../../constants";
 import { Wheel } from "./wheel";
 import { CarLoader } from "./car-loader";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import * as Command from "../commands/command";
-import * as KeyCode from "../commands/key-code";
+import { WallsCollisionsService } from "../../../services/walls-collisions/walls-collisions-service";
+import { KeyboardEventService } from "../../../commands/keyboard-event.service";
+import * as Command from "../../../commands/command";
+import * as KeyCode from "../../../commands/key-code";
 import { CarPhysics } from "./carPhysics";
 import { CarController } from "./carController";
 

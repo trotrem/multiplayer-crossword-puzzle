@@ -6,12 +6,12 @@ import { GameResultsComponent } from "../../game-results/game-results.component"
 import { RouterTestingModule } from "@angular/router/testing";
 import { FormsModule } from "@angular/forms";
 import { Car } from "../car/car";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService } from "../../../services/walls-collisions/walls-collisions-service";
 import { INewScores, IBestScores } from "../../../../../../../common/communication/types-racing";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
+import { KeyboardEventService } from "../../../commands/keyboard-event.service";
 import { Engine } from "./../car/engine";
 import { ITrack } from "./../../../track";
-import { WallService } from "../walls-collisions-service/walls";
+import { WallService } from "../../../services/walls-collisions/walls";
 /* tslint:disable: no-magic-numbers */
 class MockEngine extends Engine {
     public getDriveTorque(): number {

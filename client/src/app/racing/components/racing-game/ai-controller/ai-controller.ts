@@ -1,6 +1,6 @@
 import { Car } from "../car/car";
 import { Vector3 } from "three";
-import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService } from "../../../services/walls-collisions/walls-collisions-service";
 import { VectorUtils } from "../../../race-utils/vector-utils";
 import { HALF_CIRCLE_DEGREES, LAP_MAX } from "./../../../../constants";
 const MAX_SPEED: number = 50;

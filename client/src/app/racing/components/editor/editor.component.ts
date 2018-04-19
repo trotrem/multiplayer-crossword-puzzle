@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import { ActivatedRoute } from "@angular/router";
-import { SceneEditorService } from "./scene-editor.service/scene-editor.service";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { SceneEditorService } from "../../services/scene-editor/scene-editor.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
 import * as THREE from "three";
 import { ITrack } from "../../track";
-import { RenderEditorService } from "./render-editor.service/render-editor.service";
+import { RenderEditorService } from "../../services/render-editor/render-editor.service";
 const TRACK_NAME: string = "name";
 const CANVAS: string = "canvas";
 @Component({

@@ -2,10 +2,10 @@ import { TestBed } from "@angular/core/testing";
 import * as THREE from "three";
 import { CarsPositionsHandler } from "./cars-positions-handler";
 import { Car } from "../car/car";
-import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
+import { WallsCollisionsService } from "./../../../services/walls-collisions/walls-collisions-service";
 import { CarLoader } from "../car/car-loader";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import { WallService } from "../walls-collisions-service/walls";
+import { KeyboardEventService } from "../../../commands/keyboard-event.service";
+import { WallService } from "./../../../services/walls-collisions/walls";
 
 /* tslint:disable:no-magic-numbers */
 describe("CarsPositionsHandler", () => {

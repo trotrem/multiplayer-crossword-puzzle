@@ -1,9 +1,9 @@
 import { Car, DEFAULT_WHEELBASE, DEFAULT_MASS, DEFAULT_DRAG_COEFFICIENT } from "./car";
 import { Engine } from "./engine";
 import { Wheel } from "./wheel";
-import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
-import { KeyboardEventService } from "../commands/keyboard-event.service";
-import { WallService } from "../walls-collisions-service/walls";
+import { WallsCollisionsService } from "../../../services/walls-collisions/walls-collisions-service";
+import { KeyboardEventService } from "../../../commands/keyboard-event.service";
+import { WallService } from "../../../services/walls-collisions/walls";
 
 const MS_BETWEEN_FRAMES: number = 16.6667;
 

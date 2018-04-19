@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ITrack } from "./../../track";
 import { Router } from "@angular/router";
-import { RacingCommunicationService } from "../../communication.service/communicationRacing.service";
+import { RacingCommunicationService } from "../../services/communication/communicationRacing.service";
 import { INewScores, IBestScores } from "../../../../../../common/communication/types-racing";
 import * as THREE from "three";
 const RACE: string = "/race/";

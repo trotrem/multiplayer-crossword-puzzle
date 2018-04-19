@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "three";
-import { Car } from "./../car/car";
-import { TrackDisplay } from "./../trackDisplay/track-display";
-import { CARS_MAX } from "../../../../constants";
-import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
+import { Car } from "../../components/racing-game/car/car";
+import { TrackDisplay } from "../../components/racing-game/trackDisplay/track-display";
+import { CARS_MAX } from "../../../constants";
+import { CarsPositionsHandler } from "../../components/racing-game/cars-positions-handler/cars-positions-handler";
 import {Skybox} from "./skybox";
-import { WallService } from "../walls-collisions-service/walls";
+import { WallService } from "../walls-collisions/walls";
 
 const WHITE: number = 0xFFFFFF;
 const AMBIENT_LIGHT_OPACITY: number = 2;
