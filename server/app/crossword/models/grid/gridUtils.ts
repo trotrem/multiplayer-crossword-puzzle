@@ -1,5 +1,5 @@
 import { IPoint } from "../../../../../common/communication/types-crossword";
-import { WordDictionaryData, IWordContainer, IGrid, ICell } from "../../dataStructures";
+import { WordDictionaryData, IWordContainer, ICell } from "../../dataStructures";
 
 const UNDEFINED_LETTER: string = "?";
 

@@ -1,5 +1,5 @@
-import { Difficulty } from "../../../../common/communication/types";
-import { ILobbyGames, IConnectionInfo } from "../../../../common/communication/events";
+import { Difficulty } from "../../../../common/communication/types-crossword";
+import { ILobbyGames, IConnectionInfo } from "../../../../common/communication/events-crossword";
 import { IValidationWord, IPlayer, IGameDictionary, ICacheGame } from "../dataStructures";
 
 export class CrosswordGamesCache {
