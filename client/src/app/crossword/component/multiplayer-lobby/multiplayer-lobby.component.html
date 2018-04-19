@@ -1,2 +1,5 @@
-<h1>Open {{difficulty}} Difficulty Games</h1>
-<h2 *ngFor="let game of lobbyGames" (click)="joinGame(game)">{{game.player}}</h2>
+<h1> Select one player for an  {{difficulty}} Game</h1>
+<div>
+<ul *ngFor="let game of lobbyGames" (click)="joinGame(game)" class = "div">
+    <a>{{game.player}}</a></ul>
+</div>
