@@ -34,7 +34,6 @@ export class CrosswordGridComponent implements OnInit {
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode;
-    private isStarted: boolean;
     private words: WordDescription[];
 
     public get difficultyString(): string {
@@ -98,7 +97,7 @@ export class CrosswordGridComponent implements OnInit {
     // TODO: fix Laurence
     @HostListener("document:click")
     public onBackgroundClick(): void {
-        if (this.isStarted) {
+        if (this.gridManager.isStarted) {
             this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
         }
     }

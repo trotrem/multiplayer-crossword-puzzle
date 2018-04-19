@@ -15,6 +15,7 @@ export class GridManager {
     private _words: WordDescription[];
     private _selectedWord: WordDescription = null;
     private _opponentSelectedWord: WordDescription = null;
+    private _isStarted: boolean;
 
     public get cells(): Cell[][] {
         return this._cells;
@@ -44,6 +45,10 @@ export class GridManager {
         return this._words.filter((word) => word.found === AssociatedPlayers.OPPONENT).length;
     }
 
+    public get isStarted(): boolean {
+        return this._isStarted;
+    }
+
     public constructor(
         private gameConfiguration: GameConfigurationService,
         private communicationService: CommunicationService,
@@ -54,6 +59,7 @@ export class GridManager {
         this._selectedWord = null;
         this._opponentSelectedWord = null;
         this.subscriptions();
+        this._isStarted = false;
     }
 
     public fetchCheatModeWords(horizontalWords: WordDescription[], verticalWords: WordDescription[]): void {
@@ -97,6 +103,7 @@ export class GridManager {
                     this.gameConfiguration.nbPlayers,
                     this._cells);
                 this._words = GridCreator.fillWords(data, this._cells, this._words);
+                this._isStarted = true;
             });
     }
     private subscribeToValidation(): void {

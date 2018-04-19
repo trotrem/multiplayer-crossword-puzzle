@@ -1,7 +1,7 @@
 import { CrosswordGamesCache } from "./crosswordGamesCache";
 import { IPlayer, IGrid, IWordContainer, WordDictionaryData, IValidationWord, ICacheGame } from "../dataStructures";
-import { IGridData } from "../../../../common/communication/events";
-import { IWordInfo, Difficulty } from "../../../../common/communication/types";
+import { IGridData } from "../../../../common/communication/events-crossword";
+import { IWordInfo, Difficulty } from "../../../../common/communication/types-crossword";
 import { GridUtils } from "../models/grid/gridUtils";
 
 export class CacheUtils {
@@ -29,7 +29,7 @@ export class CacheUtils {
         cacheGrid.gridData = this.convertIGridToGridData(grid, id);
         cacheGrid.words = grid.words.map((w: IWordContainer): IValidationWord => {
             return {
-                word: GridUtils.getText(w.gridSquares, grid).toUpperCase(),
+                word: GridUtils.getText(w.gridSquares, grid.cells).toUpperCase(),
                 validatedBy: undefined
             };
         });

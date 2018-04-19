@@ -9,6 +9,7 @@ import "rxjs/add/observable/of";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { Router } from "@angular/router";
 import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { IConnectionInfo } from "../../../../../../common/communication/events-crossword";
 
 describe("WaitingRoomComponent", () => {
     let component: WaitingRoomComponent;
@@ -40,7 +41,8 @@ describe("WaitingRoomComponent", () => {
     });
 
     it("should start a game when an opponent is found", () => {
-        spyOn(communicationService, "sendEventOnOpponentFound").and.returnValue(Observable.of(null));
+        const connectionInfoMock: IConnectionInfo = {gameId: "4", player: "Marc-Antoine"};
+        spyOn(communicationService, "sendEventOnOpponentFound").and.returnValue(Observable.of(connectionInfoMock));
         component.ngOnInit();
         expect(communicationService.sendEventOnOpponentFound).toHaveBeenCalled();
     });

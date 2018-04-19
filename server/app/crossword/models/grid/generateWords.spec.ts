@@ -20,12 +20,12 @@ describe("addWord", () => {
                             words: [], blackCells: [] };
         WordsPositionsHelper.createListOfWord(grid);
         grid = await GenerateWords.addWord(0, grid, Difficulty.Easy);
-        expect(GridUtils.getText(grid.words[0].gridSquares, grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[1].gridSquares, grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[2].gridSquares, grid).indexOf("?")).equals(-1);
-        expect(GridUtils.getText(grid.words[0].gridSquares, grid).length).equals(4);
-        expect(GridUtils.getText(grid.words[1].gridSquares, grid).length).equals(3);
-        expect(GridUtils.getText(grid.words[2].gridSquares, grid).length).equals(3);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid.cells).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid.cells).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid.cells).indexOf("?")).equals(-1);
+        expect(GridUtils.getText(grid.words[0].gridSquares, grid.cells).length).equals(4);
+        expect(GridUtils.getText(grid.words[1].gridSquares, grid.cells).length).equals(3);
+        expect(GridUtils.getText(grid.words[2].gridSquares, grid.cells).length).equals(3);
     });
 
     it("Should return null if unable to fill grid", async () => {

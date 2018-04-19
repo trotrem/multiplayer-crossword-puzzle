@@ -1,24 +1,24 @@
 import { IPoint } from "../../../../../common/communication/types-crossword";
-import { WordDictionaryData, IWordContainer, IGrid } from "../../dataStructures";
+import { WordDictionaryData, IWordContainer, ICell } from "../../dataStructures";
 
 const UNDEFINED_LETTER: string = "?";
 
 export class GridUtils {
-    public static getText(gridSquares: IPoint[], grid: IGrid): string {
-        return gridSquares.map((pos: IPoint) => grid.cells[pos.x][pos.y].letter).join("");
+    public static getText(gridSquares: IPoint[], cells: ICell[][]): string {
+        return gridSquares.map((pos: IPoint) => cells[pos.x][pos.y].letter).join("");
     }
 
-    public static setData(data: WordDictionaryData, word: IWordContainer, grid: IGrid): void {
+    public static setData(data: WordDictionaryData, word: IWordContainer, cells: ICell[][]): void {
         word.data = data;
-        this.setText(data.word, word.gridSquares, grid);
+        this.setText(data.word, word.gridSquares, cells);
     }
 
-    public static wordFitsInGrid(newWord: string, gridSquares: IPoint[], grid: IGrid): boolean {
+    public static wordFitsInGrid(newWord: string, gridSquares: IPoint[], cells: ICell[][]): boolean {
         for (let i: number = 0; i < gridSquares.length; i++) {
             if (
-                grid.cells[gridSquares[i].x][gridSquares[i].y].letter !==
+                cells[gridSquares[i].x][gridSquares[i].y].letter !==
                 UNDEFINED_LETTER &&
-                grid.cells[gridSquares[i].x][gridSquares[i].y].letter !==
+                cells[gridSquares[i].x][gridSquares[i].y].letter !==
                 newWord[i]
             ) {
                 return false;
@@ -28,9 +28,9 @@ export class GridUtils {
         return true;
     }
 
-    private static setText(text: string, gridSquares: IPoint[], grid: IGrid): void {
+    private static setText(text: string, gridSquares: IPoint[], cells: ICell[][]): void {
         for (let i: number = 0; i < gridSquares.length; i++) {
-            grid.cells[gridSquares[i].x][gridSquares[i].y].letter = text[i];
+            cells[gridSquares[i].x][gridSquares[i].y].letter = text[i];
         }
     }
 }
