@@ -26,8 +26,8 @@ export class CrosswordGridComponent implements OnInit {
     public nbPlayers: number;
     public playerName: string;
     public opponentName: string;
-    public selectedWord: WordDescription = null;
-    public opponentSelectedWord: WordDescription = null;
+    public selectedWord: WordDescription;
+    public opponentSelectedWord: WordDescription;
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode;
@@ -73,7 +73,7 @@ export class CrosswordGridComponent implements OnInit {
         if (this.horizontalWords[0].word === undefined) {
             this.gridManager.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
         }
-        this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions; // REFACTOR
+        this.tipMode = this.tipMode === TipMode.Definitions ? TipMode.Cheat : TipMode.Definitions;
     }
 
     public onCellClicked(event: MouseEvent, cell: Cell): void {
