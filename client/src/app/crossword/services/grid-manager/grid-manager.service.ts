@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Direction } from "../../../../../common/communication/types-crossword";
-import { CommunicationService } from "../communication-service/communication.service";
-import { GridEventService } from "../grid-event.service/grid-event.service";
+import { Direction } from "../../../../../../common/communication/types-crossword";
+import { CommunicationService } from "../communication/communication.service";
+import { GridEventService } from "../grid-event/grid-event.service";
 import { GameConfigurationService } from "../game-configuration/game-configuration.service";
-import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
-import { GridCreator } from "../grid-creator";
+import { WordDescription, AssociatedPlayers, Cell } from "../../dataStructures";
+import { GridCreator } from "./grid-creator";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;

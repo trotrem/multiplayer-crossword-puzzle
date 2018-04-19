@@ -1,11 +1,11 @@
 import { Component, OnInit, HostListener } from "@angular/core";
 import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types-crossword";
-import { GridEventService } from "../../grid-event.service/grid-event.service";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { GridEventService } from "../../services/grid-event/grid-event.service";
+import { GameConfigurationService } from "./../../services/game-configuration/game-configuration.service";
 import { WordDescription, Cell } from "../../dataStructures";
-import { GridManager } from "../../grid-manager/grid-manager.service";
-import { PlayManagerService } from "../../play-manager.service/play-manager.service";
-import { WordStatusManagerService } from "../../word-status-manager.service/word-status-manager.service";
+import { GridManager } from "./../../services/grid-manager/grid-manager.service";
+import { PlayManagerService } from "./../../services/play-manager/play-manager.service";
+import { WordStatusManagerService } from "../../services/word-status-manager/word-status-manager.service";
 
 enum TipMode {
     Definitions,

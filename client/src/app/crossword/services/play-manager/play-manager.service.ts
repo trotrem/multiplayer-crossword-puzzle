@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { CommunicationService } from "../communication-service/communication.service";
-import { WordDescription } from "./../dataStructures";
-import { IWordValidationPayload } from "../../../../../common/communication/events-crossword";
+import { CommunicationService } from "../communication/communication.service";
+import { WordDescription } from "./../../dataStructures";
+import { IWordValidationPayload } from "../../../../../../common/communication/events-crossword";
 
 @Injectable()
 export class PlayManagerService {

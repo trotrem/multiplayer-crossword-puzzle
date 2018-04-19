@@ -1,7 +1,7 @@
-import { Direction, IPoint, IWordInfo } from "./../../../../common/communication/types-crossword";
-import { GridEventService } from "./grid-event.service/grid-event.service";
-import { IGridData } from "./../../../../common/communication/events-crossword";
-import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
+import { Direction, IPoint, IWordInfo } from "../../../../../../common/communication/types-crossword";
+import { GridEventService } from "../grid-event/grid-event.service";
+import { IGridData } from "../../../../../../common/communication/events-crossword";
+import { WordDescription, AssociatedPlayers, Cell } from "../../dataStructures";
 
 export class GridCreator {
 

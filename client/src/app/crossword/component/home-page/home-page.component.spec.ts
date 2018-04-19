@@ -5,10 +5,10 @@ import { FormsModule } from "@angular/forms";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Difficulty } from "../../../../../../common/communication/types-crossword";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
-import { CommunicationService } from "../../communication-service/communication.service";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { CommunicationService } from "../../services/communication/communication.service";
+import { GameConfigurationService } from "../../services/game-configuration/game-configuration.service";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SocketsService } from "../../sockets/sockets.service";
+import { SocketsService } from "../../services/sockets/sockets.service";
 import { WaitingRoomComponent } from "../waiting-room/waiting-room.component";
 import { MultiplayerLobbyComponent } from "../multiplayer-lobby/multiplayer-lobby.component";
 

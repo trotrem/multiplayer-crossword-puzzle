@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { CommunicationService } from "../communication-service/communication.service";
-import { SelectedWord, AssociatedPlayers, WordDescription } from "./../dataStructures";
+import { CommunicationService } from "../communication/communication.service";
+import { SelectedWord, AssociatedPlayers, WordDescription } from "./../../dataStructures";
 import { GameConfigurationService } from "../game-configuration/game-configuration.service";
 
 @Injectable()

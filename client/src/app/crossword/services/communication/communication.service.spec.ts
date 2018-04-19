@@ -3,8 +3,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { CommunicationService } from "./communication.service";
 import { SocketsService } from "../sockets/sockets.service";
-import { Difficulty } from "../../../../../common/communication/types-crossword";
-import { IWordSelection, IConnectionInfo, ILobbyRequest } from "../../../../../common/communication/events-crossword";
+import { Difficulty } from "../../../../../../common/communication/types-crossword";
+import { IWordSelection, IConnectionInfo, ILobbyRequest } from "../../../../../../common/communication/events-crossword";
 
 describe("CommunicationService", () => {
 
