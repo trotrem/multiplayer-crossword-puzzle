@@ -42,7 +42,7 @@ describe("UserComponent", () => {
         expect(component.tracks).toBeDefined();
     });
 
-    it('when track chosen navigate to race page : "race/name"', fakeAsync(() => {
+    it('when track is chosen navigate to race page : "race/name" to show track', fakeAsync(() => {
         const name: string = "Laurence";
         router.navigateByUrl("/race/" + name);
         tick(50);
