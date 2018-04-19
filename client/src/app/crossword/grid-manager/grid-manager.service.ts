@@ -29,6 +29,9 @@ export class GridManager {
     public get opponentSelectedWord(): WordDescription {
         return this._opponentSelectedWord;
     }
+    public get isStarted(): boolean {
+        return this._isStarted;
+    }
     public getHorizontalWords(): WordDescription[] {
         return this._words.filter((word) => word.direction === Direction.Horizontal);
     }
@@ -43,10 +46,6 @@ export class GridManager {
 
     public getNbOpponentFoundWords(): number {
         return this._words.filter((word) => word.found === AssociatedPlayers.OPPONENT).length;
-    }
-
-    public get isStarted(): boolean {
-        return this._isStarted;
     }
 
     public constructor(
