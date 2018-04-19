@@ -10,6 +10,11 @@ const SPACEBTWCELLS: number = 2;
 
 export class GridLayoutHandler {
 
+    public static makeGrid(grid: IGrid): void {
+        this.makeEmptyGrid(grid);
+        this.generateBlackSquares(grid);
+    }
+
     private static findAcceptableBlackSquare(blackSquares: IPoint[]): IPoint {
         const x: number = Utils.randomIntFromInterval(0, WIDTH - 1);
         const y: number = Utils.randomIntFromInterval(0, HEIGHT - 1);
@@ -54,8 +59,4 @@ export class GridLayoutHandler {
         }
     }
 
-    public static makeGrid(grid: IGrid): void {
-        this.makeEmptyGrid(grid);
-        this.generateBlackSquares(grid);
-    }
 }
