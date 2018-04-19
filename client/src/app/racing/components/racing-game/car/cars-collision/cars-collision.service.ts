@@ -97,7 +97,7 @@ export class CarsCollisionService {
 
     private handleCollisions(cars: Car[]): void {
         const totalMass: number = cars[0].Mass + cars[1].Mass;
-        const phi: number = cars[0].getUpdatedPosition().angleTo(cars[1].getUpdatedPosition()); // Angle entre les 2 positions de voitures
+        const phi: number = cars[0].getUpdatedPosition().angleTo(cars[1].getUpdatedPosition());
 
         const theta1: number = this.getTheta(cars[0]);
         const theta2: number = this.getTheta(cars[1]);
@@ -108,7 +108,7 @@ export class CarsCollisionService {
         }
     }
     private getTheta(car: Car): number {
-        return car.speed.length() !== 0 ? Math.acos(car.speed.x / car.speed.length()) : 0; // Angle de vitesse
+        return car.speed.length() !== 0 ? Math.acos(car.speed.x / car.speed.length()) : 0;
     }
     private getNewSpeed(cars: Car[], theta1: number, theta2: number, phi: number, totalMass: number): THREE.Vector3[] {
         const const1Speed1: number = this.getConst1(cars[1], theta2, phi, totalMass);
