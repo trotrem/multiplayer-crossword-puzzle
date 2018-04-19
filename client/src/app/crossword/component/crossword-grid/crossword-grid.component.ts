@@ -1,9 +1,6 @@
 import { Component, OnInit, HostListener } from "@angular/core";
 import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types-crossword";
-import { CommunicationService } from "../../communication-service/communication.service";
 import { GridEventService } from "../../grid-event.service/grid-event.service";
-import { SocketsService } from "../../sockets/sockets.service";
-import { CrosswordEvents, } from "../../../../../../common/communication/events-crossword";
 import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
 import { WordDescription, Cell } from "../../dataStructures";
 import { GridManager } from "../../grid-manager/grid-manager.service";
@@ -57,11 +54,9 @@ export class CrosswordGridComponent implements OnInit {
     }
 
     public constructor(
-        private communicationService: CommunicationService,
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
-        private gridManager: GridManager,
-        private socketsService: SocketsService) { }
+        private gridManager: GridManager) { }
 
     public ngOnInit(): void {
         this.nbPlayers = this.gameConfiguration.nbPlayers;
@@ -94,7 +89,6 @@ export class CrosswordGridComponent implements OnInit {
         this.gridEventService.onKeyPress(event);
     }
 
-    // TODO: fix Laurence
     @HostListener("document:click")
     public onBackgroundClick(): void {
         if (this.gridManager.isStarted) {

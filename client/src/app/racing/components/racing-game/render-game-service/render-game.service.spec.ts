@@ -9,7 +9,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { WallsCollisionsService } from "./../walls-collisions-service/walls-collisions-service";
 import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { SceneGameService } from "../scene-game-service/scene-game-service.service";
-import { ILine } from "../../../race-utils/vector-utils";
 import { FormsModule } from "@angular/forms";
 import { WallService } from "../walls-collisions-service/walls";
 

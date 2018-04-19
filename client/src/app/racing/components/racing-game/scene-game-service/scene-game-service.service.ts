@@ -5,7 +5,6 @@ import { TrackDisplay } from "./../trackDisplay/track-display";
 import { CARS_MAX } from "../../../../constants";
 import { CarsPositionsHandler } from "./../cars-positions-handler/cars-positions-handler";
 import {Skybox} from "./skybox";
-import { ILine } from "../../../race-utils/vector-utils";
 import { WallService } from "../walls-collisions-service/walls";
 
 const WHITE: number = 0xFFFFFF;

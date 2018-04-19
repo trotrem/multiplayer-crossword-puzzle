@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Direction, Difficulty } from "../../../../../common/communication/types-crossword";
+import { Direction } from "../../../../../common/communication/types-crossword";
 import { CommunicationService } from "../communication-service/communication.service";
 import { GridEventService } from "../grid-event.service/grid-event.service";
 import { GameConfigurationService } from "../game-configuration/game-configuration.service";

@@ -4,7 +4,6 @@ import { SceneGameService } from "./scene-game-service.service";
 import { WallsCollisionsService } from "../walls-collisions-service/walls-collisions-service";
 import { KeyboardEventService } from "../commands/keyboard-event.service";
 import { Car } from "./../car/car";
-import { ILine } from "../../../race-utils/vector-utils";
 import { WallService } from "../walls-collisions-service/walls";
 
 /* tslint:disable:no-magic-numbers*/

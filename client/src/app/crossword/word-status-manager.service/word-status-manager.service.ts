@@ -34,7 +34,7 @@ export class WordStatusManagerService {
 
         return target.word;
     }
-    //TODO repare
+    // TODO repare
     private setWordSelectedState(target: SelectedWord, word: WordDescription, setSelected: boolean): void {
         for (const cell of word.cells) {
             cell.selectedBy = setSelected ?

@@ -12,7 +12,8 @@ export module GenerateWords {
         (words: WordDictionaryData[], grid: IGrid) => {
             if (words.length > 0) {
                 words = words.filter((wordInfo: WordDictionaryData) => {
-                    return grid.words.map((w: IWordContainer) => GridUtils.getText(w.gridSquares, grid.cells)).indexOf(wordInfo.word) === -1;
+                    return grid.words.map((w: IWordContainer) =>
+                        GridUtils.getText(w.gridSquares, grid.cells)).indexOf(wordInfo.word) === -1;
                 });
             }
 

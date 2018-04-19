@@ -138,7 +138,7 @@ export class WordRetriever {
     private removesWords(wordsWithDefinitions: WordDictionaryData[]): WordDictionaryData[] {
         wordsWithDefinitions.forEach(
             (wordInfo: WordDictionaryData, index: number) => {
-                if (wordInfo.definitions === undefined ||wordInfo.definitions.length === 0) {
+                if (wordInfo.definitions === undefined || wordInfo.definitions.length === 0) {
                     wordsWithDefinitions.splice(index, 1);
                 }
             }
