@@ -21,7 +21,7 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/services/game-manager/game-manager.service";
 import { WallsCollisionsService } from "./racing/services/walls-collisions/walls-collisions-service";
 import { MultiplayerLobbyComponent } from "./crossword/component/multiplayer-lobby/multiplayer-lobby.component";
-import { SocketsService } from "./crossword/sockets/sockets.service";
+import { SocketsService } from "./crossword/services/sockets/sockets.service";
 import { WaitingRoomComponent } from "./crossword/component/waiting-room/waiting-room.component";
 import { CommunicationService } from "./crossword/communication-service/communication.service";
 import { GameConfigurationService } from "./crossword/game-configuration/game-configuration.service";

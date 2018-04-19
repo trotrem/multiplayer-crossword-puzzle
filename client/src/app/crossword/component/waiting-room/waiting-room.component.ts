@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { CommunicationService } from "../../communication-service/communication.service";
+import { CommunicationService } from "../../services/communication/communication.service";
 import { Router } from "@angular/router";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { GameConfigurationService } from "../../services/game-configuration/game-configuration.service";
 import { IConnectionInfo } from "../../../../../../common/communication/events-crossword";
 
 const GAME_URL: string = "/crossword/game";

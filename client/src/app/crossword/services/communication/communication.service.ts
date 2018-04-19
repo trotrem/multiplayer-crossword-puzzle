@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
-import { Difficulty } from "../../../../../common/communication/types-crossword";
+import { Difficulty } from "../../../../../../common/communication/types-crossword";
 import { SocketsService } from "../sockets/sockets.service";
 import {
     CrosswordEvents, IGridData, IValidationData,
     IWordSelection, IGameResult, ICrosswordSettings,
     IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest
-} from "../../../../../common/communication/events-crossword";
+} from "../../../../../../common/communication/events-crossword";
 
 const SERVER_URL: string = "http://localhost:3000";
 const CHEAT_WORDS_URL: string = "/crossword/cheatwords/";

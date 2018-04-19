@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed, inject } from "@angular/core/testing";
 import { WaitingRoomComponent } from "./waiting-room.component";
 import { RouterTestingModule } from "@angular/router/testing";
-import { CommunicationService } from "../../communication-service/communication.service";
-import { SocketsService } from "../../sockets/sockets.service";
+import { CommunicationService } from "../../services/communication/communication.service";
+import { SocketsService } from "../../services/sockets/sockets.service";
 import { HttpClientModule } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
 import { Router } from "@angular/router";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { GameConfigurationService } from "../../services/game-configuration/game-configuration.service";
 import { IConnectionInfo } from "../../../../../../common/communication/events-crossword";
 
 describe("WaitingRoomComponent", () => {

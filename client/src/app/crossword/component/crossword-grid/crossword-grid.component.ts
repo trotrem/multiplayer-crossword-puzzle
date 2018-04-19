@@ -1,11 +1,11 @@
 import { Component, OnInit, HostListener } from "@angular/core";
 import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types-crossword";
-import { GridEventService } from "../../grid-event.service/grid-event.service";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { GridEventService } from "../../services/grid-event/grid-event.service";
+import { GameConfigurationService } from "./../../services/game-configuration/game-configuration.service";
 import { WordDescription, Cell } from "../../dataStructures";
-import { GridManager } from "../../grid-manager/grid-manager.service";
-import { PlayManagerService } from "../../play-manager.service/play-manager.service";
-import { WordStatusManagerService } from "../../word-status-manager.service/word-status-manager.service";
+import { GridManager } from "./../../services/grid-manager/grid-manager.service";
+import { PlayManagerService } from "./../../services/play-manager/play-manager.service";
+import { WordStatusManagerService } from "../../services/word-status-manager/word-status-manager.service";
 
 enum TipMode {
     Definitions,
@@ -26,8 +26,8 @@ export class CrosswordGridComponent implements OnInit {
     public nbPlayers: number;
     public playerName: string;
     public opponentName: string;
-    public selectedWord: WordDescription = null;
-    public opponentSelectedWord: WordDescription = null;
+    public selectedWord: WordDescription;
+    public opponentSelectedWord: WordDescription;
     // needed so the html recognizes the enum
     public TipMode: typeof TipMode = TipMode;
     public tipMode: TipMode;
@@ -73,7 +73,7 @@ export class CrosswordGridComponent implements OnInit {
         if (this.horizontalWords[0].word === undefined) {
             this.gridManager.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
         }
-        this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions; // REFACTOR
+        this.tipMode = this.tipMode === TipMode.Definitions ? TipMode.Cheat : TipMode.Definitions;
     }
 
     public onCellClicked(event: MouseEvent, cell: Cell): void {

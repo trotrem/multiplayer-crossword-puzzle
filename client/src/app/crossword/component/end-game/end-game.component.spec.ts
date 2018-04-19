@@ -5,10 +5,10 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { EndGameComponent } from "./end-game.component";
 import { HomePageComponent } from "../home-page/home-page.component";
 import { CrosswordGridComponent } from "../crossword-grid/crossword-grid.component";
-import { CommunicationService } from "../../communication-service/communication.service";
-import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
+import { CommunicationService } from "../../services/communication/communication.service";
+import { GameConfigurationService } from "../../services/game-configuration/game-configuration.service";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SocketsService } from "../../sockets/sockets.service";
+import { SocketsService } from "../../services/sockets/sockets.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("EndGameComponent", () => {

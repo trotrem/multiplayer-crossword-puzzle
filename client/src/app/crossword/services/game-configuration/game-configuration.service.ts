@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Difficulty } from "../../../../../common/communication/types-crossword";
+import { Difficulty } from "../../../../../../common/communication/types-crossword";
 
 @Injectable()
 export class GameConfigurationService {

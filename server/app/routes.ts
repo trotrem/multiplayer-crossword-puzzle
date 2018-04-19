@@ -1,14 +1,14 @@
 import { injectable } from "inversify";
 import { Router, Request, Response, NextFunction } from "express";
 import { CrosswordHandler } from "./crossword/crossword-handler";
-import { Racing } from "./racing/routes";
+import { RacingHandler } from "./racing/racing-handler";
 
 @injectable()
 export class Routes {
-    private racing: Racing;
+    private racing: RacingHandler;
 
     public constructor(private crossword: CrosswordHandler = new CrosswordHandler()) {
-        this.racing = new Racing();
+        this.racing = new RacingHandler();
     }
 
     public get routes(): Router {

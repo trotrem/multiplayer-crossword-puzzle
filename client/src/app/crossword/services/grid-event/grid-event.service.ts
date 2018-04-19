@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { GameResult } from "../../../../../common/communication/types-crossword";
-import { CommunicationService } from "./../communication-service/communication.service";
+import { GameResult } from "../../../../../../common/communication/types-crossword";
+import { CommunicationService } from "./../communication/communication.service";
 import { Router } from "@angular/router";
-import { IValidationData, IWordSelection, IGameResult } from "../../../../../common/communication/events-crossword";
-import { WordDescription, Cell, AssociatedPlayers, SelectedWord } from "./../dataStructures";
-import { PlayManagerService } from "../play-manager.service/play-manager.service";
-import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
+import { IValidationData, IWordSelection, IGameResult } from "../../../../../../common/communication/events-crossword";
+import { WordDescription, Cell, AssociatedPlayers, SelectedWord } from "./../../dataStructures";
+import { PlayManagerService } from "../play-manager/play-manager.service";
+import { WordStatusManagerService } from "../word-status-manager/word-status-manager.service";
 import { GameConfigurationService } from "../game-configuration/game-configuration.service";
 
 const BACKSPACE: number = 8;

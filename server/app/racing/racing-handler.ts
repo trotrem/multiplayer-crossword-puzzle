@@ -8,7 +8,7 @@ const BAD_REQUEST_ERROR: number = 400;
 module Route {
 
     @injectable()
-    export class Racing {
+    export class RacingHandler {
 
         public savetrack(req: Request, res: Response, next: NextFunction): void {
             const myData: Document = new trackDocument(req.body);
