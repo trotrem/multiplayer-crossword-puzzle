@@ -2,12 +2,12 @@ import { TestBed, inject } from "@angular/core/testing";
 import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
-import { CommunicationService } from "../communication.service";
+import { CommunicationService } from "../communication-service/communication.service";
 import { WordStatusManagerService } from "./word-status-manager.service";
-import { SocketsService } from "./../sockets.service";
+import { SocketsService } from "./../sockets/sockets.service";
 import { SelectedWord, AssociatedPlayers, WordDescription, Cell } from "../dataStructures";
 import { Direction } from "../../../../../common/communication/types-crossword";
-import { GameConfigurationService } from "../game-configuration.service";
+import { GameConfigurationService } from "../game-configuration/game-configuration.service";
 
 /* tslint:disable:no-magic-numbers*/
 describe("WordStatusManagerService", () => {

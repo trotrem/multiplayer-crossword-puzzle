@@ -1,12 +1,12 @@
 import { Component, OnInit, HostListener } from "@angular/core";
 import { Difficulty, NbPlayers, } from "../../../../../../common/communication/types-crossword";
-import { CommunicationService } from "../../communication.service";
+import { CommunicationService } from "../../communication-service/communication.service";
 import { GridEventService } from "../../grid-event.service/grid-event.service";
-import { SocketsService } from "../../sockets.service";
+import { SocketsService } from "../../sockets/sockets.service";
 import { CrosswordEvents, } from "../../../../../../common/communication/events-crossword";
-import { GameConfigurationService } from "../../game-configuration.service";
+import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
 import { WordDescription, Cell } from "../../dataStructures";
-import { GridManager } from "../../grid-manager.service";
+import { GridManager } from "../../grid-manager/grid-manager.service";
 import { PlayManagerService } from "../../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../../word-status-manager.service/word-status-manager.service";
 
@@ -24,7 +24,6 @@ enum TipMode {
 
 export class CrosswordGridComponent implements OnInit {
     public cells: Cell[][];
-    // TODO: use enum
     // needed so the html recognizes the enum
     public NbPlayers: typeof NbPlayers = NbPlayers;
     public nbPlayers: number;
@@ -37,14 +36,6 @@ export class CrosswordGridComponent implements OnInit {
     public tipMode: TipMode;
     private isStarted: boolean;
     private words: WordDescription[];
-
-    // TODO: fix
-    @HostListener("document:click")
-    public onBackgroundClick(): void {
-        if (this.isStarted) {
-            this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
-        }
-    }
 
     public get difficultyString(): string {
         return Difficulty[this.gameConfiguration.difficulty];
@@ -71,7 +62,7 @@ export class CrosswordGridComponent implements OnInit {
         private gridEventService: GridEventService,
         private gameConfiguration: GameConfigurationService,
         private gridManager: GridManager,
-        private socketsService: SocketsService) {}
+        private socketsService: SocketsService) { }
 
     public ngOnInit(): void {
         this.nbPlayers = this.gameConfiguration.nbPlayers;
@@ -102,5 +93,13 @@ export class CrosswordGridComponent implements OnInit {
     @HostListener("document:keydown", ["$event"])
     public onKeyPress(event: KeyboardEvent): void {
         this.gridEventService.onKeyPress(event);
+    }
+
+    // TODO: fix Laurence
+    @HostListener("document:click")
+    public onBackgroundClick(): void {
+        if (this.isStarted) {
+            this.selectedWord = this.gridEventService.setPlayerSelectedWord(null, false);
+        }
     }
 }

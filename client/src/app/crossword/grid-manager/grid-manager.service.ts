@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { Direction, Difficulty } from "./../../../../common/communication/types-crossword";
-import { CommunicationService } from "./communication.service";
-import { GridEventService } from "./grid-event.service/grid-event.service";
-import { GameConfigurationService } from "./game-configuration.service";
-import { WordDescription, AssociatedPlayers, Cell } from "./dataStructures";
-import { GridCreator } from "./grid-creator";
+import { Direction, Difficulty } from "../../../../../common/communication/types-crossword";
+import { CommunicationService } from "../communication-service/communication.service";
+import { GridEventService } from "../grid-event.service/grid-event.service";
+import { GameConfigurationService } from "../game-configuration/game-configuration.service";
+import { WordDescription, AssociatedPlayers, Cell } from "../dataStructures";
+import { GridCreator } from "../grid-creator";
 
 const GRID_WIDTH: number = 10;
 const GRID_HEIGHT: number = 10;
@@ -92,7 +92,10 @@ export class GridManager {
     private subscribeToGridFetched(): void {
         void this.communicationService.gridPromise
             .then((data) => {
-                this._cells = GridCreator.createGrid(data, this.gridEventService, this._words, this.gameConfiguration.nbPlayers, this._cells);
+                this._cells = GridCreator.createGrid(
+                    data, this.gridEventService, this._words,
+                    this.gameConfiguration.nbPlayers,
+                    this._cells);
                 this._words = GridCreator.fillWords(data, this._cells, this._words);
             });
     }

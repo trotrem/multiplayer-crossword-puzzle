@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Difficulty } from "../../../../common/communication/types-crossword";
+import { Difficulty } from "../../../../../common/communication/types-crossword";
 
 @Injectable()
 export class GameConfigurationService {
@@ -7,7 +7,6 @@ export class GameConfigurationService {
     public opponentName: string;
     private _difficulty: Difficulty;
     private _playerName: string;
-    // TODO: ENUM
     private _nbPlayers: number;
 
     public get difficulty(): Difficulty {

@@ -3,8 +3,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { PlayManagerService } from "./play-manager.service";
-import { CommunicationService } from "../communication.service";
-import { SocketsService } from "./../sockets.service";
+import { CommunicationService } from "../communication-service/communication.service";
+import { SocketsService } from "../sockets/sockets.service";
 
 describe("PlayManagerService", () => {
     beforeEach(() => {

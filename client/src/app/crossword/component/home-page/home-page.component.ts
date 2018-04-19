@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { CommunicationService } from "../../communication.service";
-import { GameConfigurationService } from "../../game-configuration.service";
+import { CommunicationService } from "../../communication-service/communication.service";
+import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
 
 const GAME_URL: string = "/crossword/game";
 const WAITING_ROOM_URL: string = "/crossword/waiting";

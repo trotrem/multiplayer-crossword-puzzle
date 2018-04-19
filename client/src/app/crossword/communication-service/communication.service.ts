@@ -2,11 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
-import { Difficulty } from "../../../../common/communication/types-crossword";
-import { SocketsService } from "./sockets.service";
-import { CrosswordEvents, IGridData, IValidationData,
-        IWordSelection, IGameResult, ICrosswordSettings,
-        IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest } from "../../../../common/communication/events-crossword";
+import { Difficulty } from "../../../../../common/communication/types-crossword";
+import { SocketsService } from "../sockets/sockets.service";
+import {
+    CrosswordEvents, IGridData, IValidationData,
+    IWordSelection, IGameResult, ICrosswordSettings,
+    IWordValidationPayload, IConnectionInfo, ILobbyGames, ILobbyRequest
+} from "../../../../../common/communication/events-crossword";
 
 const SERVER_URL: string = "http://localhost:3000";
 const CHEAT_WORDS_URL: string = "/crossword/cheatwords/";
@@ -20,7 +22,9 @@ export class CommunicationService {
         return this._gridPromise;
     }
 
-    public constructor(private http: HttpClient, private socketsService: SocketsService) {}
+    public constructor(private http: HttpClient, private socketsService: SocketsService) {
+        this._gridPromise = null;
+    }
 
     public initialize(): void {
         this.socketsService.initialize();
@@ -35,7 +39,6 @@ export class CommunicationService {
         return this.http.get<string[]>(SERVER_URL + CHEAT_WORDS_URL + id);
     }
 
-    // TODO: type safety
     public initiateGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this.socketsService.sendEvent(
             CrosswordEvents.NewGame,

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { CommunicationService } from "../communication.service";
+import { CommunicationService } from "../communication-service/communication.service";
 import { SelectedWord, AssociatedPlayers, WordDescription } from "./../dataStructures";
-import { GameConfigurationService } from "../game-configuration.service";
+import { GameConfigurationService } from "../game-configuration/game-configuration.service";
 
 @Injectable()
 export class WordStatusManagerService {
@@ -15,9 +15,8 @@ export class WordStatusManagerService {
         this.gameConfigurationService = gameConfigurationService;
     }
 
-    // TODO: enlever selected
     public setSelectedWord(
-        target: SelectedWord, word: WordDescription, selected: boolean, id: string): WordDescription {
+        target: SelectedWord, word: WordDescription, setSelected: boolean, id: string): WordDescription {
         if (this.gameConfigurationService.nbPlayers === 2 && target.player === AssociatedPlayers.PLAYER) {
             this.communicationService.sendSelectionStatus({ gameId: id, wordId: word !== null ? word.id : null });
         }
@@ -28,14 +27,14 @@ export class WordStatusManagerService {
             this.setWordSelectedState(target, target.word, false);
             target.word = null;
         }
-        if (word !== null && selected) {
+        if (word !== null && setSelected) {
             this.setWordSelectedState(target, word, true);
             target.word = word;
         }
 
         return target.word;
     }
-
+    //TODO repare
     private setWordSelectedState(target: SelectedWord, word: WordDescription, setSelected: boolean): void {
         for (const cell of word.cells) {
             cell.selectedBy = setSelected ?

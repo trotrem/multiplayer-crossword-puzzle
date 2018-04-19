@@ -1,15 +1,13 @@
 import { Component } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { GameResult } from "../../../../../../common/communication/types-crossword";
-import { CommunicationService } from "../../communication.service";
-import { GameConfigurationService } from "../../game-configuration.service";
+import { CommunicationService } from "../../communication-service/communication.service";
+import { GameConfigurationService } from "../../game-configuration/game-configuration.service";
 
 const VICTORY_MESSAGE: string = "Congratulations!!! You won!";
 const DEFEAT_MESSAGE: string = "Aw you lost.. Better luck next time!";
 const TIE_MESSAGE: string = "It's a tie!";
 const ERROR_MESSAGE: string = "Something's wrong";
-
-
 
 @Component({
     selector: "app-end-game",
@@ -18,19 +16,24 @@ const ERROR_MESSAGE: string = "Something's wrong";
 })
 export class EndGameComponent {
 
-    public constructor(private router: Router, private route: ActivatedRoute, private communicationService: CommunicationService, private gameConfig: GameConfigurationService) {
+    public constructor(
+        private router: Router,
+        private route: ActivatedRoute,
+        private communicationService: CommunicationService,
+        private gameConfig: GameConfigurationService) {
+
         if (gameConfig.nbPlayers === 2) {
             this.onRematchRequest();
         }
     }
 
-    public get message(): string {
+    public getMessage(): string {
         const result: GameResult = Number(this.route.snapshot.paramMap.get("result"));
 
         return result === GameResult.Victory ? VICTORY_MESSAGE :
-               result === GameResult.Defeat ? DEFEAT_MESSAGE :
-               result === GameResult.Tie ? TIE_MESSAGE :
-               ERROR_MESSAGE;
+            result === GameResult.Defeat ? DEFEAT_MESSAGE :
+                result === GameResult.Tie ? TIE_MESSAGE :
+                    ERROR_MESSAGE;
     }
 
     public playSameCongif(): void {

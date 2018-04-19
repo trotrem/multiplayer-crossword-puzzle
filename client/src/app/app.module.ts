@@ -21,13 +21,13 @@ import { GameResultsComponent } from "./racing/components/game-results/game-resu
 import { GameManagerService } from "./racing/components/racing-game/game-manager/game-manager.service";
 import { WallsCollisionsService } from "./racing/components/racing-game/walls-collisions-service/walls-collisions-service";
 import { MultiplayerLobbyComponent } from "./crossword/component/multiplayer-lobby/multiplayer-lobby.component";
-import { SocketsService } from "./crossword/sockets.service";
+import { SocketsService } from "./crossword/sockets/sockets.service";
 import { WaitingRoomComponent } from "./crossword/component/waiting-room/waiting-room.component";
-import { CommunicationService } from "./crossword/communication.service";
-import { GameConfigurationService } from "./crossword/game-configuration.service";
+import { CommunicationService } from "./crossword/communication-service/communication.service";
+import { GameConfigurationService } from "./crossword/game-configuration/game-configuration.service";
 import { RenderGameService } from "./racing/components/racing-game/render-game-service/render-game.service";
 import { SceneGameService } from "./racing/components/racing-game/scene-game-service/scene-game-service.service";
-import { GridManager } from "./crossword/grid-manager.service";
+import { GridManager } from "./crossword/grid-manager/grid-manager.service";
 import { SceneEditorService } from "./racing/components/editor/scene-editor.service/scene-editor.service";
 import { KeyboardEventService } from "./racing/components/racing-game/commands/keyboard-event.service";
 import { WallService } from "./racing/components/racing-game/walls-collisions-service/walls";

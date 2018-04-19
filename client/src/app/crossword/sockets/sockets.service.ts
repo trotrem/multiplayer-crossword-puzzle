@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/first";
 import { Observer } from "rxjs/Observer";
-import { CrosswordEvents, IEventPayload } from "../../../../common/communication/events-crossword";
+import { CrosswordEvents, IEventPayload } from "../../../../../common/communication/events-crossword";
 import * as socketIo from "socket.io-client";
 
 const SERVER_URL: string = "http://localhost:3000";

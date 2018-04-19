@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CommunicationService } from "../communication.service";
+import { CommunicationService } from "../communication-service/communication.service";
 import { WordDescription } from "./../dataStructures";
 import { IWordValidationPayload } from "../../../../../common/communication/events-crossword";
 
@@ -32,6 +32,12 @@ export class PlayManagerService {
         }
     }
 
+    private wordFoundByOtherWord(words: WordDescription[], id: string): void {
+        for (const word of words) {
+            this.validate(word, id);
+        }
+    }
+
     private validate(word: WordDescription, id: string): void {
         const parameters: IWordValidationPayload = {
             gameId: id,
@@ -39,12 +45,6 @@ export class PlayManagerService {
             word: word.cells.map((elem) => elem.content).join("")
         };
         this.communicationService.sendEventOnValidatedWord(parameters);
-    }
-
-    private wordFoundByOtherWord(words: WordDescription[], id: string): void {
-        for (const word of words) {
-            this.validate(word, id);
-        }
     }
 
 }

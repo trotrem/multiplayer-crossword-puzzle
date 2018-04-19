@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { GameResult } from "../../../../../common/communication/types-crossword";
-import { CommunicationService } from "./../communication.service";
+import { CommunicationService } from "./../communication-service/communication.service";
 import { Router } from "@angular/router";
 import { IValidationData, IWordSelection, IGameResult } from "../../../../../common/communication/events-crossword";
 import { WordDescription, Cell, AssociatedPlayers, SelectedWord } from "./../dataStructures";
 import { PlayManagerService } from "../play-manager.service/play-manager.service";
 import { WordStatusManagerService } from "../word-status-manager.service/word-status-manager.service";
-import { GameConfigurationService } from "../game-configuration.service";
+import { GameConfigurationService } from "../game-configuration/game-configuration.service";
 
 const BACKSPACE: number = 8;
 const DELETE: number = 46;
@@ -23,6 +23,14 @@ export class GridEventService {
     private _words: WordDescription[];
     private _id: string;
 
+    public get id(): string {
+        return this._id;
+    }
+
+    public get words(): WordDescription[] {
+        return this._words;
+    }
+
     public constructor(
         private communicationService: CommunicationService,
         private playManagerService: PlayManagerService,
@@ -32,6 +40,8 @@ export class GridEventService {
 
         this._selectedWord = { player: AssociatedPlayers.PLAYER, word: null };
         this._opponentSelectedWord = { player: AssociatedPlayers.OPPONENT, word: null };
+        this._words = [];
+        this._id = "";
     }
 
     public initialize(words: WordDescription[], id: string): void {
@@ -42,21 +52,6 @@ export class GridEventService {
             this.subscribeToOpponentSelection();
         }
         this.subscribeToGameEnded();
-    }
-
-    private subscribeToGameEnded(): void {
-        this.communicationService.sendEventOnGameEnded().subscribe((data: IGameResult) => {
-
-            this.openEndGame(data.result);
-        });
-    }
-
-    private subscribeToOpponentSelection(): void {
-        this.communicationService.sendEventOnOpponentSelectedWord().subscribe((word: IWordSelection) => {
-            this.wordStatusManagerService.setSelectedWord(
-                this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
-                true, this._id);
-        });
     }
 
     public setPlayerSelectedWord(word: WordDescription, selected: boolean): WordDescription {
@@ -129,16 +124,22 @@ export class GridEventService {
         }
     }
 
+    private subscribeToGameEnded(): void {
+        this.communicationService.sendEventOnGameEnded().subscribe((data: IGameResult) => {
+
+            this.openEndGame(data.result);
+        });
+    }
+
+    private subscribeToOpponentSelection(): void {
+        this.communicationService.sendEventOnOpponentSelectedWord().subscribe((word: IWordSelection) => {
+            this.wordStatusManagerService.setSelectedWord(
+                this._opponentSelectedWord, word.wordId !== null ? this._words[word.wordId] : null,
+                true, this._id);
+        });
+    }
+
     private openEndGame(result: GameResult): void {
         this.router.navigate([END_GAME_URL + result]);
     }
-
-    public get id(): string {
-        return this._id;
-    }
-
-    public get words(): WordDescription[] {
-        return this._words;
-    }
-
 }
