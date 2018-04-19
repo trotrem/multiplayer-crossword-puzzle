@@ -19,7 +19,7 @@ export class WaitingRoomComponent implements OnInit {
 
     public ngOnInit(): void {
         this.communicationService.sendEventOnOpponentFound().subscribe((opponent: IConnectionInfo) => {
-            if (opponent !== undefined) {
+            if (opponent !== undefined && opponent !== null) {
                 this.gameConfig.opponentName = opponent.player;
             }
             this.router.navigate([GAME_URL]);

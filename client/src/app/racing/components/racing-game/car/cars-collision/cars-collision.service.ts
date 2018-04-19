@@ -102,29 +102,29 @@ export class CarsCollisionService {
         const theta1: number = this.getTheta(cars[0]);
         const theta2: number = this.getTheta(cars[1]);
 
-        const newSpeed: THREE.Vector3[] = this.getNewSpeed(cars, theta1, theta2, phi, totalMass);
+        const newSpeed: THREE.Vector3[] = this.getNewSpeeds(cars, theta1, theta2, phi, totalMass);
         for (let i: number = 0; i < cars.length; i++) {
             cars[i].speed = cars[i].speed.length() > MINIMUM_SPEED ? newSpeed[i] : cars[i].speed.add(SPEED_VECTOR_FACTOR);
         }
     }
     private getTheta(car: Car): number {
-        return car.speed.length() !== 0 ? Math.acos(car.speed.x / car.speed.length()) : 0;
+        return car.direction.angleTo(new THREE.Vector3(1, 0, 0));
     }
-    private getNewSpeed(cars: Car[], theta1: number, theta2: number, phi: number, totalMass: number): THREE.Vector3[] {
+    private getNewSpeeds(cars: Car[], theta1: number, theta2: number, phi: number, totalMass: number): THREE.Vector3[] {
         const const1Speed1: number = this.getConst1(cars[1], theta2, phi, totalMass);
         const const2Speed1: number = this.getConst2(cars[0], theta1, phi);
         const const1Speed2: number = this.getConst1(cars[0], theta1, phi, totalMass);
         const const2Speed2: number = this.getConst2(cars[1], theta2, phi);
 
         return [
-            new THREE.Vector3(this.getSpeedX(const1Speed1, const2Speed1, phi), 0, this.getSpeedZ(const1Speed1, const2Speed1, phi)),
-            new THREE.Vector3(this.getSpeedX(const1Speed2, const2Speed2, phi), 0, this.getSpeedZ(const1Speed2, const2Speed2, phi))];
+            new THREE.Vector3(this.getSpeedX(const1Speed1, const2Speed1, phi), this.getSpeedY(const1Speed1, const2Speed1, phi), 0),
+            new THREE.Vector3(this.getSpeedX(const1Speed2, const2Speed2, phi), this.getSpeedY(const1Speed2, const2Speed2, phi), 0)];
     }
     private getSpeedX(const1: number, const2: number, phi: number): number {
-        return ((const1 * Math.cos(phi)) - (const2 * Math.sin(phi))) / CAR_1_MOMENTUM_FACTOR;
+        return ((const1 * Math.cos(phi)) - (const2 * Math.cos(phi))) / CAR_1_MOMENTUM_FACTOR;
     }
-    private getSpeedZ(const1: number, const2: number, phi: number): number {
-        return ((const1 * Math.cos(phi)) - (const2 * Math.sin(phi))) / CAR_1_MOMENTUM_FACTOR;
+    private getSpeedY(const1: number, const2: number, phi: number): number {
+        return ((const1 * Math.sin(phi)) - (const2 * Math.sin(phi))) / CAR_1_MOMENTUM_FACTOR;
     }
     private getConst1(car: Car, theta: number, phi: number, totalMass: number): number {
         return (car.Mass * car.speed.length() * Math.cos(theta - phi) * 2) / totalMass;
