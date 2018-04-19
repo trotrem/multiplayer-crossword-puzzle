@@ -187,6 +187,7 @@ export class Car extends Object3D {
         this._speed.setLength(
             this._speed.length() <= MINIMUM_SPEED ? 0 : this._speed.length()
         );
+        this._speed.z = 0;
         this._velocity = this.getDeltaPosition(deltaTime);
         for (const collisionNormal of this.collisionService.getCollisionNormal(this)) {
             this._speed.setLength(Math.max(this._speed.length() - WALL_SPEED_LOSS, Math.min(this._speed.length(), MIN_WALL_SPEED)));
