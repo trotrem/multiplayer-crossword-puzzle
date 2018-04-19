@@ -49,7 +49,6 @@ export class EndGameComponent {
     public returnHome(): void {
         this.router.navigateByUrl("crossword/homePage");
     }
-    // TODO: montrer la séléection de l'index dans le ui du crossword
     private onRematchRequest(): void {
         this.communicationService.onRematchRequested().subscribe(() => {
             if (confirm("Your opponent requested a rematch!\nPlay again?")) {
