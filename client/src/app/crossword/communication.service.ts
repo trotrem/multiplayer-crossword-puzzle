@@ -35,7 +35,6 @@ export class CommunicationService {
         return this.http.get<string[]>(SERVER_URL + CHEAT_WORDS_URL + id);
     }
 
-    // TODO: type safety
     public initiateGame(difficulty: Difficulty, playerName: string, nbPlayers: number): void {
         this.socketsService.sendEvent(
             CrosswordEvents.NewGame,
