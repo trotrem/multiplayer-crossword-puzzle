@@ -88,7 +88,7 @@ export class CrosswordGridComponent implements OnInit {
         if (this.horizontalWords[0].word === undefined) {
             this.gridManager.fetchCheatModeWords(this.horizontalWords, this.verticalWords);
         }
-        this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions; // REFACTOR
+        this.tipMode === TipMode.Definitions ? this.tipMode = TipMode.Cheat : this.tipMode = TipMode.Definitions; // TODO: REFACTOR
     }
 
     public onCellClicked(event: MouseEvent, cell: Cell): void {

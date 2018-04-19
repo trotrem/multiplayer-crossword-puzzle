@@ -12,7 +12,7 @@ export module GenerateWords {
         (words: WordDictionaryData[], grid: IGrid) => {
             if (words.length > 0) {
                 words = words.filter((wordInfo: WordDictionaryData) => {
-                    return grid.words.map((w: IWordContainer) => GridUtils.getText(w.gridSquares, grid)).indexOf(wordInfo.word) === -1;
+                    return grid.words.map((w: IWordContainer) => GridUtils.getText(w.gridSquares, grid.cells)).indexOf(wordInfo.word) === -1;
                 });
             }
 
@@ -25,13 +25,13 @@ export module GenerateWords {
                 return grid;
             }
             let words: WordDictionaryData[] = await WordRetriever.instance.getWordsWithDefinitions(
-                GridUtils.getText(grid.words[index].gridSquares, grid), difficulty);
+                GridUtils.getText(grid.words[index].gridSquares, grid.cells), difficulty);
             words = filterRepeatedWords(words, grid);
             for ({} of words) {
 
                 const newWordData: WordDictionaryData = words[Utils.randomIntFromInterval(0, words.length - 1)];
-                if (GridUtils.wordFitsInGrid(newWordData.word, grid.words[index].gridSquares, grid)) {
-                    GridUtils.setData(newWordData, grid.words[index], grid);
+                if (GridUtils.wordFitsInGrid(newWordData.word, grid.words[index].gridSquares, grid.cells)) {
+                    GridUtils.setData(newWordData, grid.words[index], grid.cells);
 
                     const nextStep: IGrid = await addWord(index + 1, grid, difficulty);
                     if (nextStep !== null) {

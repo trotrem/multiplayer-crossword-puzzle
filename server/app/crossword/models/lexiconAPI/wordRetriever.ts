@@ -80,7 +80,7 @@ export class WordRetriever {
 
     private async createWordListWithDefinitions(
         word: string,
-        filter: (word: WordDictionaryData) => boolean
+        filter: (wordInfo: WordDictionaryData) => boolean
     ): Promise<WordDictionaryData[]> {
         let wordsWithDefinitions: WordDictionaryData[] = [];
         const apiService: ExternalApiService = new ExternalApiService();
@@ -97,38 +97,30 @@ export class WordRetriever {
         words: DatamuseObject[],
         word: string
     ): WordDictionaryData[] {
-        for (const index in words) {
+        for (const wordData of words) {
             if (
-                words[index].defs !== undefined &&
-                words[index].word.search(NUMERICAL_VALUES) === -1 &&
-                words[index].word.length === word.length
+                wordData.defs !== undefined &&
+                wordData.word.search(NUMERICAL_VALUES) === -1 &&
+                wordData.word.length === word.length
             ) {
-                this.addWord(wordsWithDefinitions, words, index);
+                this.addWord(wordsWithDefinitions, wordData);
             }
         }
 
         return wordsWithDefinitions;
     }
 
-    private addWord(
-        wordsWithDefinitions: WordDictionaryData[],
-        words: DatamuseObject[],
-        index: string
-    ): void {
-        const tempFrequency: number = parseFloat(
-            words[index].tags[0].substring(OFFSET_FREQUENCY)
-        );
+    private addWord(wordsWithDefinitions: WordDictionaryData[], wordData: DatamuseObject): void {
+        const tempFrequency: number = parseFloat(wordData.tags[0].substring(OFFSET_FREQUENCY));
         const tempWord: WordDictionaryData = new WordDictionaryData(
-            words[index].word,
-            words[index].defs,
+            wordData.word,
+            wordData.defs,
             tempFrequency
         );
         wordsWithDefinitions.push(tempWord);
     }
 
-    private removeDefinitions(
-        wordsWithDefinitions: WordDictionaryData[]
-    ): WordDictionaryData[] {
+    private removeDefinitions(wordsWithDefinitions: WordDictionaryData[]): WordDictionaryData[] {
         wordsWithDefinitions.forEach(
             (wordInfo: WordDictionaryData, index: number) => {
                 wordInfo.definitions = wordInfo.definitions.filter(
@@ -143,15 +135,10 @@ export class WordRetriever {
         return wordsWithDefinitions;
     }
 
-    private removesWords(
-        wordsWithDefinitions: WordDictionaryData[]
-    ): WordDictionaryData[] {
+    private removesWords(wordsWithDefinitions: WordDictionaryData[]): WordDictionaryData[] {
         wordsWithDefinitions.forEach(
             (wordInfo: WordDictionaryData, index: number) => {
-                if (
-                    wordInfo.definitions === undefined ||
-                    wordInfo.definitions.length === 0
-                ) {
+                if (wordInfo.definitions === undefined ||wordInfo.definitions.length === 0) {
                     wordsWithDefinitions.splice(index, 1);
                 }
             }
