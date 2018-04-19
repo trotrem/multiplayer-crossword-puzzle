@@ -7,8 +7,6 @@ export class RenderService {
     protected canvas: HTMLCanvasElement;
     protected renderer: THREE.WebGLRenderer;
 
-    public constructor() { }
-
     public initializeSuper(canvas: HTMLCanvasElement): void {
         if (canvas) {
             this.canvas = canvas;
