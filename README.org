@@ -1,0 +1,13 @@
+* Multiplayer Crossword Game
+This is part of a 5 people group project for school that included another game (3D racing game in the browser using THREE.js)
+Most of the work on the crossword part was done by me and but I only helped on the other one.
+I decided to only upload the crossword for that reason.
+
+** Technologies used:
+*** Angular for the frontend
+*** ExpressJS for the backend
+*** MongoDB for persistence
+*** Socket.IO for communication
+
+10 grids of each difficulty are persisted in the database to be able to start playing faster.
+A new crossword grid is generated every time someone starts a new game ant it replaces the last grid used in the DB.
