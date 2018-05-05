@@ -1,28 +1,28 @@
-h1{font-family: courier;
+h1, h2 {
+    font-family: courier;
     text-align:center;
     color: midnightblue;
-    margin: 10%
-    }
-a {font-family: courier;}
-a:link{
-        
-        color: blue;
-        padding: 14px 25px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        align-items: center ;
-        font-size: 100px;
-        cursor: pointer;
-        
-    }
-    
+}
+a {
+    font-family: courier;
+}
+a:link {
+    color: blue;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    align-items: center ;
+    font-size: 100px;
+    cursor: pointer;
+}
 a:hover, a:active {
-        background-color: rgb(20, 220, 20);
-    }
-.div {text-align:center;
+    background-color: rgb(20, 220, 20);
+}
+.div {
+    text-align:center;
     font-family: courier;
     color: chocolate;
     font-size: 40px;
     margin: 5%
-       }
+}

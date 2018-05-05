@@ -5,7 +5,7 @@ import { GameConfigurationService } from "../../services/game-configuration/game
 import { CommunicationService } from "../../services/communication/communication.service";
 import { Difficulty } from "../../../../../../common/communication/types-crossword";
 
-const GAME_URL: string = "/crossword/game";
+const GAME_URL: string = "/game";
 
 @Component({
     selector: "app-multiplayer-lobby",

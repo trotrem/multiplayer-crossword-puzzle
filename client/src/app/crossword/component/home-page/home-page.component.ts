@@ -3,9 +3,9 @@ import { Router } from "@angular/router";
 import { CommunicationService } from "../../services/communication/communication.service";
 import { GameConfigurationService } from "../../services/game-configuration/game-configuration.service";
 
-const GAME_URL: string = "/crossword/game";
-const WAITING_ROOM_URL: string = "/crossword/waiting";
-const LOBBY_URL: string = "/crossword/lobby";
+const GAME_URL: string = "/game";
+const WAITING_ROOM_URL: string = "/waiting";
+const LOBBY_URL: string = "/lobby";
 
 @Component({
     selector: "app-home-page",
@@ -21,7 +21,7 @@ export class HomePageComponent implements OnInit {
     public constructor(private router: Router,
                        private communicationService: CommunicationService,
                        private gameConfiguration: GameConfigurationService) {
-        this.numberPlayers = 2;
+        this.numberPlayers = 1;
         this.difficultyGrade = 0;
         this.playerName = "";
     }

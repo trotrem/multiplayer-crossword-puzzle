@@ -1,45 +1,51 @@
 <h2>
-  Welcome to the crossword
+    Crossword
 </h2>
 <form #form = "ngForm" (ngSubmit)=play(form) >
-<div class="radio">Choose the difficulty</div>
-<div class="form-group">
-  <div >
-      <label>
-          <input type="radio" name="difficultyGrade" [value]=0 [(ngModel)] ="difficultyGrade">
-          Easy
-      </label>
-  </div>
-  <div >
-      <label>
-          <input type="radio" name="difficultyGrade" [value]=1 [(ngModel)] ="difficultyGrade">
-          Medium
-      </label>
-  </div>
-  <div >
-    <label>
-        <input type="radio" name="difficultyGrade" [value]=2 [(ngModel)] ="difficultyGrade">
-        Hard
-    </label>
-  </div>
-</div>
+    <div class="grid">
+        <div>
+            <h3 class="radio">difficulty:</h3>
+            <div>
+                <div >
+                    <label>
+                        <input type="radio" name="difficultyGrade" [value]=0 [(ngModel)] ="difficultyGrade">
+                        Easy
+                    </label>
+                </div>
+                <div >
+                    <label>
+                        <input type="radio" name="difficultyGrade" [value]=1 [(ngModel)] ="difficultyGrade">
+                        Medium
+                    </label>
+                </div>
+                <div >
+                    <label>
+                        <input type="radio" name="difficultyGrade" [value]=2 [(ngModel)] ="difficultyGrade">
+                        Hard
+                    </label>
+                </div>
+            </div>
 
-<div class="radio">Number of players : </div>
-<div class="form-group">
-  <div >
-      <label>
-          <input type="radio" name="numberPlayers" [value]=1 [(ngModel)] = "numberPlayers">
-          One
-      </label>
-  </div>
-  <div >
-      <label>
-          <input type="radio" name="numberPlayers" [value]=2 [(ngModel)] = "numberPlayers">
-          Two
-      </label>
-  </div>
-</div>
-<button [disabled]="disablePlayButton()" type="submit" class="play" >Play</button>
-<button [disabled]="disableJoinButton()" (click)="joinGame(form)" >Join Game</button>
-<input type="text" name="playerName" [(ngModel)]="playerName" placeholder= " Enter your name" />
+            <h3 class="radio">Number of players: </h3>
+            <div>
+                <div >
+                    <label>
+                        <input type="radio" name="numberPlayers" [value]=1 [(ngModel)] = "numberPlayers">
+                        One
+                    </label>
+                </div>
+                <div >
+                    <label>
+                        <input type="radio" name="numberPlayers" [value]=2 [(ngModel)] = "numberPlayers">
+                        Two
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button [disabled]="disablePlayButton()" type="submit" class="play" >Play</button>
+            <button [disabled]="disableJoinButton()" (click)="joinGame(form)" >Join Game</button>
+            <input class="text-input" type="text" name="playerName" [(ngModel)]="playerName" placeholder= "You need a nickname to play against someone!" />
+        </div>
+    </div>
 </form>

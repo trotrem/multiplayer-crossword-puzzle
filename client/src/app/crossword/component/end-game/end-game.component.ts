@@ -40,14 +40,14 @@ export class EndGameComponent {
         this.communicationService.prepareGridFetching();
         this.communicationService.sendRequestRematch();
         if (this.gameConfig.nbPlayers === 2) {
-            this.router.navigate(["crossword/waiting"]);
+            this.router.navigate(["waiting"]);
         } else {
-            this.router.navigate(["crossword/game"]);
+            this.router.navigate(["game"]);
         }
     }
 
     public returnHome(): void {
-        this.router.navigateByUrl("crossword/homePage");
+        this.router.navigateByUrl("");
     }
     private onRematchRequest(): void {
         this.communicationService.onRematchRequested().subscribe(() => {

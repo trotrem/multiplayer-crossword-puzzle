@@ -2,69 +2,37 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
-import { GameComponent } from "./racing/components/racing-game/game-component/game.component";
 import { RouterModule, Routes } from "@angular/router";
-import { RenderService } from "./racing/services/render/render.service";
-import { EditorComponent } from "./racing/components/editor/editor.component";
-import { AdminComponent } from "./racing/components/admin/admin.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { RacingGameComponent } from "./racing/components/racing-game/racing-game.component";
 import { CrosswordGridComponent } from "./crossword/component/crossword-grid/crossword-grid.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { APP_BASE_HREF } from "@angular/common";
-import { UserComponent } from "./racing/components/user/user.component";
-import { RacingCommunicationService } from "./racing/services/communication/communicationRacing.service";
 import { HomePageComponent } from "./crossword/component/home-page/home-page.component";
 import { EndGameComponent } from "./crossword/component/end-game/end-game.component";
-import { GameResultsComponent } from "./racing/components/game-results/game-results.component";
-import { GameManagerService } from "./racing/services/game-manager/game-manager.service";
-import { WallsCollisionsService } from "./racing/services/walls-collisions/walls-collisions-service";
 import { MultiplayerLobbyComponent } from "./crossword/component/multiplayer-lobby/multiplayer-lobby.component";
 import { SocketsService } from "./crossword/services/sockets/sockets.service";
 import { WaitingRoomComponent } from "./crossword/component/waiting-room/waiting-room.component";
 import { CommunicationService } from "./crossword/services/communication/communication.service";
 import { GameConfigurationService } from "./crossword/services/game-configuration/game-configuration.service";
-import { RenderGameService } from "./racing/services/render-game/render-game.service";
-import { SceneGameService } from "./racing/services/scene-game/scene-game-service.service";
 import { GridManager } from "./crossword/services/grid-manager/grid-manager.service";
-import { SceneEditorService } from "./racing/services/scene-editor/scene-editor.service";
-import { KeyboardEventService } from "./racing/commands/keyboard-event.service";
-import { WallService } from "./racing/services/walls-collisions/walls";
-import { CarsCollisionService } from "./racing/components/racing-game/car/cars-collision/cars-collision.service";
 
 const appRoutes: Routes = [
-    { path: "gameResults", component: GameResultsComponent },
-    { path: "gameResults/:name", component: GameResultsComponent },
-    { path: "editor/:name", component: EditorComponent },
-    { path: "crossword/endGame/:result", component: EndGameComponent },
-    { path: "crossword/homePage", component: HomePageComponent },
-    { path: "crossword/lobby", component: MultiplayerLobbyComponent },
-    { path: "crossword/game", component: CrosswordGridComponent },
-    { path: "crossword/waiting", component: WaitingRoomComponent },
-    { path: "editor", component: EditorComponent },
-    { path: "admin", component: AdminComponent },
-    { path: "user", component: UserComponent },
-    { path: "race/:name", component: GameComponent },
-    { path: "race", component: GameComponent },
-    { path: "racing", component: RacingGameComponent },
-    { path: "", children: [] },
+    { path: "endGame/:result", component: EndGameComponent },
+    { path: "", component: HomePageComponent },
+    { path: "lobby", component: MultiplayerLobbyComponent },
+    { path: "game", component: CrosswordGridComponent },
+    { path: "waiting", component: WaitingRoomComponent },
     { path: "**", component: PageNotFoundComponent },
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
-        GameComponent,
-        EditorComponent,
-        AdminComponent,
         PageNotFoundComponent,
-        RacingGameComponent,
         CrosswordGridComponent,
-        UserComponent,
         HomePageComponent,
         EndGameComponent,
-        GameResultsComponent,
         MultiplayerLobbyComponent,
         WaitingRoomComponent,
     ],
@@ -78,20 +46,10 @@ const appRoutes: Routes = [
             appRoutes
         )],
     providers: [
-        RacingCommunicationService,
-        RenderService,
-        GameManagerService,
-        WallsCollisionsService,
         SocketsService,
         CommunicationService,
         GameConfigurationService,
-        RenderGameService,
-        SceneGameService,
         GridManager,
-        SceneEditorService,
-        KeyboardEventService,
-        CarsCollisionService,
-        WallService,
         { provide: APP_BASE_HREF, useValue: "/" }
     ],
     bootstrap: [AppComponent]

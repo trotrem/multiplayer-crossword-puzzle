@@ -4,4 +4,5 @@ export default  {
     Routes: Symbol("Routes"),
     Index: Symbol("Index"),
     SocketsHandler: Symbol("Sockets"),
+    CrosswordRoutes: Symbol("CrosswordRoutes")
 };

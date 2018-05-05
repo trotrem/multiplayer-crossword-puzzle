@@ -4,7 +4,6 @@ h2{font-family: courier;
 div, label {text-align:center;
     font-family: courier;
     color: crimson;
-     
 }
 
 button {
@@ -19,11 +18,14 @@ button {
     border-radius: 8px;
     border: 2px solid blue;
 }
-input{font-family: courier;
+.text-input{
+    font-family: courier;
     border: 1px solid black;
     border-radius: 8px;
     margin: 4px 2px;
-    font-size: 16px;}
+    font-size: 16px;
+    width: 28em;
+}
 .radio {
     color: #f0a038;
     margin: 5%;
@@ -31,4 +33,9 @@ input{font-family: courier;
 }
 .play {
     border: 2px solid rgb(122, 160, 65);
+}
+.grid {
+    display: flex;
+    align-content: horizontal;
+    justify-content: center;
 }
