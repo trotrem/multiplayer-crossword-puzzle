@@ -22,8 +22,8 @@ describe("EndGameComponent", () => {
     beforeEach(async(() => {
         void TestBed.configureTestingModule({
             imports: [FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([
-                { path: "crossword/homePage", component: HomePageComponent },
-                { path: "crossword/game", component: CrosswordGridComponent }])],
+                { path: "", component: HomePageComponent },
+                { path: "game", component: CrosswordGridComponent }])],
             declarations: [EndGameComponent, HomePageComponent, CrosswordGridComponent],
             providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
@@ -49,15 +49,15 @@ describe("EndGameComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("returnHome takes you to /crossword/homePage", fakeAsync(() => {
+    it("returnHome takes you to /", fakeAsync(() => {
         component.returnHome();
         tick(50);
-        expect(router.url).toBe("/crossword/homePage");
+        expect(router.url).toBe("/");
     }));
 
-    it("playSameConfig takes you to /crossword/game", fakeAsync(() => {
+    it("playSameConfig takes you to /game", fakeAsync(() => {
         component.playSameCongif();
         tick(50);
-        expect(router.url).toBe("/crossword/game");
+        expect(router.url).toBe("/game");
     }));
 });

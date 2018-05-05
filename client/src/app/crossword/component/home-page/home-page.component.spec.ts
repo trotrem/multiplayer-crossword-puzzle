@@ -24,9 +24,9 @@ describe("HomePageComponent", () => {
             imports: [
                 FormsModule, HttpClientTestingModule,
                 RouterTestingModule.withRoutes([
-                    { path: "crossword/game", component: CrosswordGridComponent },
-                    { path: "crossword/waiting", component: WaitingRoomComponent },
-                    { path: "crossword/lobby", component: MultiplayerLobbyComponent }])],
+                    { path: "game", component: CrosswordGridComponent },
+                    { path: "waiting", component: WaitingRoomComponent },
+                    { path: "lobby", component: MultiplayerLobbyComponent }])],
             providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
@@ -43,28 +43,28 @@ describe("HomePageComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("play with 1 player takes you to /crossword/game", fakeAsync(() => {
+    it("play with 1 player takes you to /game", fakeAsync(() => {
         component.difficultyGrade = Difficulty.Easy;
         component.playerName = "Marc";
         component.numberPlayers = 1;
         component.play();
         tick(100);
-        expect(router.url).toBe("/crossword/game");
+        expect(router.url).toBe("/game");
     }));
 
-    it("play with 2 player takes you to a waiting room on '/crossword/waiting'.", fakeAsync(() => {
+    it("play with 2 player takes you to a waiting room on '/waiting'.", fakeAsync(() => {
         component.difficultyGrade = Difficulty.Easy;
         component.numberPlayers = 2;
         component.play();
         tick(100);
-        expect(router.url).toBe("/crossword/waiting");
+        expect(router.url).toBe("/waiting");
     }));
 
-    it("A player who wants to join a game will be redirect to a lobby on '/crossword/lobby'.", fakeAsync(() => {
+    it("A player who wants to join a game will be redirect to a lobby on '/lobby'.", fakeAsync(() => {
         component.difficultyGrade = Difficulty.Easy;
         component.numberPlayers = 2;
         component.joinGame();
         tick(100);
-        expect(router.url).toBe("/crossword/lobby");
+        expect(router.url).toBe("/lobby");
     }));
 });

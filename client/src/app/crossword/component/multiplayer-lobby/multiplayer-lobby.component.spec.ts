@@ -20,7 +20,7 @@ describe("MultiplayerLobbyComponent", () => {
         void TestBed.configureTestingModule({
             declarations: [MultiplayerLobbyComponent, CrosswordGridComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
-                { path: "crossword/game", component: CrosswordGridComponent }])],
+                { path: "game", component: CrosswordGridComponent }])],
             providers: [CommunicationService, GameConfigurationService, SocketsService]
         })
             .compileComponents();
@@ -44,7 +44,7 @@ describe("MultiplayerLobbyComponent", () => {
         const game: IConnectionInfo = { gameId: "50", player: "Marc-Antoine" }; // Game to join
         component.joinGame(game);
         tick(100);
-        expect(router.url).toBe("/crossword/game");
+        expect(router.url).toBe("/game");
     }));
 
 });

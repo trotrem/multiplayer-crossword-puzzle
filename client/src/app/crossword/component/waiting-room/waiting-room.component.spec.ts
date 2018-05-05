@@ -21,7 +21,7 @@ describe("WaitingRoomComponent", () => {
         void TestBed.configureTestingModule({
             declarations: [CrosswordGridComponent, WaitingRoomComponent],
             imports: [HttpClientModule, RouterTestingModule, RouterTestingModule.withRoutes([
-                { path: "crossword/game", component: CrosswordGridComponent }])],
+                { path: "game", component: CrosswordGridComponent }])],
             providers: [CommunicationService, SocketsService, GameConfigurationService]
         })
             .compileComponents();
