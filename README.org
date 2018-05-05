@@ -11,3 +11,5 @@ I decided to only upload the crossword for that reason.
 
 10 grids of each difficulty are persisted in the database to be able to start playing faster.
 A new crossword grid is generated every time someone starts a new game ant it replaces the last grid used in the DB.
+
+To start, run npm install and npm start in the client and server folders
